@@ -1,0 +1,107 @@
+/*
+    Copyright (C) 2014 Parrot SA
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the 
+      distribution.
+    * Neither the name of Parrot nor the names
+      of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written
+      permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+    AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+    OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+*/
+/**
+ * @file ARNETWORK_Network.h
+ * @brief ARCONTROLLER_Network allow to operate an ARNETWORK_Manager for send and receive commands.
+ * @date 02/03/2015
+ * @author maxime.maitre@parrot.com
+ */
+
+#ifndef _ARCONTROLLER_NETWORK_PRIVATE_H_
+#define _ARCONTROLLER_NETWORK_PRIVATE_H_
+
+#include <libARSAL/ARSAL_Socket.h>
+#include <libARSAL/ARSAL_Mutex.h>
+
+# define ARCONTROLLER_NETWORK_TAG "ARCONTROLLER_Network"
+# define ARCONTROLLER_NETWORK_READING_TIMEOUT_MS 1000
+
+typedef struct ARCONTROLLER_NETWORK_THREAD_DATA_t ARCONTROLLER_NETWORK_THREAD_DATA_t;
+
+/**
+ * @brief Network controller allow to operate an ARNETWORK_Manager for send and receive commands.
+ */
+struct ARCONTROLLER_Network_t
+{
+    ARDISCOVERY_DiscoveryDevice_t discoveryDevice; /**< the device to drive */
+    ARDISCOVERY_NetworkConfiguration_t networkConfig; /**< the network configuration ; get from the device */
+    ARNETWORKAL_Manager_t *networkALManager; /**< the networkALManager ; get from the device  */
+    ARNETWORK_Manager_t *networkManager; /**< the networkManager */
+    ARSAL_Thread_t rxThread; /**< receiver thread of the networkManager */
+    ARSAL_Thread_t txThread; /**< transmitter thread of the networkManager */
+    ARSAL_Thread_t *readerThreads; /**< reader threads for all buffers of receiving */
+    ARCONTROLLER_NETWORK_THREAD_DATA_t *readerThreadsData; /**< data for all reader threads*/
+    ARSAL_Mutex_t mutex; /**< Mutex for multithreading */
+    eARCONTROLLER_NETWORK_STATE state; /**< state of the networkController*/
+};
+
+struct ARCONTROLLER_NETWORK_THREAD_DATA_t
+{
+    ARCONTROLLER_Network_t *networkController; /**< Network Controller owning the reader thread */
+    int readerBufferId; /**< ID to read by the reader thread */
+};
+
+/**
+ * @brief Create the Network receiver and transmitter Threads
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateNetworkThreads (ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Stop the Network receiver and transmitter Threads
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopNetworkThreads (ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Create the reader Threads
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateReaderThreads (ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Stop the reader Threads
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopReaderThreads (ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Read and decode one input network buffer
+ * @warning This function must be called in its own thread.
+ * @post Before join the thread calling this function, ARCONTROLLER_Network_Stop() must be called. !!!!!!!!!!
+ * @param data thread data of type ARCONTROLLER_NETWORK_THREAD_DATA_t*
+ * @return NULL
+ * @see ARCONTROLLER_Network_Stop() !!!!!!!
+ */
+void *ARCONTROLLER_Network_ReaderRun (void *data);
+
+
+void ARCONTROLLER_Network_OnDisconnectNetwork (ARNETWORK_Manager_t *manager, ARNETWORKAL_Manager_t *alManager, void *customData);
+
+eARNETWORK_MANAGER_CALLBACK_RETURN ARCONTROLLER_Network_SendingCallback(int buffer_id, uint8_t *data, void *custom, eARNETWORK_MANAGER_CALLBACK_STATUS cause);
+
+#endif /* _ARCONTROLLER_NETWORK_PRIVATE_H_ */

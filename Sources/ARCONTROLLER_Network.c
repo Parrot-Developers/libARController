@@ -1,0 +1,782 @@
+/*
+    Copyright (C) 2014 Parrot SA
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the 
+      distribution.
+    * Neither the name of Parrot nor the names
+      of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written
+      permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+    AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+    OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+*/
+
+/**
+ * @file ARNETWORK_Network.c
+ * @brief ARCONTROLLER_Network allow to operate an ARNETWORK_Manager for send and receive commands.
+ * @date 02/03/2015
+ * @author maxime.maitre@parrot.com
+ */
+ 
+#include <stdlib.h>
+
+#include <libARSAL/ARSAL_Print.h>
+#include <libARSAL/ARSAL_Socket.h>
+#include <libARSAL/ARSAL_Mutex.h>
+#include <libARNetwork/ARNETWORK_Manager.h>
+#include <libARDiscovery/ARDISCOVERY_NetworkConfiguration.h>
+#include <libARDiscovery/ARDISCOVERY_Device.h>
+#include <libARCommands/ARCommands.h>
+#include <libARController/ARCONTROLLER_Network.h>
+
+#include "ARCONTROLLER_Network.h"
+
+/*************************
+ * Private header
+ *************************/
+
+/*************************
+ * Implementation
+ *************************/
+
+ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t discoveryDevice, eARCONTROLLER_ERROR *error)
+{
+    // -- Create a new Network Controller --
+    
+    ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_New ...");
+    
+    //local declarations
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    ARCONTROLLER_Network_t *networkController =  NULL;
+    
+    /*
+    // check parameters
+    if (discoveryDevice == NULL)
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    */
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        // Create the Network Controller
+        networkController = malloc (sizeof (ARCONTROLLER_Network_t));
+        if (networkController != NULL)
+        {
+            // Initialize to default values
+            networkController->discoveryDevice = discoveryDevice;
+            networkController->networkALManager = NULL;
+            networkController->networkManager = NULL;
+            networkController->rxThread = NULL;
+            networkController->txThread = NULL;
+            networkController->readerThreads = NULL;
+            networkController->readerThreadsData = NULL;
+            networkController->state = ARCONTROLLER_NETWORK_STATE_RUNNING;
+            
+            // init networkConfiguration
+            networkController->networkConfig.controllerToDeviceNotAckId = -1;
+            networkController->networkConfig.controllerToDeviceAckId = -1;
+            networkController->networkConfig.controllerToDeviceHightPriority = -1;
+            networkController->networkConfig.controllerToDeviceARStreamAck = -1;
+            networkController->networkConfig.deviceToControllerNotAckId = -1;
+            networkController->networkConfig.deviceToControllerAckId = -1;
+            //networkController->networkConfig.deviceToControllerHightPriority = -1;
+            networkController->networkConfig.deviceToControllerARStreamData = -1;
+            networkController->networkConfig.numberOfControllerToDeviceParam = 0;
+            networkController->networkConfig.controllerToDeviceParams = NULL;
+            networkController->networkConfig.numberOfDeviceToControllerParam  = 0;
+            networkController->networkConfig.deviceToControllerParams = NULL;
+            networkController->networkConfig.bleNotificationIDs = NULL;
+            networkController->networkConfig.pingDelayMs =-1;
+            networkController->networkConfig.numberOfDeviceToControllerCommandsBufferIds = 0;
+            networkController->networkConfig.deviceToControllerCommandsBufferIds = NULL;
+            
+            /* Create the mutex/condition */
+            if ( (localError == ARCONTROLLER_OK) &&
+                 (ARSAL_Mutex_Init (&(networkController->mutex)) != 0))
+            {
+                localError = ARCONTROLLER_ERROR_INIT_MUTEX;
+            }
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Get the network Configuration ...");
+        // Get the network Configuration
+        eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
+        networkController->networkConfig = ARDISCOVERY_Device_GetNetworkCongifuration (&(networkController->discoveryDevice), &dicoveryError);
+        if (dicoveryError != ARDISCOVERY_OK)
+        {
+            localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the NetworkAL ...");
+        // Create the NetworkAL
+        eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
+        eARNETWORKAL_ERROR netALError = ARNETWORKAL_OK;
+        networkController->networkALManager = ARDISCOVERY_Device_NewARNetworkAL (&(networkController->discoveryDevice), &dicoveryError, &netALError);
+        if (dicoveryError != ARDISCOVERY_OK)
+        {
+            if (netALError != ARNETWORKAL_OK)
+            {
+                ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "error: %s", ARNETWORKAL_Error_ToString (netALError));
+            }
+            
+            localError = ARCONTROLLER_ERROR_INIT_NETWORKAL;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the ARNetworkManager ...");
+        // Create the ARNetworkManager.
+        eARNETWORK_ERROR netError = ARNETWORK_OK;
+        
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "params netAL:%p | c2d:%d %p | d2c:%d %p | ping:%d | ondisconnectCB:%p ...",networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork);
+        
+        networkController->networkManager = ARNETWORK_Manager_New(networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork, networkController, &netError);
+        if (netError != ARNETWORK_OK)
+        {
+            localError = ARCONTROLLER_ERROR; // TODO manage and set error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    }
+
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the Network receiver and transmitter Threads ...");
+        // Create the Network receiver and transmitter Threads
+        localError = ARCONTROLLER_Network_CreateNetworkThreads (networkController);
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the reader Threads ...");
+        // Create the reader Threads
+        localError = ARCONTROLLER_Network_CreateReaderThreads (networkController);
+    }
+    
+    // delete the Network Controller if an error occurred
+    if (localError != ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "error: %s", ARCONTROLLER_Error_ToString (localError));
+        ARNETWORK_Manager_Delete (&(networkController->networkManager));
+    }
+    // No else: skipped by an error 
+
+    // return the error */
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+
+    return networkController;
+}
+
+void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
+{
+    ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Delete the Network Controller ...");
+    // -- Delete the Network Controller --
+    
+    // local declarations
+    int bufferIndex = 0;
+
+    if (networkController != NULL)
+    {
+        if ((*networkController) != NULL)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARSAL_Mutex_Destroy ...");
+            ARSAL_Mutex_Destroy (&((*networkController)->mutex));
+            
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_StopReaderThreads ...");
+            ARCONTROLLER_Network_StopReaderThreads (*networkController); //read error
+            
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_StopNetworkThreads ...");
+            ARCONTROLLER_Network_StopNetworkThreads (*networkController); //read error
+            
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARNETWORK_Manager_Delete ...");
+            ARNETWORK_Manager_Delete(&((*networkController)->networkManager));
+            
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARDISCOVERY_Device_DeleteARNetworkAL ...");
+            ARDISCOVERY_Device_DeleteARNetworkAL (&((*networkController)->discoveryDevice), &((*networkController)->networkALManager)); //read error
+            
+            free (*networkController);
+            (*networkController) = NULL;
+        }
+    }
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Pauses the Network Controller --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (networkController->state)
+        {
+            case ARCONTROLLER_NETWORK_STATE_RUNNING:
+                networkController->state = ARCONTROLLER_NETWORK_STATE_PAUSE;
+                break;
+                
+            case ARCONTROLLER_NETWORK_STATE_PAUSE:
+            case ARCONTROLLER_NETWORK_STATE_STOPPED:
+                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "nothing to do ; network controller state : %d ", networkController->state);
+                break;
+            
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "state : %d not known", networkController->state);
+                break;
+        }
+        
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Resumes the Network Controller --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (networkController->state)
+        {
+            case ARCONTROLLER_NETWORK_STATE_PAUSE:
+                networkController->state = ARCONTROLLER_NETWORK_STATE_RUNNING;
+                break;
+                
+            case ARCONTROLLER_NETWORK_STATE_RUNNING:
+                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "nothing to do ; network controller state : %d ", networkController->state);
+                break;
+                
+            case ARCONTROLLER_NETWORK_STATE_STOPPED:
+                error = ARCONTROLLER_ERROR_STATE;
+                break;
+            
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "state : %d not known", networkController->state);
+                break;
+        }
+        
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_Stop (ARCONTROLLER_Network_t *networkController)
+{
+    ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Stop the Network Controller ...");
+    // -- Stop the Network Controller --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (networkController->state)
+        {
+            case ARCONTROLLER_NETWORK_STATE_PAUSE:
+            case ARCONTROLLER_NETWORK_STATE_RUNNING:
+                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "networkController->state = ARCONTROLLER_NETWORK_STATE_STOPPED ...");
+            
+                networkController->state = ARCONTROLLER_NETWORK_STATE_STOPPED;
+                break;
+                
+            case ARCONTROLLER_NETWORK_STATE_STOPPED:
+                //nothing to do
+                break;
+            
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "state : %d not known", networkController->state);
+                break;
+        }
+        
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError)
+{
+    // -- Send data through the Network --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    eARNETWORK_ERROR localNetError = ARNETWORK_OK;
+    ARCONTROLLER_NETWORK_SendingConfiguration_t *sendingConfig = NULL;
+    int bufferID = -1; 
+    
+    // check parameters
+    if ((networkController == NULL) ||
+        (data == NULL) || (dataSize <= 0) ||
+        (dataType == ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        sendingConfig = malloc(sizeof(ARCONTROLLER_NETWORK_SendingConfiguration_t));
+        if (sendingConfig != NULL)
+        {
+            sendingConfig->timeoutPolicy = timeoutPolicy;
+            sendingConfig->customData = NULL;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // find bufferID to send
+        switch (dataType)
+        {
+            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_NOT_ACK:
+                bufferID = networkController->networkConfig.controllerToDeviceNotAckId;
+                break;
+                
+            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK:
+                bufferID = networkController->networkConfig.controllerToDeviceAckId;
+                break;
+                
+            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGHT_PRIORITY:
+                bufferID = networkController->networkConfig.controllerToDeviceHightPriority;
+                break;
+                
+            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM:
+                bufferID = networkController->networkConfig.controllerToDeviceARStreamAck;
+                break;
+                
+            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX:
+                error = ARCONTROLLER_ERROR;
+                break;
+            
+            default:
+                ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "dataType : %d not known", dataType);
+                error = ARCONTROLLER_ERROR;
+                break;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        localNetError = ARNETWORK_Manager_SendData(networkController->networkManager, bufferID, data, dataSize, sendingConfig, &(ARCONTROLLER_Network_SendingCallback), 1);
+        
+        if (localNetError != ARNETWORK_OK)
+        {
+            error = ARCONTROLLER_ERROR_NOT_SENT;
+        }
+    }
+    
+    // Return netError
+    if(netError != NULL)
+    {
+        *netError = localNetError;
+    }
+    
+    return error;
+}
+
+ /*************************
+ * Private Implementation
+ *************************/
+ 
+eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateNetworkThreads (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Create the Network receiver and transmitter Threads --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Thread_Create(&(networkController->rxThread), ARNETWORK_Manager_ReceivingThreadRun, networkController->networkManager) != 0)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Creation of Rx thread failed.");
+            error = ARCONTROLLER_ERROR_INIT_THREAD;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Thread_Create(&(networkController->txThread), ARNETWORK_Manager_SendingThreadRun, networkController->networkManager) != 0)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Creation of Tx thread failed.");
+            error = ARCONTROLLER_ERROR_INIT_THREAD;
+        }
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopNetworkThreads (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Stop the Network receiver and transmitter Threads --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARNETWORK_Manager_Stop(networkController->networkManager);
+        if (networkController->rxThread != NULL)
+        {
+            ARSAL_Thread_Join(networkController->rxThread, NULL);
+            ARSAL_Thread_Destroy(&(networkController->rxThread));
+            networkController->rxThread = NULL;
+        }
+        
+        if (networkController->txThread != NULL)
+        {
+            ARSAL_Thread_Join(networkController->txThread, NULL);
+            ARSAL_Thread_Destroy(&(networkController->txThread));
+            networkController->txThread = NULL;
+        }
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateReaderThreads (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Create the reader Threads --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // allocate reader thread array.
+        networkController->readerThreads = calloc(networkController->networkConfig.numberOfDeviceToControllerCommandsBufferIds, sizeof(ARSAL_Thread_t));
+        
+        if (networkController->readerThreads == NULL)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Allocation of reader threads failed.");
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // allocate reader thread data array.
+        networkController->readerThreadsData = calloc(networkController->networkConfig.numberOfDeviceToControllerCommandsBufferIds, sizeof(ARCONTROLLER_NETWORK_THREAD_DATA_t));
+        
+        if (networkController->readerThreadsData == NULL)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Allocation of reader threads data failed.");
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Create and start reader threads.
+        int readerThreadIndex = 0;
+        for (readerThreadIndex = 0 ; readerThreadIndex < networkController->networkConfig.numberOfDeviceToControllerCommandsBufferIds ; readerThreadIndex++)
+        {
+            // initialize reader thread data
+            networkController->readerThreadsData[readerThreadIndex].networkController = networkController;
+            networkController->readerThreadsData[readerThreadIndex].readerBufferId = networkController->networkConfig.deviceToControllerCommandsBufferIds[readerThreadIndex];
+            
+            if (ARSAL_Thread_Create(&(networkController->readerThreads[readerThreadIndex]), ARCONTROLLER_Network_ReaderRun, &(networkController->readerThreadsData[readerThreadIndex])) != 0)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Creation of reader thread failed.");
+                error = ARCONTROLLER_ERROR_INIT_THREAD;
+                break; //Stop the loop of the creation of the reader threads
+            }
+        }
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopReaderThreads (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Stop the reader Threads --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (networkController->readerThreads != NULL)
+        {
+            // Stop reader Threads
+            int readerThreadIndex = 0;
+            for (readerThreadIndex = 0 ; readerThreadIndex < networkController->networkConfig.numberOfDeviceToControllerCommandsBufferIds ; readerThreadIndex++)
+            {
+                if (networkController->readerThreads[readerThreadIndex] != NULL)
+                {
+                    ARSAL_Thread_Join (networkController->readerThreads[readerThreadIndex], NULL);
+                    ARSAL_Thread_Destroy (&(networkController->readerThreads[readerThreadIndex]));
+                    networkController->readerThreads[readerThreadIndex] = NULL;
+                }
+            }
+            
+            // free reader thread array
+            free (networkController->readerThreads);
+            networkController->readerThreads = NULL;
+        }
+        
+        if (networkController->readerThreadsData != NULL)
+        {
+            // free reader thread data array
+            free (networkController->readerThreadsData);
+            networkController->readerThreadsData = NULL;
+        }
+    }
+    
+    return error;
+}
+
+void *ARCONTROLLER_Network_ReaderRun (void *data)
+{
+    // -- Read and decode one input network buffer --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    ARCONTROLLER_Network_t *networkController = NULL;
+    int readerBufferId = -1;
+    
+    // Allocate some space for incoming data.
+    const size_t maxLength = 128 * 1024;
+    void *readData = malloc (maxLength);
+    if (readData == NULL)
+    {
+        error = ARCONTROLLER_ERROR_ALLOC;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (data != NULL)
+        {
+            //get thread data
+            networkController = ((ARCONTROLLER_NETWORK_THREAD_DATA_t *) data)->networkController;
+            readerBufferId = ((ARCONTROLLER_NETWORK_THREAD_DATA_t *) data)->readerBufferId;
+            
+            if (networkController == NULL)
+            {
+                error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        while (networkController->state != ARCONTROLLER_NETWORK_STATE_STOPPED)
+        {
+            if (networkController->state == ARCONTROLLER_NETWORK_STATE_RUNNING)
+            {
+                eARNETWORK_ERROR netError = ARNETWORK_OK;
+                int length = 0;
+                int skip = 0;
+                
+                //read data
+                netError = ARNETWORK_Manager_ReadDataWithTimeout (networkController->networkManager, readerBufferId, readData, maxLength, &length, ARCONTROLLER_NETWORK_READING_TIMEOUT_MS);
+                if (netError != ARNETWORK_OK)
+                {
+                    if (netError != ARNETWORK_ERROR_BUFFER_EMPTY)
+                    {
+                        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "ARNETWORK_Manager_ReadDataWithTimeout () failed : %s", ARNETWORK_Error_ToString(netError));
+                    }
+                    skip = 1;
+                }
+                
+                if (!skip)
+                {
+                    // Forward data to the CommandsManager
+                    eARCOMMANDS_DECODER_ERROR cmdError = ARCOMMANDS_DECODER_OK;
+                    cmdError = ARCOMMANDS_Decoder_DecodeBuffer ((uint8_t *)readData, length);
+                    if ((cmdError != ARCOMMANDS_DECODER_OK) && (cmdError != ARCOMMANDS_DECODER_ERROR_NO_CALLBACK))
+                    {
+                        char msg[128];
+                        ARCOMMANDS_Decoder_DescribeBuffer ((uint8_t *)readData, length, msg, sizeof(msg));
+                        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "ARCOMMANDS_Decoder_DecodeBuffer () failed : %d %s", cmdError, msg);
+                    }
+                }
+                //NO ELSE ; no data read
+            }
+            else
+            {
+                //sleep
+                sleep (1); //TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! replace by signal 
+            }
+        }
+    }
+    
+    // Print Error
+    if (error != ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "error: %s", ARCONTROLLER_Error_ToString (error));
+    }
+    
+    // cleanup
+    if (readData != NULL)
+    {
+        free (readData);
+        readData = NULL;
+    }
+    
+    return NULL;
+}
+
+void ARCONTROLLER_Network_OnDisconnectNetwork (ARNETWORK_Manager_t *manager, ARNETWORKAL_Manager_t *alManager, void *customData)
+{
+    ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "OnDisconnectNetwork ...");            
+}
+
+eARNETWORK_MANAGER_CALLBACK_RETURN ARCONTROLLER_Network_SendingCallback(int buffer_id, uint8_t *data, void *custom, eARNETWORK_MANAGER_CALLBACK_STATUS cause)
+{
+    eARNETWORK_MANAGER_CALLBACK_RETURN retval = ARNETWORK_MANAGER_CALLBACK_RETURN_DEFAULT;
+
+    ARCONTROLLER_NETWORK_SendingConfiguration_t *sendingConfig = ((ARCONTROLLER_NETWORK_SendingConfiguration_t *)custom);
+
+    switch (cause)
+    {
+        case ARNETWORK_MANAGER_CALLBACK_STATUS_SENT:
+        case ARNETWORK_MANAGER_CALLBACK_STATUS_ACK_RECEIVED:
+        case ARNETWORK_MANAGER_CALLBACK_STATUS_CANCEL:
+            //call customCallback
+            break;
+        
+        case ARNETWORK_MANAGER_CALLBACK_STATUS_TIMEOUT:
+            if (sendingConfig != NULL)
+            {
+                retval = sendingConfig->timeoutPolicy;
+                //retval = call customCallback
+            }
+            else
+            {
+                retval = ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP;
+            }
+            break;
+            
+        case ARNETWORK_MANAGER_CALLBACK_STATUS_DONE:
+            // End of the sending process : free the customData
+            if (sendingConfig != NULL)
+            {
+                free (sendingConfig);
+                sendingConfig = NULL;
+            }
+            break;
+            
+        case ARNETWORK_MANAGER_CALLBACK_STATUS_FREE:
+            free(data);
+            data = NULL;
+            break;
+            
+        default:
+            ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Cause: %d not known", cause);
+            break;
+    }
+    
+    return retval;
+}
