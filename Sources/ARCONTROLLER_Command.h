@@ -28,58 +28,49 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
-/*
- * GENERATED FILE
- *  Do not modify this file, it will be erased during the next configure run 
- */
 
 /**
- * @file ARCONTROLLER_Error.c
- * @brief ToString function for eARCONTROLLER_ERROR enum
+ * @file ARController_Command.h
+ * @brief Command controller allow !!!!! TODO.
+ * @date 02/03/2015
+ * @author maxime.maitre@parrot.com
  */
 
-#include <libARController/ARCONTROLLER_Error.h>
+#ifndef _ARCONTROLLER_COMMAND_PRIVATE_H_
+#define _ARCONTROLLER_COMMAND_PRIVATE_H_
 
-char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
+#include <libARSAL/ARSAL_Socket.h>
+#include <libARSAL/ARSAL_Mutex.h>
+
+#include <libARController/ARCONTROLLER_Error.h>
+#include <libARController/ARCONTROLLER_Command.h>
+
+# define ARCONTROLLER_COMMAND_TAG "ARCONTROLLER_COMMAND"
+# define ARCONTROLLER_COMMAND_CALLBACKS_CAPACITY_DEFAULT 1
+
+/**
+ * @brief 
+ */
+typedef struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t;
+
+struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t
 {
-    switch (error)
-    {
-    case ARCONTROLLER_OK:
-        return "No error";
-        break;
-    case ARCONTROLLER_ERROR:
-        return "Unknown generic error";
-        break;
-    case ARCONTROLLER_ERROR_ALLOC:
-        return "Memory allocation error";
-        break;
-    case ARCONTROLLER_ERROR_BAD_PARAMETER:
-        return "Bad parameters";
-        break;
-    case ARCONTROLLER_ERROR_MUTEX:
-        return "Mutex lock or unlock error";
-        break;
-    case ARCONTROLLER_ERROR_INIT_MUTEX:
-        return "Mutex initialization error";
-        break;
-    case ARCONTROLLER_ERROR_STATE:
-        return "Bad state of the Network Controller to call this function";
-        break;
-    case ARCONTROLLER_ERROR_INIT_THREAD:
-        return "Thread initialization error";
-        break;
-    case ARCONTROLLER_ERROR_INIT_NETWORKAL:
-        return "Error during the getting of the ARNetWorkAL from the device";
-        break;
-    case ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG:
-        return "Error during the getting of the ARNetWork Configuration from the device";
-        break;
-    case ARCONTROLLER_ERROR_NOT_SENT:
-        return "Error data not sent";
-        break;
-    default:
-        return "Unknown value";
-        break;
-    }
-    return "Unknown value";
-}
+    ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback; /**< callback used when the command is decoded. */
+    void *customData;  /**< custom data given as parameter to the callback. */
+    
+    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *next;
+    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *prev;
+};
+
+/**
+ * @brief Command controller allow to !!!!!TODO.
+ */
+struct ARCONTROLLER_Command_t
+{
+    int commandKey; /**< Key associates to the command */
+    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbacks; /**< array of the callback used when the command is decoded. */
+    
+    UT_hash_handle hh; /**< makes this structure hashable. */
+};
+
+#endif /* _ARCONTROLLER_COMMAND_PRIVATE_H_ */

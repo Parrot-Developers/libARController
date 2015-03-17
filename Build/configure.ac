@@ -34,6 +34,23 @@ fi
 AM_CONDITIONAL([DEBUG_MODE], [test "$debugit" = "yes"])
 
 ##########################################################################
+# Project selection
+##########################################################################
+AC_ARG_WITH([projects],
+            [AS_HELP_STRING([--with-projects=PROJECTS_NAMES],
+                            [generate commands for the specified projects (project1,project2,...). `all` means use every available xml file @<:@default=all@:>@])],
+            [],
+            [with_projects=all])
+
+AC_MSG_CHECKING([whether we need to generate debug commands])
+AC_ARG_ENABLE([debug-commands],
+            [AS_HELP_STRING([--enable-debug-commands],
+                            [enable generation of debug commands @<:@default=disabled@:>@])],
+            [dbgcmds="$enableval"],
+            [dbgcmds=no])
+AC_MSG_RESULT([$dbgcmds])
+
+##########################################################################
 # Non versionned .so compilation support (for Android)
 ##########################################################################
 AC_MSG_CHECKING([whether to put version number in .so files])
@@ -62,6 +79,8 @@ AR_DEPENDS([libARNetworkAL], [Y], [libARNetworkAL/ARNetworkAL.h])
 AR_DEPENDS([libARNetwork], [Y], [libARNetwork/ARNetwork.h])
 AR_DEPENDS([libARDiscovery], [Y], [libARDiscovery/ARDiscovery.h])
 AR_DEPENDS([libARCommands], [Y], [libARCommands/ARCommands.h])
+AR_DEPENDS([libuthash], [Y], [libuthash/uthash.h], [N], [Y])
+AR_DEPENDS([json], [N], [json/json.h], [N])
 
 ##########################################################################
 # Checks for programs.
@@ -83,6 +102,35 @@ AM_CONDITIONAL([HAVE_DOXYGEN], [test -n "$DOXYGEN"])
 
 # Check for python and run prebuild PY script
 AM_PATH_PYTHON(,, AC_MSG_ERROR(Python is required to generate source files for this library))
+
+
+
+
+# Check presence of the input XML file.
+AC_MSG_CHECKING([presence of XML commands file])
+line_proj=$(echo $with_projects | tr ',' '\n')
+for project in $line_proj; do
+    if ! test xall = x$project; then
+        xmlfile="$srcdir/../../libARCommands/Xml/""$project""_commands.xml"
+        if test -f "$xmlfile"; then
+            AC_MSG_RESULT(["$xmlfile"])
+        else
+            AC_MSG_ERROR([Could not find commands XML file "$xmlfile".
+                          Please check the value of the --with-projects option or create the file yourself.])
+        fi
+    else
+        AC_MSG_RESULT([Use all available files])
+    fi
+done
+
+# Generate source files from XML
+AC_MSG_NOTICE([generating source files from XML description of commands])
+#AM_CONDITIONAL([PYTHON_RUN_OK], [$PYTHON $srcdir/../Python/generateFeatureControllers.py -debug-cmds "$dbgcmds" -feature "$with_projects"])
+AM_CONDITIONAL([PYTHON_RUN_OK], [$PYTHON $srcdir/../Python/generateControllersSources.py -feature "$with_projects"])
+AM_COND_IF([PYTHON_RUN_OK], , AC_MSG_ERROR(Python processing failed --> XML files probably contains errors))
+
+
+
 
 # Run prebuild PY script
 AC_MSG_NOTICE([Executing python prebuild commands])

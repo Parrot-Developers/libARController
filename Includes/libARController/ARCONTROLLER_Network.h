@@ -40,6 +40,7 @@
 
 #include <libARSAL/ARSAL_Thread.h>
 #include <libARNetwork/ARNETWORK_Manager.h>
+#include <libARDiscovery/ARDISCOVERY_Device.h>
 #include <libARController/ARCONTROLLER_Error.h>
 
 /**
@@ -47,12 +48,12 @@
  */
 typedef enum
 {
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_NOT_ACK = 0,
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK,
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGHT_PRIORITY,
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM,
+    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_NOT_ACK = 0, /**< data NOT acknowledged */
+    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, /**< data acknowledged */
+    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGH_PRIORITY, /**< high priority data*/
+    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM, /**< strem data */
     
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX
+    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX /**< Max of the enumeration */
 }
 eARCONTROLLER_NETWORK_SENDING_DATA_TYPE;
 
@@ -74,28 +75,32 @@ eARCONTROLLER_NETWORK_STATE;
  */
 typedef struct ARCONTROLLER_Network_t ARCONTROLLER_Network_t;
 
+
+/**
+ * @brief Sending Configuration used to know the timeout policy in case of sending data timeout.
+ */
 typedef struct
 {
-    eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy;
+    eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy; /**< Timeout policy in case of sending data timeout */
     //ARNETWORK_Manager_Callback_t customCallback;
-    void *customData;
+    void *customData; /**< Custom data */
 }ARCONTROLLER_NETWORK_SendingConfiguration_t;
 
 /**
  * @brief Create a new Network Controller
  * @warning This function allocate memory
- * @post ARCONTROLLER_Network_New() must be called to delete the Network Controller and free the memory allocated.
- * @param[in] discoveryDevice The device to drive ; must be not NULL.
+ * @post ARCONTROLLER_Network_Delete() must be called to delete the Network Controller and free the memory allocated.
+ * @param[in] discoveryDevice The device to drive ; must be not NULL. This device will be copied and can be deleted after the call of this function.
  * @param[out] error error output.
  * @return the new Network Controller
  * @see ARCONTROLLER_Network_Delete()
  */
-ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t discoveryDevice, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
 
 /**
  * @brief Delete the Network Controller
  * @warning This function free memory
- * @param networkController address of the pointer on the network controller
+ * @param networkController The network controller to delete
  * @see ARCONTROLLER_Network_New()
  */
 void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController);
@@ -104,6 +109,7 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController);
  * @brief Pauses the Network Controller
  * @note Network Controller state must be ARCONTROLLER_NETWORK_STATE_RUNNING ; nothing will be done in others cases
  * @param[in] networkController The network Controller ; must be not NULL.
+ * @return executing error
  * @see ARCONTROLLER_Network_Resume()
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkController);
@@ -112,6 +118,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkC
  * @brief Resumes the Network Controller
  * @note Network Controller state must be ARCONTROLLER_NETWORK_STATE_PAUSE ; nothing will be done in ARCONTROLLER_NETWORK_STATE_RUNNING case ; in case ARCONTROLLER_NETWORK_STATE_STOPPED an error ARCONTROLLER_ERROR_STATE will be returned.
  * @param[in] networkController The network Controller ; must be not NULL.
+ * @return executing error
  * @see ARCONTROLLER_Network_Pause()
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *networkController);
@@ -119,6 +126,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
 /**
  * @brief stop the threads of sending and reception
  * @param[in] networkController The network Controller ; must be not NULL.
+ * @return executing error
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_Stop (ARCONTROLLER_Network_t *networkController);
 

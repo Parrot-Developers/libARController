@@ -57,7 +57,7 @@
  * Implementation
  *************************/
 
-ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t discoveryDevice, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Network Controller --
     
@@ -67,14 +67,12 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Network_t *networkController =  NULL;
     
-    /*
     // check parameters
     if (discoveryDevice == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
     // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    */
     
     if (localError == ARCONTROLLER_OK)
     {
@@ -83,7 +81,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
         if (networkController != NULL)
         {
             // Initialize to default values
-            networkController->discoveryDevice = discoveryDevice;
+            networkController->discoveryDevice = NULL;
             networkController->networkALManager = NULL;
             networkController->networkManager = NULL;
             networkController->rxThread = NULL;
@@ -125,10 +123,24 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Get the network Configuration ...");
-        // Get the network Configuration
+        // Copy the device
         eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
-        networkController->networkConfig = ARDISCOVERY_Device_GetNetworkCongifuration (&(networkController->discoveryDevice), &dicoveryError);
+        
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "discoveryDevice->specificParameters : %p", discoveryDevice->specificParameters);
+        
+        networkController->discoveryDevice = ARDISCOVERY_Device_NewByCopy (discoveryDevice, &dicoveryError);
+        if (dicoveryError != ARDISCOVERY_OK)
+        {
+            localError = ARCONTROLLER_ERROR_INIT_DEVICE_COPY;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Get the network Configuration ...");
+        // Initialize the network Configuration
+        eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
+        dicoveryError = ARDISCOVERY_Device_InitNetworkCongifuration (networkController->discoveryDevice, &(networkController->networkConfig));
         if (dicoveryError != ARDISCOVERY_OK)
         {
             localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
@@ -137,11 +149,11 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the NetworkAL ...");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the NetworkAL ...");
         // Create the NetworkAL
         eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
         eARNETWORKAL_ERROR netALError = ARNETWORKAL_OK;
-        networkController->networkALManager = ARDISCOVERY_Device_NewARNetworkAL (&(networkController->discoveryDevice), &dicoveryError, &netALError);
+        networkController->networkALManager = ARDISCOVERY_Device_NewARNetworkAL (networkController->discoveryDevice, &dicoveryError, &netALError);
         if (dicoveryError != ARDISCOVERY_OK)
         {
             if (netALError != ARNETWORKAL_OK)
@@ -149,35 +161,35 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
                 ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "error: %s", ARNETWORKAL_Error_ToString (netALError));
             }
             
-            localError = ARCONTROLLER_ERROR_INIT_NETWORKAL;
+            localError = ARCONTROLLER_ERROR_INIT_ARNETWORKAL_MANAGER;
         }
     }
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the ARNetworkManager ...");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the ARNetworkManager ...");
         // Create the ARNetworkManager.
         eARNETWORK_ERROR netError = ARNETWORK_OK;
         
         ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "params netAL:%p | c2d:%d %p | d2c:%d %p | ping:%d | ondisconnectCB:%p ...",networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork);
         
-        networkController->networkManager = ARNETWORK_Manager_New(networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork, networkController, &netError);
+        networkController->networkManager = ARNETWORK_Manager_New (networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork, networkController, &netError);
         if (netError != ARNETWORK_OK)
         {
-            localError = ARCONTROLLER_ERROR; // TODO manage and set error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            localError = ARCONTROLLER_ERROR_INIT_ARNETWORK_MANAGER;
         }
     }
 
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the Network receiver and transmitter Threads ...");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the Network receiver and transmitter Threads ...");
         // Create the Network receiver and transmitter Threads
         localError = ARCONTROLLER_Network_CreateNetworkThreads (networkController);
     }
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Create the reader Threads ...");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the reader Threads ...");
         // Create the reader Threads
         localError = ARCONTROLLER_Network_CreateReaderThreads (networkController);
     }
@@ -186,11 +198,11 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
     if (localError != ARCONTROLLER_OK)
     {
         ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "error: %s", ARCONTROLLER_Error_ToString (localError));
-        ARNETWORK_Manager_Delete (&(networkController->networkManager));
+        ARCONTROLLER_Network_Delete (&networkController);
     }
     // No else: skipped by an error 
 
-    // return the error */
+    // return the error
     if (error != NULL)
     {
         *error = localError;
@@ -202,7 +214,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_DiscoveryDevice_t 
 
 void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
 {
-    ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "Delete the Network Controller ...");
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Delete the Network Controller ...");
     // -- Delete the Network Controller --
     
     // local declarations
@@ -225,7 +237,10 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
             ARNETWORK_Manager_Delete(&((*networkController)->networkManager));
             
             ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARDISCOVERY_Device_DeleteARNetworkAL ...");
-            ARDISCOVERY_Device_DeleteARNetworkAL (&((*networkController)->discoveryDevice), &((*networkController)->networkALManager)); //read error
+            ARDISCOVERY_Device_DeleteARNetworkAL ((*networkController)->discoveryDevice, &((*networkController)->networkALManager)); //read error
+            
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARDISCOVERY_Device_Delete ...");
+            ARDISCOVERY_Device_Delete (&((*networkController)->discoveryDevice));
             
             free (*networkController);
             (*networkController) = NULL;
@@ -419,7 +434,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
                 bufferID = networkController->networkConfig.controllerToDeviceAckId;
                 break;
                 
-            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGHT_PRIORITY:
+            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGH_PRIORITY:
                 bufferID = networkController->networkConfig.controllerToDeviceHightPriority;
                 break;
                 

@@ -47,6 +47,7 @@
 #include <string.h>
 
 #include <libARSAL/ARSAL_Print.h>
+#include <libARDiscovery/ARDISCOVERY_Error.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
 #include <libARDiscovery/ARDISCOVERY_Connection.h>
 #include <libARCommands/ARCommands.h>
@@ -80,21 +81,20 @@
  *
  *****************************************/
 
-ARNETWORKAL_Manager_t *ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_NewARNetworkAL (eARNETWORKAL_ERROR *error);
-void ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_DeleteARNetworkAL (ARNETWORKAL_Manager_t **networkAL);
-ARDISCOVERY_NetworkConfiguration_t ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_GetNetworkCongifuration ();
+//ARNETWORKAL_Manager_t *ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_NewARNetworkAL (ARDISCOVERY_Device_t *device, eARNETWORKAL_ERROR *error);
+//void ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_DeleteARNetworkAL (ARDISCOVERY_Device_t *device, ARNETWORKAL_Manager_t **networkAL);
+//void ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_InitNetworkCongifuration (ARDISCOVERY_Device_t *device, ARDISCOVERY_NetworkConfiguration_t *networkConfiguration);
 
-eARDISCOVERY_ERROR ARDISCOVERY_Connection_SendJsonCallback (uint8_t *dataTx, uint32_t *dataTxSize, void *customData);
-eARDISCOVERY_ERROR ARDISCOVERY_Connection_ReceiveJsonCallback (uint8_t *dataRx, uint32_t dataRxSize, char *ip, void *customData);
+//eARDISCOVERY_ERROR ARDISCOVERY_Connection_SendJsonCallback (uint8_t *dataTx, uint32_t *dataTxSize, void *customData);
+//eARDISCOVERY_ERROR ARDISCOVERY_Connection_ReceiveJsonCallback (uint8_t *dataRx, uint32_t dataRxSize, char *ip, void *customData);
 
-
-typedef struct
-{
-    char *name;
-    char *type;
-    int d2cPort;
-    int c2dPort;
-}CONNECTION_DATA_t;
+//typedef struct
+//{
+    //char *name;
+    //char *type;
+    //int d2cPort;
+    //int c2dPort;
+//}CONNECTION_DATA_t;
 
 int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ();
 
@@ -134,289 +134,6 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest ()
  *             private implementation:
  *
  ****************************************/
- 
-ARNETWORKAL_Manager_t *ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_NewARNetworkAL (eARNETWORKAL_ERROR *error)
-{
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- NewARNetworkAL ...");
-    
-    eARNETWORKAL_ERROR netAlError = ARNETWORKAL_OK;
-    ARNETWORKAL_Manager_t *networkAL = NULL;
-    
-    // discovery connection
-    if (ardiscoveryConnect ())
-    {
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- ARDiscovery Connection ERROR");
-        netAlError = ARNETWORKAL_ERROR;
-    }
-    
-    if (netAlError == ARNETWORKAL_OK)
-    {
-        // Create the ARNetworkALManager
-        networkAL = ARNETWORKAL_Manager_New(&netAlError);
-    }
-    
-    if (netAlError == ARNETWORKAL_OK)
-    {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, " ARNETWORKAL_Manager_InitWifiNetwork ... ip:%s | c2dPort:%d | d2cPort:%d", FAKEDRONE_IP_ADDRESS, FAKEDRONE_C2D_PORT, FAKEDRONE_D2C_PORT);
-        
-        netAlError = ARNETWORKAL_Manager_InitWifiNetwork (networkAL, FAKEDRONE_IP_ADDRESS, FAKEDRONE_C2D_PORT, FAKEDRONE_D2C_PORT, 1);
-    }
-    
-    // return error
-    if (error != NULL)
-    {
-        *error = netAlError;
-    }
-    
-    // delete networkAL if an error occured
-    if ((netAlError != ARNETWORKAL_OK) && (networkAL != NULL))
-    {
-        ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_DeleteARNetworkAL (&networkAL);
-    }
-    
-    return networkAL;
-}
-
-void ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_DeleteARNetworkAL (ARNETWORKAL_Manager_t **networkAL)
-{
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- DeleteARNetworkAL ...");
-    
-    if (networkAL != NULL)
-    {
-        if ((*networkAL) != NULL)
-        {
-            ARNETWORKAL_Manager_Unlock((*networkAL));
-        
-            ARNETWORKAL_Manager_CloseWifiNetwork((*networkAL));
-            ARNETWORKAL_Manager_Delete(networkAL);
-        }
-    }
-}
-
-ARDISCOVERY_NetworkConfiguration_t ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_GetNetworkCongifuration ()
-{
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- GetNetworkCongifuration ...");
-    
-    
-    static ARNETWORK_IOBufferParam_t c2dParams[] = {
-        /* Non-acknowledged commands. */
-        {
-            .ID = BD_NET_CD_NONACK_ID,
-            .dataType = ARNETWORKAL_FRAME_TYPE_DATA,
-            .sendingWaitTimeMs = 20,
-            .ackTimeoutMs = ARNETWORK_IOBUFFERPARAM_INFINITE_NUMBER,
-            .numberOfRetry = ARNETWORK_IOBUFFERPARAM_INFINITE_NUMBER,
-            .numberOfCell = 2,
-            .dataCopyMaxSize = 128,
-            .isOverwriting = 1,
-        },
-        /* Acknowledged commands. */
-        {
-            .ID = BD_NET_CD_ACK_ID,
-            .dataType = ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK,
-            .sendingWaitTimeMs = 20,
-            .ackTimeoutMs = 500,
-            .numberOfRetry = 3,
-            .numberOfCell = 20,
-            .dataCopyMaxSize = 128,
-            .isOverwriting = 0,
-        },
-        /* Emergency commands. */
-        {
-            .ID = BD_NET_CD_EMERGENCY_ID,
-            .dataType = ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK,
-            .sendingWaitTimeMs = 10,
-            .ackTimeoutMs = 100,
-            .numberOfRetry = ARNETWORK_IOBUFFERPARAM_INFINITE_NUMBER,
-            .numberOfCell = 1,
-            .dataCopyMaxSize = 128,
-            .isOverwriting = 0,
-        },
-        ///* Video ACK (Initialized later) */
-        //{
-            //.ID = BD_NET_CD_VIDEO_ACK_ID,
-            //.dataType = ARNETWORKAL_FRAME_TYPE_UNINITIALIZED,
-            //.sendingWaitTimeMs = 0,
-            //.ackTimeoutMs = 0,
-            //.numberOfRetry = 0,
-            //.numberOfCell = 0,
-            //.dataCopyMaxSize = 0,
-            //.isOverwriting = 0,
-        //},
-    };
-    static const size_t numC2dParams = sizeof(c2dParams) / sizeof(ARNETWORK_IOBufferParam_t);
-
-    static ARNETWORK_IOBufferParam_t d2cParams[] = {
-        {
-            .ID = BD_NET_DC_NAVDATA_ID,
-            .dataType = ARNETWORKAL_FRAME_TYPE_DATA,
-            .sendingWaitTimeMs = 20,
-            .ackTimeoutMs = ARNETWORK_IOBUFFERPARAM_INFINITE_NUMBER,
-            .numberOfRetry = ARNETWORK_IOBUFFERPARAM_INFINITE_NUMBER,
-            .numberOfCell = 20,
-            .dataCopyMaxSize = 128,
-            .isOverwriting = 0,
-        },
-        {
-            .ID = BD_NET_DC_EVENT_ID,
-            .dataType = ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK,
-            .sendingWaitTimeMs = 20,
-            .ackTimeoutMs = 500,
-            .numberOfRetry = 3,
-            .numberOfCell = 20,
-            .dataCopyMaxSize = 128,
-            .isOverwriting = 0,
-        },
-        ///* Video data (Initialized later) */
-        //{
-            //.ID = BD_NET_DC_VIDEO_DATA_ID,
-            //.dataType = ARNETWORKAL_FRAME_TYPE_UNINITIALIZED,
-            //.sendingWaitTimeMs = 0,
-            //.ackTimeoutMs = 0,
-            //.numberOfRetry = 0,
-            //.numberOfCell = 0,
-            //.dataCopyMaxSize = 0,
-            //.isOverwriting = 0,
-        //},
-    };
-    static const size_t numD2cParams = sizeof(d2cParams) / sizeof(ARNETWORK_IOBufferParam_t);
-
-    static int commandBufferIds[] = {
-        BD_NET_DC_NAVDATA_ID,
-        BD_NET_DC_EVENT_ID,
-    };
-    static const size_t numOfCommandBufferIds = sizeof(commandBufferIds) / sizeof(int);
-    
-    
-    
-    ARDISCOVERY_NetworkConfiguration_t netConfig;
-    
-    netConfig.controllerToDeviceNotAckId = BD_NET_CD_NONACK_ID;
-    netConfig.controllerToDeviceAckId = BD_NET_CD_ACK_ID;
-    netConfig.controllerToDeviceHightPriority = BD_NET_CD_EMERGENCY_ID;
-    netConfig.controllerToDeviceARStreamAck = BD_NET_CD_VIDEO_ACK_ID;
-    netConfig.deviceToControllerNotAckId = BD_NET_DC_NAVDATA_ID;
-    netConfig.deviceToControllerAckId = BD_NET_DC_NAVDATA_ID;
-    //int deviceToControllerHightPriority = -1;
-    netConfig.deviceToControllerARStreamData = BD_NET_DC_VIDEO_DATA_ID;
-    
-    netConfig.numberOfControllerToDeviceParam = numC2dParams;
-    netConfig.controllerToDeviceParams = c2dParams;
-    netConfig.numberOfDeviceToControllerParam = numD2cParams;
-    netConfig.deviceToControllerParams = d2cParams;
-    
-    netConfig.bleNotificationIDs = NULL;
-    netConfig.pingDelayMs = 0;
-    
-    netConfig.numberOfDeviceToControllerCommandsBufferIds = numOfCommandBufferIds;
-    netConfig.deviceToControllerCommandsBufferIds = commandBufferIds;
-    
-    return  netConfig;
-}
-
-int ardiscoveryConnect ()
-{
-    int failed = 0;
-    
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARDiscovery Connection");
-    
-    CONNECTION_DATA_t *connectionData = NULL;
-    ARDISCOVERY_Connection_ConnectionData_t *discoveryData = NULL;
-    
-    if (!failed)
-    {
-        connectionData = malloc(sizeof(CONNECTION_DATA_t));
-        if (connectionData != NULL)
-        {
-            connectionData->name = TAG;
-            connectionData->type = TAG;
-            connectionData->d2cPort = FAKEDRONE_D2C_PORT;
-            connectionData->c2dPort = FAKEDRONE_C2D_PORT; //deviceManager->c2dPort = 0; // should be read from json
-        }
-        else
-        {
-            failed = 1;
-        }
-    }
-    
-    if (!failed)
-    {
-        eARDISCOVERY_ERROR err = ARDISCOVERY_OK;
-        discoveryData = ARDISCOVERY_Connection_New (ARDISCOVERY_Connection_SendJsonCallback, ARDISCOVERY_Connection_ReceiveJsonCallback, connectionData, &err);
-        if (discoveryData == NULL || err != ARDISCOVERY_OK)
-        {
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Error while creating discoveryData : %s", ARDISCOVERY_Error_ToString(err));
-            failed = 1;
-        }
-    }
-    
-    if (!failed)
-    {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, " ControllerConnection  ... ip:%s | port:%d", FAKEDRONE_IP_ADDRESS, FAKEDRONE_DISCOVERY_PORT);
-        
-        eARDISCOVERY_ERROR err = ARDISCOVERY_Connection_ControllerConnection(discoveryData, FAKEDRONE_DISCOVERY_PORT, FAKEDRONE_IP_ADDRESS);
-        if (err != ARDISCOVERY_OK)
-        {
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Error while opening discovery connection : %s", ARDISCOVERY_Error_ToString(err));
-            failed = 1;
-        }
-    }
-    
-    // Cleanup
-    ARDISCOVERY_Connection_Delete(&discoveryData);
-    
-    if (connectionData != NULL)
-    {
-        free (connectionData);
-    }
-    
-    return failed;
-}
-
-eARDISCOVERY_ERROR ARDISCOVERY_Connection_SendJsonCallback (uint8_t *dataTx, uint32_t *dataTxSize, void *customData)
-{
-    CONNECTION_DATA_t *connectionData = (CONNECTION_DATA_t *)customData;
-    eARDISCOVERY_ERROR err = ARDISCOVERY_OK;
-    
-    if ((dataTx != NULL) && (dataTxSize != NULL) && (connectionData != NULL))
-    {
-        *dataTxSize = sprintf((char *)dataTx, "{ \"%s\": %d,\n \"%s\": \"%s\",\n \"%s\": \"%s\" }",
-        ARDISCOVERY_CONNECTION_JSON_D2CPORT_KEY, connectionData->d2cPort,
-        ARDISCOVERY_CONNECTION_JSON_CONTROLLER_NAME_KEY, connectionData->name,
-        ARDISCOVERY_CONNECTION_JSON_CONTROLLER_TYPE_KEY, connectionData->type) + 1;
-    }
-    else
-    {
-        err = ARDISCOVERY_ERROR;
-    }
-    
-    return err;
-}
-
-eARDISCOVERY_ERROR ARDISCOVERY_Connection_ReceiveJsonCallback (uint8_t *dataRx, uint32_t dataRxSize, char *ip, void *customData)
-{
-    CONNECTION_DATA_t *connectionData = (CONNECTION_DATA_t *)customData;
-    eARDISCOVERY_ERROR err = ARDISCOVERY_OK;
-    
-    if ((dataRx != NULL) && (dataRxSize != 0) && (connectionData != NULL))
-    {
-        char *json = malloc(dataRxSize + 1);
-        strncpy(json, (char *)dataRx, dataRxSize);
-        json[dataRxSize] = '\0';
-        
-        //ARSAL_PRINT(ARSAL_PRINT_DEBUG, TAG, "    - ReceiveJson:%s ", json);
-        
-        //normally c2dPort should be read from the json here.
-        
-        free(json);
-    }
-    else
-    {
-        err = ARDISCOVERY_ERROR;
-    }
-    
-    return err;
-}
 
 /**
  *  TESTS
@@ -430,36 +147,58 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- MUST BE CONNNECTED TO AN ARDONE 3:");
     
     //init device for fakeDrone
-    ARDISCOVERY_DiscoveryDevice_t device;
+    ARDISCOVERY_Device_t *device = NULL;
+    eARDISCOVERY_ERROR errorDiscovery = ARDISCOVERY_OK;
     
-    device.name = "fakeDrone";
-    device.nameLength = sizeof(device.name);
-    device.productID = ARDISCOVERY_PRODUCT_ARDRONE;
-    //ARDISCOVERY_DISCOVERYDEVICE_NetworkDevice_t device;
-    device.newNetworkAL = &ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_NewARNetworkAL;
-    device.deleteNetworkAL = &ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_DeleteARNetworkAL;
-    device.getNetworkCongifuration = &ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_GetNetworkCongifuration;
-    device.customData = NULL;
-    
+    ARCONTROLLER_Network_t *networkController = NULL;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     u_int8_t cmdBuffer[128];
     int32_t cmdSize = 0;
     
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_New ...");
-    ARCONTROLLER_Network_t *networkController = ARCONTROLLER_Network_New (device, &error);
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARDISCOVERY_Device_New ...");
     
-    if ((error != ARCONTROLLER_OK) || (networkController == NULL))
+    device = ARDISCOVERY_Device_New (&errorDiscovery);
+    if ((errorDiscovery != ARDISCOVERY_OK) || (device == NULL))
     {
         failed += 1;
-        if (error != ARCONTROLLER_OK)
-        {
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "error: %s", ARDISCOVERY_Error_ToString(error));
-        }
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "device : %p", device);
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Discovery error :", ARDISCOVERY_Error_ToString(errorDiscovery));
+    }
+    
+    if (errorDiscovery == ARDISCOVERY_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARDISCOVERY_Device_InitWifi ...");
+        errorDiscovery = ARDISCOVERY_Device_InitWifi (device, ARDISCOVERY_PRODUCT_ARDRONE, "toto", FAKEDRONE_IP_ADDRESS, FAKEDRONE_DISCOVERY_PORT);
         
-        if (error != ARCONTROLLER_OK)
+        if (errorDiscovery != ARDISCOVERY_OK)
         {
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "networkController is NULL");
+            failed += 1;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Discovery error :", ARDISCOVERY_Error_ToString(errorDiscovery));
+        }
+        else
+        {
+            ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARDISCOVERY_Device_InitWifi succeed");
+        }
+    }
+    
+    if (errorDiscovery == ARDISCOVERY_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_New ...");
+        networkController = ARCONTROLLER_Network_New (device, &error);
+    
+        if ((error != ARCONTROLLER_OK) || (networkController == NULL))
+        {
+            failed += 1;
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "error: %s", ARCONTROLLER_Error_ToString(error));
+            }
+            
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "networkController is NULL");
+            }
         }
     }
     
@@ -488,7 +227,6 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
         if ((error != ARCONTROLLER_OK) || (netError != ARNETWORK_OK))
         {
             failed += 1;
-            
             
             if (error != ARCONTROLLER_OK)
             {
@@ -531,6 +269,20 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
         failed += 1;
         ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "networkController not NULL");
     }
+    
+    if (device != NULL)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARDISCOVERY_Device_Delete ...");
+        ARDISCOVERY_Device_Delete (&device);
+        
+        if (device != NULL)
+        {
+            failed += 1;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "device : %p", device);
+        }
+    }
+    
+    
     
     return failed;
 } 

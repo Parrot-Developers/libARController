@@ -4,15 +4,24 @@
 ACLOCAL_AMFLAGS                                             =   -I m4
 
 # The list of header files that belong to the library (to be installed later)
-HEADER_FILES                                                =   ../Includes/libARController/ARCONTROLLER_Network.h          \
-                                                                ../Includes/libARController/ARCONTROLLER_Error.h            \
+HEADER_FILES                                                =   ../Includes/libARController/ARCONTROLLER_Network.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Error.h  \
+                                                                ../Includes/libARController/ARCONTROLLER_Command.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Feature.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Device.h \
                                                                 ../Includes/libARController/ARController.h
 
 # The sources to add to the library and to add to the source distribution
-SOURCE_FILES                                                =   $(HEADER_FILES)                         \
-                                                                ../Sources/ARCONTROLLER_Network.h       \
-                                                                ../Sources/ARCONTROLLER_Network.c   \
-                                                                ../Sources/ARCONTROLLER_Error.c
+SOURCE_FILES                                                =   $(HEADER_FILES) \
+                                                                ../Sources/ARCONTROLLER_Network.h \
+                                                                ../Sources/ARCONTROLLER_Network.c \
+                                                                ../Sources/ARCONTROLLER_Error.c \
+                                                                ../Sources/ARCONTROLLER_Command.h \
+                                                                ../Sources/ARCONTROLLER_Command.c \
+                                                                ../Sources/ARCONTROLLER_Feature.h \
+                                                                ../Sources/ARCONTROLLER_Feature.c \
+                                                                ../Sources/ARCONTROLLER_Device.h \
+                                                                ../Sources/ARCONTROLLER_Device.c
 
 
 # The library names to build (note we are building static and shared libs)
@@ -28,23 +37,62 @@ libarcontroller_la_HEADERS                                  =   $(HEADER_FILES)
 libarcontroller_la_SOURCES                                  =   $(SOURCE_FILES)
 endif
 
-check_PROGRAMS                                              =   ../TestBench/Unix/networkControllerAutoTest
+check_PROGRAMS                                              =   ../TestBench/Unix/networkControllerAutoTest \
+                                                                ../TestBench/Unix/deviceControllerAutoTest
+                                                                #../TestBench/Unix/featureControllerAutoTest
+
 
 ___TestBench_Unix_networkControllerAutoTest_SOURCES =   ../TestBench/Common/ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest.c \
-                                       ../TestBench/Unix/ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_Unix.c
+                                                        ../TestBench/Unix/ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_Unix.c
+                                                        
+#___TestBench_Unix_featureControllerAutoTest_SOURCES =   ../TestBench/Common/ARCONTROLLER_TESTBENCH_FeatureControllerAutoTest.c \
+#                                                        ../TestBench/Unix/ARCONTROLLER_TESTBENCH_FeatureControllerAutoTest_Unix.c
+
+___TestBench_Unix_deviceControllerAutoTest_SOURCES =   ../TestBench/Common/ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest.c \
+                                                       ../TestBench/Unix/ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_Unix.c
 
 if DEBUG_MODE
 ___TestBench_Unix_networkControllerAutoTest_LDADD =   -larsal_dbg \
-                                                                                  -lardiscovery_dbg \
-                                                                                  -larnetworkal_dbg  \
-                                                                                  -larcommands_dbg  \
-                                                                                  libarcontroller_dbg.la
+                                                      -lardiscovery_dbg \
+                                                      -larnetworkal_dbg \
+                                                      -larcommands_dbg \
+                                                      -ljson \
+                                                      libarcontroller_dbg.la
+                                                      
+#___TestBench_Unix_featureControllerAutoTest_LDADD =   -larsal_dbg \
+                                                      #-lardiscovery_dbg \
+                                                      #-larnetworkal_dbg \
+                                                      #-larcommands_dbg \
+                                                      #-ljson \
+                                                      #libarcontroller_dbg.la
+                                                      
+___TestBench_Unix_deviceControllerAutoTest_LDADD =   -larsal_dbg \
+                                                      -lardiscovery_dbg \
+                                                      -larnetworkal_dbg \
+                                                      -larcommands_dbg \
+                                                      -ljson \
+                                                      libarcontroller_dbg.la
 else
 ___TestBench_Unix_networkControllerAutoTest_LDADD =   -larsal \
-                                                                                  -lardiscovery \
-                                                                                  -larnetworkal  \
-                                                                                  -larcommands  \
-                                                                                  libarcontroller.la
+                                                      -lardiscovery \
+                                                      -larnetworkal  \
+                                                      -larcommands  \
+                                                      -ljson \
+                                                      libarcontroller.la
+                                                      
+#___TestBench_Unix_featureControllerAutoTest_LDADD =   -larsal \
+                                                      #-lardiscovery \
+                                                      #-larnetworkal  \
+                                                      #-larcommands  \
+                                                      #-ljson \
+                                                      #libarcontroller.la
+                                                      
+___TestBench_Unix_deviceControllerAutoTest_LDADD =   -larsal \
+                                                      -lardiscovery \
+                                                      -larnetworkal  \
+                                                      -larcommands  \
+                                                      -ljson \
+                                                      libarcontroller.la
 
 endif
 

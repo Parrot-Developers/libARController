@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
     Copyright (C) 2014 Parrot SA
 
     Redistribution and use in source and binary forms, with or without
@@ -27,36 +28,41 @@
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
-*/
-/**
- * @file ARNETWORK_Device.h
- * @brief Device controller allow to drive a device.
- * @date 02/03/2015
- * @author maxime.maitre@parrot.com
- */
+-->
 
-#ifndef _ARCONTROLLER_DEVICE_H_
-#define _ARCONTROLLER_DEVICE_H_
-
-#include <libARNetwork/ARNETWORK_Manager.h>
-#include <libARController/ARCONTROLLER_Error.h>
-
-/**
- * Enum characterizing the states of the device controller
- */
-typedef enum
-{
-    ARCONTROLLER_DEVICE_STATE_STOPPED = 0, /**< device controller stopped */
-    ARCONTROLLER_DEVICE_STATE_RUNNING, /**< device controller running */
-    ARCONTROLLER_DEVICE_STATE_PAUSE, /**< device controller in pause */
+<deviceControllers>
+    list of all ARController_Device
     
-    ARCONTROLLER_DEVICE_STATE_MAX /**< Max of the enumeration */
-}
-eARCONTROLLER_DEVICE_STATE;
+    <ARController_Device name="BebopDrone" product="ARDRONE">
+        Bebop Drone project
+        
+        <feature name="common"/>
+        <feature name="ARDrone3"/>
+        
+    </ARController_Device>
 
-/**
- * @brief Device controller allow to drive a device.
- */
-typedef struct ARCONTROLLER_Device_t ARCONTROLLER_Device_t;
-
-#endif /* _ARCONTROLLER_DEVICE_H_ */
+    <ARController_Device name="JumpingSumo" product="JS">
+        Jumping Sumo project
+        
+        <feature name="common"/>
+        <feature name="JumpingSumo"/>
+        
+    </ARController_Device>
+    
+    <ARController_Device name="RollingSpider" product="MINIDRONE">
+        Rolling Spider project
+        
+        <feature name="common"/>
+        <feature name="MiniDrone"/>
+        
+    </ARController_Device>
+    
+    <ARController_Device name="SkyController" product="SKYCONTROLLER">
+        Sky Controller project
+        
+        <feature name="common"/>
+        <feature name="SkyController"/>
+        
+    </ARController_Device>
+    
+</deviceControllers>

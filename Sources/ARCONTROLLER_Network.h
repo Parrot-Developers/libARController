@@ -51,7 +51,7 @@ typedef struct ARCONTROLLER_NETWORK_THREAD_DATA_t ARCONTROLLER_NETWORK_THREAD_DA
  */
 struct ARCONTROLLER_Network_t
 {
-    ARDISCOVERY_DiscoveryDevice_t discoveryDevice; /**< the device to drive */
+    ARDISCOVERY_Device_t *discoveryDevice; /**< the device to drive */
     ARDISCOVERY_NetworkConfiguration_t networkConfig; /**< the network configuration ; get from the device */
     ARNETWORKAL_Manager_t *networkALManager; /**< the networkALManager ; get from the device  */
     ARNETWORK_Manager_t *networkManager; /**< the networkManager */
