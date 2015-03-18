@@ -123,9 +123,7 @@ void ARCONTROLLER_COMMAND_Delete (ARCONTROLLER_Command_t **command)
                 /* delete each element, use the safe iterator */
                 DL_FOREACH_SAFE ((*command)->callbacks, element, elementTmp)
                 {
-                    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, " DL_DELETE ((*command)->callbacks, element) element:%p...", element);
                     DL_DELETE ((*command)->callbacks, element);
-                    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, "  ... element:%p...", element);
                 }
             }
             
@@ -230,8 +228,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t 
 
 eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Command_t **dictionary, int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, " ARCONTROLLER_COMMAND_AddElementDictionary dictionary: %p ... ", dictionary);
-    
     // -- Add a command dictionary element --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -272,8 +268,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Comm
 
 eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveDictionaryElement (ARCONTROLLER_Command_t *dictionary, int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, " ARCONTROLLER_COMMAND_RemoveDictionaryElement dictionary: %p ... ", dictionary);
-    
     // -- Remove a command dictionary element --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -331,8 +325,6 @@ void ARCONTROLLER_COMMAND_DeleteDictionary (ARCONTROLLER_Command_t **dictionary)
 
 eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *dictionary, int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, "ARCONTROLLER_COMMAND_Notify dictionary:%p ....", dictionary);
-    
     // -- Notify all listeners --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;

@@ -154,19 +154,6 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         }
     }
     
-    //if (failed == 0)
-    //{
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Start ... ");
-        
-        //error = ARCONTROLLER_Devcie_Start (deviceController);
-        
-        //if (error != ARCONTROLLER_OK)
-        //{
-            //failed++;
-            //ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
-        //}
-    //}
-    
     if (failed == 0)
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for CommonAllStates ... ");
@@ -182,6 +169,19 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Start ... ");
+        
+        error = ARCONTROLLER_Device_Start (deviceController);
+        
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- sendCommonAllStates ... ");
         
         cmdReceived = 0;
@@ -190,7 +190,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if (error != ARCONTROLLER_OK)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
         else
         {
@@ -218,18 +218,18 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         }
     }
     
-    //if (failed == 0)
-    //{
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Stop ... ");
+    if (failed == 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Stop ... ");
         
-        //error = ARCONTROLLER_Devcie_Stop (deviceController);
+        error = ARCONTROLLER_Device_Stop (deviceController);
         
-        //if (error != ARCONTROLLER_OK)
-        //{
-            //failed++;
-            //ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
-        //}
-    //}
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+    }
     
     if (deviceController != NULL)
     {

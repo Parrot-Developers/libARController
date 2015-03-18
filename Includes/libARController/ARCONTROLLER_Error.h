@@ -50,14 +50,17 @@ typedef enum
     ARCONTROLLER_ERROR_MUTEX, /**< Mutex lock or unlock error  */
     ARCONTROLLER_ERROR_INIT_MUTEX, /**< Mutex initialization error */
     ARCONTROLLER_ERROR_STATE, /**< Bad state of the Network Controller to call this function */
+    ARCONTROLLER_ERROR_INIT = -2000, /**< Error of initialization */
     ARCONTROLLER_ERROR_INIT_THREAD, /**< Thread initialization error */
     ARCONTROLLER_ERROR_INIT_ARNETWORKAL_MANAGER, /**< Error during the getting of the ARNETWORKAL_Manager from the device */
     ARCONTROLLER_ERROR_INIT_ARNETWORK_MANAGER, /**< Error Initialization of the ARNETWORK_Manager */
     ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG, /**< Error during the getting of the ARNetWork Configuration from the device */
     ARCONTROLLER_ERROR_INIT_DEVICE_COPY, /**< Error during the copy of the device */
+    ARCONTROLLER_ERROR_INIT_GET_DATE, /**< Error during the get of the current date */
+    ARCONTROLLER_ERROR_INIT_GET_TIME, /**< Error during the get of the current time */
     ARCONTROLLER_ERROR_NOT_SENT, /**< Error data not sent */
     ARCONTROLLER_ERROR_COMMAND_GENERATING, /**< Error of command generating */
-    ARCONTROLLER_ERROR_COMMAND_CALLBACK = -2000, /**< Error of command generating */
+    ARCONTROLLER_ERROR_COMMAND_CALLBACK = -3000, /**< Error of command generating */
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_ALREADY_REGISTERED, /**< the command callback is already registered*/
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED, /**< the command callback is not registred*/
 

@@ -204,7 +204,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write (' * @brief Create a new '+feature.name+' Feature Controller\n')
         hfile.write (' * @warning This function allocate memory\n')
         hfile.write (' * @post ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+'() must be called to delete the Feature Controller and free the memory allocated.\n')
-        hfile.write (' * @param[in] networkController The networkController used to drive the send commands ; must be not NULL.\n')
+        hfile.write (' * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+'().\n')
         hfile.write (' * @param[out] error executing error.\n')
         hfile.write (' * @return the new '+feature.name+' Feature Controller\n')
         hfile.write (' * @see ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+'\n')
@@ -323,6 +323,17 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write ('    '+classPrivName+' *privatePart; /**< Private part of '+className+' */\n')
         hfile.write ('};\n')
         hfile.write ('\n')
+        
+        hfile.write ('/**\n')
+        hfile.write (' * @brief Set a NetworkController to use to send commands.\n')
+        hfile.write (' * @param feature The feature controller receiving the command.\n')
+        hfile.write (' * @param[in] commandKey Key of the command which the callback must be unassociated.\n')
+        hfile.write (' * @param[in] networkController The networkController used to send commands ; must be not NULL.\n')
+        hfile.write (' * @param[out] error executing error.\n')
+        hfile.write (' */\n')
+        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController);\n')
+        hfile.write ('\n')
+        
         
     hfile.write ('#endif /* '+includeDefine+' */\n')
     hfile.write ('\n')
@@ -501,8 +512,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('#define '+MODULE_FEATURE+'_TAG "'+classTag+'"\n')
     cFile.write ('\n')
     
-    
-
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteCommandsDictionary')+' ('+ARTypeName(MODULE_FEATURE, 'DICTIONARY', 'COMMANDS')+' **dictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Delete a commands dictionary --\n')
@@ -613,13 +622,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('   '+className+' *featureController =  NULL;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
-        cFile.write ('    if (networkController == NULL)\n')
-        cFile.write ('    {\n')
-        cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
-        cFile.write ('    }\n')
-        cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-        cFile.write ('    \n')
+        #cFile.write ('    // check parameters\n')
+        #cFile.write ('    if (networkController == NULL)\n')
+        #cFile.write ('    {\n')
+        #cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+        #cFile.write ('    }\n')
+        #cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+        #cFile.write ('    \n')
         
         cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
         cFile.write ('    {\n')
@@ -713,15 +722,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('                if ((*feature)->privatePart->dictionary != NULL)\n')
         cFile.write ('                {\n')
         cFile.write ('                    ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteCommandsDictionary')+' (&((*feature)->privatePart->dictionary));\n')
-    
-        #cFile.write ('                    /* free the hash table contents */\n')
-        #cFile.write ('                    HASH_ITER(hh, (*feature)->privatePart->dictionary, dictElement, dictTmp)\n')
-        #cFile.write ('                    {\n')
-        #cFile.write ('                        HASH_DEL((*feature)->privatePart->dictionary, dictElement);\n')
-        #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "free(dictElement); dictElement : %p", dictElement);\n')
-        #cFile.write ('                        free(dictElement);\n')
-        #cFile.write ('                        dictElement = NULL;\n')
-        #cFile.write ('                    }\n')
         cFile.write ('                }\n')
         cFile.write ('                \n')
         
@@ -1081,9 +1081,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     
                     cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
-                    
-                    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "_dictNewElement %p", _dictNewElement);\n')
-                    
                     cFile.write ('        // Find if the element already exist\n')
                     cFile.write ('        HASH_FIND_INT (_feature->privatePart->dictionary, &(_dictNewElement->command), _dictOldElement);\n')
                     cFile.write ('        if (_dictOldElement != NULL)\n')
@@ -1108,8 +1105,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     
                     cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
-                    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " callback notification  _feature:%p...", _feature);\n')
-                    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " callback notification  _feature->privatePart->commandCallbacks:%p...", _feature->privatePart->commandCallbacks);\n')
                     cFile.write ('        // callback notification\n')
                     cFile.write ('        _error = ARCONTROLLER_COMMAND_Notify (_feature->privatePart->commandCallbacks, _dictNewElement->command, _argDictNewElement);\n')
                     cFile.write ('    }\n')
@@ -1148,6 +1143,32 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('}\n')
                     cFile.write ('\n')
                     
+        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController)\n')
+        cFile.write ('{\n')
+        cFile.write ('    // -- Set a NetworkController to use to send commands. --\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    // check parameters\n')
+        cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
+        cFile.write ('    {\n')
+        cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+        cFile.write ('    }\n')
+        cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+        cFile.write ('    {\n')
+        cFile.write ('        feature->privatePart->networkController = networkController;\n')
+        cFile.write ('    }\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    return error;\n')
+        cFile.write ('}\n')
+        cFile.write ('\n')
+        
         
         cFile.write ('/************************\n')
         cFile.write (' * Private Implementation\n')
