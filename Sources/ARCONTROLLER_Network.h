@@ -70,38 +70,39 @@ struct ARCONTROLLER_NETWORK_THREAD_DATA_t
 };
 
 /**
- * @brief Create the Network receiver and transmitter Threads
+ * @brief Create the Network receiver and transmitter Threads //TODO !!!!!!!!!!!!!!!!!
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateNetworkThreads (ARCONTROLLER_Network_t *networkController);
 
 /**
- * @brief Stop the Network receiver and transmitter Threads
+ * @brief Stop the Network receiver and transmitter Threads //TODO !!!!!!!!!!!!!!!!!
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_StopNetworkThreads (ARCONTROLLER_Network_t *networkController);
 
 /**
- * @brief Create the reader Threads
+ * @brief Create the reader Threads //TODO !!!!!!!!!!!!!!!!!
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateReaderThreads (ARCONTROLLER_Network_t *networkController);
 
 /**
- * @brief Stop the reader Threads
+ * @brief Stop the reader Threads //TODO !!!!!!!!!!!!!!!!!
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_StopReaderThreads (ARCONTROLLER_Network_t *networkController);
 
 /**
  * @brief Read and decode one input network buffer
  * @warning This function must be called in its own thread.
- * @post Before join the thread calling this function, ARCONTROLLER_Network_Stop() must be called. !!!!!!!!!!
+ * @post Before join the thread calling this function, ARCONTROLLER_Network_Stop() must be called.
  * @param data thread data of type ARCONTROLLER_NETWORK_THREAD_DATA_t*
  * @return NULL
  * @see ARCONTROLLER_Network_Stop() !!!!!!!
  */
 void *ARCONTROLLER_Network_ReaderRun (void *data);
 
-
+//TODO !!!!!!!!!!!!!!!!!
 void ARCONTROLLER_Network_OnDisconnectNetwork (ARNETWORK_Manager_t *manager, ARNETWORKAL_Manager_t *alManager, void *customData);
 
+//TODO !!!!!!!!!!!!!!!!!
 eARNETWORK_MANAGER_CALLBACK_RETURN ARCONTROLLER_Network_SendingCallback(int buffer_id, uint8_t *data, void *custom, eARNETWORK_MANAGER_CALLBACK_STATUS cause);
 
 #endif /* _ARCONTROLLER_NETWORK_PRIVATE_H_ */

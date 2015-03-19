@@ -138,7 +138,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if ((error != ARCONTROLLER_OK) || (deviceController == NULL))
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -163,7 +163,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if (error != ARCONTROLLER_OK)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -259,7 +259,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     {
         failed += 1;
         ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "device : %p", device);
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Discovery error :", ARDISCOVERY_Error_ToString(errorDiscovery));
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Discovery error :%s", ARDISCOVERY_Error_ToString(errorDiscovery));
     }
     
     if (errorDiscovery == ARDISCOVERY_OK)
@@ -270,7 +270,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
         if (errorDiscovery != ARDISCOVERY_OK)
         {
             failed += 1;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Discovery error :", ARDISCOVERY_Error_ToString(errorDiscovery));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Discovery error :%s", ARDISCOVERY_Error_ToString(errorDiscovery));
         }
         else
         {

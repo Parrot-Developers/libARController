@@ -56,8 +56,11 @@ typedef enum
     ARCONTROLLER_ERROR_INIT_ARNETWORK_MANAGER, /**< Error Initialization of the ARNETWORK_Manager */
     ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG, /**< Error during the getting of the ARNetWork Configuration from the device */
     ARCONTROLLER_ERROR_INIT_DEVICE_COPY, /**< Error during the copy of the device */
+    ARCONTROLLER_ERROR_INIT_DEVICE_GET_NETWORK_CONFIG, /**< Error during the get of the networkConfiguration from the device */
+    ARCONTROLLER_ERROR_INIT_DEVICE_JSON_CALLBACK, /**< Error during the add of json callback to the device */
     ARCONTROLLER_ERROR_INIT_GET_DATE, /**< Error during the get of the current date */
     ARCONTROLLER_ERROR_INIT_GET_TIME, /**< Error during the get of the current time */
+    ARCONTROLLER_ERROR_INIT_VIDEO, /**< Error during the initialization of the video */
     ARCONTROLLER_ERROR_NOT_SENT, /**< Error data not sent */
     ARCONTROLLER_ERROR_COMMAND_GENERATING, /**< Error of command generating */
     ARCONTROLLER_ERROR_COMMAND_CALLBACK = -3000, /**< Error of command generating */

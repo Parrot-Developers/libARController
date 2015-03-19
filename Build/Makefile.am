@@ -8,6 +8,7 @@ HEADER_FILES                                                =   ../Includes/libA
                                                                 ../Includes/libARController/ARCONTROLLER_Error.h  \
                                                                 ../Includes/libARController/ARCONTROLLER_Command.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Feature.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Stream.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Device.h \
                                                                 ../Includes/libARController/ARController.h
 
@@ -20,6 +21,8 @@ SOURCE_FILES                                                =   $(HEADER_FILES) 
                                                                 ../Sources/ARCONTROLLER_Command.c \
                                                                 ../Sources/ARCONTROLLER_Feature.h \
                                                                 ../Sources/ARCONTROLLER_Feature.c \
+                                                                ../Sources/ARCONTROLLER_Stream.h \
+                                                                ../Sources/ARCONTROLLER_Stream.c \
                                                                 ../Sources/ARCONTROLLER_Device.h \
                                                                 ../Sources/ARCONTROLLER_Device.c
 
@@ -56,6 +59,7 @@ ___TestBench_Unix_networkControllerAutoTest_LDADD =   -larsal_dbg \
                                                       -lardiscovery_dbg \
                                                       -larnetworkal_dbg \
                                                       -larcommands_dbg \
+                                                      -larstream_dbg \
                                                       -ljson \
                                                       libarcontroller_dbg.la
                                                       
@@ -70,6 +74,7 @@ ___TestBench_Unix_deviceControllerAutoTest_LDADD =   -larsal_dbg \
                                                       -lardiscovery_dbg \
                                                       -larnetworkal_dbg \
                                                       -larcommands_dbg \
+                                                      -larstream_dbg \
                                                       -ljson \
                                                       libarcontroller_dbg.la
 else
@@ -77,6 +82,7 @@ ___TestBench_Unix_networkControllerAutoTest_LDADD =   -larsal \
                                                       -lardiscovery \
                                                       -larnetworkal  \
                                                       -larcommands  \
+                                                      -larstream \
                                                       -ljson \
                                                       libarcontroller.la
                                                       
@@ -91,6 +97,7 @@ ___TestBench_Unix_deviceControllerAutoTest_LDADD =   -larsal \
                                                       -lardiscovery \
                                                       -larnetworkal  \
                                                       -larcommands  \
+                                                      -larstream \
                                                       -ljson \
                                                       libarcontroller.la
 
