@@ -45,6 +45,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <libARSAL/ARSAL_Print.h>
 #include <libARDiscovery/ARDISCOVERY_Error.h>
@@ -73,7 +76,9 @@
 
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ();
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_AllStateChangedCallback (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 
 /*****************************************
  *
@@ -127,6 +132,9 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Device_t *deviceController = NULL;
     int cmdReceived = 0;
+    pid_t child = 0;
+    char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo";
+    FILE *videoOut = NULL;
     
     failed += ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (&device);
     
@@ -156,9 +164,49 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for CommonAllStates ... ");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for StreamingVideoEnable ... ");
         
-        error = ARCONTROLLER_FEATURE_Common_AddCallback (deviceController->common, ARCONTROLLER_FEATURE_COMMON_DICTIONARY_KEY_COMMONSTATE_ALLSTATESCHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_AllStateChangedCallback, &cmdReceived);
+        error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_FEATURE_ARDRONE3_DICTIONARY_KEY_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, &cmdReceived);
+    
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- open  videoOut ... ");
+        
+        
+        //int mkfifoRes = mkfifo(videoOutFileName, S_IFIFO|0666);
+        //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- mkfifoRes %d ", mkfifoRes);
+        
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- start mplayer ... ");
+        
+        // fork the process to launch ffplay
+        if ((child = fork()) == 0)
+        {
+            //execlp("mplayer", "mplayer", videoOutFileName, NULL);
+            execlp("mplayer", "mplayer", "video_fifo", "lirc=no", NULL);
+            //execlp("mplayer", videoOutFileName, NULL);
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Missing mplayer, you will not see the video. Please install mplayer.");
+            return -1;
+        }
+        
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- fopen %s ", videoOutFileName);
+        videoOut = fopen(videoOutFileName, "w");
+        //videoOut = open(videoOutFileName, "w");
+        
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "-   videoOut %p ... ", videoOut);
+    }
+    
+    if (failed == 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- set Video callback ... ");
+        
+        error = ARCONTROLLER_Device_SetVideoReceiveCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback, NULL , videoOut);
     
         if (error != ARCONTROLLER_OK)
         {
@@ -182,10 +230,10 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- sendCommonAllStates ... ");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- send StreamingVideoEnable ... ");
         
         cmdReceived = 0;
-        error = deviceController->common->sendCommonAllStates (deviceController->common);
+        error = deviceController->aRDrone3->sendMediaStreamingVideoEnable (deviceController->aRDrone3, 1);
         
         if (error != ARCONTROLLER_OK)
         {
@@ -195,7 +243,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         else
         {
             ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait ... ");
-            sleep (2);
+            sleep (5);
             
             if (cmdReceived == 0)
             {
@@ -207,9 +255,17 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for CommonAllStates ... ");
         
-        error = ARCONTROLLER_FEATURE_Common_RemoveCallback (deviceController->common, ARCONTROLLER_FEATURE_COMMON_DICTIONARY_KEY_COMMONSTATE_ALLSTATESCHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_AllStateChangedCallback, &cmdReceived);
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait for video ... ");
+        sleep (50);
+    }
+    
+    
+    if (failed == 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for StreamingVideoEnable ... ");
+        
+        error = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_FEATURE_ARDRONE3_DICTIONARY_KEY_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, &cmdReceived);
     
         if (error != ARCONTROLLER_OK)
         {
@@ -241,6 +297,20 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error deviceController is not NULL ");
         }
+    }
+    
+    if (videoOut != NULL)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- close videoOut ... ");
+        fflush (videoOut);
+        fclose (videoOut);
+        videoOut = NULL;
+    }
+    
+    if (child > 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- stop mplayer  ... ");
+        kill(child, SIGKILL);
     }
     
     return failed;
@@ -283,9 +353,9 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     return failed;
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_AllStateChangedCallback (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_AllStateChangedCallback ........");
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable ........");
     
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    commandKey %d", commandKey);
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    argumentDictionary %p", argumentDictionary);
@@ -298,4 +368,34 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_AllStateChangedCallback (in
         *cmdReceived = 1;
     }
     
+}
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData)
+{
+    //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback ........");
+    
+    FILE *videoOut = customData;
+    
+    if (videoOut != NULL)
+    {
+        if (frame != NULL)
+        {
+            //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - frame->width:%d frame->height:%d ",frame->width, frame->height);
+            //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - frame->data:%p frame->used:%d",frame->data, frame->used);
+            //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - frame->isIFrame:%d",frame->isIFrame);
+            //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - frame->missed:%d",frame->missed);
+            
+            //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - fwrite frame->data:%p frame->used:%d",frame->data, frame->used);
+            fwrite(frame->data, frame->used, 1, videoOut);
+            //fflush (videoOut);
+        }
+        else
+        {
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, TAG, "frame is NULL.");
+        }
+    }
+    else
+    {
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, TAG, "videoOut is NULL.");
+    }
 }

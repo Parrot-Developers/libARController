@@ -45,11 +45,13 @@ typedef enum
 {
     ARCONTROLLER_OK = 0, /**< No error */
     ARCONTROLLER_ERROR = -1000, /**< Unknown generic error */
+    
     ARCONTROLLER_ERROR_ALLOC, /**< Memory allocation error */
     ARCONTROLLER_ERROR_BAD_PARAMETER, /**< Bad parameters */
     ARCONTROLLER_ERROR_MUTEX, /**< Mutex lock or unlock error  */
     ARCONTROLLER_ERROR_INIT_MUTEX, /**< Mutex initialization error */
     ARCONTROLLER_ERROR_STATE, /**< Bad state of the Network Controller to call this function */
+    
     ARCONTROLLER_ERROR_INIT = -2000, /**< Error of initialization */
     ARCONTROLLER_ERROR_INIT_THREAD, /**< Thread initialization error */
     ARCONTROLLER_ERROR_INIT_ARNETWORKAL_MANAGER, /**< Error during the getting of the ARNETWORKAL_Manager from the device */
@@ -60,12 +62,22 @@ typedef enum
     ARCONTROLLER_ERROR_INIT_DEVICE_JSON_CALLBACK, /**< Error during the add of json callback to the device */
     ARCONTROLLER_ERROR_INIT_GET_DATE, /**< Error during the get of the current date */
     ARCONTROLLER_ERROR_INIT_GET_TIME, /**< Error during the get of the current time */
-    ARCONTROLLER_ERROR_INIT_VIDEO, /**< Error during the initialization of the video */
+    ARCONTROLLER_ERROR_INIT_STREAM, /**< Error during the initialization of a stream */
+    ARCONTROLLER_ERROR_INIT_SEMAPHORE,
     ARCONTROLLER_ERROR_NOT_SENT, /**< Error data not sent */
+    ARCONTROLLER_ERROR_NO_VIDEO, /**< Error the device has no video */
+    
     ARCONTROLLER_ERROR_COMMAND_GENERATING, /**< Error of command generating */
+    
     ARCONTROLLER_ERROR_COMMAND_CALLBACK = -3000, /**< Error of command generating */
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_ALREADY_REGISTERED, /**< the command callback is already registered*/
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED, /**< the command callback is not registred*/
+    
+    ARCONTROLLER_ERROR_STREAMPOOL = -4000,
+    ARCONTROLLER_ERROR_STREAMPOOL_FRAME_NOT_FOUND, /**< no frame found */
+    
+    ARCONTROLLER_ERROR_STREAMQUEUE = -5000,
+    ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY, /**< */
 
 } eARCONTROLLER_ERROR;
 

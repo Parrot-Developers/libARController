@@ -82,10 +82,13 @@ def sendingFunctionName(module, feature, cl, cmd):
 def sendingFunction (cl, cmd):
     return 'send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
 
-def defineNotificationDef(module, feature):
+#def defineNotificationDef(module, feature):
+def defineNotificationDef():
     #return ARMacroName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #return ARGlobalConstName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT');
-    return AREnumName(module,  feature.name, 'DICTIONARY_KEY');
+    #return AREnumName(module,  feature.name, 'DICTIONARY_KEY');
+    return AREnumName(MODULE_ARCONTROLLER,  'FEATURE', 'DICTIONARY_KEY');
+    
     
 def defineNotification(module, feature, cl, cmd, arg=None):
     #return ARMacroName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

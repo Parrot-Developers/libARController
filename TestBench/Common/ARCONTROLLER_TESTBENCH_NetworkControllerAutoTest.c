@@ -185,7 +185,8 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
     if (errorDiscovery == ARDISCOVERY_OK)
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_New ...");
-        networkController = ARCONTROLLER_Network_New (device, &error);
+        //networkController = ARCONTROLLER_Network_New (device, &error);
+        networkController = ARCONTROLLER_Network_New (device, NULL, NULL, NULL, &error);
     
         if ((error != ARCONTROLLER_OK) || (networkController == NULL))
         {
@@ -246,20 +247,20 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
         }
     }
     
-    if (networkController != NULL)
-    {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_Stop ...");
-        error = ARCONTROLLER_Network_Stop (networkController);
+    //if (networkController != NULL)
+    //{
+        //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_Stop ...");
+        //error = ARCONTROLLER_Network_Stop (networkController);
         
-        if (error != ARCONTROLLER_OK)
-        {
-            failed += 1;
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "error: %s", ARDISCOVERY_Error_ToString(error));
-            }
-        }
-    }
+        //if (error != ARCONTROLLER_OK)
+        //{
+            //failed += 1;
+            //if (error != ARCONTROLLER_OK)
+            //{
+                //ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "error: %s", ARDISCOVERY_Error_ToString(error));
+            //}
+        //}
+    //}
     
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_Delete ...");
     ARCONTROLLER_Network_Delete (&networkController);

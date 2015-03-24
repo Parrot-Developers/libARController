@@ -28,49 +28,22 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
-
 /**
- * @file ARController_Command.h
- * @brief Command controller allow !!!!! TODO.
+ * @file ARCONTROLLER_Frame.h
+ * @brief ARCONTROLLER_Frame 
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
 
-#ifndef _ARCONTROLLER_COMMAND_PRIVATE_H_
-#define _ARCONTROLLER_COMMAND_PRIVATE_H_
+#ifndef _ARCONTROLLER_FRAME_PRIVATE_H_
+#define _ARCONTROLLER_FRAME_PRIVATE_H_
 
-#include <libARSAL/ARSAL_Socket.h>
-#include <libARSAL/ARSAL_Mutex.h>
+#include <libARController/ARCONTROLLER_Frame.h>
 
-#include <libARController/ARCONTROLLER_Error.h>
-#include <libARController/ARCONTROLLER_Command.h>
+#define ARCONTROLLER_FRAME_DEFAULT_CAPACITY 60000
 
-#define ARCONTROLLER_COMMAND_TAG "ARCONTROLLER_COMMAND"
-#define ARCONTROLLER_COMMAND_CALLBACKS_CAPACITY_DEFAULT 1
+#define ARCONTROLLER_FRAME_TAG "ARCONTROLLER_Frame"
 
-/**
- * @brief 
- */
-typedef struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t;
 
-struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t
-{
-    ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback; /**< callback used when the command is decoded. */
-    void *customData;  /**< custom data given as parameter to the callback. */
-    
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *next;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *prev;
-};
 
-/**
- * @brief Command controller allow to !!!!!TODO.
- */
-struct ARCONTROLLER_Command_t
-{
-    int commandKey; /**< Key associates to the command */
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbacks; /**< array of the callback used when the command is decoded. */
-    
-    UT_hash_handle hh; /**< makes this structure hashable. */
-};
-
-#endif /* _ARCONTROLLER_COMMAND_PRIVATE_H_ */
+#endif /* _ARCONTROLLER_FRAME_PRIVATE_H_ */

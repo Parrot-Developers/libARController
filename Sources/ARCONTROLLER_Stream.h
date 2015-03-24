@@ -39,10 +39,11 @@
 #define _ARCONTROLLER_STREAM_PRIVATE_H_
 
 #include <libARSAL/ARSAL_Socket.h>
-#include <libARSAL/ARSAL_Mutex.h>
+#include <libARStream/ARStream.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
+#include <libARController/ARCONTROLLER_Stream.h>
 
-# define ARCONTROLLER_STREAM_TAG "ARCONTROLLER_Stream"
+#define ARCONTROLLER_STREAM_TAG "ARCONTROLLER_Stream"
 
 #define ARCONTROLLER_STREAM_DEFAULT_VIDEO_FRAGMENT_SIZE 1000
 #define ARCONTROLLER_STREAM_DEFAULT_VIDEO_FRAGMENT_MAXIMUM_NUMBER 128
@@ -52,14 +53,34 @@
  */
 struct ARCONTROLLER_Stream_t
 {
-    ARDISCOVERY_Device_t *discoveryDevice; /**< the device to drive */
-    ARDISCOVERY_NetworkConfiguration_t networkConfiguration; /**< the networkConfiguration of the device*/
+    //ARDISCOVERY_Device_t *discoveryDevice; /**< the device to drive */
+    ARDISCOVERY_NetworkConfiguration_t *networkConfiguration; /**< the networkConfiguration of the device*/
+    //ARCONTROLLER_Network_t *networkController; /**< the networkController to used to send and receive the stream */
+    ARSTREAM_Reader_t *streamReader; /**< reader of the stream */
     int fragmentSize; /**< Size maximum of the stream fragment */
     int maxNumberOfFragement; /**< Number maximum of stream fragment */
     int maxAckInterval; /**< Maximum of acknowledge interval on the stream */
     ARSAL_Thread_t dataThread; /**< video receiver thread */
     ARSAL_Thread_t ackThread; /**< acknowledge send thread */
+    ARSAL_Thread_t readerThread;
+    int isRunning; /**< 0 if the stream is stopped ; otherwide the stream is running */
+    ARCONTROLLER_StreamPool_t *framePool;
+    ARCONTROLLER_StreamQueue_t *readyQueue;
+    ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback;
+    ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback;
+    void *receiveFrameCustomData;
 };
+
+
+// TODO ADD !!!!!!!!!
+eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
+
+// TODO ADD !!!!!!!!!
+eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson(ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
+
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_InitStreamBuffers (ARCONTROLLER_Stream_t *streamController);
+
+uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause, uint8_t *framePointer, uint32_t frameSize, int numberOfSkippedFrames, int isFlushFrame, uint32_t *newBufferCapacity, void *custom);
 
 
 

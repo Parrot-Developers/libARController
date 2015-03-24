@@ -29,7 +29,7 @@
     SUCH DAMAGE.
 */
 /**
- * @file ARNETWORK_Network.h
+ * @file ARCONTROLLER_Network.h
  * @brief ARCONTROLLER_Network allow to operate an ARNETWORK_Manager for send and receive commands.
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
@@ -42,6 +42,7 @@
 #include <libARNetwork/ARNETWORK_Manager.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
 #include <libARController/ARCONTROLLER_Error.h>
+#include <libARController/ARCONTROLLER_Stream.h>
 
 /**
  * Enum characterizing the type of data to send
@@ -95,7 +96,9 @@ typedef struct
  * @return the new Network Controller
  * @see ARCONTROLLER_Network_Delete()
  */
-ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
+//ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error);
+
 
 /**
  * @brief Delete the Network Controller
@@ -123,18 +126,50 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkC
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *networkController);
 
-/**
- * @brief stop the threads of sending and reception
- * @param[in] networkController The network Controller ; must be not NULL.
- * @return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_Network_Stop (ARCONTROLLER_Network_t *networkController);
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+
+///**
+ //* @brief stop the threads of sending and reception
+ //* @param[in] networkController The network Controller ; must be not NULL.
+ //* @return executing error
+ //*/
+//eARCONTROLLER_ERROR ARCONTROLLER_Network_Stop (ARCONTROLLER_Network_t *networkController);
 
 
 //eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, int bufferID, ARCONTROLLER_NETWORK_SendingConfiguration_t sendingConfig);
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError);
 
+/**
+ * @brief Add connection json part callbacks.
+ * @param device The Discovery Device to add callback.
+ * @param[in] sendJsonCallback Callback to add a json part durring the connection. 
+ * @param[in] receiveJsonCallback Callback to read a json part durring the connection.
+ * @param[in] customData custom data given as parameter to the callbacks.
+ * @return executing error.
+ */
+eARDISCOVERY_ERROR ARCONTROLLER_Network_AddConnectionJsonCallbacks (ARCONTROLLER_Network_t *networkController, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData);
 
+
+//TODO add !!!!!!!!!
+//ARNETWORK_Manager_t *ARCONTROLLER_Network_GetNetworkManager (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+//TODO add !!!!!!!!!
+//ARDISCOVERY_Device_t *ARCONTROLLER_Network_GetDevice (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+//TODO add !!!!!!!!!
+//ARDISCOVERY_NetworkConfiguration_t *ARCONTROLLER_Network_GetNetworkConfiguration (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+
+
+
+//eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson(ARCONTROLLER_Network_t *networkController, json_object *jsonObj);
+
+//eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (ARCONTROLLER_Network_t *networkController, json_object *jsonObj);
+
+eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *customData);
+
+eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, void *customData);
 
 
 #endif /* _ARCONTROLLER_NETWORK_H_ */

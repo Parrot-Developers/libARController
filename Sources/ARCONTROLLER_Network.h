@@ -41,8 +41,8 @@
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Mutex.h>
 
-# define ARCONTROLLER_NETWORK_TAG "ARCONTROLLER_Network"
-# define ARCONTROLLER_NETWORK_READING_TIMEOUT_MS 1000
+#define ARCONTROLLER_NETWORK_TAG "ARCONTROLLER_Network"
+#define ARCONTROLLER_NETWORK_READING_TIMEOUT_MS 1000
 
 typedef struct ARCONTROLLER_NETWORK_THREAD_DATA_t ARCONTROLLER_NETWORK_THREAD_DATA_t;
 
@@ -61,6 +61,15 @@ struct ARCONTROLLER_Network_t
     ARCONTROLLER_NETWORK_THREAD_DATA_t *readerThreadsData; /**< data for all reader threads*/
     ARSAL_Mutex_t mutex; /**< Mutex for multithreading */
     eARCONTROLLER_NETWORK_STATE state; /**< state of the networkController*/
+    
+    //video part
+    int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
+    ARCONTROLLER_Stream_t *videoController; /**< manage input video stream  */
+    
+    //Connection callback
+    ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback;
+    ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback;
+    void *jsonCallbacksCustomData;
 };
 
 struct ARCONTROLLER_NETWORK_THREAD_DATA_t

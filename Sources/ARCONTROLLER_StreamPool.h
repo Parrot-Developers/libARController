@@ -28,49 +28,27 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
-
 /**
- * @file ARController_Command.h
- * @brief Command controller allow !!!!! TODO.
+ * @file ARNETWORK_StreamPool.h
+ * @brief ARNETWORK_StreamPool 
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
 
-#ifndef _ARCONTROLLER_COMMAND_PRIVATE_H_
-#define _ARCONTROLLER_COMMAND_PRIVATE_H_
+#ifndef _ARCONTROLLER_STREAM_POOL_PRIVATE_H_
+#define _ARCONTROLLER_STREAM_POOL_PRIVATE_H_
 
-#include <libARSAL/ARSAL_Socket.h>
-#include <libARSAL/ARSAL_Mutex.h>
+#include <libARSAL/ARSAL_Print.h>
 
-#include <libARController/ARCONTROLLER_Error.h>
-#include <libARController/ARCONTROLLER_Command.h>
+#include <libARController/ARCONTROLLER_Frame.h>
+#include <libARController/ARCONTROLLER_StreamPool.h>
 
-#define ARCONTROLLER_COMMAND_TAG "ARCONTROLLER_COMMAND"
-#define ARCONTROLLER_COMMAND_CALLBACKS_CAPACITY_DEFAULT 1
+#define ARCONTROLLER_STREAM_POOL_TAG "ARNETWORK_StreamPool"
 
-/**
- * @brief 
- */
-typedef struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t;
-
-struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t
+struct ARCONTROLLER_StreamPool_t
 {
-    ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback; /**< callback used when the command is decoded. */
-    void *customData;  /**< custom data given as parameter to the callback. */
-    
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *next;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *prev;
+    ARCONTROLLER_Frame_t **frames; //TODO array §§§
+    uint32_t capacity;
 };
 
-/**
- * @brief Command controller allow to !!!!!TODO.
- */
-struct ARCONTROLLER_Command_t
-{
-    int commandKey; /**< Key associates to the command */
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbacks; /**< array of the callback used when the command is decoded. */
-    
-    UT_hash_handle hh; /**< makes this structure hashable. */
-};
-
-#endif /* _ARCONTROLLER_COMMAND_PRIVATE_H_ */
+#endif /* _ARCONTROLLER_STREAM_POOL_PRIVATE_H_ */

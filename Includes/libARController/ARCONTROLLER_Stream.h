@@ -29,7 +29,7 @@
     SUCH DAMAGE.
 */
 /**
- * @file ARNETWORK_Stream.h
+ * @file ARCONTROLLER_Stream.h
  * @brief ARCONTROLLER_Stream allow to operate ARStream for receive a stream.
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
@@ -40,9 +40,24 @@
 
 #include <json/json.h>
 #include <libARSAL/ARSAL_Thread.h>
+#include <libARNetwork/ARNETWORK_Manager.h>
 #include <libARController/ARCONTROLLER_Error.h>
 #include <libARDiscovery/ARDISCOVERY_Error.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
+#include <libARController/ARCONTROLLER_Frame.h>
+#include <libARController/ARCONTROLLER_StreamQueue.h>
+
+
+/**
+ * @brief Callback 
+ */
+typedef void (*ARNETWORKAL_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
+
+/**
+ * @brief Callback 
+ */
+typedef void (*ARNETWORKAL_Stream_TimeoutFrameCallback_t) (void *customData);
+
 
 /**
  * @brief Stream controller allow to operate ARStream for receive a stream.
@@ -50,16 +65,20 @@
 typedef struct ARCONTROLLER_Stream_t ARCONTROLLER_Stream_t;
 
 // TODO ADD !!!!!!!!!
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networkController, */ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error);
 
 // TODO ADD !!!!!!!!!
 void ARCONTROLLER_Stream_Delete (ARCONTROLLER_Stream_t **streamController);
 
-
 // TODO ADD !!!!!!!!!
-eARDISCOVERY_ERROR ARCONTROLLER_Stream_SendJsonCallback (json_object *jsonObj, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamController, ARNETWORK_Manager_t *networkManager);
 
-// TODO ADD !!!!!!!!!
-eARDISCOVERY_ERROR ARCONTROLLER_Stream_ReceiveJsonCallback (json_object *jsonObj, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamController);
+
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+
+ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_TryGetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stream_t *streamController, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
 
 #endif /* _ARCONTROLLER_STREAM_H_ */

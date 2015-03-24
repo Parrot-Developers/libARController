@@ -187,8 +187,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallback (ARCONTROLLER_Command_t *co
 
 eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t *command, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, " ARCONTROLLER_COMMAND_RemoveCallback: ... ");
-    
     // -- Remove a callback to use when the command  is received --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -220,8 +218,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t 
             error = ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED;
         }
     }
-    
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, " ARCONTROLLER_COMMAND_RemoveCallback   error:%d ... ", error);
     
     return error;
 }
@@ -350,8 +346,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *diction
         }
         // NO Else ; no callback registered.
     }
-    
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, "error : %d", error);
     
     return error;
 }

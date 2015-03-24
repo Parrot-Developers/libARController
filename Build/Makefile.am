@@ -8,6 +8,9 @@ HEADER_FILES                                                =   ../Includes/libA
                                                                 ../Includes/libARController/ARCONTROLLER_Error.h  \
                                                                 ../Includes/libARController/ARCONTROLLER_Command.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Feature.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Frame.h \
+                                                                ../Includes/libARController/ARCONTROLLER_StreamPool.h \
+                                                                ../Includes/libARController/ARCONTROLLER_StreamQueue.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Stream.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Device.h \
                                                                 ../Includes/libARController/ARController.h
@@ -21,6 +24,12 @@ SOURCE_FILES                                                =   $(HEADER_FILES) 
                                                                 ../Sources/ARCONTROLLER_Command.c \
                                                                 ../Sources/ARCONTROLLER_Feature.h \
                                                                 ../Sources/ARCONTROLLER_Feature.c \
+                                                                ../Sources/ARCONTROLLER_Frame.h \
+                                                                ../Sources/ARCONTROLLER_Frame.c \
+                                                                ../Sources/ARCONTROLLER_StreamPool.h \
+                                                                ../Sources/ARCONTROLLER_StreamPool.c \
+                                                                ../Sources/ARCONTROLLER_StreamQueue.h \
+                                                                ../Sources/ARCONTROLLER_StreamQueue.c \
                                                                 ../Sources/ARCONTROLLER_Stream.h \
                                                                 ../Sources/ARCONTROLLER_Stream.c \
                                                                 ../Sources/ARCONTROLLER_Device.h \
