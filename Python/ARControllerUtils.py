@@ -81,6 +81,26 @@ def sendingFunctionName(module, feature, cl, cmd):
     
 def sendingFunction (cl, cmd):
     return 'send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
+    
+def setNAckFunctionType( feature, cl, cmd):
+    return ARTypeName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name))
+    
+def setNAckFunctionName( feature, cl, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name))
+
+def setNAckFunction (cl, cmd):
+    return 'set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
+    
+def sendNAckFunctionName (feature, cl, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)+'Struct')
+    
+def structNAckName(cl, cmd):
+    return ARUncapitalize(cl.name) + ARCapitalize(cmd.name) + 'Parameters'
+    
+def structNAckType(feature, cl, cmd):
+    return ARTypeName (MODULE_ARCONTROLLER, feature.name, ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Parameters')
+    
+
 
 #def defineNotificationDef(module, feature):
 def defineNotificationDef():
