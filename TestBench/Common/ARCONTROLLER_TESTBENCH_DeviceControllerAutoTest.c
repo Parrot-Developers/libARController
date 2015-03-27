@@ -76,7 +76,9 @@
 
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ();
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 
@@ -121,6 +123,9 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest ()
  *  TESTS
  */
 
+int streamEnableReceived = 0;
+int cmdReceived = 0;
+
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
 {
     int failed = 0;
@@ -131,7 +136,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     ARDISCOVERY_Device_t *device = NULL;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Device_t *deviceController = NULL;
-    int cmdReceived = 0;
+    
     pid_t child = 0;
     char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo";
     FILE *videoOut = NULL;
@@ -159,19 +164,6 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         {
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error device is not NULL ");
-        }
-    }
-    
-    if (failed == 0)
-    {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for StreamingVideoEnable ... ");
-        
-        error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_FEATURE_ARDRONE3_DICTIONARY_KEY_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, &cmdReceived);
-    
-        if (error != ARCONTROLLER_OK)
-        {
-            failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -217,6 +209,19 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for command received ... ");
+        
+        error = ARCONTROLLER_Device_AddCommandRecievedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
+        
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Start ... ");
         
         error = ARCONTROLLER_Device_Start (deviceController);
@@ -230,9 +235,22 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for StreamingVideoEnable ... ");
+        
+        error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, deviceController);
+    
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- send StreamingVideoEnable ... ");
         
-        cmdReceived = 0;
+        streamEnableReceived = 0;
         error = deviceController->aRDrone3->sendMediaStreamingVideoEnable (deviceController->aRDrone3, 1);
         
         if (error != ARCONTROLLER_OK)
@@ -245,10 +263,16 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
             ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait ... ");
             sleep (5);
             
+            if (streamEnableReceived == 0)
+            {
+                failed++;
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "last cmd StreamingVideoEnable not received");
+            }
+            
             if (cmdReceived == 0)
             {
                 failed++;
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "last cmd not received");
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "last cmd not received with commandReceivedCallback");
             }
         }
     }
@@ -265,12 +289,25 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for StreamingVideoEnable ... ");
         
-        error = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_FEATURE_ARDRONE3_DICTIONARY_KEY_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, &cmdReceived);
+        error = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, deviceController);
     
         if (error != ARCONTROLLER_OK)
         {
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for command received ... ");
+        
+        error = ARCONTROLLER_Device_RemoveCommandRecievedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
+        
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -353,7 +390,24 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     return failed;
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+{
+    //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived ........");
+    
+    //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    commandKey %d", commandKey);
+    //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    argumentDictionary %p", argumentDictionary);
+    //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    customData %p", customData);
+    
+    ARCONTROLLER_Device_t *deviceController = customData;
+    
+    if (deviceController != NULL)
+    {
+        cmdReceived = 1;
+    }
+    
+}
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable ........");
     
@@ -361,12 +415,48 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (int commandKe
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    argumentDictionary %p", argumentDictionary);
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    customData %p", customData);
     
-    int *cmdReceived = customData;
+    ARCONTROLLER_Device_t *deviceController = customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *arg = NULL;
     
-    if (cmdReceived != NULL)
+    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *streamEnableArgs = ARCONTROLLER_Device_GetCommandArguments (deviceController, commandKey, &error);
+    
+    
+    if (deviceController != NULL)
     {
-        *cmdReceived = 1;
+        if (error == ARCONTROLLER_OK)
+        {
+            if (streamEnableArgs != NULL)
+            {
+                HASH_FIND_STR (streamEnableArgs, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+                
+                if (arg != NULL)
+                {
+                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->valueType %d",arg->valueType);
+                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->value %d",arg->value);
+                    streamEnableReceived = 1;
+                }
+                else
+                {
+                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg is NULL");
+                }
+            }
+            else
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "streamEnableArgs is NULL");
+            }
+        }
+        else
+        {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Error : %s ", ARCONTROLLER_Error_ToString(error));
+        }
     }
+    else
+    {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "customData is NULL ");
+    }
+    
+    
     
 }
 

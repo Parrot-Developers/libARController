@@ -93,8 +93,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('#include <libuthash/uthash.h>\n')
     hfile.write ('\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Error.h>\n')
+    hfile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Command.h>\n')
-    hfile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     hfile.write ('\n')
 
     #hfile.write ('/**\n')
@@ -175,28 +175,33 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     #hfile.write ('typedef void (*'+ARTypeName(MODULE_FEATURE, 'DICTIONARY', 'CALLBACK')+') (char *command, '+ARTypeName(MODULE_FEATURE, 'DICTIONARY', 'COMMANDS')+' *dictionary);\n')
     #hfile.write ('\n')
     
-    # TODO sup !!!!!!!!!!!!!!!!!!!!!!!!!! replace by the ARCommand big Enum
-    hfile.write ('/**\n')
-    hfile.write (' * \n') # TODO add !!!!!!!!!!!!!!!!!!!!!!!!!!
-    hfile.write (' */\n')
-    hfile.write ('typedef enum \n')
-    hfile.write ('{\n')
-    first = True
-    for feature in allFeatures:
-        for cl in feature.classes:
-            if isEvent(cl) or isState(cl):
-                for cmd in cl.cmds:
-                    if first:
-                        hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+' = 0,/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
-                        first = False
-                    else:
-                        hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
-                    #for arg in cmd.args:
-                        #hfile.write ('    '+defineNotification(module, feature, cl, cmd, arg)+', /**< Key used to define the argument <code>'+arg.name+'</code> of the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
-    hfile.write ('    '+AREnumValue(MODULE_FEATURE,  feature.name, 'DICTIONARY_KEY','MAX')+', /**< Unused, iterator maximum value */\n')
-    #hfile.write ('}'+defineNotificationDef(MODULE_FEATURE, feature)+';\n')
-    hfile.write ('}'+defineNotificationDef()+';\n')
-    hfile.write ('\n')
+    ## TODO sup !!!!!!!!!!!!!!!!!!!!!!!!!! replace by the ARCommand big Enum
+    #hfile.write ('/**\n')
+    #hfile.write (' * \n') # TODO add !!!!!!!!!!!!!!!!!!!!!!!!!!
+    #hfile.write (' */\n')
+    #hfile.write ('typedef enum \n')
+    #hfile.write ('{\n')
+    #first = True
+    #for feature in allFeatures:
+        #for cl in feature.classes:
+            
+            #if first:
+                #hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl)+' = 0,/**< Key used to define the class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                #first = False
+            #else:
+                #hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl)+',/**< Key used to define the class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            
+            #if isEvent(cl) or isState(cl):
+                #for cmd in cl.cmds:
+                    ##if first:
+                        ##hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+' = 0,/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                        ##first = False
+                    ##else:
+                        ##hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                    #hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+    #hfile.write ('    '+AREnumValue(MODULE_FEATURE,  feature.name, 'DICTIONARY_KEY','MAX')+', /**< Unused, iterator maximum value */\n')
+    #hfile.write ('}'+defineNotificationDef()+';\n')
+    #hfile.write ('\n')
     
 
     for feature in allFeatures: # see automake all source of folder !!!!!!!!!!!!!!
@@ -291,7 +296,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     #hfile.write ('char * ' + defineNotification(MODULE_FEATURE, feature, cl, cmd) + ' = "' + defineNotification(MODULE_FEATURE, feature, cl, cmd).lower() + '";\n')
                     for arg in cmd.args:
                         #hfile.write ('#define ' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ' "' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg).lower() + '";\n')
-                        hfile.write ('extern const char *' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ';\n')
+                        #hfile.write ('extern const char *' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ';\n')
+                        hfile.write ('extern const char *' + defineNotification(feature, cl, cmd, arg) + ';\n')
+                        
             hfile.write('\n');
             
             if not isEvent(cl) and not isState(cl):
@@ -367,6 +374,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write (' * @param[out] error executing error.\n')
         hfile.write (' */\n')
         hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController);\n')
+        hfile.write ('\n')
+        
+        #TODO add commentary !!!!!!!!!!!
+        hfile.write ('ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
         hfile.write ('\n')
         
         
@@ -448,7 +459,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hPrivFile.write ('{\n')
         hPrivFile.write ('    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */\n')
         hPrivFile.write ('    '+ARTypeName(MODULE_FEATURE, 'DICTIONARY', 'COMMANDS')+' *dictionary; /**< stores states and settings of the device */\n')
-        hPrivFile.write ('    ARCONTROLLER_Command_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */\n') #TODO !!!!! see commentary
+        hPrivFile.write ('    ARCONTROLLER_Command_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */\n')
 
         for cl in feature.classes:
             for cmd in cl.cmds :
@@ -594,7 +605,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        if ((*dictionary) != NULL)\n')
     cFile.write ('        {\n')
-    cFile.write ('            /* free the hash table contents */\n')
+    cFile.write ('            // Free the hash table contents\n')
     cFile.write ('            HASH_ITER(hh, (*dictionary), dictElement, dictTmp)\n')
     cFile.write ('            {\n')
     cFile.write ('                /* for each element of the commands dictionary */\n')
@@ -629,7 +640,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        if ((*dictionary) != NULL)\n')
     cFile.write ('        {\n')
-    cFile.write ('            /* free the hash table contents */\n')
+    cFile.write ('            // Free the hash table contents\n')
     cFile.write ('            HASH_ITER(hh, (*dictionary), dictElement, dictTmp)\n')
     cFile.write ('            {\n')
     cFile.write ('                /* for each element of the arguments dictionary */\n')
@@ -677,7 +688,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             if isEvent(cl) or isState(cl):
                 for cmd in cl.cmds:
                     for arg in cmd.args:
-                        cFile.write ('const char *' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ' = "' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg).lower() + '";\n')
+                        #cFile.write ('const char *' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ' = "' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg).lower() + '";\n')
+                        cFile.write ('const char *' + defineNotification(feature, cl, cmd, arg) + ' = "' + defineNotification(feature, cl, cmd, arg).lower() + '";\n')
             cFile.write('\n');
         
         cFile.write (''+className+' *' + ARFunctionName (MODULE_FEATURE, feature.name, 'New')+' (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)\n')
@@ -817,10 +829,19 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('                if ((*feature)->privatePart->commandCallbacks != NULL)\n')
         cFile.write ('                {\n')
-        cFile.write ('                    /* free the hash table contents the command callback */\n')
+        cFile.write ('                    // Free the hash table contents the command callback\n')
         cFile.write ('                    ARCONTROLLER_COMMAND_DeleteDictionary (&((*feature)->privatePart->commandCallbacks));\n')
         cFile.write ('                }\n')
         cFile.write ('                \n')
+        
+        for cl in feature.classes:
+            for cmd in cl.cmds :
+                if cmd.buf == ARCommandBuffer.NON_ACK:
+                    cFile.write ('                if ((*feature)->privatePart->'+structNAckName (cl, cmd)+' != NULL)\n')
+                    cFile.write ('                {\n')
+                    cFile.write ('                    free ((*feature)->privatePart->'+structNAckName (cl, cmd)+');\n')
+                    cFile.write ('                    (*feature)->privatePart->'+structNAckName (cl, cmd)+' = NULL;\n')
+                    cFile.write ('                }\n')
         
         cFile.write ('                free ((*feature)->privatePart);\n')
         cFile.write ('                (*feature)->privatePart = NULL;\n')
@@ -1199,7 +1220,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        _dictNewElement = malloc (sizeof('+ARTypeName(MODULE_FEATURE, 'DICTIONARY', 'COMMANDS')+'));\n')
                     cFile.write ('        if (_dictNewElement != NULL)\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            _dictNewElement->command = '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+';\n')
+                    cFile.write ('            _dictNewElement->command = '+defineNotification(feature, cl, cmd)+';\n')
                     cFile.write ('            _dictNewElement->arguments = NULL;\n')
                     cFile.write ('        }\n')
                     cFile.write ('        else\n')
@@ -1217,7 +1238,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write ('        if (_argDictNewElement != NULL)\n')
                         cFile.write ('        {\n')
                         cFile.write ('            _argDictNewElement->valueType = '+AREnumValue(MODULE_FEATURE, 'DICTIONARY', 'VALUE_TYPE', arg.type)+';\n')
-                        cFile.write ('            _argDictNewElement->argument = '+defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg)+';\n')
+                        #cFile.write ('            _argDictNewElement->argument = '+defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg)+';\n')
+                        cFile.write ('            _argDictNewElement->argument = '+defineNotification(feature, cl, cmd, arg)+';\n')
+                        
+                        cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "add _argDictNewElement->argument : %s", _argDictNewElement->argument);\n')
+                        
                         if arg.type == 'string':
                             cFile.write ('            _strLength = strlen('+arg.name+');\n')
                             cFile.write ('            _argDictNewElement->value.'+ARCapitalize(arg.type)+' = malloc (_strLength);\n')
@@ -1242,7 +1267,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                             cFile.write ('                HASH_ADD_KEYPTR (hh, _dictNewElement->arguments, _argDictNewElement, strlen(_argDictNewElement->argument), _argDictNewElement);\n')
                             cFile.write ('            }\n')
                         else:
-                            cFile.write ('            HASH_ADD_KEYPTR (hh, _dictNewElement->arguments, _argDictNewElement, strlen(_argDictNewElement->argument), _argDictNewElement);\n')
+                            cFile.write ('            HASH_ADD_KEYPTR (hh, _dictNewElement->arguments, _argDictNewElement->argument, strlen(_argDictNewElement->argument), _argDictNewElement);\n')
                         cFile.write ('        }\n')
                         cFile.write ('        else\n')
                         cFile.write ('        {\n')
@@ -1259,6 +1284,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        {\n')
                     cFile.write ('            HASH_REPLACE_INT (_feature->privatePart->dictionary, command, _dictNewElement, _dictOldElement);\n')
                     cFile.write ('            \n')
+                    
                     cFile.write ('            // TODO see to free old element !!!!!!!!!!!!!!!!!!!!\n')
                     cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteArgumentsDictionary')+' (&(_dictOldElement->arguments));\n')
                     cFile.write ('            free (_dictOldElement);\n')
@@ -1270,12 +1296,19 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        }\n')
                     cFile.write ('        \n')
                     cFile.write ('        _elementAdded = 1;\n')
+                    
+                    cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "_feature->privatePart->dictionary: %p", _feature->privatePart->dictionary);\n')
+                    cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "_elementAdded  command: %d", _dictNewElement->command);\n')
+                    
+                    
+                    
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
                     cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
-                    cFile.write ('        // callback notification\n')
+                    #TODO see to copy arguments !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    cFile.write ('        // Callback notification\n')
                     cFile.write ('        _error = ARCONTROLLER_COMMAND_Notify (_feature->privatePart->commandCallbacks, _dictNewElement->command, _argDictNewElement);\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
@@ -1339,6 +1372,64 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
+        cFile.write ('ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
+        cFile.write ('{\n')
+        cFile.write ('    // -- Get Command Arguments --\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' commandKey:%d .......", commandKey);\n')
+        
+        cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
+        cFile.write ('    ARCONTROLLER_FEATURE_DICTIONARY_COMMANDS_t *commandDic = NULL;\n')
+        cFile.write ('    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *arguments = NULL;\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    // check parameters\n')
+        cFile.write ('    if ((feature == NULL) ||\n')
+        cFile.write ('        (feature->privatePart == NULL))\n')
+        cFile.write ('    {\n')
+        cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+        cFile.write ('    }\n')
+        cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
+        cFile.write ('    {\n')
+        
+        cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " for feature->privatePart->dictionary: %p", feature->privatePart->dictionary);\n')
+        
+        cFile.write ('        // Find arguments\n')
+        cFile.write ('        HASH_FIND_INT (feature->privatePart->dictionary, &(commandKey), commandDic);\n')
+        cFile.write ('        if (commandDic != NULL)\n')
+        cFile.write ('        {\n')
+        
+        cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "finddddddddddddd");\n')
+        cFile.write ('            arguments = commandDic->arguments;\n')
+        
+        #TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        cFile.write ('           //TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n')
+        cFile.write ('        }\n')
+        cFile.write ('        // NO Else ; command not found \n')
+        cFile.write ('        \n')
+        
+        cFile.write ('        if (arguments == NULL)\n')
+        cFile.write ('        {\n')
+        cFile.write ('            localError = ARCONTROLLER_ERROR_NO_ARGUMENTS;\n') # TODO see error !!!!!!!!!!!!!!!!!!!!!
+        cFile.write ('        }\n')
+        cFile.write ('    }\n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    // return the error\n')
+        cFile.write ('    if (error != NULL)\n')
+        cFile.write ('    {\n')
+        cFile.write ('        *error = localError;\n')
+        cFile.write ('    }\n')
+        cFile.write ('    // No else: error is not returned \n')
+        cFile.write ('    \n')
+        
+        cFile.write ('    return arguments;\n')
+        cFile.write ('}\n')
+        cFile.write ('\n')
         
         cFile.write ('/************************\n')
         cFile.write (' * Private Implementation\n')

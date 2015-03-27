@@ -48,6 +48,7 @@ MODULE_ARCONTROLLER='ARCONTROLLER'
 MODULE_NETWORK=MODULE_ARCONTROLLER+'_NETWORK'
 MODULE_FEATURE=MODULE_ARCONTROLLER+'_FEATURE'
 MODULE_DEVICE=MODULE_ARCONTROLLER+'_DEVICE'
+MODULE_DICTIONARY=MODULE_ARCONTROLLER+'_DICTIONARY'
 MODULE_ARCOMMANDS='ARCOMMANDS'
 
 ##################################
@@ -107,20 +108,27 @@ def defineNotificationDef():
     #return ARMacroName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #return ARGlobalConstName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT');
     #return AREnumName(module,  feature.name, 'DICTIONARY_KEY');
-    return AREnumName(MODULE_ARCONTROLLER,  'FEATURE', 'DICTIONARY_KEY');
-    
-    
-def defineNotification(module, feature, cl, cmd, arg=None):
+    return AREnumName(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY');
+
+def defineNotification(feature, cl=None, cmd=None, arg=None):
     #return ARMacroName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #return ARGlobalConstName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT');
+    clPart = ''
+    clPrjExt = ''
+    if cl :
+        clPart = '_'+cl.name
+        clPrjExt = cl.projExt
+    cmdPart = ''
+    if cmd :
+        cmdPart = '_' + cmd.name
     argPart = ''
     if arg :
         argPart = '_' + arg.name
-    return AREnumValue(module,  feature.name, 'DICTIONARY_KEY', cl.name + '_' + cmd.name + argPart);
+    return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', feature.name + clPrjExt + clPart + cmdPart + argPart);
 
-def defineNotificationKey(module, feature, cl, cmd, arg):
-    #return defineNotification (module, feature, cl, cmd) + '_' + arg.name.upper() + '_KEY';
-    return ARGlobalConstName(module, feature.name + cl.projExt, cl.name + '_' + cmd.name + '_DICT') + '_' + arg.name.upper() + '_KEY';
+#def defineNotificationKey(module, feature, cl, cmd, arg):
+    ##return defineNotification (module, feature, cl, cmd) + '_' + arg.name.upper() + '_KEY';
+    #return ARGlobalConstName(module, feature.name + cl.projExt, cl.name + '_' + cmd.name + '_DICT') + '_' + arg.name.upper() + '_KEY';
 
 #def commandController(feature, cl, cmd):
 #    return feature.name+ARCapitalize(cl.name)+ARCapitalize(cmd.name)+'Command'

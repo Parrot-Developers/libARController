@@ -45,6 +45,7 @@ from ARFuncs import *
 from ARCommandsParser import *
 from generateFeatureControllers import *
 from generateDeviceControllers import *
+from generateDictionaryKeyEnum import *
 
 # Default project name
 DEFAULT_FEATURE_NAME='common'
@@ -184,3 +185,6 @@ generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR)
 
 # generate Device Controllers
 generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR)
+
+# generate DictionaryKeyEnum
+generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR)

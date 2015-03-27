@@ -567,11 +567,12 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
         queue = streamController->readyQueue;
     }
     
+    //TODO see case to get a new frame and frameData = NUUL !!!!!!!!!!!!
     if (error == ARCONTROLLER_OK)
     {
         //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_StreamPool_GetFrameFromData ... frameData:%p ....", frameData);
         frame = ARCONTROLLER_StreamPool_GetFrameFromData (pool, frameData, &error);
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_StreamPool_GetFrameFromData ... found frame:%p ....", frame);
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_StreamPool_GetFrameFromData ... found frame:%p ....", frame);
     }
     
     if (error == ARCONTROLLER_OK)

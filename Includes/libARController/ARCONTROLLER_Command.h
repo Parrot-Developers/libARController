@@ -43,6 +43,7 @@
 #include <libuthash/utlist.h>
 
 #include <libARController/ARCONTROLLER_Error.h>
+#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>
 
 /**
  * @brief .
@@ -99,7 +100,7 @@ typedef struct
  */
 typedef struct 
 {
-    int command; /**< Key associates to the command */
+    eARCONTROLLER_DICTIONARY_KEY command; /**< Key associates to the command */
     ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *arguments; /**< Arguments of the command coming from the device. */
     UT_hash_handle hh; /**< makes this structure hashable */
 }ARCONTROLLER_FEATURE_DICTIONARY_COMMANDS_t;
@@ -109,7 +110,12 @@ typedef struct
  * 
  * @param[in] customData customDate set by the register
  */
-typedef void (*ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t) (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big enum
+typedef void (*ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t) (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big enum
+
+/**
+ * @brief 
+ */
+typedef struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t;
 
 /**
  * @brief !!!! TODO
@@ -125,7 +131,7 @@ typedef struct ARCONTROLLER_Command_t ARCONTROLLER_Command_t;
  * @return the new JumpingSumo Feature Controller
  * @see ARCONTROLLER_Command_New
  */
-ARCONTROLLER_Command_t *ARCONTROLLER_COMMAND_New (int commandKey, eARCONTROLLER_ERROR *error);// TODO int -> ARCommands Big enum
+ARCONTROLLER_Command_t *ARCONTROLLER_COMMAND_New (eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);// TODO int -> ARCommands Big enum
 
 /**
  * @brief Delete the Command Controller
@@ -153,15 +159,30 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallback (ARCONTROLLER_Command_t *co
 eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t *command, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);
 
 //TODO add commentary !!!!!!!!!!!!!!
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Command_t **dictionary, int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);// TODO int -> ARCommands Big enum
+eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Command_t **dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);
 
 //TODO add commentary !!!!!!!!!!!!!!
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveDictionaryElement (ARCONTROLLER_Command_t *dictionary, int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);// TODO int -> ARCommands Big enum
+eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveDictionaryElement (ARCONTROLLER_Command_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);
 
 //TODO add commentary !!!!!!!!!!!!!!!!
 void ARCONTROLLER_COMMAND_DeleteDictionary (ARCONTROLLER_Command_t **dictionary);
 
 //TODO add commentary !!!!!!!!
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *dictionary, int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary);// TODO int -> ARCommands Big enum
+eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary);
+
+//TODO add commentary !!!!!!!!
+void ARCONTROLLER_COMMAND_DeleteCallbackArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray);
+
+//TODO add commentary !!!!!!!!
+eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallbackInArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);
+
+//TODO add commentary !!!!!!!!
+eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallbackFromArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData);
+
+void ARCONTROLLER_COMMAND_NotifyAllCallbackInArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary);
+
+//not checked
+ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, eARCONTROLLER_ERROR *error);
+
 
 #endif /* _ARCONTROLLER_COMMAND_H_ */

@@ -174,6 +174,18 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetVideoReceiveCallback')+' ('+className+' *deviceController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);\n')
     hfile.write ('\n')
     
+    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
+    hfile.write ('\n')
+    
+    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
+    hfile.write ('\n')
+    
+    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
+    hfile.write ('\n')
+    
     hfile.write ('#endif /* '+includeDefine+' */\n')
     hfile.write ('\n')
     hfile.write ('// END GENERATED CODE\n')
@@ -210,6 +222,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('#define '+includeDefine+'\n')
     hPrivFile.write ('\n')
     hPrivFile.write ('#include <libARSAL/ARSAL_Mutex.h>\n')
+    hPrivFile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
     hPrivFile.write ('#include <libARCommands/ARCommands.h>\n')
     hPrivFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     hPrivFile.write ('\n')
@@ -232,7 +245,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('    ARSAL_Mutex_t mutex; /**< Mutex for multithreading */\n')
     hPrivFile.write ('    eARCONTROLLER_DEVICE_STATE state; /**< state of the deviceController*/\n')
     hPrivFile.write ('    ARSAL_Thread_t controllerLooperThread; /**< looper threads used to send data in loop */\n')
-    #hPrivFile.write ('    int controllerLoopIntervalMs; /**< interval between each loop of control*/\n')
+    hPrivFile.write ('    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *commandCallbacks; /**< Array storing callbacks to use when a command is received. */\n')
     hPrivFile.write ('    //video part\n')
     hPrivFile.write ('    int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */\n')
     hPrivFile.write ('    ARNETWORKAL_Stream_DidReceiveFrameCallback_t videoReceiveCallback;\n')
@@ -298,7 +311,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
-    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big \n')
+    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big \n')
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
@@ -364,6 +377,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('#include <libARSAL/ARSAL_Time.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Network.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
+    cFile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Command.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Frame.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
@@ -435,7 +449,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            deviceController->privatePart->networkController = NULL;\n')
     cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_STOPPED;\n')
     cFile.write ('            deviceController->privatePart->controllerLooperThread = NULL;\n')
-    #cFile.write ('            deviceController->privatePart->controllerLoopIntervalMs = 0;\n')
+    cFile.write ('            deviceController->privatePart->commandCallbacks = NULL;\n')
     cFile.write ('            // Video Part\n')
     #cFile.write ('            deviceController->privatePart->videoThread = NULL;\n')
     cFile.write ('            deviceController->privatePart->hasVideo = 0;\n')
@@ -561,6 +575,13 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                ARSAL_Sem_Destroy (&((*deviceController)->privatePart->initSem));\n')
     cFile.write ('                \n')
     
+    cFile.write ('                if ((*deviceController)->privatePart->commandCallbacks != NULL)\n')
+    cFile.write ('                {\n')
+    cFile.write ('                    // -- Delete all callback in array --\n')
+    cFile.write ('                    ARCONTROLLER_COMMAND_DeleteCallbackArray(&((*deviceController)->privatePart->commandCallbacks));\n')
+    cFile.write ('                }\n')
+    cFile.write ('                \n')
+    
     cFile.write ('                // Delete features:\n')
     cFile.write ('                switch ((*deviceController)->privatePart->discoveryDevice->productID)\n')
     cFile.write ('                {\n')
@@ -629,7 +650,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
                 for cmd in cl.cmds:
                     cFile.write ('        if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, feature.name, 'addCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
+                    cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, feature.name, 'addCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
                     cFile.write ('        }\n')
                     cFile.write ('        \n')
         cFile.write ('    }\n')
@@ -667,10 +688,10 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         for cl in feature.classes:
             if isState(cl):
                 for cmd in cl.cmds:
-                    cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
+                    cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
                     cFile.write ('            if (error != ARCONTROLLER_OK)\n')
                     cFile.write ('            {\n')
-                    cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring removing of the callback for '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+'; error :%s", ARCONTROLLER_Error_ToString (removingError));\n')
+                    cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring removing of the callback for '+defineNotification(feature, cl, cmd)+'; error :%s", ARCONTROLLER_Error_ToString (removingError));\n')
                     cFile.write ('            }\n')
                     cFile.write ('            \n')
         cFile.write ('        }\n')
@@ -965,6 +986,162 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
+    cFile.write ('{\n')
+    cFile.write ('    // -- Add Command received callback --\n')
+    cFile.write ('    \n')
+    cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+    cFile.write ('    int alreadyStopped = 0;\n')
+    cFile.write ('    int locked = 1;\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    // check parameters\n')
+    cFile.write ('    if ((deviceController == NULL) ||\n')
+    cFile.write ('        (deviceController->privatePart == NULL))\n')
+    cFile.write ('    {\n')
+    cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 1;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        error = ARCONTROLLER_COMMAND_AddCallbackInArray (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (locked)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 0;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    return error;\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+    cFile.write ('\n')
+    
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
+    cFile.write ('{\n')
+    cFile.write ('    // -- Remove Command received callback --\n')
+    cFile.write ('    \n')
+    cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+    cFile.write ('    int alreadyStopped = 0;\n')
+    cFile.write ('    int locked = 1;\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    // check parameters\n')
+    cFile.write ('    if ((deviceController == NULL) ||\n')
+    cFile.write ('        (deviceController->privatePart == NULL))\n')
+    cFile.write ('    {\n')
+    cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 1;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+        
+    cFile.write ('        error = ARCONTROLLER_COMMAND_RemoveCallbackFromArray (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
+    
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (locked)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 0;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    return error;\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+    
+    cFile.write ('ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
+    cFile.write ('{\n')
+    cFile.write ('    // -- Get Command Arguments --\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' .......");\n')
+    
+    cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
+    cFile.write ('    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *arguments = NULL;\n')
+    cFile.write ('    '+defineNotificationDef()+' featureKey = ' + ARFunctionName (MODULE_DICTIONARY, 'Key', 'GetFeatureFromCommandKey')+' (commandKey);\n')
+    cFile.write ('    int locked = 1;\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    // check parameters\n')
+    cFile.write ('    if ((deviceController == NULL) ||\n')
+    cFile.write ('        (deviceController->privatePart == NULL))\n')
+    cFile.write ('    {\n')
+    cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 1;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        switch (featureKey)\n')
+    cFile.write ('        {\n')
+    for feature in allFeatures:
+        cFile.write ('            case '+defineNotification(feature)+':\n')
+        cFile.write ('               ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' ...  .......");\n')
+        cFile.write ('                arguments = ' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' (deviceController->'+ARUncapitalize(feature.name)+', commandKey, &localError);\n')
+        cFile.write ('                \n')
+        cFile.write ('                break;\n')
+        cFile.write ('            \n')
+    
+    cFile.write ('            default :\n')
+    cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error commandKey :%d not known", commandKey);\n')
+    cFile.write ('                break;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        \n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (locked)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 0;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    // return the error\n')
+    cFile.write ('    if (error != NULL)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        *error = localError;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    // No else: error is not returned \n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    return arguments;\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+    
+    cFile.write ('\n')
     cFile.write ('/********************\n')
     cFile.write ('* Private Functions *\n')
     cFile.write ('*********************/\n')
@@ -1072,7 +1249,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('            settingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' (deviceController->'+ARUncapitalize(feature.name)+', deviceController->privatePart->networkController);\n')
         cFile.write ('            if (error != ARCONTROLLER_OK)\n')
         cFile.write ('            {\n')
-        cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring setting the network Controller to the feature of the callback for '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+'; error :%s", ARCONTROLLER_Error_ToString (settingError));\n')
+        cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring setting the network Controller to the feature of the callback for '+defineNotification(feature, cl, cmd)+'; error :%s", ARCONTROLLER_Error_ToString (settingError));\n')
         cFile.write ('            }\n')
         cFile.write ('            \n')
         cFile.write ('        }\n')
@@ -1169,7 +1346,14 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'getInitialStates')+' (deviceController);\n')
+    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialSettings')+' (deviceController);\n')
+    cFile.write ('    }\n')
+    cFile.write ('    // No else: skipped by an error\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialStates')+' (deviceController);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
     cFile.write ('    \n')
@@ -1276,8 +1460,8 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "wait initSem .......");\n')
-    cFile.write ('        ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait initSem .......");\n')
+    cFile.write ('        int res  = ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
     cFile.write ('    }\n')
     cFile.write ('    \n')
             
@@ -1310,7 +1494,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait initSem .......");\n')
-    cFile.write ('        ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
+    cFile.write ('        int res = ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
     cFile.write ('    }\n')
     cFile.write ('    \n')
             
@@ -1318,27 +1502,58 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' (int commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)//TODO int -> big enum !!!!!!\n')
+    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Callback of changing of a dictionary --\n')
     cFile.write ('    \n')
-    cFile.write ('    '+className+' *deviceController = ('+className+' *)customData;\n')
     
     #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "DictionaryChangedCallback ... ");\n')
     #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "commandKey : %d ", commandKey);\n')
     #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "argumentDictionary : %p ", argumentDictionary);\n')
     #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "customData : %p ", customData);\n')
+    
+    cFile.write ('    '+className+' *deviceController = ('+className+' *) customData;\n')
+    cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    \n')
-    cFile.write ('    switch (commandKey)\n')
+    
+    cFile.write ('    // Check parameters\n')
+    cFile.write ('    if ((deviceController == NULL) ||\n')
+    cFile.write ('        (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
-    cFile.write ('        case ARCONTROLLER_FEATURE_COMMON_DICTIONARY_KEY_COMMONSTATE_ALLSTATESCHANGED:\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' (deviceController);\n')
-    cFile.write ('            break;\n')
+    cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
+    cFile.write ('    \n')
     
-    cFile.write ('        case ARCONTROLLER_FEATURE_COMMON_DICTIONARY_KEY_SETTINGSSTATE_ALLSETTINGSCHANGED:\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' (deviceController);\n')
-    cFile.write ('            break;\n')
+    cFile.write ('    \n')
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        // Notify All Callback\n')
+    cFile.write ('        ARCONTROLLER_COMMAND_NotifyAllCallbackInArray (&(deviceController->privatePart->commandCallbacks), commandKey, argumentDictionary);\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
     
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        switch (commandKey)\n')
+    cFile.write ('        {\n')
+    cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_ALLSTATESCHANGED:\n')
+    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' (deviceController);\n')
+    cFile.write ('                break;\n')
+    cFile.write ('            \n')
+    
+    cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_ALLSETTINGSCHANGED:\n')
+    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllSettingsEnd')+' (deviceController);\n')
+    cFile.write ('                break;\n')
+    cFile.write ('            \n')
+    
+    cFile.write ('            default :\n')
+    cFile.write ('                //Do Nothing\n')
+    cFile.write ('                break;\n')
+    cFile.write ('            \n')
+    
+    cFile.write ('        }\n')
+    cFile.write ('        \n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     cFile.write ('}\n')

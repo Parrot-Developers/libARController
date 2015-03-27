@@ -192,6 +192,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Push (ARCONTROLLER_StreamQueue_t *s
         {
             newElement->frame = frame;
             DL_APPEND (streamQueue->frames, newElement);
+            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "post semaphore ...." );
             ARSAL_Sem_Post (&(streamQueue->semaphore));
         }
         else
@@ -229,13 +230,16 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_Pop (ARCONTROLLER_StreamQueue_t *
         ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "lock...." );
         ARSAL_Mutex_Lock (&(streamQueue->mutex));
         
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "Wait semaphore ...." );
         if (ARSAL_Sem_Wait (&(streamQueue->semaphore)))
         {
             frame = ARCONTROLLER_StreamQueue_LocalPopFrame (streamQueue);
+            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ok semaphore frame = %p ....",frame );
         }
         
         if (frame == NULL)
         {
+            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "no semaphore frame = NULL ...." );
             localError = ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY;
         }
         
@@ -318,13 +322,16 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_PopWithTimeout (ARCONTROLLER_Stre
         semTimeout.tv_sec = timeoutMs / 1000;
         semTimeout.tv_nsec = (timeoutMs % 1000) * 1000000;
         
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "timedWait semaphore ...." );
         if (ARSAL_Sem_Timedwait (&(streamQueue->semaphore), &semTimeout))
         {
             frame = ARCONTROLLER_StreamQueue_LocalPopFrame (streamQueue);
+            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ok semaphore frame = %p ....",frame );
         }
         
         if (frame == NULL)
         {
+            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "no semaphore frame = NULL ...." );
             localError = ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY;
         }
         
@@ -433,6 +440,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalPopFrame (ARCONTROLLER_Strea
 
 eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_LocalFlush (ARCONTROLLER_StreamQueue_t *streamQueue)
 {
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ARCONTROLLER_StreamQueue_LocalFlush...." );
     // -- Flush the Queue --
 
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -460,14 +468,17 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalTryPop (ARCONTROLLER_StreamQ
     
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
-        
+    
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "try semaphore ...." );
     if (ARSAL_Sem_Trywait (&(streamQueue->semaphore)))
     {
         frame = ARCONTROLLER_StreamQueue_LocalPopFrame (streamQueue);
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ok semaphore frame = %p ....",frame );
     }
     
     if (frame == NULL)
     {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "no semaphore frame = NULL ...." );
         localError = ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY;
     }
     

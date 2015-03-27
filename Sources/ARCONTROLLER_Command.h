@@ -48,10 +48,7 @@
 #define ARCONTROLLER_COMMAND_TAG "ARCONTROLLER_COMMAND"
 #define ARCONTROLLER_COMMAND_CALLBACKS_CAPACITY_DEFAULT 1
 
-/**
- * @brief 
- */
-typedef struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t;
+
 
 struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t
 {
@@ -67,7 +64,7 @@ struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t
  */
 struct ARCONTROLLER_Command_t
 {
-    int commandKey; /**< Key associates to the command */
+    eARCONTROLLER_DICTIONARY_KEY commandKey; /**< Key associates to the command */
     ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbacks; /**< array of the callback used when the command is decoded. */
     
     UT_hash_handle hh; /**< makes this structure hashable. */

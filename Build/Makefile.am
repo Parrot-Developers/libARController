@@ -6,6 +6,7 @@ ACLOCAL_AMFLAGS                                             =   -I m4
 # The list of header files that belong to the library (to be installed later)
 HEADER_FILES                                                =   ../Includes/libARController/ARCONTROLLER_Network.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Error.h  \
+                                                                ../Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Command.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Feature.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Frame.h \
@@ -20,6 +21,7 @@ SOURCE_FILES                                                =   $(HEADER_FILES) 
                                                                 ../Sources/ARCONTROLLER_Network.h \
                                                                 ../Sources/ARCONTROLLER_Network.c \
                                                                 ../Sources/ARCONTROLLER_Error.c \
+                                                                ../Sources/ARCONTROLLER_DICTIONARY_Key.c \
                                                                 ../Sources/ARCONTROLLER_Command.h \
                                                                 ../Sources/ARCONTROLLER_Command.c \
                                                                 ../Sources/ARCONTROLLER_Feature.h \

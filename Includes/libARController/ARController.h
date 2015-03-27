@@ -40,6 +40,7 @@
 
 #include <libARController/ARCONTROLLER_Error.h>
 #include <libARController/ARCONTROLLER_Network.h>
+#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>
 #include <libARController/ARCONTROLLER_Command.h>
 #include <libARController/ARCONTROLLER_Feature.h>
 #include <libARController/ARCONTROLLER_Device.h>
