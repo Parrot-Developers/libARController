@@ -76,9 +76,9 @@
 
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ();
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData);
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData);
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 
@@ -390,7 +390,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     return failed;
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData)
 {
     //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived ........");
     
@@ -407,7 +407,7 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROL
     
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable ........");
     
@@ -417,9 +417,9 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
     
     ARCONTROLLER_Device_t *deviceController = customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *arg = NULL;
+    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
     
-    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *streamEnableArgs = ARCONTROLLER_Device_GetCommandArguments (deviceController, commandKey, &error);
+    ARCONTROLLER_DICTIONARY_ARG_t *streamEnableArgs = ARCONTROLLER_Device_GetCommandArguments (deviceController, commandKey, &error);
     
     
     if (deviceController != NULL)
@@ -433,7 +433,7 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
                 if (arg != NULL)
                 {
                     ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->valueType %d",arg->valueType);
-                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->value %d",arg->value);
+                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->value %d",arg->value.U8);
                     streamEnableReceived = 1;
                 }
                 else
@@ -455,9 +455,6 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
     {
         ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "customData is NULL ");
     }
-    
-    
-    
 }
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData)

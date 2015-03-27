@@ -101,13 +101,7 @@ def structNAckName(cl, cmd):
 def structNAckType(feature, cl, cmd):
     return ARTypeName (MODULE_ARCONTROLLER, feature.name, ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Parameters')
     
-
-
-#def defineNotificationDef(module, feature):
 def defineNotificationDef():
-    #return ARMacroName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #return ARGlobalConstName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT');
-    #return AREnumName(module,  feature.name, 'DICTIONARY_KEY');
     return AREnumName(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY');
 
 def defineNotification(feature, cl=None, cmd=None, arg=None):

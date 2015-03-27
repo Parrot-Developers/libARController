@@ -103,7 +103,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('#include <libuthash/uthash.h>\n')
     hfile.write ('\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Error.h>\n')
-    hfile.write ('#include <libARController/ARCONTROLLER_Command.h>\n')
+    hfile.write ('#include <libARController/ARCONTROLLER_Dictionary.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
     hfile.write ('\n')
@@ -175,15 +175,15 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('\n')
     
     #TODO add commentary !!!!!!!!!!!
-    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
     
     #TODO add commentary !!!!!!!!!!!
-    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
     
     #TODO add commentary !!!!!!!!!!!
-    hfile.write ('ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
+    hfile.write ('ARCONTROLLER_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
     
     hfile.write ('#endif /* '+includeDefine+' */\n')
@@ -245,7 +245,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('    ARSAL_Mutex_t mutex; /**< Mutex for multithreading */\n')
     hPrivFile.write ('    eARCONTROLLER_DEVICE_STATE state; /**< state of the deviceController*/\n')
     hPrivFile.write ('    ARSAL_Thread_t controllerLooperThread; /**< looper threads used to send data in loop */\n')
-    hPrivFile.write ('    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *commandCallbacks; /**< Array storing callbacks to use when a command is received. */\n')
+    hPrivFile.write ('    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *commandCallbacks; /**< Array storing callbacks to use when a command is received. */\n')
     hPrivFile.write ('    //video part\n')
     hPrivFile.write ('    int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */\n')
     hPrivFile.write ('    ARNETWORKAL_Stream_DidReceiveFrameCallback_t videoReceiveCallback;\n')
@@ -311,7 +311,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
-    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big \n')
+    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big \n')
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
@@ -378,7 +378,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('#include <libARController/ARCONTROLLER_Network.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
-    cFile.write ('#include <libARController/ARCONTROLLER_Command.h>\n')
+    cFile.write ('#include <libARController/ARCONTROLLER_Dictionary.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Frame.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Device.h>\n')
@@ -578,7 +578,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                if ((*deviceController)->privatePart->commandCallbacks != NULL)\n')
     cFile.write ('                {\n')
     cFile.write ('                    // -- Delete all callback in array --\n')
-    cFile.write ('                    ARCONTROLLER_COMMAND_DeleteCallbackArray(&((*deviceController)->privatePart->commandCallbacks));\n')
+    cFile.write ('                    ARCONTROLLER_Dictionary_DeleteCallbackArray(&((*deviceController)->privatePart->commandCallbacks));\n')
     cFile.write ('                }\n')
     cFile.write ('                \n')
     
@@ -986,7 +986,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add Command received callback --\n')
     cFile.write ('    \n')
@@ -1013,7 +1013,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        error = ARCONTROLLER_COMMAND_AddCallbackInArray (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
+    cFile.write ('        error = ARCONTROLLER_Dictionary_AddCallbackInArray (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
@@ -1029,7 +1029,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove Command received callback --\n')
     cFile.write ('    \n')
@@ -1057,7 +1057,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
         
-    cFile.write ('        error = ARCONTROLLER_COMMAND_RemoveCallbackFromArray (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
+    cFile.write ('        error = ARCONTROLLER_Dictionary_RemoveCallbackFromArray (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
     
     cFile.write ('    }\n')
     cFile.write ('    \n')
@@ -1073,7 +1073,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
+    cFile.write ('ARCONTROLLER_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get Command Arguments --\n')
     cFile.write ('    \n')
@@ -1081,7 +1081,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandArguments')+' .......");\n')
     
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
-    cFile.write ('    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *arguments = NULL;\n')
+    cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arguments = NULL;\n')
     cFile.write ('    '+defineNotificationDef()+' featureKey = ' + ARFunctionName (MODULE_DICTIONARY, 'Key', 'GetFeatureFromCommandKey')+' (commandKey);\n')
     cFile.write ('    int locked = 1;\n')
     cFile.write ('    \n')
@@ -1502,7 +1502,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, void *customData)\n')
+    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Callback of changing of a dictionary --\n')
     cFile.write ('    \n')
@@ -1529,7 +1529,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Notify All Callback\n')
-    cFile.write ('        ARCONTROLLER_COMMAND_NotifyAllCallbackInArray (&(deviceController->privatePart->commandCallbacks), commandKey, argumentDictionary);\n')
+    cFile.write ('        ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (&(deviceController->privatePart->commandCallbacks), commandKey, argumentDictionary);\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     

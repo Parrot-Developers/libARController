@@ -93,6 +93,34 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     hFile.write ('#define '+includeDefine+'\n')
     hFile.write ('\n')
     
+    ## TODO sup !!!!!!!!!!!!!!!!!!!!!!!!!! replace by the ARCommand big Enum
+    #hfile.write ('/**\n')
+    #hfile.write (' * \n') # TODO add !!!!!!!!!!!!!!!!!!!!!!!!!!
+    #hfile.write (' */\n')
+    #hfile.write ('typedef enum \n')
+    #hfile.write ('{\n')
+    #first = True
+    #for feature in allFeatures:
+        #for cl in feature.classes:
+            
+            #if first:
+                #hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl)+' = 0,/**< Key used to define the class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                #first = False
+            #else:
+                #hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl)+',/**< Key used to define the class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            
+            #if isEvent(cl) or isState(cl):
+                #for cmd in cl.cmds:
+                    ##if first:
+                        ##hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+' = 0,/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                        ##first = False
+                    ##else:
+                        ##hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                    #hfile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+    #hfile.write ('    '+AREnumValue(MODULE_FEATURE,  feature.name, 'DICTIONARY_KEY','MAX')+', /**< Unused, iterator maximum value */\n')
+    #hfile.write ('}'+defineNotificationDef()+';\n')
+    #hfile.write ('\n')
+    
     hFile.write ('/**\n')
     hFile.write (' * \n') # TODO add !!!!!!!!!!!!!!!!!!!!!!!!!!
     hFile.write (' */\n')

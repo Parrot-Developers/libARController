@@ -30,44 +30,44 @@
 */
 
 /**
- * @file ARController_Command.h
- * @brief Command controller allow !!!!! TODO.
+ * @file ARController_Dictionary.h
+ * @brief Dictionary controller allow !!!!! TODO.
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
 
-#ifndef _ARCONTROLLER_COMMAND_PRIVATE_H_
-#define _ARCONTROLLER_COMMAND_PRIVATE_H_
+#ifndef _ARCONTROLLER_DICTIONARY_PRIVATE_H_
+#define _ARCONTROLLER_DICTIONARY_PRIVATE_H_
 
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Mutex.h>
 
 #include <libARController/ARCONTROLLER_Error.h>
-#include <libARController/ARCONTROLLER_Command.h>
+#include <libARController/ARCONTROLLER_Dictionary.h>
 
-#define ARCONTROLLER_COMMAND_TAG "ARCONTROLLER_COMMAND"
-#define ARCONTROLLER_COMMAND_CALLBACKS_CAPACITY_DEFAULT 1
+#define ARCONTROLLER_DICTIONARY_TAG "ARCONTROLLER_DICTIONARY"
+#define ARCONTROLLER_DICTIONARY_CALLBACKS_CAPACITY_DEFAULT 1
 
 
 
-struct ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t
+struct ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t
 {
-    ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback; /**< callback used when the command is decoded. */
+    ARCONTROLLER_DICTIONARY_CALLBACK_t callback; /**< callback used when the command is decoded. */
     void *customData;  /**< custom data given as parameter to the callback. */
     
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *next;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *prev;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *next;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *prev;
 };
 
 /**
  * @brief Command controller allow to !!!!!TODO.
  */
-struct ARCONTROLLER_Command_t
+struct ARCONTROLLER_Dictionary_t
 {
     eARCONTROLLER_DICTIONARY_KEY commandKey; /**< Key associates to the command */
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbacks; /**< array of the callback used when the command is decoded. */
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbacks; /**< array of the callback used when the command is decoded. */
     
     UT_hash_handle hh; /**< makes this structure hashable. */
 };
 
-#endif /* _ARCONTROLLER_COMMAND_PRIVATE_H_ */
+#endif /* _ARCONTROLLER_DICTIONARY_PRIVATE_H_ */

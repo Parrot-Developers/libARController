@@ -30,8 +30,8 @@
 */
 
 /**
- * @file ARController_Command.c
- * @brief ARCONTROLLER_Command allow to  !!!!! TODO.
+ * @file ARController_Dictionary.c
+ * @brief ARCONTROLLER_Dictionary allow to  !!!!! TODO.
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
@@ -45,27 +45,27 @@
 
 #include <libARController/ARCONTROLLER_Error.h>
 #include <libARController/ARCONTROLLER_DICTIONARY_Key.h>
-#include <libARController/ARCONTROLLER_Command.h>
-#include "ARCONTROLLER_Command.h"
+#include <libARController/ARCONTROLLER_Dictionary.h>
+#include "ARCONTROLLER_Dictionary.h"
 
 /*************************
  * Private header
  *************************/
 
 //TODO add commentary !!!!!!!!!!!!!
-int ARCONTROLLER_COMMAND_ElementCompare(ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *a, ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *b);
+int ARCONTROLLER_DICTIONARY_ElementCompare(ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *a, ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *b);
 
 /*************************
  * Implementation
  *************************/
  
-ARCONTROLLER_Command_t *ARCONTROLLER_COMMAND_New (eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_Dictionary_t *ARCONTROLLER_Dictionary_New (eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Command --
     
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    ARCONTROLLER_Command_t *command =  NULL;
+    ARCONTROLLER_Dictionary_t *command =  NULL;
     
     // check parameters
     //if (commandKey == NULL)
@@ -77,7 +77,7 @@ ARCONTROLLER_Command_t *ARCONTROLLER_COMMAND_New (eARCONTROLLER_DICTIONARY_KEY c
     if (localError == ARCONTROLLER_OK)
     {
         // Create the Command Controller
-        command = malloc (sizeof (ARCONTROLLER_Command_t));
+        command = malloc (sizeof (ARCONTROLLER_Dictionary_t));
         if (command != NULL)
         {
             // Initialize to default values
@@ -93,7 +93,7 @@ ARCONTROLLER_Command_t *ARCONTROLLER_COMMAND_New (eARCONTROLLER_DICTIONARY_KEY c
     // delete the Network Controller if an error occurred
     if (localError != ARCONTROLLER_OK)
     {
-        ARCONTROLLER_COMMAND_Delete (&command);
+        ARCONTROLLER_Dictionary_Delete (&command);
     }
     // No else: skipped by an error 
 
@@ -107,13 +107,13 @@ ARCONTROLLER_Command_t *ARCONTROLLER_COMMAND_New (eARCONTROLLER_DICTIONARY_KEY c
     return command;
 }
 
-void ARCONTROLLER_COMMAND_Delete (ARCONTROLLER_Command_t **command)
+void ARCONTROLLER_Dictionary_Delete (ARCONTROLLER_Dictionary_t **command)
 {
     // -- Delete the command Controller --
     
     // local declarations
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *element = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *element = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
 
     if (command != NULL)
     {
@@ -126,7 +126,7 @@ void ARCONTROLLER_COMMAND_Delete (ARCONTROLLER_Command_t **command)
                 //{
                 //    DL_DELETE ((*command)->callbacks, element);
                 //}
-                ARCONTROLLER_COMMAND_DeleteCallbackArray(&((*command)->callbacks));
+                ARCONTROLLER_Dictionary_DeleteCallbackArray(&((*command)->callbacks));
                 
             }
             
@@ -136,13 +136,13 @@ void ARCONTROLLER_COMMAND_Delete (ARCONTROLLER_Command_t **command)
     }
 }
 
-void ARCONTROLLER_COMMAND_DeleteCallbackArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray)
+void ARCONTROLLER_Dictionary_DeleteCallbackArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray)
 {
     // -- Delete all callback in array --
     
     // local declarations
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *element = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *element = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
 
     /* delete each element, use the safe iterator */
     DL_FOREACH_SAFE ((*callbackArray), element, elementTmp)
@@ -151,14 +151,14 @@ void ARCONTROLLER_COMMAND_DeleteCallbackArray (ARCONTROLLER_COMMAND_CALLBAK_LIST
     }
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallback (ARCONTROLLER_Command_t *command, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_AddCallback (ARCONTROLLER_Dictionary_t *command, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
     // -- Add a callback to use when the command is received --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *newElement = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t likeElement;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t likeElement;
     
     // check parameters
     if ((command == NULL) || (callback == NULL))
@@ -176,7 +176,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallback (ARCONTROLLER_Command_t *co
         likeElement.callback = callback;
         likeElement.customData = customData;
         
-        DL_SEARCH (command->callbacks, elementFind, &likeElement, ARCONTROLLER_COMMAND_ElementCompare);
+        DL_SEARCH (command->callbacks, elementFind, &likeElement, ARCONTROLLER_DICTIONARY_ElementCompare);
         
         if (elementFind != NULL)
         {
@@ -187,7 +187,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallback (ARCONTROLLER_Command_t *co
     if (error == ARCONTROLLER_OK)
     {
         // add the callback
-        //newElement = malloc (sizeof(ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t));
+        //newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t));
         //if (newElement != NULL)
         //{
             //newElement->callback = callback;
@@ -198,24 +198,24 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallback (ARCONTROLLER_Command_t *co
         //{
             //error = ARCONTROLLER_ERROR_ALLOC;
         //}
-        error = ARCONTROLLER_COMMAND_AddCallbackInArray (&(command->callbacks), callback, customData);
+        error = ARCONTROLLER_Dictionary_AddCallbackInArray (&(command->callbacks), callback, customData);
     }
     
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallbackInArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_AddCallbackInArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
     // -- Add callback in array --
     
     // local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *newElement = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t likeElement;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t likeElement;
 
     // add the callback
-    newElement = malloc (sizeof(ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t));
+    newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t));
     if (newElement != NULL)
     {
         newElement->callback = callback;
@@ -230,13 +230,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddCallbackInArray (ARCONTROLLER_COMMAN
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t *command, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_RemoveCallback (ARCONTROLLER_Dictionary_t *command, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
     // -- Remove a callback to use when the command  is received --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t likeElement;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t likeElement;
     
     // check parameters
     if ((command == NULL) || (callback == NULL))
@@ -253,7 +253,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t 
         //likeElement.callback = callback;
         //likeElement.customData = customData;
         
-        //DL_SEARCH (command->callbacks, elementFind, &likeElement, ARCONTROLLER_COMMAND_ElementCompare);
+        //DL_SEARCH (command->callbacks, elementFind, &likeElement, ARCONTROLLER_DICTIONARY_ElementCompare);
         //if (elementFind != NULL)
         //{
              //DL_DELETE (command->callbacks, elementFind);
@@ -262,26 +262,26 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallback (ARCONTROLLER_Command_t 
         //{
             //error = ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED;
         //}
-        error = ARCONTROLLER_COMMAND_RemoveCallbackFromArray (&(command->callbacks), callback, customData);
+        error = ARCONTROLLER_Dictionary_RemoveCallbackFromArray (&(command->callbacks), callback, customData);
     }
     
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallbackFromArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_RemoveCallbackFromArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
     // -- Remove callback from array --
     
     // local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t likeElement;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t likeElement;
 
     // Element to find
     likeElement.callback = callback;
     likeElement.customData = customData;
     
-    DL_SEARCH ((*callbackArray), elementFind, &likeElement, ARCONTROLLER_COMMAND_ElementCompare);
+    DL_SEARCH ((*callbackArray), elementFind, &likeElement, ARCONTROLLER_DICTIONARY_ElementCompare);
     if (elementFind != NULL)
     {
          DL_DELETE ((*callbackArray), elementFind);
@@ -294,12 +294,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveCallbackFromArray (ARCONTROLLER_C
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Command_t **dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_AddDictionaryElement (ARCONTROLLER_Dictionary_t **dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
     // -- Add a command dictionary element --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Command_t *dictElement = NULL;
+    ARCONTROLLER_Dictionary_t *dictElement = NULL;
     
     // check parameters
     if (dictionary == NULL)
@@ -314,7 +314,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Comm
         HASH_FIND_INT (*dictionary, &commandKey, dictElement);
         if (dictElement == NULL)
         {
-            dictElement = ARCONTROLLER_COMMAND_New (commandKey, &error);
+            dictElement = ARCONTROLLER_Dictionary_New (commandKey, &error);
             
             if (error == ARCONTROLLER_OK)
             {
@@ -326,20 +326,20 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_AddDictionaryElement (ARCONTROLLER_Comm
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_COMMAND_AddCallback (dictElement, callback, customData);
+        error = ARCONTROLLER_Dictionary_AddCallback (dictElement, callback, customData);
     }
     
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_COMMAND_TAG, " error : %d ; dictionary: %p ... ", error, *dictionary);
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_DICTIONARY_TAG, " error : %d ; dictionary: %p ... ", error, *dictionary);
     
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveDictionaryElement (ARCONTROLLER_Command_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_RemoveDictionaryElement (ARCONTROLLER_Dictionary_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
     // -- Remove a command dictionary element --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Command_t *dictElement = NULL;
+    ARCONTROLLER_Dictionary_t *dictElement = NULL;
     
     // check parameters
     if (dictionary == NULL)
@@ -354,7 +354,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveDictionaryElement (ARCONTROLLER_C
         HASH_FIND_INT (dictionary, &commandKey, dictElement);
         if (dictElement != NULL)
         {
-            error = ARCONTROLLER_COMMAND_RemoveCallback (dictElement, callback, customData);
+            error = ARCONTROLLER_Dictionary_RemoveCallback (dictElement, callback, customData);
         }
         else
         {
@@ -365,12 +365,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_RemoveDictionaryElement (ARCONTROLLER_C
     return error;
 }
 
-void ARCONTROLLER_COMMAND_DeleteDictionary (ARCONTROLLER_Command_t **dictionary)
+void ARCONTROLLER_Dictionary_DeleteDictionary (ARCONTROLLER_Dictionary_t **dictionary)
 {
     // -- Delete a command dictionary --
     
-    ARCONTROLLER_Command_t *dictElement = NULL;
-    ARCONTROLLER_Command_t *dictTmp = NULL;
+    ARCONTROLLER_Dictionary_t *dictElement = NULL;
+    ARCONTROLLER_Dictionary_t *dictTmp = NULL;
     
     if (dictionary != NULL)
     {
@@ -382,7 +382,7 @@ void ARCONTROLLER_COMMAND_DeleteDictionary (ARCONTROLLER_Command_t **dictionary)
                 /* for each element of the commands dictionary */
                 
                 HASH_DEL((*dictionary), dictElement);
-                ARCONTROLLER_COMMAND_Delete (&dictElement);
+                ARCONTROLLER_Dictionary_Delete (&dictElement);
             }
             
             free (*dictionary);
@@ -391,15 +391,15 @@ void ARCONTROLLER_COMMAND_DeleteDictionary (ARCONTROLLER_Command_t **dictionary)
     }
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary)
 {
     // -- Notify all listeners --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    ARCONTROLLER_Command_t *commandCallbacks = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbackElement = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbackElementTmp = NULL;
+    ARCONTROLLER_Dictionary_t *commandCallbacks = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbackElement = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbackElementTmp = NULL;
     
     if (error == ARCONTROLLER_OK)
     {
@@ -415,7 +415,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *diction
                     //callbackElement->callback (commandKey, argumentDictionary, callbackElement->customData);
                 //}
             //}
-            ARCONTROLLER_COMMAND_NotifyAllCallbackInArray (&(commandCallbacks->callbacks), commandKey, argumentDictionary);
+            ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (&(commandCallbacks->callbacks), commandKey, argumentDictionary);
         }
         // NO Else ; no callback registered.
     }
@@ -423,12 +423,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_COMMAND_Notify (ARCONTROLLER_Command_t *diction
     return error;
 }
 
-void ARCONTROLLER_COMMAND_NotifyAllCallbackInArray (ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary)
+void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary)
 {
     // -- Notify all listeners --
     
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbackElement = NULL;
-    ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *callbackElementTmp = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbackElement = NULL;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbackElementTmp = NULL;
     
     /* for each callback */
     DL_FOREACH_SAFE ((*callbackArray), callbackElement, callbackElementTmp)
@@ -440,15 +440,15 @@ void ARCONTROLLER_COMMAND_NotifyAllCallbackInArray (ARCONTROLLER_COMMAND_CALLBAK
     }
 }
 
-ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentDictionary, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ARG_t *ARCONTROLLER_Dictionary_ArgumentsCopy (ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, eARCONTROLLER_ERROR *error)
 {
     // -- Argument Copy --
     
     //TODO  not checked !!!!!!!!
     
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argumentsCopy = NULL;
-    ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    ARCONTROLLER_DICTIONARY_ARG_t *argumentsCopy = NULL;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
     
     // check parameters
     if (argumentDictionary == NULL)
@@ -460,10 +460,10 @@ ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCON
     if (localError == ARCONTROLLER_OK)
     {
         //// New argument element
-        //argDictNewElement = malloc (sizeof(ARCONTROLLER_FEATURE_DICTIONARY_ARG_t));
+        //argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
         //if (argDictNewElement != NULL)
         //{
-            //argDictNewElement->valueType = ARCONTROLLER_FEATURE_DICTIONARY_VALUE_TYPE_ENUM;
+            //argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
             //argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED_STATE;
             //argDictNewElement->value.I32 = state;
             
@@ -489,7 +489,7 @@ ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCON
  * Private Implementation
  *************************/
 
-//eARCONTROLLER_ERROR *ARCONTROLLER_COMMAND_InitDictionaryElement (ARCONTROLLER_Command_t *element, char *commandName)
+//eARCONTROLLER_ERROR *ARCONTROLLER_DICTIONARY_InitDictionaryElement (ARCONTROLLER_Dictionary_t *element, char *commandName)
 //{
     //// -- initialize a new Command dictionary element--
     
@@ -513,7 +513,7 @@ ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCON
     //// delete the Network Controller if an error occurred
     //if (error != ARCONTROLLER_OK)
     //{
-        //ARCONTROLLER_COMMAND_DisposeDictionaryElement (command);
+        //ARCONTROLLER_DICTIONARY_DisposeDictionaryElement (command);
     //}
     //// No else: skipped by an error 
 
@@ -521,13 +521,13 @@ ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCON
     //return error;
 //}
 
-//void ARCONTROLLER_COMMAND_DisposeDictionaryElement (ARCONTROLLER_Command_t *element)
+//void ARCONTROLLER_DICTIONARY_DisposeDictionaryElement (ARCONTROLLER_Dictionary_t *element)
 //{
     //// -- dispose the command dictionary element --
     
     //// local declarations
-    //ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *element = NULL;
-    //ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
+    //ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *element = NULL;
+    //ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
 
     //if (element != NULL)
     //{
@@ -542,7 +542,7 @@ ARCONTROLLER_FEATURE_DICTIONARY_ARG_t *ARCONTROLLER_COMMAND_ArgumentsCopy (ARCON
     //}
 //}
 
-int ARCONTROLLER_COMMAND_ElementCompare(ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *a, ARCONTROLLER_COMMAND_CALLBAK_LIST_ELEMENT_t *b)
+int ARCONTROLLER_DICTIONARY_ElementCompare(ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *a, ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *b)
 {
     return !((a->callback == b->callback) && (a->customData == b->customData));
 }

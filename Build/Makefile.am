@@ -7,7 +7,7 @@ ACLOCAL_AMFLAGS                                             =   -I m4
 HEADER_FILES                                                =   ../Includes/libARController/ARCONTROLLER_Network.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Error.h  \
                                                                 ../Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h \
-                                                                ../Includes/libARController/ARCONTROLLER_Command.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Dictionary.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Feature.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Frame.h \
                                                                 ../Includes/libARController/ARCONTROLLER_StreamPool.h \
@@ -22,8 +22,8 @@ SOURCE_FILES                                                =   $(HEADER_FILES) 
                                                                 ../Sources/ARCONTROLLER_Network.c \
                                                                 ../Sources/ARCONTROLLER_Error.c \
                                                                 ../Sources/ARCONTROLLER_DICTIONARY_Key.c \
-                                                                ../Sources/ARCONTROLLER_Command.h \
-                                                                ../Sources/ARCONTROLLER_Command.c \
+                                                                ../Sources/ARCONTROLLER_Dictionary.h \
+                                                                ../Sources/ARCONTROLLER_Dictionary.c \
                                                                 ../Sources/ARCONTROLLER_Feature.h \
                                                                 ../Sources/ARCONTROLLER_Feature.c \
                                                                 ../Sources/ARCONTROLLER_Frame.h \
