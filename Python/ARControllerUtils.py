@@ -83,14 +83,23 @@ def sendingFunctionName(module, feature, cl, cmd):
 def sendingFunction (cl, cmd):
     return 'send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
     
-def setNAckFunctionType( feature, cl, cmd):
-    return ARTypeName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name))
+def setNAckFunctionType( feature, cl, cmd, arg=None):
+    argPart = ''
+    if arg:
+        argPart = ARCapitalize(arg.name)
+    return ARTypeName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
     
-def setNAckFunctionName( feature, cl, cmd):
-    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name))
+def setNAckFunctionName( feature, cl, cmd, arg=None):
+    argPart = ''
+    if arg:
+        argPart = ARCapitalize(arg.name)
+    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
 
-def setNAckFunction (cl, cmd):
-    return 'set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
+def setNAckFunction (cl, cmd, arg=None):
+    argPart = ''
+    if arg:
+        argPart = ARCapitalize(arg.name)
+    return 'set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart
     
 def sendNAckFunctionName (feature, cl, cmd):
     return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)+'Struct')

@@ -65,8 +65,19 @@
  *****************************************/
 
 #define TAG "ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest"
+
+#define TEST_BEBOP 0
+#define TEST_JS 1
+
+
+#define DEVICE_TYPE TEST_BEBOP
+//#define DEVICE_TYPE TEST_JS
+
 #define FAKEDRONE_IP_ADDRESS "192.168.42.1"
 #define FAKEDRONE_DISCOVERY_PORT 44444
+
+#define JS_IP_ADDRESS "192.168.2.1"
+#define JS_DISCOVERY_PORT 44444
 
 /*****************************************
  *
@@ -81,6 +92,8 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROL
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData);
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData);
 
 /*****************************************
  *
@@ -131,7 +144,11 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     int failed = 0;
     
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- Basic Test:");
+#if DEVICE_TYPE == TEST_BEBOP
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- MUST BE CONNNECTED TO AN ARDONE 3:");
+#elif DEVICE_TYPE == TEST_JS
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- MUST BE CONNNECTED TO A JumpingSumo:");
+#endif
     
     ARDISCOVERY_Device_t *device = NULL;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -222,6 +239,19 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for satus changed ... ");
+        
+        error = ARCONTROLLER_Device_AddStatusChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback, deviceController);
+
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Start ... ");
         
         error = ARCONTROLLER_Device_Start (deviceController);
@@ -236,22 +266,29 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     if (failed == 0)
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for StreamingVideoEnable ... ");
-        
+
+#if DEVICE_TYPE == TEST_BEBOP
         error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, deviceController);
-    
+#elif DEVICE_TYPE == TEST_JS
+        error = ARCONTROLLER_FEATURE_JumpingSumo_AddCallback (deviceController->jumpingSumo, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, deviceController);
+#endif
         if (error != ARCONTROLLER_OK)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
-    
+
     if (failed == 0)
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- send StreamingVideoEnable ... ");
         
         streamEnableReceived = 0;
+#if DEVICE_TYPE == TEST_BEBOP
         error = deviceController->aRDrone3->sendMediaStreamingVideoEnable (deviceController->aRDrone3, 1);
+#elif DEVICE_TYPE == TEST_JS
+        error = deviceController->jumpingSumo->sendMediaStreamingVideoEnable (deviceController->jumpingSumo, 1);
+#endif
         
         if (error != ARCONTROLLER_OK)
         {
@@ -284,19 +321,21 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         sleep (50);
     }
     
-    
     if (failed == 0)
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for StreamingVideoEnable ... ");
-        
+#if DEVICE_TYPE == TEST_BEBOP
         error = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, deviceController);
-    
+#elif DEVICE_TYPE == TEST_JS
+        error = ARCONTROLLER_FEATURE_JumpingSumo_RemoveCallback (deviceController->jumpingSumo, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable, deviceController);
+#endif
         if (error != ARCONTROLLER_OK)
         {
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
+
     
     if (failed == 0)
     {
@@ -323,6 +362,20 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
+    
+    if (failed == 0)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for satus changed ... ");
+        
+        error = ARCONTROLLER_Device_RemoveStatusChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback, deviceController);
+
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
     
     if (deviceController != NULL)
     {
@@ -359,7 +412,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     
     eARDISCOVERY_ERROR errorDiscovery = ARDISCOVERY_OK;
     
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- init discovey device ... ");
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- init discovey device  ... ");
     
     *device = ARDISCOVERY_Device_New (&errorDiscovery);
     if ((errorDiscovery != ARDISCOVERY_OK) || (device == NULL))
@@ -372,7 +425,13 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     if (errorDiscovery == ARDISCOVERY_OK)
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARDISCOVERY_Device_InitWifi ...");
-        errorDiscovery = ARDISCOVERY_Device_InitWifi ((*device), ARDISCOVERY_PRODUCT_ARDRONE, "toto", FAKEDRONE_IP_ADDRESS, FAKEDRONE_DISCOVERY_PORT);
+#if DEVICE_TYPE == TEST_BEBOP
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "ARDISCOVERY_PRODUCT_ARDRONE .....................");
+        errorDiscovery = ARDISCOVERY_Device_InitWifi ((*device), ARDISCOVERY_PRODUCT_ARDRONE, "Bebop", FAKEDRONE_IP_ADDRESS, FAKEDRONE_DISCOVERY_PORT);
+#elif DEVICE_TYPE == TEST_JS
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "ARDISCOVERY_PRODUCT_JS .....................");
+        errorDiscovery = ARDISCOVERY_Device_InitWifi ((*device), ARDISCOVERY_PRODUCT_JS, "Js", JS_IP_ADDRESS, JS_DISCOVERY_PORT);
+#endif
         
         if (errorDiscovery != ARDISCOVERY_OK)
         {
@@ -421,14 +480,17 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
     
     ARCONTROLLER_DICTIONARY_ARG_t *streamEnableArgs = ARCONTROLLER_Device_GetCommandArguments (deviceController, commandKey, &error);
     
-    
     if (deviceController != NULL)
     {
         if (error == ARCONTROLLER_OK)
         {
             if (streamEnableArgs != NULL)
             {
+#if DEVICE_TYPE == TEST_BEBOP
                 HASH_FIND_STR (streamEnableArgs, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+#elif DEVICE_TYPE == TEST_JS
+                HASH_FIND_STR (streamEnableArgs, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+#endif
                 
                 if (arg != NULL)
                 {
@@ -485,4 +547,9 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (AR
     {
         ARSAL_PRINT(ARSAL_PRINT_WARNING, TAG, "videoOut is NULL.");
     }
+}
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData)
+{
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback newState:%d........", newState);
 }

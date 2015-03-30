@@ -121,7 +121,7 @@ void ARCONTROLLER_Dictionary_Delete (ARCONTROLLER_Dictionary_t **command)
         {
             if ((*command)->callbacks)
             {
-                /* delete each element, use the safe iterator */
+                // Delete each element, use the safe iterator
                 //DL_FOREACH_SAFE ((*command)->callbacks, element, elementTmp)
                 //{
                 //    DL_DELETE ((*command)->callbacks, element);
@@ -144,7 +144,7 @@ void ARCONTROLLER_Dictionary_DeleteCallbackArray (ARCONTROLLER_DICTIONARY_CALLBA
     ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *element = NULL;
     ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *elementTmp = NULL;
 
-    /* delete each element, use the safe iterator */
+    // Delete each element, use the safe iterator
     DL_FOREACH_SAFE ((*callbackArray), element, elementTmp)
     {
         DL_DELETE ((*callbackArray), element);
@@ -407,7 +407,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *d
         HASH_FIND_INT (dictionary, &commandKey, commandCallbacks);
         if (commandCallbacks != NULL)
         {
-            ///* for each callback */
+            //// for each callback
             //DL_FOREACH_SAFE (commandCallbacks->callbacks, callbackElement, callbackElementTmp)
             //{
                 //if (callbackElement->callback != NULL)
@@ -430,7 +430,7 @@ void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_C
     ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbackElement = NULL;
     ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *callbackElementTmp = NULL;
     
-    /* for each callback */
+    // for each callback
     DL_FOREACH_SAFE ((*callbackArray), callbackElement, callbackElementTmp)
     {
         if (callbackElement->callback != NULL)
@@ -533,7 +533,7 @@ ARCONTROLLER_DICTIONARY_ARG_t *ARCONTROLLER_Dictionary_ArgumentsCopy (ARCONTROLL
     //{
         //if (element->callbacks)
         //{
-            ///* delete each element, use the safe iterator */
+            //// Delete each element, use the safe iterator
             //DL_FOREACH_SAFE (element->callbacks, element, elementTmp)
             //{
                 //DL_DELETE (element->callbacks, element);
