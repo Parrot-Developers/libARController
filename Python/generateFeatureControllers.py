@@ -287,7 +287,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write ('\n')
         
         #TODO add commentary !!!!!!!!!!!
-        hfile.write ('ARCONTROLLER_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
+        hfile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
         hfile.write ('\n')
         
         
@@ -335,6 +335,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('#include <libARCommands/ARCommands.h>\n')
     hPrivFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     hPrivFile.write ('\n')
+    
+    #hPrivFile.write ('#define '+ARMacroName (MODULE_ARCONTROLLER, 'feature', 'DEFAULT_COMMAND_ELEMENT_KEY_SIZE')+' 20\n')
+    #hPrivFile.write ('\n')
 
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteCommandsDictionary')+' ('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' **dictionary);\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteArgumentsDictionary')+' ('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+' **dictionary);\n')
@@ -435,7 +438,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         hPrivFile.write (' */\n')
                         hPrivFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cl, cmd)+' ('+className+' *feature')
                         for arg in cmd.args:
-                            hPrivFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name)
+                            hPrivFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _' + arg.name)
                         hPrivFile.write (');\n')
                         hPrivFile.write ('\n')
                         
@@ -464,7 +467,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     hPrivFile.write (' */\n')
                     hPrivFile.write ('void '+decodeCallback (feature, cl, cmd)+' (')
                     for arg in cmd.args:
-                        hPrivFile.write (xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name + ', ')
+                        hPrivFile.write (xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _' + arg.name + ', ')
                     hPrivFile.write ('void *customData);\n')
                     hPrivFile.write ('\n')
         
@@ -521,9 +524,12 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteCommandsDictionary')+' ('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' **dictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Delete a commands dictionary --\n')
+    
     cFile.write ('    \n')
-    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictElement = NULL;\n')
-    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictTmp = NULL;\n')
+    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictCmdElement = NULL;\n')
+    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictCmdTmp = NULL;\n')
+    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *dictElement = NULL;\n')
+    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *dictTmp = NULL;\n')
     cFile.write ('    \n')
 
     cFile.write ('    if (dictionary != NULL)\n')
@@ -531,18 +537,39 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        if ((*dictionary) != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            // Free the hash table contents\n')
-    cFile.write ('            HASH_ITER(hh, (*dictionary), dictElement, dictTmp)\n')
+    cFile.write ('            HASH_ITER(hh, (*dictionary), dictCmdElement, dictCmdTmp)\n')
     cFile.write ('            {\n')
-    cFile.write ('                /* for each element of the commands dictionary */\n')
-    cFile.write ('                if (dictElement->arguments != NULL)\n')
+    
+    cFile.write ('                // Free the hash table contents\n')
+    cFile.write ('                HASH_ITER(hh, dictCmdElement->elements, dictElement, dictTmp)\n')
     cFile.write ('                {\n')
-    cFile.write ('                    ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteArgumentsDictionary')+' (&(dictElement->arguments));\n')
+    cFile.write ('                    // for each element\n')
+    cFile.write ('                    \n')
+    
+    cFile.write ('                    if (dictElement->arguments != NULL)\n')
+    cFile.write ('                    {\n')
+    cFile.write ('                        // delete all arguments\n')
+    cFile.write ('                        ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteArgumentsDictionary')+' (&(dictElement->arguments));\n')
+    cFile.write ('                    }\n')
+    cFile.write ('                    \n')
+    
+    cFile.write ('                    if (dictElement->key != NULL)\n')
+    cFile.write ('                    {\n')
+    cFile.write ('                        // free the key of the element\n')
+    cFile.write ('                        free (dictElement->key);\n')
+    cFile.write ('                        dictElement->key = NULL;\n')
+    cFile.write ('                    }\n')
+    cFile.write ('                    \n')
+    
+    cFile.write ('                    HASH_DEL (dictCmdElement->elements, dictElement);\n')
+    cFile.write ('                    free (dictElement);\n')
+    cFile.write ('                    dictElement = NULL;\n')
     cFile.write ('                }\n')
     cFile.write ('                \n')
     
-    cFile.write ('                HASH_DEL((*dictionary), dictElement);\n')
-    cFile.write ('                free(dictElement);\n')
-    cFile.write ('                dictElement = NULL;\n')
+    cFile.write ('                HASH_DEL ((*dictionary), dictCmdElement);\n')
+    cFile.write ('                free (dictCmdElement);\n')
+    cFile.write ('                dictCmdElement = NULL;\n')
     cFile.write ('            }\n')
     cFile.write ('            \n')
 
@@ -550,6 +577,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            (*dictionary) = NULL;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
+    
     cFile.write ('}\n')
     cFile.write ('\n')
 
@@ -575,7 +603,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                    dictElement->value.'+ARCapitalize('string')+' = NULL;\n')
     cFile.write ('                }\n')
     cFile.write ('                \n')
-
+    
     cFile.write ('                HASH_DEL((*dictionary), dictElement);\n')
     cFile.write ('                free(dictElement);\n')
     cFile.write ('                dictElement = NULL;\n')
@@ -586,6 +614,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            (*dictionary) = NULL;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
+    
     cFile.write ('}\n')
     cFile.write ('\n')
 
@@ -1033,13 +1062,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     if cmd.buf == ARCommandBuffer.NON_ACK:
                         cFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cl, cmd)+' ('+className+' *feature')
                         for arg in cmd.args:
-                            cFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name)
+                            cFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _' + arg.name)
                         cFile.write (')\n')
                         cFile.write ('{\n')
                         
                         cFile.write ('    // -- Set the parameter for the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> --\n')
                         cFile.write ('    \n')
-                        cFile.write ('    eARCONTROLLER_ERROR _error = ARCONTROLLER_OK;\n')
+                        cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                         cFile.write ('    \n')
                         
                         cFile.write ('    // check parameters\n')
@@ -1047,19 +1076,19 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write ('       (feature->privatePart == NULL) ||\n')
                         cFile.write ('       (feature->privatePart->'+structNAckName (cl, cmd)+' == NULL))\n')
                         cFile.write ('    {\n')
-                        cFile.write ('        _error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+                        cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
                         cFile.write ('    }\n')
                         cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                         cFile.write ('    \n')
                         
-                        cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
+                        cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                         cFile.write ('    {\n')
                         for arg in cmd.args:
-                            cFile.write ('        feature->privatePart->'+structNAckName(cl, cmd)+'->' + arg.name + ' = '+arg.name+';\n')
+                            cFile.write ('        feature->privatePart->'+structNAckName(cl, cmd)+'->' + arg.name + ' = _'+arg.name+';\n')
                         cFile.write ('    }\n')
                         cFile.write ('    \n')
                         
-                        cFile.write ('    return _error;\n')
+                        cFile.write ('    return error;\n')
                         cFile.write ('}\n')
                         cFile.write ('\n')
                         
@@ -1116,12 +1145,12 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write ('\n')
                         
                         for arg in cmd.args:
-                            cFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cl, cmd, arg)+' ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' '+ arg.name +')\n')
+                            cFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cl, cmd, arg)+' ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _'+ arg.name +')\n')
                             cFile.write ('{\n')
                             
                             cFile.write ('    // -- Set the '+arg.name+' for the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> --\n')
                             cFile.write ('    \n')
-                            cFile.write ('    eARCONTROLLER_ERROR _error = ARCONTROLLER_OK;\n')
+                            cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                             cFile.write ('    \n')
                             
                             cFile.write ('    // check parameters\n')
@@ -1129,18 +1158,18 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                             cFile.write ('       (feature->privatePart == NULL) ||\n')
                             cFile.write ('       (feature->privatePart->'+structNAckName (cl, cmd)+' == NULL))\n')
                             cFile.write ('    {\n')
-                            cFile.write ('        _error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+                            cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
                             cFile.write ('    }\n')
                             cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                             cFile.write ('    \n')
                             
-                            cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
+                            cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                             cFile.write ('    {\n')
-                            cFile.write ('        feature->privatePart->'+structNAckName(cl, cmd)+'->' + arg.name + ' = '+arg.name+';\n')
+                            cFile.write ('        feature->privatePart->'+structNAckName(cl, cmd)+'->' + arg.name + ' = _'+arg.name+';\n')
                             cFile.write ('    }\n')
                             cFile.write ('    \n')
                             
-                            cFile.write ('    return _error;\n')
+                            cFile.write ('    return error;\n')
                             cFile.write ('}\n')
                             cFile.write ('\n')
                     
@@ -1148,149 +1177,243 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 for cmd in cl.cmds:
                     cFile.write ('void '+decodeCallback (feature, cl, cmd)+' (')
                     for arg in cmd.args:
-                        cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name + ', ')
+                        cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _' + arg.name + ', ')
                     cFile.write ('void *customData)\n')
                     cFile.write ('{\n')
                     cFile.write ('    // -- callback used when the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + ' is decoded -- \n')
                     cFile.write ('    \n')
-                    cFile.write ('    '+className+' *_feature = ('+className+' *)customData;\n')
-                    cFile.write ('    eARCONTROLLER_ERROR _error = ARCONTROLLER_OK;\n')
-                    cFile.write ('    int _elementAdded = 0;\n')
-                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *_dictNewElement = NULL;\n')
-                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *_dictOldElement = NULL;\n')
-                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+' *_argDictNewElement = NULL;\n')
-                    cFile.write ('    ARCONTROLLER_Dictionary_t *_commandCallback = NULL;\n')
+                    cFile.write ('    '+className+' *feature = ('+className+' *)customData;\n')
+                    cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+                    cFile.write ('    int commandKey = '+defineNotification(feature, cl, cmd)+';\n')
+                    cFile.write ('    int elementAdded = 0;\n')
+                    cFile.write ('    int isANewCommandElement = 0;\n')
+                    cFile.write ('    int newCommandElementAdd = 0;\n')
+                    #cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *_dictNewCmdElement = NULL;\n')
+                    #cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *_dictOldCmdElement = NULL;\n')
+                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictCmdElement = NULL;\n')
+                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *newElement = NULL;\n')
+                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *oldElement = NULL;\n')
+                    cFile.write ('    int elementKeyLength = 0;\n')
+                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+' *argDictNewElement = NULL;\n')
+                    cFile.write ('    ARCONTROLLER_Dictionary_t *commandCallback = NULL;\n')
                     if [ a for a in cmd.args if a.type == 'string' ]:
-                        cFile.write ('    int _strLength = 0;\n')
+                        cFile.write ('    int strLength = 0;\n')
                     cFile.write ('    \n')
                     
                     cFile.write ('    // check parameters\n')
-                    cFile.write ('    if ((_feature == NULL) || (_feature->privatePart == NULL))\n')
+                    cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
                     cFile.write ('    {\n')
-                    cFile.write ('        _error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+                    cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
                     cFile.write ('    }\n')
                     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                     cFile.write ('    \n')
                     
-                    cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
+                    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
-                    cFile.write ('        // New command element\n')
-                    cFile.write ('        _dictNewElement = malloc (sizeof('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+'));\n')
-                    cFile.write ('        if (_dictNewElement != NULL)\n')
+                    cFile.write ('        // Find command elements\n')
+                    cFile.write ('        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);\n')
+                    cFile.write ('        if (dictCmdElement == NULL)\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            _dictNewElement->command = '+defineNotification(feature, cl, cmd)+';\n')
-                    cFile.write ('            _dictNewElement->arguments = NULL;\n')
+                    cFile.write ('            // New command element\n')
+                    cFile.write ('            isANewCommandElement = 1;\n')
+                    cFile.write ('            dictCmdElement = malloc (sizeof('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+'));\n')
+                    cFile.write ('            if (dictCmdElement != NULL)\n')
+                    cFile.write ('            {\n')
+                    cFile.write ('                dictCmdElement->command = commandKey;\n')
+                    cFile.write ('                dictCmdElement->elements = NULL;\n')
+                    cFile.write ('            }\n')
+                    cFile.write ('            else\n')
+                    cFile.write ('            {\n')
+                    cFile.write ('                error == ARCONTROLLER_ERROR_ALLOC;\n')
+                    cFile.write ('            }\n')
+                    cFile.write ('        }\n')
+                    cFile.write ('        // No Else ; commandElement already exists.\n')
+                    cFile.write ('        \n')
+                    cFile.write ('    }\n')
+                    cFile.write ('    \n')
+                    
+                    cFile.write ('    //Create Element Dictionary\n')
+                    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+                    cFile.write ('    {\n')
+                    cFile.write ('        // New element\n')
+                    cFile.write ('        newElement = malloc (sizeof('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+'));\n')
+                    cFile.write ('        if (newElement != NULL)\n')
+                    cFile.write ('        {\n')
+                    cFile.write ('            newElement->key = NULL;\n')
+                    cFile.write ('            newElement->arguments = NULL;\n')
                     cFile.write ('        }\n')
                     cFile.write ('        else\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            _error == ARCONTROLLER_ERROR_ALLOC;\n')
+                    cFile.write ('            error == ARCONTROLLER_ERROR_ALLOC;\n')
                     cFile.write ('        }\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
+                    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+                    cFile.write ('    {\n')
+                    cFile.write ('        //Alloc Element Key\n')
+                    if cmd.listtype == ARCommandListType.MAP:
+                        if arg.type == 'string':
+                            cFile.write ('        elementKeyLength = strlen (_'+arg.name+');\n')
+                        else:
+                            cFile.write ('        elementKeyLength = snprintf (NULL, 0, '+xmlToFormat(arg)+', _'+arg.name+');\n')
+                    elif cmd.listtype == ARCommandListType.LIST:
+                        cFile.write ('        elementKeyLength = snprintf (NULL, 0, "%d", HASH_COUNT (dictCmdElement->elements));\n')
+                    elif cmd.listtype == ARCommandListType.NONE:
+                        cFile.write ('        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);\n')
+                    cFile.write ('        newElement->key = malloc (elementKeyLength + 1);\n')
+                    cFile.write ('        if (newElement->key != NULL)\n')
+                    cFile.write ('        {\n')
+                    if cmd.listtype == ARCommandListType.MAP:
+                        if arg.type == 'string':
+                            cFile.write ('            strncpy (newElement->key, _'+arg.name+', elementKeyLength);\n')
+                        else:
+                            cFile.write ('            snprintf (newElement->key, elementKeyLength, '+xmlToFormat(arg)+', _'+arg.name+');\n')
+                            
+                        cFile.write ('                ARSAL_PRINT (ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "MAP s: %s", newElement->key);\n')
+                    elif cmd.listtype == ARCommandListType.LIST:
+                        cFile.write ('            snprintf (newElement->key, elementKeyLength, "%d", HASH_COUNT (dictCmdElement->elements));\n')
+                        cFile.write ('                ARSAL_PRINT (ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "LIST : %d", HASH_COUNT (dictCmdElement->elements));\n')
+                        cFile.write ('                ARSAL_PRINT (ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "LIST s: %s", newElement->key);\n')
+                    elif cmd.listtype == ARCommandListType.NONE:
+                        cFile.write ('            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, elementKeyLength);\n')
+                    
+                    cFile.write ('            newElement->key[elementKeyLength] = \'\\0\';\n')
+                    cFile.write ('        }\n')
+                    cFile.write ('        else\n')
+                    cFile.write ('        {\n')
+                    cFile.write ('            error == ARCONTROLLER_ERROR_ALLOC;\n')
+                    cFile.write ('        }\n')
+                    cFile.write ('    }\n')
+                    cFile.write ('    \n')
+                    
+                    cFile.write ('    //Create argument Dictionary\n')
                     for arg in cmd.args:
-                        cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
+                        cFile.write ('    //Add argument To the element\n')
+                        cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                         cFile.write ('    {\n')
                         cFile.write ('        // New argument element\n')
-                        cFile.write ('        _argDictNewElement = malloc (sizeof('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+'));\n')
-                        cFile.write ('        if (_argDictNewElement != NULL)\n')
+                        cFile.write ('        argDictNewElement = malloc (sizeof('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+'));\n')
+                        cFile.write ('        if (argDictNewElement != NULL)\n')
                         cFile.write ('        {\n')
-                        cFile.write ('            _argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', arg.type)+';\n')
-                        cFile.write ('            _argDictNewElement->argument = '+defineNotification(feature, cl, cmd, arg)+';\n')
-                                                
+                        cFile.write ('            argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', arg.type)+';\n')
+                        cFile.write ('            argDictNewElement->argument = '+defineNotification(feature, cl, cmd, arg)+';\n')
+                        
                         if arg.type == 'string':
-                            cFile.write ('            _strLength = strlen('+arg.name+');\n')
-                            cFile.write ('            _argDictNewElement->value.'+ARCapitalize(arg.type)+' = malloc (_strLength);\n')
-                            cFile.write ('            if (_argDictNewElement->value.'+ARCapitalize(arg.type)+' != NULL)\n')
+                            cFile.write ('            strLength = strlen (_'+arg.name+');\n')
+                            cFile.write ('            argDictNewElement->value.'+ARCapitalize(arg.type)+' = malloc (strLength + 1);\n')
+                            cFile.write ('            if (argDictNewElement->value.'+ARCapitalize(arg.type)+' != NULL)\n')
                             cFile.write ('            {\n')
-                            cFile.write ('                strncpy (_argDictNewElement->value.'+ARCapitalize(arg.type)+', '+arg.name+', _strLength);\n')
-                            cFile.write ('                _argDictNewElement->value.'+ARCapitalize(arg.type)+'[_strLength] = \'\\0\';\n')
+                            cFile.write ('                strncpy (argDictNewElement->value.'+ARCapitalize(arg.type)+', _'+arg.name+', strLength);\n')
+                            cFile.write ('                argDictNewElement->value.'+ARCapitalize(arg.type)+'[strLength] = \'\\0\';\n')
                             cFile.write ('            }\n')
                             cFile.write ('            else\n')
                             cFile.write ('            {\n')
-                            cFile.write ('                _error == ARCONTROLLER_ERROR_ALLOC;\n')
+                            cFile.write ('                error == ARCONTROLLER_ERROR_ALLOC;\n')
                             cFile.write ('            }\n')
                         elif arg.type == 'enum':
-                            cFile.write ('            _argDictNewElement->value.'+ARCapitalize('i32')+' = '+arg.name+';\n')
+                            cFile.write ('            argDictNewElement->value.'+ARCapitalize('i32')+' = _'+arg.name+';\n')
                         else:
-                            cFile.write ('            _argDictNewElement->value.'+ARCapitalize(arg.type)+' = '+arg.name+';\n')
+                            cFile.write ('            argDictNewElement->value.'+ARCapitalize(arg.type)+' = _'+arg.name+';\n')
                         cFile.write ('            \n')
                         
                         if arg.type == 'string':
-                            cFile.write ('            if (_error == ARCONTROLLER_OK)\n')
+                            cFile.write ('            if (error == ARCONTROLLER_OK)\n')
                             cFile.write ('            {\n')
-                            cFile.write ('                HASH_ADD_KEYPTR (hh, _dictNewElement->arguments, _argDictNewElement, strlen(_argDictNewElement->argument), _argDictNewElement);\n')
+                            cFile.write ('                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);\n')
                             cFile.write ('            }\n')
                         else:
-                            cFile.write ('            HASH_ADD_KEYPTR (hh, _dictNewElement->arguments, _argDictNewElement->argument, strlen(_argDictNewElement->argument), _argDictNewElement);\n')
+                            cFile.write ('            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);\n')
                         cFile.write ('        }\n')
                         cFile.write ('        else\n')
                         cFile.write ('        {\n')
-                        cFile.write ('            _error == ARCONTROLLER_ERROR_ALLOC;\n')
+                        cFile.write ('            error == ARCONTROLLER_ERROR_ALLOC;\n')
                         cFile.write ('        }\n')
                         cFile.write ('    }\n')
                         cFile.write ('    \n')
-                    
-                    cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
+
+                    cFile.write ('    //Set new element in CommandElements \n')
+                    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
                     cFile.write ('        // Find if the element already exist\n')
-                    cFile.write ('        HASH_FIND_INT (_feature->privatePart->dictionary, &(_dictNewElement->command), _dictOldElement);\n')
-                    cFile.write ('        if (_dictOldElement != NULL)\n')
+                    cFile.write ('        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);\n')
+                    cFile.write ('        if (oldElement != NULL)\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            HASH_REPLACE_INT (_feature->privatePart->dictionary, command, _dictNewElement, _dictOldElement);\n')
+                    cFile.write ('            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);\n')
                     cFile.write ('            \n')
                     
-                    cFile.write ('            // TODO see to free old element !!!!!!!!!!!!!!!!!!!!\n')
-                    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteArgumentsDictionary')+' (&(_dictOldElement->arguments));\n')
-                    cFile.write ('            free (_dictOldElement);\n')
-                    cFile.write ('            _dictOldElement = NULL;\n')
+                    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteArgumentsDictionary')+' (&(oldElement->arguments));\n')
+                    cFile.write ('            free (oldElement);\n')
+                    cFile.write ('            oldElement = NULL;\n')
                     cFile.write ('        }\n')
                     cFile.write ('        else\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            HASH_ADD_INT (_feature->privatePart->dictionary, command, _dictNewElement);\n')
+                    cFile.write ('            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);\n')
                     cFile.write ('        }\n')
                     cFile.write ('        \n')
-                    cFile.write ('        _elementAdded = 1;\n')
                     
+                    cFile.write ('        //Add new commandElement if necessary\n')
+                    cFile.write ('        if (isANewCommandElement)\n')
+                    cFile.write ('        {\n')
+                    cFile.write ('            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);\n')
+                    cFile.write ('        }\n')
+                    cFile.write ('        \n')
+                    cFile.write ('        elementAdded = 1;\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
-                    cFile.write ('    if (_error == ARCONTROLLER_OK)\n')
+                    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
                     #TODO see to copy arguments !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     cFile.write ('        // Callback notification\n')
-                    cFile.write ('        _error = ARCONTROLLER_Dictionary_Notify (_feature->privatePart->commandCallbacks, _dictNewElement->command, _argDictNewElement);\n')
+                    cFile.write ('        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
                     cFile.write ('    // if an error occurred \n')
-                    cFile.write ('    if (_error != ARCONTROLLER_OK)\n')
+                    cFile.write ('    if (error != ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
                     cFile.write ('        // cleanup\n')
-                    cFile.write ('        if ((_dictNewElement != NULL) && (_elementAdded == 0))\n')
+                    cFile.write ('        if ((dictCmdElement != NULL) && (!elementAdded ))\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            if (_dictNewElement->arguments != NULL)\n')
+                    cFile.write ('            if (newElement != NULL)\n')
                     cFile.write ('            {\n')
+                    cFile.write ('                if (newElement->arguments != NULL)\n')
+                    cFile.write ('                {\n')
                     
                     for arg in cmd.args:
                         if arg.type == 'string':
-                            cFile.write ('                if (_dictNewElement->arguments->value.'+ARCapitalize(arg.type)+' != NULL)\n')
-                            cFile.write ('                {\n')
-                            cFile.write ('                    free(_dictNewElement->arguments->value.'+ARCapitalize(arg.type)+');\n')
-                            cFile.write ('                    _dictNewElement->arguments->value.'+ARCapitalize(arg.type)+' = NULL;\n')
-                            cFile.write ('                }\n')
-                            cFile.write ('                \n')
+                            cFile.write ('                    if (newElement->arguments->value.'+ARCapitalize(arg.type)+' != NULL)\n')
+                            cFile.write ('                    {\n')
+                            cFile.write ('                        free(newElement->arguments->value.'+ARCapitalize(arg.type)+');\n')
+                            cFile.write ('                        newElement->arguments->value.'+ARCapitalize(arg.type)+' = NULL;\n')
+                            cFile.write ('                    }\n')
+                            cFile.write ('                    \n')
                     
-                    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " free(_dictNewElement->arguments):%p", _dictNewElement->arguments);\n')
-                    cFile.write ('                free(_dictNewElement->arguments);\n')
-                    cFile.write ('                _dictNewElement->arguments = NULL;\n')
+                    cFile.write ('                    ARSAL_PRINT (ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " free(newElement->arguments):%p", newElement->arguments);\n')
+                    cFile.write ('                    free (newElement->arguments);\n')
+                    cFile.write ('                    newElement->arguments = NULL;\n')
+                    cFile.write ('                }\n')
+                    cFile.write ('                \n')
+                    
+                    cFile.write ('                if (newElement->key != NULL)\n')
+                    cFile.write ('                {\n')
+                    cFile.write ('                    free (newElement->key);\n')
+                    cFile.write ('                    newElement->key = NULL;\n')
+                    cFile.write ('                }\n')
+                    cFile.write ('                \n')
+                    
+                    cFile.write ('                ARSAL_PRINT (ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " free(newElement) newElement:%p", newElement);\n')
+                    cFile.write ('                free (newElement);\n')
+                    cFile.write ('                newElement = NULL;\n')
                     cFile.write ('            }\n')
-                    cFile.write ('            \n')
                     
-                    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " free(_dictNewElement) _dictNewElement:%p", _dictNewElement);\n')
-                    
-                    cFile.write ('            free(_dictNewElement);\n')
-                    cFile.write ('            _dictNewElement = NULL;\n')
+                    cFile.write ('            if (isANewCommandElement)\n')
+                    cFile.write ('            {\n')
+                    cFile.write ('                ARSAL_PRINT (ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " free(dictCmdElement) dictCmdElement:%p", dictCmdElement);\n')
+                    cFile.write ('                free (dictCmdElement);\n')
+                    cFile.write ('                dictCmdElement = NULL;\n')
+                    cFile.write ('            }\n')
                     cFile.write ('        }\n')
                     cFile.write ('    }\n')
                     cFile.write ('}\n')
@@ -1322,16 +1445,16 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('ARCONTROLLER_DICTIONARY_ARG_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
+        cFile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
         cFile.write ('{\n')
         cFile.write ('    // -- Get Command Arguments --\n')
         cFile.write ('    \n')
         
-        cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandArguments')+' commandKey:%d .......", commandKey);\n')
+        cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' commandKey:%d .......", commandKey);\n')
         
         cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
         cFile.write ('    ARCONTROLLER_DICTIONARY_COMMANDS_t *commandDic = NULL;\n')
-        cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arguments = NULL;\n')
+        cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;\n')
         cFile.write ('    \n')
         
         cFile.write ('    // check parameters\n')
@@ -1348,13 +1471,14 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, " for feature->privatePart->dictionary: %p", feature->privatePart->dictionary);\n')
         
-        cFile.write ('        // Find arguments\n')
+        cFile.write ('        // Find elements\n')
         cFile.write ('        HASH_FIND_INT (feature->privatePart->dictionary, &(commandKey), commandDic);\n')
         cFile.write ('        if (commandDic != NULL)\n')
         cFile.write ('        {\n')
         
         cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "finddddddddddddd");\n')
-        cFile.write ('            arguments = commandDic->arguments;\n')
+        cFile.write ('            elements = commandDic->elements;\n')
+        cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FEATURE_TAG, "elements : %p", elements);\n')
         
         #TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         cFile.write ('           //TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n')
@@ -1362,9 +1486,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('        // NO Else ; command not found \n')
         cFile.write ('        \n')
         
-        cFile.write ('        if (arguments == NULL)\n')
+        cFile.write ('        if (elements == NULL)\n')
         cFile.write ('        {\n')
-        cFile.write ('            localError = ARCONTROLLER_ERROR_NO_ARGUMENTS;\n') # TODO see error !!!!!!!!!!!!!!!!!!!!!
+        cFile.write ('            localError = ARCONTROLLER_ERROR_NO_ELEMENT;\n') # TODO see error !!!!!!!!!!!!!!!!!!!!!
         cFile.write ('        }\n')
         cFile.write ('    }\n')
         cFile.write ('    \n')
@@ -1377,7 +1501,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    // No else: error is not returned \n')
         cFile.write ('    \n')
         
-        cFile.write ('    return arguments;\n')
+        cFile.write ('    return elements;\n')
         cFile.write ('}\n')
         cFile.write ('\n')
         

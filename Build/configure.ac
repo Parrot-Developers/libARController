@@ -84,6 +84,13 @@ AR_DEPENDS([libuthash], [Y], [libuthash/uthash.h], [N], [Y])
 AR_DEPENDS([json], [N], [json/json.h], [N])
 
 ##########################################################################
+# Check headers
+##########################################################################
+
+# Check for PRIxx macros
+AC_CHECK_DECLS([PRIu8, PRIi8, PRIu16, PRIi16, PRIu32, PRIi32, PRIu64, PRIi64],[],[AC_MSG_ERROR(PRIxx macros not found in inttypes.h)],[[#include <inttypes.h>]])
+
+##########################################################################
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_LIBTOOL

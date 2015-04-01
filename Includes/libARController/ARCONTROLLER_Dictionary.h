@@ -45,6 +45,8 @@
 #include <libARController/ARCONTROLLER_Error.h>
 #include <libARController/ARCONTROLLER_DICTIONARY_Key.h>
 
+#define ARCONTROLLER_DICTIONARY_SINGLE_KEY "ARCONTROLLER_DICTIONARY_SINGLE_KEY"
+
 /**
  * @brief .
  */
@@ -84,6 +86,7 @@ typedef union
     char * String;
 }ARCONTROLLER_DICTIONARY_VALUE_t;
 
+
 /**
  * @brief Dictionary element to storing the commands arguments coming from the device.
  */
@@ -92,8 +95,20 @@ typedef struct
     const char *argument; /**< Key associates to the argument.*/
     ARCONTROLLER_DICTIONARY_VALUE_t value; /**< Value associates to the key ; value of the argument*/
     eARCONTROLLER_DICTIONARY_VALUE_TYPE valueType; /**< Type of the value*/
+    
     UT_hash_handle hh; /**< makes this structure hashable */
 }ARCONTROLLER_DICTIONARY_ARG_t;
+
+/**
+ * @brief Dictionary element to storing the commands element.
+ */
+typedef struct 
+{
+    char *key; /**< Key associates to the element.*/
+    ARCONTROLLER_DICTIONARY_ARG_t *arguments; /**< Arguments of the command coming from the device. */
+    
+    UT_hash_handle hh; /**< makes this structure hashable */
+}ARCONTROLLER_DICTIONARY_ELEMENT_t;
 
 /**
  * @brief Dictionary element to storing the commands coming from the device.
@@ -101,7 +116,7 @@ typedef struct
 typedef struct 
 {
     eARCONTROLLER_DICTIONARY_KEY command; /**< Key associates to the command */
-    ARCONTROLLER_DICTIONARY_ARG_t *arguments; /**< Arguments of the command coming from the device. */
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements; /**< Elements of the command. */
     UT_hash_handle hh; /**< makes this structure hashable */
 }ARCONTROLLER_DICTIONARY_COMMANDS_t;
 
@@ -110,7 +125,7 @@ typedef struct
  * 
  * @param[in] customData customDate set by the register
  */
-typedef void (*ARCONTROLLER_DICTIONARY_CALLBACK_t) (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData); // TODO int -> ARCommands Big enum
+typedef void (*ARCONTROLLER_DICTIONARY_CALLBACK_t) (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData); // TODO int -> ARCommands Big enum
 
 /**
  * @brief 
@@ -168,7 +183,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_RemoveDictionaryElement (ARCONTROLLE
 void ARCONTROLLER_Dictionary_DeleteDictionary (ARCONTROLLER_Dictionary_t **dictionary);
 
 //TODO add commentary !!!!!!!!
-eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary);
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
+
+
 
 //TODO add commentary !!!!!!!!
 void ARCONTROLLER_Dictionary_DeleteCallbackArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray);
@@ -179,7 +196,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_AddCallbackInArray (ARCONTROLLER_DIC
 //TODO add commentary !!!!!!!!
 eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_RemoveCallbackFromArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
 
-void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary);
+void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
 
 //not checked
 ARCONTROLLER_DICTIONARY_ARG_t *ARCONTROLLER_DICTIONARY_ArgumentsCopy (ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, eARCONTROLLER_ERROR *error);

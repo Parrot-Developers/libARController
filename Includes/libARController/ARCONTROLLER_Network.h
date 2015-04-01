@@ -87,6 +87,9 @@ typedef struct
     void *customData; /**< Custom data */
 }ARCONTROLLER_NETWORK_SendingConfiguration_t;
 
+//TODO add !!!!!!!!!
+typedef void (*ARCONTROLLER_Network_DisconnectionCallback_t) (void *customData);
+
 /**
  * @brief Create a new Network Controller
  * @warning This function allocate memory
@@ -97,7 +100,8 @@ typedef struct
  * @see ARCONTROLLER_Network_Delete()
  */
 //ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
-ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error);
+//ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error);
 
 
 /**
@@ -140,15 +144,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_N
 //eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, int bufferID, ARCONTROLLER_NETWORK_SendingConfiguration_t sendingConfig);
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError);
 
-/**
- * @brief Add connection json part callbacks.
- * @param device The Discovery Device to add callback.
- * @param[in] sendJsonCallback Callback to add a json part durring the connection. 
- * @param[in] receiveJsonCallback Callback to read a json part durring the connection.
- * @param[in] customData custom data given as parameter to the callbacks.
- * @return executing error.
- */
-eARDISCOVERY_ERROR ARCONTROLLER_Network_AddConnectionJsonCallbacks (ARCONTROLLER_Network_t *networkController, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData);
+///**
+ //* @brief Add connection json part callbacks.
+ //* @param device The Discovery Device to add callback.
+ //* @param[in] sendJsonCallback Callback to add a json part durring the connection. 
+ //* @param[in] receiveJsonCallback Callback to read a json part durring the connection.
+ //* @param[in] customData custom data given as parameter to the callbacks.
+ //* @return executing error.
+ //*/
+//eARCONTROLLER_ERROR ARCONTROLLER_Network_SetConnectionJsonCallbacks (ARCONTROLLER_Network_t *networkController, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData);
 
 
 //TODO add !!!!!!!!!

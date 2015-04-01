@@ -62,6 +62,7 @@ struct ARCONTROLLER_Network_t
     ARSAL_Mutex_t mutex; /**< Mutex for multithreading */
     eARCONTROLLER_NETWORK_STATE state; /**< state of the networkController*/
     
+    
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
     ARCONTROLLER_Stream_t *videoController; /**< manage input video stream  */
@@ -69,7 +70,8 @@ struct ARCONTROLLER_Network_t
     //Connection callback
     ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback;
     ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback;
-    void *jsonCallbacksCustomData;
+    ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback; /**< callback of disconnection */
+    void *callbacksCustomData;
 };
 
 struct ARCONTROLLER_NETWORK_THREAD_DATA_t

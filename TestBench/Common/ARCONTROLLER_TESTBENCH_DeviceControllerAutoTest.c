@@ -67,7 +67,7 @@
 #define TAG "ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest"
 
 #define TEST_BEBOP 0
-#define TEST_JS 1
+//#define TEST_JS 1
 
 
 #define DEVICE_TYPE TEST_BEBOP
@@ -87,9 +87,9 @@
 
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ();
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 
@@ -155,7 +155,11 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     ARCONTROLLER_Device_t *deviceController = NULL;
     
     pid_t child = 0;
-    char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo";
+#if DEVICE_TYPE == TEST_BEBOP
+    char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo_30fps";
+#elif DEVICE_TYPE == TEST_JS
+    char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo.mjpg";
+#endif
     FILE *videoOut = NULL;
     
     failed += ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (&device);
@@ -197,8 +201,8 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         // fork the process to launch ffplay
         if ((child = fork()) == 0)
         {
-            //execlp("mplayer", "mplayer", videoOutFileName, NULL);
-            execlp("mplayer", "mplayer", "video_fifo", "lirc=no", NULL);
+            execlp("mplayer", "mplayer", "-demuxer lavf", videoOutFileName, NULL);
+            //execlp("mplayer", "mplayer", "video_fifo", "lirc=no", NULL);
             //execlp("mplayer", videoOutFileName, NULL);
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "Missing mplayer, you will not see the video. Please install mplayer.");
             return -1;
@@ -449,7 +453,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     return failed;
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)
 {
     //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived ........");
     
@@ -459,6 +463,8 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROL
     
     ARCONTROLLER_Device_t *deviceController = customData;
     
+    //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    elementDictionary count %d", HASH_COUNT(elementDictionary));
+    
     if (deviceController != NULL)
     {
         cmdReceived = 1;
@@ -466,46 +472,68 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROL
     
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable ........");
     
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    commandKey %d", commandKey);
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    argumentDictionary %p", argumentDictionary);
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    elementDictionary %p", elementDictionary);
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    customData %p", customData);
     
     ARCONTROLLER_Device_t *deviceController = customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
     
-    ARCONTROLLER_DICTIONARY_ARG_t *streamEnableArgs = ARCONTROLLER_Device_GetCommandArguments (deviceController, commandKey, &error);
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *streamEnableElements = ARCONTROLLER_Device_GetCommandElements (deviceController, commandKey, &error);
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *singleElement = NULL;
+    
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    streamEnableElements %p", streamEnableElements);
     
     if (deviceController != NULL)
     {
         if (error == ARCONTROLLER_OK)
         {
-            if (streamEnableArgs != NULL)
+            if (streamEnableElements != NULL)
             {
+                HASH_FIND_STR (streamEnableElements, ARCONTROLLER_DICTIONARY_SINGLE_KEY, singleElement);
+                
+                if (singleElement != NULL)
+                {
+                
+                    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    singleElement->arguments %p", singleElement->arguments);
+                    
+                    if (singleElement->arguments != NULL)
+                    {
 #if DEVICE_TYPE == TEST_BEBOP
-                HASH_FIND_STR (streamEnableArgs, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+                        HASH_FIND_STR (singleElement->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
 #elif DEVICE_TYPE == TEST_JS
-                HASH_FIND_STR (streamEnableArgs, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+                        HASH_FIND_STR (singleElement->arguments, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
 #endif
                 
-                if (arg != NULL)
-                {
-                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->valueType %d",arg->valueType);
-                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->value %d",arg->value.U8);
-                    streamEnableReceived = 1;
+                        if (arg != NULL)
+                        {
+                            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->valueType %d",arg->valueType);
+                            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->value %d",arg->value.U8);
+                            streamEnableReceived = 1;
+                        }
+                        else
+                        {
+                            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg is NULL");
+                        }
+                    }
+                    else
+                    {
+                        ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "singleElement->arguments is NULL");
+                    }
                 }
                 else
                 {
-                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg is NULL");
+                    ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "singleElement is NULL");
                 }
             }
             else
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "streamEnableArgs is NULL");
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "streamEnableElements is NULL");
             }
         }
         else
@@ -534,7 +562,7 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (AR
             //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - frame->isIFrame:%d",frame->isIFrame);
             //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - frame->missed:%d",frame->missed);
             
-            //ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - fwrite frame->data:%p frame->used:%d",frame->data, frame->used);
+            ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - fwrite frame->data:%p frame->used:%d",frame->data, frame->used);
             fwrite(frame->data, frame->used, 1, videoOut);
             //fflush (videoOut);
         }

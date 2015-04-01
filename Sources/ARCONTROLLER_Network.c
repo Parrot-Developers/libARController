@@ -59,7 +59,7 @@
  *************************/
 
 //ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
-ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Network Controller --
     
@@ -92,13 +92,17 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
             networkController->readerThreads = NULL;
             networkController->readerThreadsData = NULL;
             networkController->state = ARCONTROLLER_NETWORK_STATE_RUNNING;
+            
+            
             //video part
             networkController->hasVideo = 0;
             networkController->videoController = NULL;
             
+            //Connection callback
             networkController->sendJsonCallback = sendJsonCallback;
             networkController->receiveJsonCallback = receiveJsonCallback;
-            networkController->jsonCallbacksCustomData = customData;
+            networkController->disconnectionCallback = disconnectionCallback;
+            networkController->callbacksCustomData = customData;
             
             // init networkConfiguration
             networkController->networkConfig.controllerToDeviceNotAckId = -1;
@@ -584,20 +588,21 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
     return error;
 }
 
-eARDISCOVERY_ERROR ARCONTROLLER_Network_AddConnectionJsonCallbacks (ARCONTROLLER_Network_t *networkController, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData)
+/*
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetConnectionJsonCallbacks (ARCONTROLLER_Network_t *networkController, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_AddConnectionJsonCallbacks ....");
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_SetConnectionJsonCallbacks ....");
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "networkController %p  ....", networkController);
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "sendJsonCallback %p | receiveJsonCallback %p ....", sendJsonCallback, receiveJsonCallback);
     
     // -- Add Connection Callbacks --
     
-    eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_ERROR_OK;
     
     // check parameters
     if (networkController == NULL)
     {
-        error = ARDISCOVERY_ERROR_BAD_PARAMETER;
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
     // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
@@ -610,7 +615,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_AddConnectionJsonCallbacks (ARCONTROLLER
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "error %d ....", error);
     
     return error;
-}
+}*/
 
 /*
 ARNETWORK_Manager_t *ARCONTROLLER_Network_GetNetworkManager (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
@@ -736,7 +741,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *
     {
         if (networkController->sendJsonCallback != NULL)
         {
-            error = networkController->sendJsonCallback (jsonObj, networkController->jsonCallbacksCustomData);
+            error = networkController->sendJsonCallback (jsonObj, networkController->callbacksCustomData);
         }
     }
     
@@ -776,7 +781,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, voi
     {
         if (networkController->receiveJsonCallback != NULL)
         {
-            error = networkController->receiveJsonCallback ( jsonObj, networkController->jsonCallbacksCustomData);
+            error = networkController->receiveJsonCallback ( jsonObj, networkController->callbacksCustomData);
         }
     }
     
@@ -1060,7 +1065,14 @@ void *ARCONTROLLER_Network_ReaderRun (void *data)
 
 void ARCONTROLLER_Network_OnDisconnectNetwork (ARNETWORK_Manager_t *manager, ARNETWORKAL_Manager_t *alManager, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "OnDisconnectNetwork ...");            
+    ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "OnDisconnectNetwork ...");
+    
+    ARCONTROLLER_Network_t *networkController = (ARCONTROLLER_Network_t *)customData;
+    
+    if ((networkController != NULL) && (networkController->disconnectionCallback != NULL))
+    {
+        networkController->disconnectionCallback (networkController->callbacksCustomData);
+    }
 }
 
 eARNETWORK_MANAGER_CALLBACK_RETURN ARCONTROLLER_Network_SendingCallback(int buffer_id, uint8_t *data, void *custom, eARNETWORK_MANAGER_CALLBACK_STATUS cause)

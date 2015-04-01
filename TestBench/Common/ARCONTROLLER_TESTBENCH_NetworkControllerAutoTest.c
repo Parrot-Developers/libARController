@@ -186,7 +186,7 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_Network_New ...");
         //networkController = ARCONTROLLER_Network_New (device, &error);
-        networkController = ARCONTROLLER_Network_New (device, NULL, NULL, NULL, &error);
+        networkController = ARCONTROLLER_Network_New (device, NULL, NULL, NULL, NULL, &error);
     
         if ((error != ARCONTROLLER_OK) || (networkController == NULL))
         {

@@ -191,12 +191,12 @@ JNITYPES  = ['jbyte',    'jbyte',
              'jstring']
 
 # Equivalent format types
-FORMATTYPES  = ['%d',    '%d',
-             '%d',   '%d',
-             '%d',     '%d',
-             '%d',    '%d',
-             '%f',   '%f',
-             '%s']
+FORMATTYPES  = ['"%"PRIu8',    '"%"PRIi8',
+             '"%"PRIu16',   '"%"PRIi16',
+             '"%"PRIu32',     '"%"PRIi32',
+             '"%"PRIu64',    '"%"PRIi64',
+             '"%f"',   '"%f"',
+             '"%s"']
 
 def xmlToC (module, proj, cl, cmd, arg):
     if 'enum' == arg.type:
@@ -219,9 +219,9 @@ def xmlToJava (proj, cl, cmd, arg):
     xmlIndex = XMLTYPES.index (arg.type)
     return JAVATYPES [xmlIndex]
     
-def xmlToFormat (proj, cl, cmd, arg):
+def xmlToFormat (arg):
     if 'enum' == arg.type:
-        return "%s";
+        return "%d";
     xmlIndex = XMLTYPES.index (arg.type)
     return FORMATTYPES [xmlIndex]
 

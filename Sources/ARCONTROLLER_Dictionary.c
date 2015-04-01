@@ -391,7 +391,7 @@ void ARCONTROLLER_Dictionary_DeleteDictionary (ARCONTROLLER_Dictionary_t **dicti
     }
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary)
+eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *dictionary, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
 {
     // -- Notify all listeners --
     
@@ -415,7 +415,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *d
                     //callbackElement->callback (commandKey, argumentDictionary, callbackElement->customData);
                 //}
             //}
-            ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (&(commandCallbacks->callbacks), commandKey, argumentDictionary);
+            ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (&(commandCallbacks->callbacks), commandKey, elementDictionary);
         }
         // NO Else ; no callback registered.
     }
@@ -423,7 +423,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_Notify (ARCONTROLLER_Dictionary_t *d
     return error;
 }
 
-void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ARG_t *argumentDictionary)
+void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t **callbackArray, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
 {
     // -- Notify all listeners --
     
@@ -435,7 +435,7 @@ void ARCONTROLLER_DICTIONARY_NotifyAllCallbackInArray (ARCONTROLLER_DICTIONARY_C
     {
         if (callbackElement->callback != NULL)
         {
-            callbackElement->callback (commandKey, argumentDictionary, callbackElement->customData);
+            callbackElement->callback (commandKey, elementDictionary, callbackElement->customData);
         }
     }
 }
