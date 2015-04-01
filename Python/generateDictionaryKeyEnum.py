@@ -129,10 +129,10 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     first = True
     for feature in allFeatures:
         if first:
-            hFile.write ('    '+defineNotification(feature)+' = 0,/**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature)+' = 0, /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
             first = False
         else:
-            hFile.write ('    '+defineNotification(feature)+',/**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature)+', /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
         
         for cl in feature.classes:
             
@@ -143,7 +143,7 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
                         #first = False
                     #else:
                         #hFile.write ('    '+defineNotification(MODULE_FEATURE, feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
-                    hFile.write ('    '+defineNotification(feature, cl, cmd)+',/**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+                    hFile.write ('    '+defineNotification(feature, cl, cmd)+', /**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
     hFile.write ('    '+AREnumValue(MODULE_DICTIONARY, 'DICTIONARY', 'KEY','MAX')+', /**< Unused, iterator maximum value */\n')
     hFile.write ('}'+defineNotificationDef()+';\n')
     hFile.write ('\n')
