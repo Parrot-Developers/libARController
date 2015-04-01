@@ -448,6 +448,9 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write (' *\n')
     cFile.write (' ****************************************/\n')
     cFile.write ('\n')
+
+    cFile.write ('int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ElementCompare')+'('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *a, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *b);\n')
+    cFile.write ('\n')
     
     
     
@@ -1988,7 +1991,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    likeElement.customData = customData;\n')
     cFile.write ('\n')
         
-    cFile.write ('    DL_SEARCH ((*callbackArray), elementFind, &likeElement, ARCONTROLLER_DICTIONARY_ElementCompare);\n')
+    cFile.write ('    DL_SEARCH ((*callbackArray), elementFind, &likeElement, ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ElementCompare')+');\n')
     cFile.write ('    if (elementFind != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        DL_DELETE ((*callbackArray), elementFind);\n')
@@ -2045,6 +2048,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write (' *             local implementation:\n')
     cFile.write (' *\n')
     cFile.write (' ****************************************/\n')
+    cFile.write ('\n')
+
+    cFile.write ('int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ElementCompare')+'('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *a, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *b)\n')
+    cFile.write ('{\n')
+    cFile.write ('    return !((a->callback == b->callback) && (a->customData == b->customData));\n')
+    cFile.write ('}\n')
     cFile.write ('\n')
     
     

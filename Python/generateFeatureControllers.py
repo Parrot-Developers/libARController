@@ -396,7 +396,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hPrivFile.write (' * @param feature The feature controller to unregister\n')
         hPrivFile.write (' * return executing error\n')
         hPrivFile.write (' */\n')
-        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, feature.name, 'UnegisterARCommands')+' ('+className+' *feature);\n')
+        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, feature.name, 'UnregisterARCommands')+' ('+className+' *feature);\n')
         hPrivFile.write ('\n')
         
         for cl in feature.classes:
@@ -917,7 +917,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('    // -- Register the feature controller to be called when the commands are decoded. -- \n')
         cFile.write ('    \n')
-        cFile.write ('    eARCONTROLLER_ERROR error = ARNETWORK_OK;\n')
+        cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
         cFile.write ('    // check parameters\n')
@@ -948,7 +948,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('    // -- Unregister the feature controller to be called when the commands are decoded. -- \n')
         cFile.write ('    \n')
-        cFile.write ('    eARCONTROLLER_ERROR error = ARNETWORK_OK;\n')
+        cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
         cFile.write ('    // check parameters\n')
@@ -1224,7 +1224,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('            }\n')
                     cFile.write ('            else\n')
                     cFile.write ('            {\n')
-                    cFile.write ('                error == ARCONTROLLER_ERROR_ALLOC;\n')
+                    cFile.write ('                error = ARCONTROLLER_ERROR_ALLOC;\n')
                     cFile.write ('            }\n')
                     cFile.write ('        }\n')
                     cFile.write ('        // No Else ; commandElement already exists.\n')
@@ -1244,7 +1244,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        }\n')
                     cFile.write ('        else\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            error == ARCONTROLLER_ERROR_ALLOC;\n')
+                    cFile.write ('            error = ARCONTROLLER_ERROR_ALLOC;\n')
                     cFile.write ('        }\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
@@ -1282,7 +1282,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        }\n')
                     cFile.write ('        else\n')
                     cFile.write ('        {\n')
-                    cFile.write ('            error == ARCONTROLLER_ERROR_ALLOC;\n')
+                    cFile.write ('            error = ARCONTROLLER_ERROR_ALLOC;\n')
                     cFile.write ('        }\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
@@ -1309,7 +1309,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                             cFile.write ('            }\n')
                             cFile.write ('            else\n')
                             cFile.write ('            {\n')
-                            cFile.write ('                error == ARCONTROLLER_ERROR_ALLOC;\n')
+                            cFile.write ('                error = ARCONTROLLER_ERROR_ALLOC;\n')
                             cFile.write ('            }\n')
                         elif arg.type == 'enum':
                             cFile.write ('            argDictNewElement->value.'+ARCapitalize('i32')+' = _'+arg.name+';\n')
@@ -1327,7 +1327,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write ('        }\n')
                         cFile.write ('        else\n')
                         cFile.write ('        {\n')
-                        cFile.write ('            error == ARCONTROLLER_ERROR_ALLOC;\n')
+                        cFile.write ('            error = ARCONTROLLER_ERROR_ALLOC;\n')
                         cFile.write ('        }\n')
                         cFile.write ('    }\n')
                         cFile.write ('    \n')

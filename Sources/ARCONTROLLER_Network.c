@@ -48,6 +48,7 @@
 #include <libARController/ARCONTROLLER_Stream.h>
 #include <libARController/ARCONTROLLER_Network.h>
 
+#include "ARCONTROLLER_Stream.h"
 #include "ARCONTROLLER_Network.h"
 
 /*************************
