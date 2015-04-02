@@ -59,7 +59,6 @@
  * Implementation
  *************************/
 
-//ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
 ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Network Controller --
@@ -118,7 +117,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
             networkController->networkConfig.controllerToDeviceParams = NULL;
             networkController->networkConfig.numberOfDeviceToControllerParam  = 0;
             networkController->networkConfig.deviceToControllerParams = NULL;
-            networkController->networkConfig.bleNotificationIDs = NULL;
             networkController->networkConfig.pingDelayMs =-1;
             networkController->networkConfig.numberOfDeviceToControllerCommandsBufferIds = 0;
             networkController->networkConfig.deviceToControllerCommandsBufferIds = NULL;

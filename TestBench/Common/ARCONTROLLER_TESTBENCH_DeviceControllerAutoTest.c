@@ -172,7 +172,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if ((error != ARCONTROLLER_OK) || (deviceController == NULL))
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -224,7 +224,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if (error != ARCONTROLLER_OK)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -237,7 +237,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if (error != ARCONTROLLER_OK)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
     
@@ -350,7 +350,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         if (error != ARCONTROLLER_OK)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
     
