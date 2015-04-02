@@ -765,8 +765,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('    // -- Delete the '+feature.name+' feature Controller --\n')
         cFile.write ('    \n')
-        cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictElement = NULL;\n')
-        cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictTmp = NULL;\n')
         
         cFile.write ('    if (feature != NULL)\n')
         cFile.write ('    {\n')
@@ -1187,15 +1185,14 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    int commandKey = '+defineNotification(feature, cl, cmd)+';\n')
                     cFile.write ('    int elementAdded = 0;\n')
                     cFile.write ('    int isANewCommandElement = 0;\n')
-                    cFile.write ('    int newCommandElementAdd = 0;\n')
                     #cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *_dictNewCmdElement = NULL;\n')
                     #cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *_dictOldCmdElement = NULL;\n')
                     cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictCmdElement = NULL;\n')
                     cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *newElement = NULL;\n')
                     cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *oldElement = NULL;\n')
                     cFile.write ('    int elementKeyLength = 0;\n')
-                    cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+' *argDictNewElement = NULL;\n')
-                    cFile.write ('    ARCONTROLLER_Dictionary_t *commandCallback = NULL;\n')
+                    if cmd.args:
+                        cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+' *argDictNewElement = NULL;\n')
                     if [ a for a in cmd.args if a.type == 'string' ]:
                         cFile.write ('    int strLength = 0;\n')
                     cFile.write ('    \n')

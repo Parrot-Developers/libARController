@@ -354,7 +354,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Flush (ARCONTROLLER_StreamQueue_t *
     // -- Flush the Queue --
 
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Frame_t *frame = NULL;
     
     // check parameters
     if (streamQueue == NULL)

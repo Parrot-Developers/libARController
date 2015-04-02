@@ -1014,7 +1014,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // -- Set Video receive callback --\n')
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    int alreadyStopped = 0;\n')
     cFile.write ('    int locked = 1;\n')
     cFile.write ('    \n')
     
@@ -1066,7 +1065,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // -- Add Command received callback --\n')
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    int alreadyStopped = 0;\n')
     cFile.write ('    int locked = 1;\n')
     cFile.write ('    \n')
     
@@ -1108,7 +1106,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // -- Remove Command received callback --\n')
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    int alreadyStopped = 0;\n')
     cFile.write ('    int locked = 1;\n')
     cFile.write ('    \n')
     
@@ -1220,7 +1217,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // -- Add Status Changed callback --\n')
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    int alreadyStopped = 0;\n')
     cFile.write ('    int locked = 1;\n')
     cFile.write ('    \n')
     
@@ -1263,7 +1259,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    int alreadyStopped = 0;\n')
     cFile.write ('    int locked = 1;\n')
     cFile.write ('    \n')
     
@@ -1623,7 +1618,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait initSem .......");\n')
-    cFile.write ('        int res  = ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
+    cFile.write ('        ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
     cFile.write ('    }\n')
     cFile.write ('    \n')
             
@@ -1656,7 +1651,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait initSem .......");\n')
-    cFile.write ('        int res = ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
+    cFile.write ('        ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error !!!!!!!!!!!!!!!!!!!
     cFile.write ('    }\n')
     cFile.write ('    \n')
             
@@ -1832,9 +1827,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    eARDISCOVERY_ERROR error = ARDISCOVERY_OK;\n')
     cFile.write ('    \n')
     
-    cFile.write ('    json_object *valueJsonObj = NULL;\n')
-    cFile.write ('    \n')
-    
     cFile.write ('    if ((jsonObj == NULL) ||\n')
     cFile.write ('        (deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1845,6 +1837,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARDISCOVERY_OK)\n')
     cFile.write ('    {\n')
+    #TODO see what to do or remove function !!!!!!!!!!!!!!!!!!!!!!
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
@@ -1901,7 +1894,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
     
-    cFile.write ('    if (error == ARDISCOVERY_OK)\n')
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        controllerLoopIntervalUs = MSEC_TO_USEC (deviceController->privatePart->networkConfiguration.controllerLoopIntervalMs);\n')
     cFile.write ('        if (!(controllerLoopIntervalUs > 0))\n')
@@ -1911,7 +1904,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
-    cFile.write ('    if (error == ARDISCOVERY_OK)\n')
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        while ((deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_RUNNING) ||\n')
     cFile.write ('               (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_STARTING) ||\n')
@@ -1952,9 +1945,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
     cFile.write ('    // local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *elementFind = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *newElement = NULL;\n')
-    cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' likeElement;\n')
     cFile.write ('\n')
     
     cFile.write ('    // add the callback\n')

@@ -272,9 +272,6 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Delete the Network Controller ...");
     // -- Delete the Network Controller --
-    
-    // local declarations
-    int bufferIndex = 0;
 
     if (networkController != NULL)
     {
@@ -711,7 +708,6 @@ ARDISCOVERY_NetworkConfiguration_t *ARCONTROLLER_Network_GetNetworkConfiguration
     return networkConfig;
 }*/
 
-//eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (ARCONTROLLER_Network_t *networkController, json_object *jsonObj)
 eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *customData)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_SendJsonCallback ....");
@@ -720,8 +716,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *
     // local declarations
     ARCONTROLLER_Network_t *networkController = (ARCONTROLLER_Network_t *)customData;
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
-    
-    json_object *valueJsonObj = NULL;
     
     // Check parameters
     if ((jsonObj == NULL) ||
@@ -759,9 +753,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, voi
     // local declarations
     ARCONTROLLER_Network_t *networkController = (ARCONTROLLER_Network_t *)customData;
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
-    eARCONTROLLER_ERROR controllerError = ARCONTROLLER_OK;
-    
-    json_object *valueJsonObj = NULL;
     
     if ((jsonObj == NULL) ||
         (networkController == NULL))

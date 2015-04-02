@@ -75,7 +75,6 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networ
 
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
     ARCONTROLLER_Stream_t *streamController =  NULL;
     
     // check parameters
@@ -160,9 +159,6 @@ void ARCONTROLLER_Stream_Delete (ARCONTROLLER_Stream_t **streamController)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, " ARCONTROLLER_Stream_Delete ...");
     // -- Delete the Stream Controller --
-    
-    // local declarations
-    int bufferIndex = 0;
 
     if (streamController != NULL)
     {
@@ -257,7 +253,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamContr
     // -- Stop to read the stream --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    eARSTREAM_ERROR streamError = ARSTREAM_OK;
     
     // check parameters
     if (streamController == NULL)
@@ -304,7 +299,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_St
     // -- Stop to read the stream --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    eARSTREAM_ERROR streamError = ARSTREAM_OK;
     
     // check parameters
     if (streamController == NULL)
@@ -422,10 +416,9 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *stream
     // -- Connection callback to receive the Json --
     
     // local declarations
-    ARDISCOVERY_DEVICE_WIFI_t *specificWifiParam = NULL;
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
     
-    json_object *valueJsonObj = NULL;
+    //json_object *valueJsonObj = NULL;
     
     // Check parameters
     if ((jsonObj == NULL) ||
@@ -487,7 +480,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *str
         // Initialization of the stream buffers
         controllerError = ARCONTROLLER_Stream_InitStreamBuffers (streamController);
         
-        if (error != ARCONTROLLER_OK)
+        if (controllerError != ARCONTROLLER_OK)
         {
             ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM_TAG, "Error occurred durring Initialization of the stream buffers : %s ", ARCONTROLLER_Error_ToString (controllerError));
         }
@@ -680,7 +673,7 @@ int ARCONTROLLER_Stream_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int nu
             }
         }
     }
-    return index;
+    return indexOfId;
 }
 
 void* ARCONTROLLER_Stream_ReaderThreadRun (void *data)
