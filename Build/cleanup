@@ -16,8 +16,8 @@ rm -f \
     config.status \
     configure \
     libtool \
-    libcontroller_dbg.la \
-    libcontroller.la \
+    libarcontroller_dbg.la \
+    libarcontroller.la \
     stamp-h1
 
 find .. -name '*~' -delete
