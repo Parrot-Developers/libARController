@@ -53,22 +53,20 @@
  */
 struct ARCONTROLLER_Stream_t
 {
-    //ARDISCOVERY_Device_t *discoveryDevice; /**< the device to drive */
     ARDISCOVERY_NetworkConfiguration_t *networkConfiguration; /**< the networkConfiguration of the device*/
-    //ARCONTROLLER_Network_t *networkController; /**< the networkController to used to send and receive the stream */
     ARSTREAM_Reader_t *streamReader; /**< reader of the stream */
     int fragmentSize; /**< Size maximum of the stream fragment */
     int maxNumberOfFragement; /**< Number maximum of stream fragment */
     int maxAckInterval; /**< Maximum of acknowledge interval on the stream */
     ARSAL_Thread_t dataThread; /**< video receiver thread */
     ARSAL_Thread_t ackThread; /**< acknowledge send thread */
-    ARSAL_Thread_t readerThread;
+    ARSAL_Thread_t readerThread; /**< thread to read the ready frames */
     int isRunning; /**< 0 if the stream is stopped ; otherwide the stream is running */
-    ARCONTROLLER_StreamPool_t *framePool;
-    ARCONTROLLER_StreamQueue_t *readyQueue;
-    ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback;
-    ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback;
-    void *receiveFrameCustomData;
+    ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
+    ARCONTROLLER_StreamQueue_t *readyQueue; /**< ready frames */
+    ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback; /**< callback when a frame is received */
+    ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback; /**< callback when timeout */
+    void *receiveFrameCustomData;  /**< custom data to send to callbacks */
 };
 
 

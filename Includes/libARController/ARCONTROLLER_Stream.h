@@ -49,12 +49,12 @@
 
 
 /**
- * @brief Callback 
+ * @brief Callback when a frame is received
  */
 typedef void (*ARNETWORKAL_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
 
 /**
- * @brief Callback 
+ * @brief Callback when timeout in frame receiving 
  */
 typedef void (*ARNETWORKAL_Stream_TimeoutFrameCallback_t) (void *customData);
 

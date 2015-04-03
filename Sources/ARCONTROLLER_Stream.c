@@ -560,30 +560,19 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
         queue = streamController->readyQueue;
     }
     
-    ////TODO see case to get a new frame and frameData = NUUL !!!!!!!!!!!!
-    //if (error == ARCONTROLLER_OK)
-    //{
-        ////ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_StreamPool_GetFrameFromData ... frameData:%p ....", frameData);
-        //frame = ARCONTROLLER_StreamPool_GetFrameFromData (pool, frameData, &error);
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_StreamPool_GetFrameFromData ... found frame:%p ....", frame);
-    //}
-    
     if (error == ARCONTROLLER_OK)
     {
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "cause : %d....", cause);
         switch (cause)
         {
             case ARSTREAM_READER_CAUSE_FRAME_COMPLETE:
-                //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARSTREAM_READER_CAUSE_FRAME_COMPLETE.... isFlushFrame:%d", isFlushFrame);
-                
                 frame = ARCONTROLLER_StreamPool_GetFrameFromData (pool, frameData, &error);
+                
                 if (error == ARCONTROLLER_OK)
                 {
                     frame->isIFrame = (isFlushFrame == 1) ? 1 : 0;
                     frame->used = frameSize;
                     frame->missed = numberOfSkippedFrames;
                     ARCONTROLLER_StreamQueue_Push (queue, frame);
-                    //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARSTREAM_READER_CAUSE_FRAME_COMPLETE.... frame->isIFrame =%d", frame->isIFrame);
                     
                     frame = ARCONTROLLER_StreamPool_GetNextFreeFrame (pool, &error);
                 }
@@ -591,8 +580,6 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
                 break;
                 
             case ARSTREAM_READER_CAUSE_FRAME_TOO_SMALL:
-                //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARSTREAM_READER_CAUSE_FRAME_TOO_SMALL...." );
-                
                 if (frameData != NULL)
                 {
                     frame = ARCONTROLLER_StreamPool_GetFrameFromData (pool, frameData, &error);
@@ -609,14 +596,11 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
                 break;
                 
             case ARSTREAM_READER_CAUSE_COPY_COMPLETE:
-                //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARSTREAM_READER_CAUSE_COPY_COMPLETE...." );
                 error = ARCONTROLLER_Frame_SetFree (oldFrame);
                 oldFrame = NULL;
                 break;
                 
             case ARSTREAM_READER_CAUSE_CANCEL:
-                //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARSTREAM_READER_CAUSE_COPY_COMPLETE...." );
-                
                 frame = ARCONTROLLER_StreamPool_GetFrameFromData (pool, frameData, &error);
                 if (error == ARCONTROLLER_OK)
                 {

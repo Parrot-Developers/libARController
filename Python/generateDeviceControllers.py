@@ -170,11 +170,23 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Delete')+' ('+className+' **deviceController);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Start the Device Controller.\n')
+    hfile.write (' * @warning This is a blocking function.\n')
+    hfile.write (' * @post ARCONTROLLER_Device_Stop() must be called to stop the Device Controller.\n')
+    hfile.write (' * @param deviceController The device controller to start.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' * @see ARCONTROLLER_Device_Stop\n')
+    hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Start')+' ('+className+' *deviceController);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Stop the Device Controller.\n')
+    hfile.write (' * @param deviceController The device controller to Stop.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' * @see ARCONTROLLER_Device_Start\n')
+    hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Stop')+' ('+className+' *deviceController);\n')
     hfile.write ('\n')
     
