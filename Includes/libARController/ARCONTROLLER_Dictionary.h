@@ -39,8 +39,8 @@
 #ifndef _ARCONTROLLER_DICTIONARY_H_
 #define _ARCONTROLLER_DICTIONARY_H_
 
-#include <libuthash/uthash.h>
-#include <libuthash/utlist.h>
+#include <uthash/uthash.h>
+#include <uthash/utlist.h>
 
 #include <libARController/ARCONTROLLER_Error.h>
 #include <libARController/ARCONTROLLER_DICTIONARY_Key.h>

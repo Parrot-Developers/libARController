@@ -38,8 +38,8 @@
  
 #include <stdlib.h>
 
-#include <libuthash/uthash.h>
-#include <libuthash/utlist.h>
+#include <uthash/uthash.h>
+#include <uthash/utlist.h>
 
 #include <libARSAL/ARSAL_Print.h>
 

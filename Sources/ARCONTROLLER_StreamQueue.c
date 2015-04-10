@@ -40,8 +40,8 @@
 #include <time.h>
 #include <stdint.h>
 
-#include <libuthash/uthash.h>
-#include <libuthash/utlist.h>
+#include <uthash/uthash.h>
+#include <uthash/utlist.h>
 
 #include <libARSAL/ARSAL_Print.h>
 

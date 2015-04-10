@@ -100,7 +100,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('\n')
     hfile.write ('#include <libARSAL/ARSAL_Print.h>\n')
     hfile.write ('#include <libARSAL/ARSAL_Mutex.h>\n')
-    hfile.write ('#include <libuthash/uthash.h>\n')
+    hfile.write ('#include <uthash/uthash.h>\n')
     hfile.write ('\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Error.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Dictionary.h>\n')

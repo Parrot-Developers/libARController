@@ -80,7 +80,7 @@ AR_DEPENDS([libARNetwork], [Y], [libARNetwork/ARNetwork.h])
 AR_DEPENDS([libARDiscovery], [Y], [libARDiscovery/ARDiscovery.h])
 AR_DEPENDS([libARCommands], [Y], [libARCommands/ARCommands.h])
 AR_DEPENDS([libARStream], [Y], [libARStream/ARStream.h])
-AR_DEPENDS([libuthash], [Y], [libuthash/uthash.h], [N], [Y])
+AR_DEPENDS([uthash], [Y], [uthash/uthash.h], [N], [Y])
 AR_DEPENDS([json], [N], [json/json.h], [N])
 
 ##########################################################################
