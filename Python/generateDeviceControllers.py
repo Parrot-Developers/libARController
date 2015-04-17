@@ -125,11 +125,11 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('\n')
     
     hfile.write ('/**\n')
-    hfile.write (' * @brief . // TODO !!!!!!!!!!!!!!!!!!!\n')
-    hfile.write (' * \n')
-    hfile.write (' * @param[in] customData customDate set by the register\n')
+    hfile.write (' * @brief callback used when the status of the device Controller is changed.\n')
+    hfile.write (' * @param[in] newState the new state of the Device Contoller\n')
+    hfile.write (' * @param[in] customData customData set by the register\n')
     hfile.write (' */\n')
-    hfile.write ('typedef void (*'+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+') (eARCONTROLLER_DEVICE_STATE newState, void *customData);\n')
+    hfile.write ('typedef void (*'+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+') (eARCONTROLLER_DEVICE_STATE newState, void *customData);\n')
     hfile.write ('\n')
     
     hfile.write ('/**\n')
@@ -190,27 +190,63 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Stop')+' ('+className+' *deviceController);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Set callback to receive video.\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @param receiveFrameCallback The callback when a frame is received.\n')
+    hfile.write (' * @param timeoutFrameCallback The callback when timeout on receive.\n')
+    hfile.write (' * @param[in] customData custom data given as parameter to the callback.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetVideoReceiveCallback')+' ('+className+' *deviceController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Add callback to be informed when a commands is received.\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @param commandReceivedCallback The callback when a commands is received.\n')
+    hfile.write (' * @param[in] customData custom data given as parameter to the callback.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Remove callback of command received information.\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @param commandReceivedCallback The callback to remove.\n')
+    hfile.write (' * @param[in] customData custom data associated to the callback.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
-    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddStatusChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' statusChangedCallback, void *customData);\n')
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Add callback of Device Controller state changed information.\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @param StateChangedCallback The callback to add.\n')
+    hfile.write (' * @param[in] customData custom data given as parameter to the callback.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' */\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' statusChangedCallback, void *customData);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
-    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveStatusChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' statusChangedCallback, void *customData);\n')
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Remove callback of Device Controller state changed information.\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @param StateChangedCallback The callback to remove.\n')
+    hfile.write (' * @param[in] customData custom data associated to the callback.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' */\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' statusChangedCallback, void *customData);\n')
     hfile.write ('\n')
     
-    #TODO add commentary !!!!!!!!!!!
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Get Element of a command received.\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @param commandKey The key of the command.\n')
+    hfile.write (' * @return executing error.\n')
+    hfile.write (' */\n')
     hfile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandElements')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
     
@@ -255,9 +291,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     hPrivFile.write ('\n')
     
-    #hPrivFile.write ('#define '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_VIDEO_FRAGMENT_SIZE')+' 1000\n')
-    #hPrivFile.write ('#define '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_VIDEO_FRAGMENT_MAXIMUM_NUMBER')+' 128\n')
-    #hPrivFile.write ('\n')
     hPrivFile.write ('#define '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+' 1024\n')
     hPrivFile.write ('\n')
     
@@ -269,7 +302,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('\n')
     hPrivFile.write ('struct '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+'\n')
     hPrivFile.write ('{\n')
-    hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' callback; /**< callback used when the status is changed. */\n')
+    hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback; /**< callback used when the status is changed. */\n')
     hPrivFile.write ('    void *customData;  /**< custom data given as parameter to the callback. */\n')
     hPrivFile.write ('    \n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *next;\n')
@@ -299,77 +332,131 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('};\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Start the Network.\n')
+    hPrivFile.write (' * @post ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' must be call to stop the device Controller before destroy it.\n')
+    hPrivFile.write (' * @warning This is a blocking function.\n')
+    hPrivFile.write (' * @param deviceController The device controller to start its network.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+'.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartNetwork')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Stop the Network.\n')
+    hPrivFile.write (' * @param deviceController The device controller to stop its network.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartNetwork')+'.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
-    #hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartVideo')+' ('+className+' *deviceController);\n')
-    #hPrivFile.write ('\n')
-    
-    #TODO add commentary !!!!!!!!
-    #hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopVideo')+' ('+className+' *deviceController);\n')
-    #hPrivFile.write ('\n')
-    
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Function called on start of the device.\n')
+    hPrivFile.write (' * @param deviceController The device controller on start.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnStart')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Set the network controller of the device controller to its features.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Register callback for each command received.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Unregister callback for each command received.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'UnregisterCallbacks')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Start the looper thread sending pcmd commands.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+'.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Stop the looper thread sending pcmd commands.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+'.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Run of the looper thread.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return NULL.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+'.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+'.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ControllerLooperThread')+' (void *data);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Set the Initial Date for the device.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetInitialDate')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Get the Initial Settings of the device.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialSettings')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Get the Initial States of the device.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialStates')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Callback used when the settings or states of the device are changed.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @return executing error.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData); // TODO int -> ARCommands Big \n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Function called when all initials states of the device are received.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Function called when all initials settings of the device are received.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllSettingsEnd')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
-    #TODO add commentary !!!!!!!!
-    #hPrivFile.write ('void* ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'VideoThreadRun')+' (void *data);\n')
-    #hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
     hPrivFile.write ('eARDISCOVERY_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SendJsonCallback')+' (json_object *jsonObj, void *customData);\n')
@@ -384,11 +471,11 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
-    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' callback, void *customData);\n')
+    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData);\n')
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
-    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' callback, void *customData);\n')
+    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData);\n')
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
@@ -834,6 +921,13 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "alreadyStarted : %d", alreadyStarted);\n')
     
+    cFile.write ('    if (locked)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        locked = 0;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
     cFile.write ('    if (!alreadyStarted)\n')
     cFile.write ('    {\n')
     
@@ -1224,7 +1318,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddStatusChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' statusChangedCallback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' statusChangedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add Status Changed callback --\n')
     cFile.write ('    \n')
@@ -1265,7 +1359,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveStatusChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' statusChangedCallback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' statusChangedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove Status Changed Callback --\n')
     cFile.write ('    \n')
@@ -1890,7 +1984,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('{\n')
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "ControllerLooperThread .....");\n')
     
-    cFile.write ('    // -- Sending Looper Thread for Bebop --\n')
+    cFile.write ('    // -- Sending Looper Thread --\n')
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+className+' *deviceController = data;\n')
@@ -1951,7 +2045,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' callback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add callback in array --\n')
     cFile.write ('    \n')
@@ -1978,7 +2072,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StatusChangedCallback')+' callback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove callback from array --\n')
     cFile.write ('\n')

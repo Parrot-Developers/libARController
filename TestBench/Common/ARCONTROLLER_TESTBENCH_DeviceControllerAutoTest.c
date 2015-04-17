@@ -93,7 +93,7 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData);
 
 /*****************************************
  *
@@ -245,7 +245,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for satus changed ... ");
         
-        error = ARCONTROLLER_Device_AddStatusChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback, deviceController);
+        error = ARCONTROLLER_Device_AddStateChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback, deviceController);
 
         if (error != ARCONTROLLER_OK)
         {
@@ -371,7 +371,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for satus changed ... ");
         
-        error = ARCONTROLLER_Device_RemoveStatusChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback, deviceController);
+        error = ARCONTROLLER_Device_RemoveStateChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback, deviceController);
 
         if (error != ARCONTROLLER_OK)
         {
@@ -577,7 +577,7 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (AR
     }
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StatusChangedCallback newState:%d........", newState);
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback newState:%d........", newState);
 }
