@@ -370,6 +370,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hPrivFile.write ('    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */\n')
         hPrivFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictionary; /**< stores states and settings of the device */\n')
         hPrivFile.write ('    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */\n')
+        hPrivFile.write ('    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */\n')
 
         for cl in feature.classes:
             for cmd in cl.cmds :
@@ -700,6 +701,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 if cmd.buf == ARCommandBuffer.NON_ACK:
                     cFile.write ('            featureController->privatePart->'+structNAckName (cl, cmd)+' = NULL;\n')
                     
+        cFile.write ('            // Create the mutex \n')
+        cFile.write ('            if (ARSAL_Mutex_Init (&(featureController->privatePart->mutex)) != 0)\n')
+        cFile.write ('            {\n')
+        cFile.write ('                localError = ARCONTROLLER_ERROR_INIT_MUTEX;\n')
+        cFile.write ('            }\n')
         cFile.write ('        }\n')
         cFile.write ('        else\n')
         cFile.write ('        {\n')
@@ -767,6 +773,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('            if ((*feature)->privatePart != NULL)\n')
         cFile.write ('            {\n')
+        cFile.write ('                ARSAL_Mutex_Destroy (&((*feature)->privatePart->mutex));\n')
+        cFile.write ('                \n')
         
         cFile.write ('                if ((*feature)->privatePart->dictionary != NULL)\n')
         cFile.write ('                {\n')
@@ -1158,6 +1166,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    \n')
                     cFile.write ('    '+className+' *feature = ('+className+' *)customData;\n')
                     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+                    cFile.write ('    int locked = 0;\n')
                     cFile.write ('    int commandKey = '+defineNotification(feature, cl, cmd)+';\n')
                     cFile.write ('    int elementAdded = 0;\n')
                     cFile.write ('    int isANewCommandElement = 0;\n')
@@ -1179,8 +1188,17 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                     cFile.write ('    \n')
                     
+                    #cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+                    #cFile.write ('    {\n')
+                    #cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+                    #cFile.write ('        locked = 1;\n')
+                    #cFile.write ('    }\n')
+                    #cFile.write ('    \n')
+                    
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
+                    cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+                    cFile.write ('        \n')
                     cFile.write ('        // Find command elements\n')
                     cFile.write ('        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);\n')
                     cFile.write ('        if (dictCmdElement == NULL)\n')
@@ -1200,6 +1218,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        }\n')
                     cFile.write ('        // No Else ; commandElement already exists.\n')
                     cFile.write ('        \n')
+                    cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
@@ -1222,6 +1241,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
+                    if cmd.listtype == ARCommandListType.LIST:
+                        cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+                        cFile.write ('        \n')
+                        
                     cFile.write ('        //Alloc Element Key\n')
                     if cmd.listtype == ARCommandListType.MAP:
                         if arg.type == 'string':
@@ -1251,6 +1274,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        {\n')
                     cFile.write ('            error = ARCONTROLLER_ERROR_ALLOC;\n')
                     cFile.write ('        }\n')
+                    if cmd.listtype == ARCommandListType.LIST:
+                        cFile.write ('        \n')
+                        cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
@@ -1302,6 +1328,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    //Set new element in CommandElements \n')
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
+                    cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+                    cFile.write ('        \n')
                     cFile.write ('        // Find if the element already exist\n')
                     cFile.write ('        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);\n')
                     cFile.write ('        if (oldElement != NULL)\n')
@@ -1326,8 +1354,17 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('        }\n')
                     cFile.write ('        \n')
                     cFile.write ('        elementAdded = 1;\n')
+                    cFile.write ('        \n')
+                    cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
+                    
+                    #cFile.write ('    if (locked)\n')
+                    #cFile.write ('    {\n')
+                    #cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
+                    #cFile.write ('        locked = 0;\n')
+                    #cFile.write ('    }\n')
+                    #cFile.write ('    \n')
                     
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
@@ -1431,7 +1468,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
         cFile.write ('    {\n')
         
-        
+        cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+        cFile.write ('        \n')
+                
         cFile.write ('        // Find elements\n')
         cFile.write ('        HASH_FIND_INT (feature->privatePart->dictionary, &(commandKey), commandDic);\n')
         cFile.write ('        if (commandDic != NULL)\n')
@@ -1443,6 +1482,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('           //TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n')
         cFile.write ('        }\n')
         cFile.write ('        // NO Else ; command not found \n')
+        cFile.write ('        \n')
+        
+        cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
         cFile.write ('        \n')
         
         cFile.write ('        if (elements == NULL)\n')
