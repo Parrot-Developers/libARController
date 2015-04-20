@@ -93,7 +93,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
             networkController->readerThreadsData = NULL;
             networkController->state = ARCONTROLLER_NETWORK_STATE_RUNNING;
             
-            
             //video part
             networkController->hasVideo = 0;
             networkController->videoController = NULL;

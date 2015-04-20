@@ -763,11 +763,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                }\n')
     cFile.write ('                \n')
     
-    #cFile.write ('                if ((*deviceController)->privatePart->videoStreamController != NULL)\n')
-    #cFile.write ('                {\n')
-    #cFile.write ('                    ARCONTROLLER_Stream_Delete (&((*deviceController)->privatePart->videoStreamController));\n')
-    #cFile.write ('                }\n')
-    
     cFile.write ('                ARDISCOVERY_Device_Delete (&((*deviceController)->privatePart->discoveryDevice));\n')
     cFile.write ('                \n')
     

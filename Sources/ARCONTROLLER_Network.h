@@ -62,7 +62,6 @@ struct ARCONTROLLER_Network_t
     ARSAL_Mutex_t mutex; /**< Mutex for multithreading */
     eARCONTROLLER_NETWORK_STATE state; /**< state of the networkController*/
     
-    
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
     ARCONTROLLER_Stream_t *videoController; /**< manage input video stream  */
