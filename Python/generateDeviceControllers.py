@@ -868,7 +868,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int alreadyStarted = 0;\n')
-    cFile.write ('    int locked = 0;\n')
+    #cFile.write ('    int locked = 0;\n')
     cFile.write ('    \n')
     
     cFile.write ('    // check parameters\n')
@@ -879,16 +879,18 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
     
-    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('    {\n')
-    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait mutex");\n')
-    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        locked = 1;\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
+    #cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    #cFile.write ('    {\n')
+    #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait mutex");\n')
+    #cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
+    #cFile.write ('        locked = 1;\n')
+    #cFile.write ('    }\n')
+    #cFile.write ('    \n')
     
     cFile.write ('    if (error == ARCONTROLLER_OK) \n')
     cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
+    cFile.write ('        \n')
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "deviceController->privatePart->state: %d", deviceController->privatePart->state);\n')
     cFile.write ('        switch (deviceController->privatePart->state)\n')
     cFile.write ('        {\n')
@@ -911,17 +913,19 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                error = ARCONTROLLER_ERROR;\n')
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
+    cFile.write ('    \n')
+    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "alreadyStarted : %d", alreadyStarted);\n')
     
-    cFile.write ('    if (locked)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        locked = 0;\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
+    #cFile.write ('    if (locked)\n')
+    #cFile.write ('    {\n')
+    #cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
+    #cFile.write ('        locked = 0;\n')
+    #cFile.write ('    }\n')
+    #cFile.write ('    \n')
     
     cFile.write ('    if (!alreadyStarted)\n')
     cFile.write ('    {\n')
@@ -967,6 +971,8 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('        \n')
     
+    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
+    
     cFile.write ('        if (error == ARCONTROLLER_OK)\n')
     cFile.write ('        {\n')
     cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_RUNNING;\n')
@@ -979,15 +985,10 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('        \n')
     
+    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
+    
     cFile.write ('    }\n')
     cFile.write ('    //NO ELSE ; already Started\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (locked)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        locked = 0;\n')
-    cFile.write ('    }\n')
     cFile.write ('    \n')
     
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "start endddddddddddddddddd....");\n')
