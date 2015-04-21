@@ -498,6 +498,13 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, eARCONTROLLER_DEVICE_STATE state);\n')
     hPrivFile.write ('\n')
     
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Set the Device Controller Status and notify all listeners.\n')
+    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' */\n')
+    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' ('+className+' *deviceController, eARCONTROLLER_DEVICE_STATE state);\n')
+    hPrivFile.write ('\n')
+    
     hPrivFile.write ('#endif /* '+includeDefine+' */\n')
     hPrivFile.write ('\n')
     hPrivFile.write ('// END GENERATED CODE\n')
@@ -907,7 +914,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        switch (deviceController->privatePart->state)\n')
     cFile.write ('        {\n')
     cFile.write ('            case ARCONTROLLER_DEVICE_STATE_STOPPED:\n')
-    cFile.write ('                //Do nothing\n')
+    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STARTING);\n')
     cFile.write ('                break;\n')
     cFile.write ('            \n')
     cFile.write ('            case ARCONTROLLER_DEVICE_STATE_STARTING:\n')
@@ -943,13 +950,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "start ....");\n')
-    
-    cFile.write ('        if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('        {\n')
-    cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_STARTING;\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state);\n')
-    cFile.write ('        }\n')
-    cFile.write ('        \n')
     
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "startNetwork ....");\n')
     
@@ -987,13 +987,11 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('        if (error == ARCONTROLLER_OK)\n')
     cFile.write ('        {\n')
-    cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_RUNNING;\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state);\n')
+    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING);\n')
     cFile.write ('        }\n')
     cFile.write ('        else\n')
     cFile.write ('        {\n')
-    cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_STOPPED;\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state);\n')
+    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED);\n')
     cFile.write ('        }\n')
     cFile.write ('        \n')
     
@@ -1070,8 +1068,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        if (error == ARCONTROLLER_OK)\n')
     cFile.write ('        {\n')
-    cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_STOPPING;\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state);\n')
+    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING);\n')
     cFile.write ('        }\n')
     cFile.write ('        \n')
     
@@ -1095,12 +1092,11 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('        if (error == ARCONTROLLER_OK)\n')
     cFile.write ('        {\n')
-    cFile.write ('            deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE_STOPPED;\n')
-    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state);\n')
+    cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED);\n')
     cFile.write ('        }\n')
     cFile.write ('        //else // TODO see what to do\n')
     cFile.write ('        //{\n')
-    cFile.write ('        //    deviceController->privatePart->state = ARCONTROLLER_DEVICE_STATE ????;\n')
+    cFile.write ('        //    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE ????;\n')
     cFile.write ('        //}\n')
     cFile.write ('        \n')
     
@@ -2174,6 +2170,17 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            callbackElement->callback (state, callbackElement->customData);\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+    
+    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' ('+className+' *deviceController, eARCONTROLLER_DEVICE_STATE state)\n')
+    cFile.write ('{\n')
+    cFile.write ('    // -- Set the Device Controller State and notify all listeners.\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    deviceController->privatePart->state = state;\n')
+    cFile.write ('    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state);\n')
+    cFile.write ('    \n')
     cFile.write ('}\n')
     cFile.write ('\n')
     
