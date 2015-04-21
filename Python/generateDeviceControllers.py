@@ -466,8 +466,20 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write  ('eARDISCOVERY_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ReceiveJsonCallback')+' (json_object *jsonObj, void *customData);\n')
     hPrivFile.write ('\n')
     
-    #TODO add commentary !!!!!!!!
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Callback used when the Network Controller is Disconnected.\n')
+    hPrivFile.write (' * @param customData The device controller on diconnection.\n')
+    hPrivFile.write (' */\n')
     hPrivFile.write  ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnDisconnectCallback')+' (void *customData);\n')
+    hPrivFile.write ('\n')
+    
+    hPrivFile.write ('/**\n')
+    hPrivFile.write (' * @brief Diconnection thread run .\n')
+    hPrivFile.write (' * @param data The device controller on diconnection.\n')
+    hPrivFile.write (' * @return NULL.\n')
+    hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnDisconnectCallback')+'.\n')
+    hPrivFile.write (' */\n')
+    hPrivFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DisconnectRun')+' (void *data);\n')
     hPrivFile.write ('\n')
     
     #TODO add commentary !!!!!!!!
@@ -1955,7 +1967,36 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
     
     cFile.write ('    // local declarations\n')
-    cFile.write ('    '+className+' *deviceController = customData;\n')
+    cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+    cFile.write ('    ARSAL_Thread_t diconnectThread = NULL;\n')
+
+    #TODO abort end of connection or stop the drone !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    cFile.write ('    if (ARSAL_Thread_Create (&diconnectThread, ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DisconnectRun')+', customData) != 0)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Creation of Diconnection thread failed.");\n')
+    cFile.write ('        error = ARCONTROLLER_ERROR_INIT_THREAD;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    else\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_Thread_Destroy (&diconnectThread);\n')
+    cFile.write ('        diconnectThread = NULL;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_DEVICE_TAG, "- OnDisconnectCallback ... ennnnnnnnnnd");\n')
+    
+    cFile.write ('}\n')
+    cFile.write ('\n')
+    
+    cFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DisconnectRun')+' (void *data)\n')
+    cFile.write ('{\n')
+    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "DisconnectRun .....");\n')
+    
+    cFile.write ('    // -- Thread of diconnection--\n')
+    cFile.write ('    \n')
+    
+    cFile.write ('    // local declarations\n')
+    cFile.write ('    '+className+' *deviceController = ('+className+' *) data;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    \n')
     
@@ -1969,12 +2010,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    #TODO abort end of connection or stop the drone !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    cFile.write ('        error =' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Stop')+' (deviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    
+    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "DisconnectRun ..... end");\n')
     
     cFile.write ('}\n')
-    cFile.write ('\n')
     
     cFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ControllerLooperThread')+' (void *data)\n')
     cFile.write ('{\n')
