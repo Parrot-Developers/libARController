@@ -404,7 +404,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Run of the looper thread.\n')
-    hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @param data The device controller.\n')
     hPrivFile.write (' * @return NULL.\n')
     hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+'.\n')
     hPrivFile.write (' * @see ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+'.\n')
@@ -887,7 +887,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int alreadyStarted = 0;\n')
-    #cFile.write ('    int locked = 0;\n')
     cFile.write ('    \n')
     
     cFile.write ('    // check parameters\n')
@@ -897,14 +896,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
-    
-    #cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    #cFile.write ('    {\n')
-    #cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "wait mutex");\n')
-    #cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
-    #cFile.write ('        locked = 1;\n')
-    #cFile.write ('    }\n')
-    #cFile.write ('    \n')
     
     cFile.write ('    if (error == ARCONTROLLER_OK) \n')
     cFile.write ('    {\n')
@@ -932,19 +923,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                error = ARCONTROLLER_ERROR;\n')
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
-    cFile.write ('    \n')
+    cFile.write ('        \n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
     cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "alreadyStarted : %d", alreadyStarted);\n')
-    
-    #cFile.write ('    if (locked)\n')
-    #cFile.write ('    {\n')
-    #cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
-    #cFile.write ('        locked = 0;\n')
-    #cFile.write ('    }\n')
-    #cFile.write ('    \n')
     
     cFile.write ('    if (!alreadyStarted)\n')
     cFile.write ('    {\n')
@@ -1000,8 +984,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    //NO ELSE ; already Started\n')
     cFile.write ('    \n')
-    
-    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "start endddddddddddddddddd....");\n')
     
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
@@ -1259,8 +1241,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // -- Get Command Elements --\n')
     cFile.write ('    \n')
     
-    cFile.write ('    ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandElements')+' .......");\n')
-    
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
     cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;\n')
     cFile.write ('    '+defineNotificationDef()+' featureKey = ' + ARFunctionName (MODULE_DICTIONARY, 'Key', 'GetFeatureFromCommandKey')+' (commandKey);\n')
@@ -1289,7 +1269,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        {\n')
     for feature in allFeatures:
         cFile.write ('            case '+defineNotification(feature)+':\n')
-        cFile.write ('               ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' ...  .......");\n')
         cFile.write ('                elements = ' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' (deviceController->'+ARUncapitalize(feature.name)+', commandKey, &localError);\n')
         cFile.write ('                \n')
         cFile.write ('                break;\n')
@@ -2156,7 +2135,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInArray')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' **callbackArray, eARCONTROLLER_DEVICE_STATE state)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Notify all listeners --\n')
-    cFile.write ('\n')
+    cFile.write ('    \n')
         
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *callbackElement = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATUS_CHANGED_CALLBACK_ELEMENT')+' *callbackElementTmp = NULL;\n')
