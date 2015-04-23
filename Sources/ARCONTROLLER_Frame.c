@@ -60,20 +60,11 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_New (eARCONTROLLER_ERROR *error)
 
 ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_NewWithCapacity (uint32_t defaultCapacity, eARCONTROLLER_ERROR *error)
 {
-    // -- Create a new frame --
+    // -- Create a New Frame --
 
-    //local declarations
+    //Local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame =  NULL;
-    
-    /*
-    // check parameters
-    if (defaultCapacity > 0)
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    */
     
     if (localError == ARCONTROLLER_OK)
     {
@@ -111,25 +102,25 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_NewWithCapacity (uint32_t defaultCapaci
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Error is not returned 
 
     return frame;
 }
 
 void ARCONTROLLER_Frame_Delete (ARCONTROLLER_Frame_t **frame)
 {
-    // -- Delete a frame --
+    // -- Delete a Frame --
 
     if (frame != NULL)
     {
         if ((*frame) != NULL)
         {
-            // free data
+            // Free data
             if ((*frame)->data != NULL)
             {
                 free ((*frame)->data);
@@ -150,7 +141,7 @@ int ARCONTROLLER_Frame_ensureCapacityIsAtLeast (ARCONTROLLER_Frame_t *frame, uin
     int res = 0;
     uint8_t *newData = NULL;
     
-    // check parameters
+    // Check parameters
     if (frame == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -165,7 +156,7 @@ int ARCONTROLLER_Frame_ensureCapacityIsAtLeast (ARCONTROLLER_Frame_t *frame, uin
         }
         else
         {
-            //realloc data
+            // Realloc data
             newData = realloc (frame->data, minimumCapacity);
             if (newData != NULL)
             {
@@ -180,7 +171,7 @@ int ARCONTROLLER_Frame_ensureCapacityIsAtLeast (ARCONTROLLER_Frame_t *frame, uin
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -192,11 +183,11 @@ int ARCONTROLLER_Frame_ensureCapacityIsAtLeast (ARCONTROLLER_Frame_t *frame, uin
 
 eARCONTROLLER_ERROR ARCONTROLLER_Frame_SetFree (ARCONTROLLER_Frame_t *frame)
 {
-    // -- Set a frame as free --
+    // -- Set a Frame as Free --
 
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (frame == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -205,7 +196,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Frame_SetFree (ARCONTROLLER_Frame_t *frame)
     
     if (error == ARCONTROLLER_OK)
     {
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_FRAME_TAG, " set frame->available = 1 .....");
         frame->available = 1;
     }
 

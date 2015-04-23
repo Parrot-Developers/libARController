@@ -67,17 +67,15 @@ void* ARCONTROLLER_Stream_ReaderThreadRun (void *data);
  * Implementation
  *************************/
 
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networkController, */ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_Stream_New ....");
-        
     // -- Create a new Stream Controller --
 
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Stream_t *streamController =  NULL;
     
-    // check parameters
+    // Check parameters
     if (networkConfiguration == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -91,8 +89,6 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networ
         if (streamController != NULL)
         {
             // Initialize to default values
-            //streamController->discoveryDevice = NULL;
-            //streamController->networkController = networkController;
             streamController->networkConfiguration = networkConfiguration;
             
             streamController->fragmentSize = ARCONTROLLER_STREAM_DEFAULT_VIDEO_FRAGMENT_SIZE;
@@ -114,14 +110,6 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networ
         }
     }
     
-    /*if (localError == ARCONTROLLER_OK)
-    {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "Get the device ....");
-        
-        // Get the device from the network Controller
-        streamController->discoveryDevice = ARCONTROLLER_Network_GetDevice (streamController->networkController, &localError);
-    }*/
-    
     if (localError == ARCONTROLLER_OK)
     {
         // create the frame pool
@@ -131,7 +119,7 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networ
     if (localError == ARCONTROLLER_OK)
     {
         // create the frame queue
-        streamController->readyQueue = ARCONTROLLER_StreamQueue_New (streamController->framePool, ARCONTROLLER_STREAMPOOL_DEFAULT_SIZE, 1, &localError);
+        streamController->readyQueue = ARCONTROLLER_StreamQueue_New (1, &localError);
     }
 
     // delete the Network Controller if an error occurred
@@ -141,11 +129,7 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networ
     }
     // No else: skipped by an error 
 
-
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "localError %d ....", localError);
-        
-
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -157,7 +141,6 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networ
 
 void ARCONTROLLER_Stream_Delete (ARCONTROLLER_Stream_t **streamController)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, " ARCONTROLLER_Stream_Delete ...");
     // -- Delete the Stream Controller --
 
     if (streamController != NULL)
@@ -186,7 +169,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
     eARSTREAM_ERROR streamError = ARSTREAM_OK;
     ARCONTROLLER_Frame_t *firstFrame = NULL;
     
-    // check parameters
+    // Check parameters
     if (streamController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -211,8 +194,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
         
         if (error == ARCONTROLLER_OK)
         {
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "Creation of Data thread with streamController->streamReaderd:%p.", streamController->streamReader);
-            
             if (ARSAL_Thread_Create (&(streamController->dataThread), ARSTREAM_Reader_RunDataThread, streamController->streamReader) != 0)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM_TAG, "Creation of Data thread failed.");
@@ -249,12 +230,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
 
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamController)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_Stream_Stop ...................");
     // -- Stop to read the stream --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (streamController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -300,7 +280,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_St
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (streamController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -324,7 +304,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *strea
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     
-    // check parameters
+    // Check parameters
     if (streamController == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -336,7 +316,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *strea
         frame = ARCONTROLLER_StreamQueue_Pop (streamController->readyQueue, &localError);
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -348,12 +328,12 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *strea
 
 ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_TryGetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error)
 {
-    // -- try to Get a Frame --
+    // -- Try to Get a Frame --
     
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     
-    // check parameters
+    // Check parameters
     if (streamController == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -365,7 +345,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_TryGetFrame (ARCONTROLLER_Stream_t *st
         frame = ARCONTROLLER_StreamQueue_TryPop (streamController->readyQueue, &localError);
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -382,7 +362,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stre
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     
-    // check parameters
+    // Check parameters
     if (streamController == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -394,7 +374,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stre
         frame = ARCONTROLLER_StreamQueue_PopWithTimeout (streamController->readyQueue, timeoutMs, &localError);
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -412,7 +392,6 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stre
 
 eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *streamController, json_object *jsonObj)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_Stream_SendJsonCallback ....");
     // -- Connection callback to receive the Json --
     
     // local declarations
@@ -432,8 +411,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *stream
 
 eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *streamController, json_object *jsonObj)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_Stream_ReceiveJsonCallback ....");
-    
     // -- Connection callback to receive the Json --
     
     // local declarations
@@ -455,7 +432,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *str
         if (valueJsonObj != NULL)
         {
             streamController->fragmentSize = json_object_get_int(valueJsonObj);
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamController->fragmentSize : %d ....", streamController->fragmentSize);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY
@@ -463,7 +439,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *str
         if (valueJsonObj != NULL)
         {
             streamController->maxNumberOfFragement = json_object_get_int(valueJsonObj);
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamController->maxNumberOfFragement : %d ....", streamController->maxNumberOfFragement);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY
@@ -471,7 +446,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *str
         if (valueJsonObj != NULL)
         {
             streamController->maxAckInterval = json_object_get_int(valueJsonObj);
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamController->maxAckInterval : %d ....", streamController->maxAckInterval);
         }
     }
     
@@ -491,8 +465,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *str
 
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_InitStreamBuffers (ARCONTROLLER_Stream_t *streamController)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "ARCONTROLLER_Stream_InitStreamBuffers ....");
-    
     // -- Connection callback to receive the Json --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -508,20 +480,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_InitStreamBuffers (ARCONTROLLER_Stream_t
     
     if (error == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamController->networkConfiguration->controllerToDeviceARStreamAck %d ....", streamController->networkConfiguration->controllerToDeviceARStreamAck);
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamController->networkConfiguration->deviceToControllerARStreamData %d ....", streamController->networkConfiguration->deviceToControllerARStreamData);
-        
         streamAckBufferIndex = ARCONTROLLER_Stream_IdToIndex (streamController->networkConfiguration->controllerToDeviceParams, streamController->networkConfiguration->numberOfControllerToDeviceParam, streamController->networkConfiguration->controllerToDeviceARStreamAck);
         streamDataBufferIndex = ARCONTROLLER_Stream_IdToIndex (streamController->networkConfiguration->deviceToControllerParams, streamController->networkConfiguration->numberOfDeviceToControllerParam, streamController->networkConfiguration->deviceToControllerARStreamData);
-        
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamAckBufferIndex %d ....", streamAckBufferIndex);
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "streamDataBufferIndex %d ....", streamDataBufferIndex);
-        
+                
         if ((streamAckBufferIndex != -1) &&
            (streamDataBufferIndex != -1))
         {
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, "efkjgnhsdkfjghsqdkfjghs ....");
-            
             ARSTREAM_Reader_InitStreamAckBuffer (&(streamController->networkConfiguration->controllerToDeviceParams[streamAckBufferIndex]), streamController->networkConfiguration->controllerToDeviceARStreamAck);
             ARSTREAM_Reader_InitStreamDataBuffer (&(streamController->networkConfiguration->deviceToControllerParams[streamDataBufferIndex]), streamController->networkConfiguration->deviceToControllerARStreamData, streamController->fragmentSize, streamController->maxNumberOfFragement);
         }
@@ -620,7 +584,7 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
     }
     else
     {
-        //error occured
+        //Error occured
         *newBufferCapacity = 0;
         resFrameData = NULL;
         
@@ -640,7 +604,7 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
 
 int ARCONTROLLER_Stream_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int numberOfParameters, int id)
 {
-    // -- Get parameter buffer from id --
+    // -- Get parameter buffer from ID --
     
     int index = 0;
     int indexOfId = -1;
@@ -674,16 +638,10 @@ void* ARCONTROLLER_Stream_ReaderThreadRun (void *data)
     {
         while (streamController->isRunning)
         {
-            //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, " ARCONTROLLER_Stream_GetFrameWithTimeout.....");
-            
             frame = ARCONTROLLER_Stream_GetFrameWithTimeout (streamController, 500, &error);
             
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, " frame : %p .....", frame);
-
             if (frame != NULL)
             {
-                //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, " new frame okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk .....");
-                
                 if (streamController->receiveFrameCallback != NULL)
                 {
                     streamController->receiveFrameCallback (frame, streamController->receiveFrameCustomData);
@@ -704,8 +662,6 @@ void* ARCONTROLLER_Stream_ReaderThreadRun (void *data)
             }
         }
     }
-    
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_TAG, " end of thread.....");
-    
+        
     return NULL;
 }

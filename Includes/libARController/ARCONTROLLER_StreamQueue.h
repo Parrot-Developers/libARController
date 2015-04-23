@@ -46,15 +46,65 @@
 
 typedef struct ARCONTROLLER_StreamQueue_t ARCONTROLLER_StreamQueue_t;
 
-ARCONTROLLER_StreamQueue_t *ARCONTROLLER_StreamQueue_New (ARCONTROLLER_StreamPool_t *pool, uint32_t capacity, int flushOnIFrame, eARCONTROLLER_ERROR *error);
+/**
+ * @brief Create a new Stream Queue.
+ * @warning This function allocate memory.
+ * @post ARCONTROLLER_StreamQueue_Delete() must be called to delete the Stream Queue and free the memory allocated.
+ * @param[in] flushOnIFrame Flag to activate the flush of the frame queue when a IFrame is pushed ; '1' the flush is activated ; '0' the flush is  not activated.
+ * @param[out] error Executing error.
+ * @return The new Stream Queue.
+ * @see ARCONTROLLER_StreamQueue_Delete.
+ */
+ARCONTROLLER_StreamQueue_t *ARCONTROLLER_StreamQueue_New (int flushOnIFrame, eARCONTROLLER_ERROR *error);
 
+/**
+ * @brief Delete the Stream Queue.
+ * @warning This function free memory.
+ * @param streamQueue The Stream Queue to delete.
+ * @see ARCONTROLLER_StreamQueue_New().
+ */
 void ARCONTROLLER_StreamQueue_Delete (ARCONTROLLER_StreamQueue_t **streamQueue);
 
+/**
+ * @brief Push a frame to the queue.
+ * @param streamQueue The Stream Queue.
+ * @param[in] frame The frame to push.
+ * @return Executing error.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Push (ARCONTROLLER_StreamQueue_t *streamQueue, ARCONTROLLER_Frame_t *frame);
-ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_Pop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error);
-ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_TryPop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error);
-ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_PopWithTimeout (ARCONTROLLER_StreamQueue_t *streamQueue, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
-eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Flush (ARCONTROLLER_StreamQueue_t *streamQueue);
 
+/**
+ * @brief Pop a frame from queue.
+ * @warning This is a blocking function, waits a frame push if the queue is empty. 
+ * @param streamQueue The Stream Queue.
+ * @param[out] error Executing error.
+ * @return The frame pop ; Can be null if an error occurs.
+ */
+ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_Pop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Try to pop a frame from queue.
+ * @note If the queue is empty, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @param streamQueue The Stream Queue.
+ * @param[out] error Executing error.
+ * @return The frame pop ; Can be null if an error occurs.
+ */
+ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_TryPop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Pop a frame from queue, with timeout.
+ * @warning This is a blocking function; If the queue is empty yet after the timeout, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @param streamQueue The Stream Queue.
+ * @param[out] error Executing error.
+ * @return The frame pop ; Can be null if an error occurs.
+ */
+ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_PopWithTimeout (ARCONTROLLER_StreamQueue_t *streamQueue, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Remove all frame of the queue.
+ * @param streamQueue The Stream Queue.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Flush (ARCONTROLLER_StreamQueue_t *streamQueue);
 
 #endif /* _ARCONTROLLER_STREAM_QUEUE_H_ */

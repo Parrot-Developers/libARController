@@ -63,7 +63,7 @@ typedef enum
     ARCONTROLLER_ERROR_INIT_GET_DATE, /**< Error during the get of the current date */
     ARCONTROLLER_ERROR_INIT_GET_TIME, /**< Error during the get of the current time */
     ARCONTROLLER_ERROR_INIT_STREAM, /**< Error during the initialization of a stream */
-    ARCONTROLLER_ERROR_INIT_SEMAPHORE,
+    ARCONTROLLER_ERROR_INIT_SEMAPHORE, /**< Error during the initialization of a semaphore */
     ARCONTROLLER_ERROR_NOT_SENT, /**< Error data not sent */
     ARCONTROLLER_ERROR_NO_VIDEO, /**< Error the device has no video */
     ARCONTROLLER_ERROR_NO_ELEMENT, /**< No element saved for this command */
@@ -80,7 +80,7 @@ typedef enum
     ARCONTROLLER_ERROR_STREAMPOOL_FRAME_NOT_FOUND, /**< no frame found */
     
     ARCONTROLLER_ERROR_STREAMQUEUE = -5000,
-    ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY, /**< */
+    ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY, /**< Error stream queue empty*/
 
 } eARCONTROLLER_ERROR;
 

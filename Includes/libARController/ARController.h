@@ -28,6 +28,7 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
+
 /**
  * @file ARController.h
  * @brief Global header for libARController

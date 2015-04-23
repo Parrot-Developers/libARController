@@ -48,19 +48,20 @@
 #define ARCONTROLLER_DICTIONARY_TAG "ARCONTROLLER_DICTIONARY"
 #define ARCONTROLLER_DICTIONARY_CALLBACKS_CAPACITY_DEFAULT 1
 
-
-
+/**
+ * @brief List of callbacks to call when a command is updated.
+ */
 struct ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t
 {
     ARCONTROLLER_DICTIONARY_CALLBACK_t callback; /**< callback used when the command is decoded. */
-    void *customData;  /**< custom data given as parameter to the callback. */
+    void *customData; /**< custom data given as parameter to the callback. */
     
-    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *next;
-    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *prev;
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *next; /**<  Next element ; Do Not Modify */
+    ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *prev; /**<  Previous element ; Do Not Modify */
 };
 
 /**
- * @brief Command controller allow to !!!!!TODO.
+ * @brief Dictionary storing the lists of callbacks to call when a command is updated.
  */
 struct ARCONTROLLER_Dictionary_t
 {

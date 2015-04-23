@@ -47,7 +47,6 @@
 
 #include <libARController/ARCONTROLLER_Error.h>
 #include <libARController/ARCONTROLLER_Frame.h>
-#include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_StreamQueue.h>
 
 #include "ARCONTROLLER_StreamQueue.h"
@@ -60,7 +59,7 @@
  * Implementation
  *************************/
  
-ARCONTROLLER_StreamQueue_t *ARCONTROLLER_StreamQueue_New (ARCONTROLLER_StreamPool_t *pool, uint32_t capacity, int flushOnIFrame, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_StreamQueue_t *ARCONTROLLER_StreamQueue_New (int flushOnIFrame, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new streamQueue --
 
@@ -68,25 +67,13 @@ ARCONTROLLER_StreamQueue_t *ARCONTROLLER_StreamQueue_New (ARCONTROLLER_StreamPoo
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_StreamQueue_t *streamQueue =  NULL;
     
-    // check parameters
-    if (pool == NULL)
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
     if (localError == ARCONTROLLER_OK)
     {
         // Create the StreamQueue
         streamQueue = malloc (sizeof (ARCONTROLLER_StreamQueue_t));
         if (streamQueue != NULL)
         {
-            // Initialize to default values
-            streamQueue->pool = pool;
-            
             streamQueue->frames = NULL;
-            //streamQueue->frameCapacity = 0;
-            //streamQueue->numberOfFrame = 0;
             
             streamQueue->flushOnIFrame = flushOnIFrame;
             streamQueue->semaphore = NULL;
@@ -104,12 +91,12 @@ ARCONTROLLER_StreamQueue_t *ARCONTROLLER_StreamQueue_New (ARCONTROLLER_StreamPoo
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Error is not returned 
 
     return streamQueue;
 }
@@ -126,8 +113,6 @@ void ARCONTROLLER_StreamQueue_Delete (ARCONTROLLER_StreamQueue_t **streamQueue)
             ARSAL_Sem_Destroy (&((*streamQueue)->semaphore));
             
             ARCONTROLLER_StreamQueue_Flush (*streamQueue);
-            /*free (*streamQueue)->frames);
-            (*streamQueue)->frames = NULL;*/
             
             free (*streamQueue);
             (*streamQueue) = NULL;
@@ -148,7 +133,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Push (ARCONTROLLER_StreamQueue_t *s
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    // No Else: The checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
     if (error == ARCONTROLLER_OK)
     {
@@ -187,48 +172,44 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_Pop (ARCONTROLLER_StreamQueue_t *
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     
-    // check parameters
+    // Check parameters
     if (streamQueue == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    // No Else: The checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "Wait semaphore ...." );
         if (!ARSAL_Sem_Wait (&(streamQueue->semaphore)))
         {
             frame = ARCONTROLLER_StreamQueue_LocalPopFrame (streamQueue);
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ok semaphore frame = %p ....",frame );
         }
         
         if (frame == NULL)
         {
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "no semaphore frame = NULL ...." );
             localError = ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY;
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Error is not returned 
     
     return frame;
 }
 
 ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_TryPop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error)
 {
-    //ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ARCONTROLLER_StreamQueue_TryPop...." );
     // -- Try to Pop a Frame --
     
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     
-    // check parameters
+    // Check parameters
     if (streamQueue == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -240,7 +221,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_TryPop (ARCONTROLLER_StreamQueue_
         frame = ARCONTROLLER_StreamQueue_LocalTryPop (streamQueue, &localError);
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -256,7 +237,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_PopWithTimeout (ARCONTROLLER_Stre
     
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
-    struct timespec semTimeout; //TODO
+    struct timespec semTimeout;
     
     // check parameters
     if (streamQueue == NULL)
@@ -267,30 +248,27 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_PopWithTimeout (ARCONTROLLER_Stre
     
     if (localError == ARCONTROLLER_OK)
     {
-        // convert timeoutMs in timespec
+        // Convert timeoutMs in timespec
         semTimeout.tv_sec = timeoutMs / 1000;
         semTimeout.tv_nsec = (timeoutMs % 1000) * 1000000;
         
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "timedWait semaphore ...." );
         if (!ARSAL_Sem_Timedwait (&(streamQueue->semaphore), &semTimeout))
         {
             frame = ARCONTROLLER_StreamQueue_LocalPopFrame (streamQueue);
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ok semaphore frame = %p ....",frame );
         }
         
         if (frame == NULL)
         {
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "no semaphore frame = NULL ...." );
             localError = ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY;
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Error is not returned 
     
     return frame;
 }
@@ -306,7 +284,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Flush (ARCONTROLLER_StreamQueue_t *
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    // No Else: The checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
     if (error == ARCONTROLLER_OK)
     {
@@ -324,19 +302,18 @@ eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_Flush (ARCONTROLLER_StreamQueue_t *
 
 ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalPopFrame (ARCONTROLLER_StreamQueue_t *streamQueue)
 {
-    // -- Pop a frame --
+    // -- Pop a Frame --
 
     ARCONTROLLER_Frame_t *frame = NULL;
    
     ARSAL_Mutex_Lock (&(streamQueue->mutex));
    
-    //frame = streamQueue->frames[0];
     if (streamQueue->frames != NULL)
     {
         frame = streamQueue->frames->frame;
         DL_DELETE (streamQueue->frames, streamQueue->frames);
     }
-    //NO ELSE ; no frame
+    //No ELSE ; No frame
     
     ARSAL_Mutex_Unlock (&(streamQueue->mutex));
     
@@ -353,8 +330,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_LocalFlush (ARCONTROLLER_StreamQueu
     frame = ARCONTROLLER_StreamQueue_LocalTryPop (streamQueue, &error);
     while (frame != NULL)
     {
-        //TODO manage error !!!!!!!!!!!!!!
         error = ARCONTROLLER_Frame_SetFree (frame);
+        if (error != ARCONTROLLER_OK)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM_QUEUE_TAG, "ARCONTROLLER_Frame_SetFree() Failed error: %s", ARCONTROLLER_Error_ToString (error));
+        }
+        
         frame = ARCONTROLLER_StreamQueue_LocalTryPop (streamQueue, &error);
     }
     
@@ -373,20 +354,17 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalTryPop (ARCONTROLLER_StreamQ
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "try semaphore ...." );
     if (!ARSAL_Sem_Trywait (&(streamQueue->semaphore)))
     {
         frame = ARCONTROLLER_StreamQueue_LocalPopFrame (streamQueue);
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "ok semaphore frame = %p ....",frame );
     }
     
     if (frame == NULL)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM_QUEUE_TAG, "no semaphore frame = NULL ...." );
         localError = ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY;
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;

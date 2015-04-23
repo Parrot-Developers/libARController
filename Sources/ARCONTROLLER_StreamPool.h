@@ -47,8 +47,8 @@
 
 struct ARCONTROLLER_StreamPool_t
 {
-    ARCONTROLLER_Frame_t **frames; //TODO array §§§
-    uint32_t capacity;
+    ARCONTROLLER_Frame_t **frames; /**< Frame array */
+    uint32_t capacity; /**< Capacity of the frame array */
 };
 
 #endif /* _ARCONTROLLER_STREAM_POOL_PRIVATE_H_ */

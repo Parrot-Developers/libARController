@@ -79,6 +79,8 @@
 #define JS_IP_ADDRESS "192.168.2.1"
 #define JS_DISCOVERY_PORT 44444
 
+#define ARCONTROLLER_FEATURE_VIDEO_TIME 20
+
 /*****************************************
  *
  *             private header:
@@ -357,7 +359,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     {
         
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait for video ... ");
-        sleep (50);
+        sleep (ARCONTROLLER_FEATURE_VIDEO_TIME);
     }
     
     if (failed == 0)

@@ -51,26 +51,26 @@ typedef struct ARCONTROLLER_NETWORK_THREAD_DATA_t ARCONTROLLER_NETWORK_THREAD_DA
  */
 struct ARCONTROLLER_Network_t
 {
-    ARDISCOVERY_Device_t *discoveryDevice; /**< the device to drive */
-    ARDISCOVERY_NetworkConfiguration_t networkConfig; /**< the network configuration ; get from the device */
-    ARNETWORKAL_Manager_t *networkALManager; /**< the networkALManager ; get from the device  */
-    ARNETWORK_Manager_t *networkManager; /**< the networkManager */
-    ARSAL_Thread_t rxThread; /**< receiver thread of the networkManager */
-    ARSAL_Thread_t txThread; /**< transmitter thread of the networkManager */
-    ARSAL_Thread_t *readerThreads; /**< reader threads for all buffers of receiving */
-    ARCONTROLLER_NETWORK_THREAD_DATA_t *readerThreadsData; /**< data for all reader threads*/
+    ARDISCOVERY_Device_t *discoveryDevice; /**< The device to drive */
+    ARDISCOVERY_NetworkConfiguration_t networkConfig; /**< The network configuration ; get from the device */
+    ARNETWORKAL_Manager_t *networkALManager; /**< The networkALManager ; get from the device  */
+    ARNETWORK_Manager_t *networkManager; /**< The networkManager */
+    ARSAL_Thread_t rxThread; /**< Receiver thread of the networkManager */
+    ARSAL_Thread_t txThread; /**< Transmitter thread of the networkManager */
+    ARSAL_Thread_t *readerThreads; /**< Reader threads for all buffers of receiving */
+    ARCONTROLLER_NETWORK_THREAD_DATA_t *readerThreadsData; /**< Data for all reader threads*/
     ARSAL_Mutex_t mutex; /**< Mutex for multithreading */
-    eARCONTROLLER_NETWORK_STATE state; /**< state of the networkController*/
+    eARCONTROLLER_NETWORK_STATE state; /**< State of the networkController*/
     
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
-    ARCONTROLLER_Stream_t *videoController; /**< manage input video stream  */
+    ARCONTROLLER_Stream_t *videoController; /**< Manage input video stream  */
     
     //Connection callback
-    ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback;
-    ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback;
-    ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback; /**< callback of disconnection */
-    void *callbacksCustomData;
+    ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback; /**< Callback of json sending part of the connection.*/
+    ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback; /**< Callback of json reception part of the connection.*/
+    ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback; /**< Callback of disconnection */
+    void *callbacksCustomData; /**< data to set as argument to the callbacks */
 };
 
 struct ARCONTROLLER_NETWORK_THREAD_DATA_t
@@ -105,7 +105,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StopReaderThreads (ARCONTROLLER_Network
  * @post Before join the thread calling this function, ARCONTROLLER_Network_Stop() must be called.
  * @param data thread data of type ARCONTROLLER_NETWORK_THREAD_DATA_t*
  * @return NULL
- * @see ARCONTROLLER_Network_Stop() !!!!!!!
+ * @see ARCONTROLLER_Network_Stop()
  */
 void *ARCONTROLLER_Network_ReaderRun (void *data);
 
@@ -114,5 +114,11 @@ void ARCONTROLLER_Network_OnDisconnectNetwork (ARNETWORK_Manager_t *manager, ARN
 
 //TODO !!!!!!!!!!!!!!!!!
 eARNETWORK_MANAGER_CALLBACK_RETURN ARCONTROLLER_Network_SendingCallback(int buffer_id, uint8_t *data, void *custom, eARNETWORK_MANAGER_CALLBACK_STATUS cause);
+
+//TODO !!!!!!!!!!!!!!!!!
+eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *customData);
+
+//TODO !!!!!!!!!!!!!!!!!
+eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, void *customData);
 
 #endif /* _ARCONTROLLER_NETWORK_PRIVATE_H_ */

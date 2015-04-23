@@ -184,20 +184,15 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             
             if isEvent(cl) or isState(cl):
                 for cmd in cl.cmds:
-                    #TODO sup !!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    #hfile.write ('#define ' + defineNotification(MODULE_FEATURE, feature, cl, cmd) + ' "' + defineNotification(MODULE_FEATURE, feature, cl, cmd).lower() + '";\n')
-                    #hfile.write ('char * ' + defineNotification(MODULE_FEATURE, feature, cl, cmd) + ' = "' + defineNotification(MODULE_FEATURE, feature, cl, cmd).lower() + '";\n')
                     for arg in cmd.args:
-                        #hfile.write ('#define ' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ' "' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg).lower() + '";\n')
-                        #hfile.write ('extern const char *' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ';\n')
-                        hfile.write ('extern const char *' + defineNotification(feature, cl, cmd, arg) + ';\n')
+                        hfile.write ('extern const char *' + defineNotification(feature, cl, cmd, arg) + '; /**< Key of the argument </code>'+arg.name+'</code> of class <code>' + ARCapitalize (cl.name) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
                         
             hfile.write('\n');
             
             if not isEvent(cl) and not isState(cl):
                 for cmd in cl.cmds:
                     hfile.write ('/**\n')
-                    hfile.write (' * @brief Send a command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
+                    hfile.write (' * @brief Send a command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code>\n')
                     for comment in cmd.comments:
                         hfile.write (' * ' + comment+'\n')
                     hfile.write (' * @param feature feature owning the commands\n')
@@ -269,7 +264,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     if cmd.buf == ARCommandBuffer.NON_ACK:
                         hfile.write ('    '+setNAckFunctionType (feature, cl, cmd)+' '+setNAckFunction(cl, cmd)+';\n')
                         for arg in cmd.args:
-                            hfile.write ('    ' + setNAckFunctionType (feature, cl, cmd, arg)+' '+setNAckFunction(cl, cmd, arg)+';\n')
+                            hfile.write ('    ' + setNAckFunctionType (feature, cl, cmd, arg)+' '+setNAckFunction(cl, cmd, arg)+'; /**< Send a command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code>. */\n')
                         
         hfile.write ('    '+classPrivName+' *privatePart; /**< Private part of '+className+' */\n')
         hfile.write ('};\n')
@@ -280,12 +275,18 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write (' * @param feature The feature controller receiving the command.\n')
         hfile.write (' * @param[in] commandKey Key of the command which the callback must be unassociated.\n')
         hfile.write (' * @param[in] networkController The networkController used to send commands ; must be not NULL.\n')
-        hfile.write (' * @param[out] error executing error.\n')
+        hfile.write (' * @return error executing error.\n')
         hfile.write (' */\n')
         hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController);\n')
         hfile.write ('\n')
         
-        #TODO add commentary !!!!!!!!!!!
+        hfile.write ('/**\n')
+        hfile.write (' * @brief Get the elements of a command received.\n')
+        hfile.write (' * @param feature The feature controller receiving the command.\n')
+        hfile.write (' * @param[in] commandKey Key of the command.\n')
+        hfile.write (' * @param[out] error executing error.\n')
+        hfile.write (' * @return Element dictionary of the command ; Can be null if an error is occurred.\n')
+        hfile.write (' */\n')
         hfile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
         hfile.write ('\n')
         
@@ -639,7 +640,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             if isEvent(cl) or isState(cl):
                 for cmd in cl.cmds:
                     for arg in cmd.args:
-                        #cFile.write ('const char *' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg) + ' = "' + defineNotificationKey(MODULE_FEATURE, feature, cl, cmd, arg).lower() + '";\n')
                         cFile.write ('const char *' + defineNotification(feature, cl, cmd, arg) + ' = "' + defineNotification(feature, cl, cmd, arg).lower() + '";\n')
             cFile.write('\n');
         
@@ -652,14 +652,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
         cFile.write ('   '+className+' *featureController =  NULL;\n')
         cFile.write ('    \n')
-        
-        #cFile.write ('    // check parameters\n')
-        #cFile.write ('    if (networkController == NULL)\n')
-        #cFile.write ('    {\n')
-        #cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
-        #cFile.write ('    }\n')
-        #cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-        #cFile.write ('    \n')
         
         cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
         cFile.write ('    {\n')
@@ -745,7 +737,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    // No else: skipped no error \n')
         cFile.write ('    \n')
         
-        cFile.write ('    // return the error\n')
+        cFile.write ('    // Return the error\n')
         cFile.write ('    if (error != NULL)\n')
         cFile.write ('    {\n')
         cFile.write ('        *error = localError;\n')
@@ -818,7 +810,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictionary = NULL;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -832,7 +824,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    }\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // return the error\n')
+        cFile.write ('    // Return the error\n')
         cFile.write ('    if (error != NULL)\n')
         cFile.write ('    {\n')
         cFile.write ('        *error = localError;\n')
@@ -853,7 +845,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -879,7 +871,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -907,7 +899,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -936,7 +928,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -951,7 +943,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('        // Commands of class : '+cl.name+':\n')
                 for cmd in cl.cmds:
                     cFile.write ('        '+arcommandsSetDecode(feature, cl, cmd)+' (NULL, NULL);\n')
-                    #cFile.write ('        '+ARFunctionName (MODULE_ARCOMMANDS, 'Decoder', 'Set'+ARCapitalize(feature.name) + ARCapitalize(cl.name) + ARCapitalize(cmd.name)+'Callback')+' (NULL, NULL);\n')
         cFile.write ('    }\n')
         cFile.write ('    \n')
         cFile.write ('    return error;\n')
@@ -982,7 +973,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    eARNETWORK_ERROR netError = ARNETWORK_OK;\n')
                     cFile.write ('    \n')
                     
-                    cFile.write ('    // check parameters\n')
+                    cFile.write ('    // Check parameters\n')
                     cFile.write ('    if (feature == NULL)\n')
                     cFile.write ('    {\n')
                     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -1053,7 +1044,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                         cFile.write ('    \n')
                         
-                        cFile.write ('    // check parameters\n')
+                        cFile.write ('    // Check parameters\n')
                         cFile.write ('    if ((feature == NULL) ||\n')
                         cFile.write ('       (feature->privatePart == NULL) ||\n')
                         cFile.write ('       (feature->privatePart->'+structNAckName (cl, cmd)+' == NULL))\n')
@@ -1135,7 +1126,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                             cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                             cFile.write ('    \n')
                             
-                            cFile.write ('    // check parameters\n')
+                            cFile.write ('    // Check parameters\n')
                             cFile.write ('    if ((feature == NULL) ||\n')
                             cFile.write ('       (feature->privatePart == NULL) ||\n')
                             cFile.write ('       (feature->privatePart->'+structNAckName (cl, cmd)+' == NULL))\n')
@@ -1166,7 +1157,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    \n')
                     cFile.write ('    '+className+' *feature = ('+className+' *)customData;\n')
                     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-                    cFile.write ('    int locked = 0;\n')
                     cFile.write ('    int commandKey = '+defineNotification(feature, cl, cmd)+';\n')
                     cFile.write ('    int elementAdded = 0;\n')
                     cFile.write ('    int isANewCommandElement = 0;\n')
@@ -1180,20 +1170,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write ('    int strLength = 0;\n')
                     cFile.write ('    \n')
                     
-                    cFile.write ('    // check parameters\n')
+                    cFile.write ('    // Check parameters\n')
                     cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
                     cFile.write ('    {\n')
                     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
                     cFile.write ('    }\n')
                     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                     cFile.write ('    \n')
-                    
-                    #cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-                    #cFile.write ('    {\n')
-                    #cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
-                    #cFile.write ('        locked = 1;\n')
-                    #cFile.write ('    }\n')
-                    #cFile.write ('    \n')
                     
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
@@ -1359,16 +1342,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
                     
-                    #cFile.write ('    if (locked)\n')
-                    #cFile.write ('    {\n')
-                    #cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
-                    #cFile.write ('        locked = 0;\n')
-                    #cFile.write ('    }\n')
-                    #cFile.write ('    \n')
-                    
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
-                    #TODO see to copy arguments !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     cFile.write ('        // Callback notification\n')
                     cFile.write ('        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);\n')
                     cFile.write ('    }\n')
@@ -1428,7 +1403,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
@@ -1456,7 +1431,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // check parameters\n')
+        cFile.write ('    // Check parameters\n')
         cFile.write ('    if ((feature == NULL) ||\n')
         cFile.write ('        (feature->privatePart == NULL))\n')
         cFile.write ('    {\n')
@@ -1475,13 +1450,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('        HASH_FIND_INT (feature->privatePart->dictionary, &(commandKey), commandDic);\n')
         cFile.write ('        if (commandDic != NULL)\n')
         cFile.write ('        {\n')
-        
         cFile.write ('            elements = commandDic->elements;\n')
-        
-        #TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        cFile.write ('           //TODO see for copy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n')
         cFile.write ('        }\n')
-        cFile.write ('        // NO Else ; command not found \n')
+        cFile.write ('        // NO Else ; Command not found \n')
         cFile.write ('        \n')
         
         cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
@@ -1489,12 +1460,12 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('        if (elements == NULL)\n')
         cFile.write ('        {\n')
-        cFile.write ('            localError = ARCONTROLLER_ERROR_NO_ELEMENT;\n') # TODO see error !!!!!!!!!!!!!!!!!!!!!
+        cFile.write ('            localError = ARCONTROLLER_ERROR_NO_ELEMENT;\n')
         cFile.write ('        }\n')
         cFile.write ('    }\n')
         cFile.write ('    \n')
         
-        cFile.write ('    // return the error\n')
+        cFile.write ('    // Return the error\n')
         cFile.write ('    if (error != NULL)\n')
         cFile.write ('    {\n')
         cFile.write ('        *error = localError;\n')

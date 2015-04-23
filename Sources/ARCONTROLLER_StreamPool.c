@@ -57,19 +57,10 @@ ARCONTROLLER_StreamPool_t *ARCONTROLLER_StreamPool_New (uint32_t capacity, eARCO
 {
     // -- Create a new streamPool --
 
-    //local declarations
+    // Local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_StreamPool_t *streamPool =  NULL;
     int index = 0;
-    
-    /*
-    // check parameters
-    if (defaultCapacity > 0)
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    */
     
     if (localError == ARCONTROLLER_OK)
     {
@@ -89,7 +80,7 @@ ARCONTROLLER_StreamPool_t *ARCONTROLLER_StreamPool_New (uint32_t capacity, eARCO
     
     if ((localError == ARCONTROLLER_OK) && (capacity > 0))
     {
-        //alloc pool
+        //Allocate the frame array
         streamPool->frames = calloc (sizeof (ARCONTROLLER_Frame_t*), capacity);
         if (streamPool->frames != NULL)
         {
@@ -105,20 +96,20 @@ ARCONTROLLER_StreamPool_t *ARCONTROLLER_StreamPool_New (uint32_t capacity, eARCO
         }
     }
     
-    // delete  if an error occurred
+    // Delete if an error occurred
     if (localError != ARCONTROLLER_OK)
     {
         ARCONTROLLER_StreamPool_Delete (&streamPool);
     }
-    // No else: skipped by an error
+    // No else: Skipped by an error
     
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Error is not returned 
 
     return streamPool;
 }
@@ -132,7 +123,7 @@ void ARCONTROLLER_StreamPool_Delete (ARCONTROLLER_StreamPool_t **streamPool)
     {
         if ((*streamPool) != NULL)
         {
-            // free frames
+            // Free frames
             if ((*streamPool)->frames != NULL)
             {
                 for (index = 0 ; index < (*streamPool)->capacity ; index++)
@@ -158,12 +149,12 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetNextFreeFrame (ARCONTROLLER_Str
     ARCONTROLLER_Frame_t *freeFrame = NULL;
     int index = 0;
     
-    // check parameters
+    // Check parameters
     if (streamPool == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    // No Else: The checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing.
     
     if (localError == ARCONTROLLER_OK)
     {
@@ -173,7 +164,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetNextFreeFrame (ARCONTROLLER_Str
             {
                 streamPool->frames[index]->available = 0;
                 freeFrame = streamPool->frames[index];
-                break; // the first free frame is found ; break the loop
+                break; // The first free frame is found ; break the loop.
             }
         }
        
@@ -183,12 +174,12 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetNextFreeFrame (ARCONTROLLER_Str
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Rrror is not returned 
     
     return freeFrame;
 }
@@ -201,12 +192,12 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetFrameFromData (ARCONTROLLER_Str
     ARCONTROLLER_Frame_t *frame = NULL;
     int index = 0;
     
-    // check parameters
+    // Check parameters
     if (streamPool == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    // No Else: The checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing.
     
     if (localError == ARCONTROLLER_OK)
     {
@@ -215,7 +206,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetFrameFromData (ARCONTROLLER_Str
             if (streamPool->frames[index]->data == frameData)
             {
                 frame = streamPool->frames[index];
-                break; // the frame is found ; break the loop
+                break; // The frame is found ; break the loop
             }
         }
        
@@ -225,12 +216,12 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetFrameFromData (ARCONTROLLER_Str
         }
     }
     
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
     }
-    // No else: error is not returned 
+    // No else: Error is not returned 
     
     return frame;
 }

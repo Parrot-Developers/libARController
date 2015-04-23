@@ -76,10 +76,9 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *stream
 // TODO ADD !!!!!!!!!
 eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson(ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
 
+// TODO ADD !!!!!!!!!
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_InitStreamBuffers (ARCONTROLLER_Stream_t *streamController);
 
 uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause, uint8_t *framePointer, uint32_t frameSize, int numberOfSkippedFrames, int isFlushFrame, uint32_t *newBufferCapacity, void *custom);
-
-
 
 #endif /* _ARCONTROLLER_STREAM_PRIVATE_H_ */

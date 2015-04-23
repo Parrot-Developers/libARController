@@ -76,14 +76,12 @@ eARCONTROLLER_NETWORK_STATE;
  */
 typedef struct ARCONTROLLER_Network_t ARCONTROLLER_Network_t;
 
-
 /**
  * @brief Sending Configuration used to know the timeout policy in case of sending data timeout.
  */
 typedef struct
 {
     eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy; /**< Timeout policy in case of sending data timeout */
-    //ARNETWORK_Manager_Callback_t customCallback;
     void *customData; /**< Custom data */
 }ARCONTROLLER_NETWORK_SendingConfiguration_t;
 
@@ -95,7 +93,7 @@ typedef void (*ARCONTROLLER_Network_DisconnectionCallback_t) (void *customData);
  * @warning This function allocate memory
  * @post ARCONTROLLER_Network_Delete() must be called to delete the Network Controller and free the memory allocated.
  * @param[in] discoveryDevice The device to drive ; must be not NULL. This device will be copied and can be deleted after the call of this function.
- * @param[out] error error output.
+ * @param[out] error Executing error.
  * @return the new Network Controller
  * @see ARCONTROLLER_Network_Delete()
  */
@@ -127,26 +125,26 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkC
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *networkController);
 
+/**
+ * @brief Set the callbacks of the video stream events.
+ * @param networkController The network Controller ; must be not NULL.
+ * @param[in] receiveFrameCallback Callback when a frame is received.
+ * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
+ * @param[in] customData Data to set as argument to the callbacks.
+ * @return Executing error.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
-//eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, int bufferID, ARCONTROLLER_NETWORK_SendingConfiguration_t sendingConfig);
+/**
+ * @brief Send data through the network.
+ * @param networkController The network Controller ; must be not NULL.
+ * @param[in] data The data to send.
+ * @param[in] dataSize The data size.
+ * @param[in] dataType Type of the data to send.
+ * @param[in] timeoutPolicy The policy to use when timeout.
+ * @param[in] netError executing network error.
+ * @return Executing error.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError);
-
-///**
- //* @brief Add connection json part callbacks.
- //* @param device The Discovery Device to add callback.
- //* @param[in] sendJsonCallback Callback to add a json part durring the connection. 
- //* @param[in] receiveJsonCallback Callback to read a json part durring the connection.
- //* @param[in] customData custom data given as parameter to the callbacks.
- //* @return executing error.
- //*/
-//eARCONTROLLER_ERROR ARCONTROLLER_Network_SetConnectionJsonCallbacks (ARCONTROLLER_Network_t *networkController, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData);
-
-
-
-eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *customData);
-
-eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, void *customData);
-
 
 #endif /* _ARCONTROLLER_NETWORK_H_ */

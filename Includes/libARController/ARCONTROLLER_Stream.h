@@ -49,12 +49,14 @@
 
 
 /**
- * @brief Callback when a frame is received
+ * @brief Callback when a frame is received.
+ * @param[in] customData Data given at the registering of the callback.
  */
 typedef void (*ARNETWORKAL_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
 
 /**
- * @brief Callback when timeout in frame receiving 
+ * @brief Callback when timeout in frame receiving
+ * @param[in] customData Data given at the registering of the callback.
  */
 typedef void (*ARNETWORKAL_Stream_TimeoutFrameCallback_t) (void *customData);
 
@@ -64,21 +66,77 @@ typedef void (*ARNETWORKAL_Stream_TimeoutFrameCallback_t) (void *customData);
  */
 typedef struct ARCONTROLLER_Stream_t ARCONTROLLER_Stream_t;
 
-// TODO ADD !!!!!!!!!
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (/*ARCONTROLLER_Network_t *networkController, */ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error);
+/**
+ * @brief Create a new Stream Controller.
+ * @warning This function allocate memory.
+ * @post ARCONTROLLER_Stream_Delete() must be called to delete the Stream Controller and free the memory allocated.
+ * @param[in] networkConfiguration The configuration of the network carring the stream.
+ * @param[out] error Executing error.
+ * @return The new Stream Controller.
+ * @see ARCONTROLLER_Stream_Delete.
+ */
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error);
 
-// TODO ADD !!!!!!!!!
+/**
+ * @brief Delete the Stream Controller.
+ * @warning This function free memory.
+ * @param streamController The Stream Controller to delete.
+ * @see ARCONTROLLER_Stream_New().
+ */
 void ARCONTROLLER_Stream_Delete (ARCONTROLLER_Stream_t **streamController);
 
-// TODO ADD !!!!!!!!!
+/**
+ * @brief Start the Stream Controller.
+ * @post ARCONTROLLER_Stream_Stop() must be called to stop the Stream Controller.
+ * @param streamController The stream controller.
+ * @return Executing error.
+ * @see ARCONTROLLER_Device_Stop.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamController, ARNETWORK_Manager_t *networkManager);
 
+/**
+ * @brief Stop the Stream Controller.
+ * @param streamController The stream controller.
+ * @return Executing error.
+ * @see ARCONTROLLER_Stream_Start.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamController);
 
+/**
+ * @brief Set the callbacks of the frames events.
+ * @param streamController The stream controller.
+ * @param[in] receiveFrameCallback Callback when a frame is received.
+ * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
+ * @param[in] customData Data to set as argument to the callbacks.
+ * @return Executing error.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
+ /**
+ * @brief Pop a frame from the ready frame queue.
+ * @warning This is a blocking function, waits a frame push if the queue is empty. 
+ * @param streamController The stream controller.
+ * @param[out] error Executing error.
+ * @return The frame pop ; Can be null if an error occurs.
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Try to pop a frame from the ready frame queue.
+ * @note If the queue is empty, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @param streamController The stream controller.
+ * @param[out] error Executing error.
+ * @return The frame pop ; Can be null if an error occurs.
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_TryGetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Pop a frame from the ready frame queue, with timeout.
+ * @warning This is a blocking function; If the queue is empty yet after the timeout, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @param streamController The stream controller.
+ * @param[out] error Executing error.
+ * @return The frame pop ; Can be null if an error occurs.
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stream_t *streamController, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
 
 #endif /* _ARCONTROLLER_STREAM_H_ */

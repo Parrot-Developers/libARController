@@ -70,7 +70,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     ARCONTROLLER_Network_t *networkController =  NULL;
     eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
     
-    // check parameters
+    // Check parameters
     if (discoveryDevice == NULL)
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -138,8 +138,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         // Copy the device
         eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
         
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "discoveryDevice->specificParameters : %p", discoveryDevice->specificParameters);
-        
         networkController->discoveryDevice = ARDISCOVERY_Device_NewByCopy (discoveryDevice, &dicoveryError);
         if (dicoveryError != ARDISCOVERY_OK)
         {
@@ -161,7 +159,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Get the network Configuration ...");
         // Initialize the network Configuration
         eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
         dicoveryError = ARDISCOVERY_Device_InitNetworkCongifuration (networkController->discoveryDevice, &(networkController->networkConfig));
@@ -173,15 +170,10 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Check if the device has video ....");
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "networkController->networkConfig.deviceToControllerARStreamData %d ...", networkController->networkConfig.deviceToControllerARStreamData);
-        
         // Check if the device has video
         if (networkController->networkConfig.deviceToControllerARStreamData != -1)
         {
             networkController->hasVideo = 1;
-            
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Stream_New ...");
             networkController->videoController = ARCONTROLLER_Stream_New (&(networkController->networkConfig), &localError);
         }
         //NO else ; device has not video
@@ -190,7 +182,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the NetworkAL ...");
         // Create the NetworkAL
         eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
         eARNETWORKAL_ERROR netALError = ARNETWORKAL_OK;
@@ -208,11 +199,8 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the ARNetworkManager ...");
         // Create the ARNetworkManager.
         eARNETWORK_ERROR netError = ARNETWORK_OK;
-        
-        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "params netAL:%p | c2d:%d %p | d2c:%d %p | ping:%d | ondisconnectCB:%p ...",networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork);
         
         networkController->networkManager = ARNETWORK_Manager_New (networkController->networkALManager, networkController->networkConfig.numberOfControllerToDeviceParam, networkController->networkConfig.controllerToDeviceParams, networkController->networkConfig.numberOfDeviceToControllerParam, networkController->networkConfig.deviceToControllerParams, networkController->networkConfig.pingDelayMs, ARCONTROLLER_Network_OnDisconnectNetwork, networkController, &netError);
         if (netError != ARNETWORK_OK)
@@ -223,14 +211,12 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
 
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the Network receiver and transmitter Threads ...");
         // Create the Network receiver and transmitter Threads
         localError = ARCONTROLLER_Network_CreateNetworkThreads (networkController);
     }
     
     if (localError == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Create the reader Threads ...");
         // Create the reader Threads
         localError = ARCONTROLLER_Network_CreateReaderThreads (networkController);
     }
@@ -240,7 +226,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         // Check if the device has video
         if (networkController->hasVideo)
         {
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Stream_Start ...");
             localError = ARCONTROLLER_Stream_Start (networkController->videoController, networkController->networkManager);
         }
         //NO else ; device has not video
@@ -255,7 +240,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     }
     // No else: skipped by an error 
 
-    // return the error
+    // Return the error
     if (error != NULL)
     {
         *error = localError;
@@ -267,7 +252,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
 
 void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Delete the Network Controller ...");
     // -- Delete the Network Controller --
 
     if (networkController != NULL)
@@ -276,32 +260,23 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
         {
             (*networkController)->state = ARCONTROLLER_NETWORK_STATE_STOPPED;
             
-            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARSAL_Mutex_Destroy ...");
             ARSAL_Mutex_Destroy (&((*networkController)->mutex));
-            
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "(*networkController)->hasVideo: %d ...", (*networkController)->hasVideo);
-            
+                        
             // Check if the device has video
             if ((*networkController)->hasVideo)
             {
-                ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Stream_Stop ...");
                 ARCONTROLLER_Stream_Stop ((*networkController)->videoController);
             }
             //NO else ; device has not video
             
-            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_StopReaderThreads ...");
-            ARCONTROLLER_Network_StopReaderThreads (*networkController); //read error
+            ARCONTROLLER_Network_StopReaderThreads (*networkController); //TODO read error !!!!!!!!!!
             
-            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_StopNetworkThreads ...");
-            ARCONTROLLER_Network_StopNetworkThreads (*networkController); //read error
+            ARCONTROLLER_Network_StopNetworkThreads (*networkController); //TODO  read error  !!!!!!!!!!
             
-            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARNETWORK_Manager_Delete ...");
             ARNETWORK_Manager_Delete(&((*networkController)->networkManager));
             
-            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARDISCOVERY_Device_DeleteARNetworkAL ...");
-            ARDISCOVERY_Device_DeleteARNetworkAL ((*networkController)->discoveryDevice, &((*networkController)->networkALManager)); //read error
+            ARDISCOVERY_Device_DeleteARNetworkAL ((*networkController)->discoveryDevice, &((*networkController)->networkALManager)); //TODO  read error  !!!!!!!!!!
             
-            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "ARDISCOVERY_Device_Delete ...");
             ARDISCOVERY_Device_Delete (&((*networkController)->discoveryDevice));
             
             free (*networkController);
@@ -316,7 +291,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkC
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -341,11 +316,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Pause (ARCONTROLLER_Network_t *networkC
                 
             case ARCONTROLLER_NETWORK_STATE_PAUSE:
             case ARCONTROLLER_NETWORK_STATE_STOPPED:
-                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "nothing to do ; network controller state : %d ", networkController->state);
+                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "Nothing to do ; Network controller state : %d ", networkController->state);
                 break;
             
             default:
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "state : %d not known", networkController->state);
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "State : %d not known", networkController->state);
                 break;
         }
         
@@ -361,7 +336,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -385,7 +360,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
                 break;
                 
             case ARCONTROLLER_NETWORK_STATE_RUNNING:
-                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "nothing to do ; network controller state : %d ", networkController->state);
+                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "Nothing to do ; Network controller state : %d ", networkController->state);
                 break;
                 
             case ARCONTROLLER_NETWORK_STATE_STOPPED:
@@ -393,7 +368,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
                 break;
             
             default:
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "state : %d not known", networkController->state);
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "State : %d not known", networkController->state);
                 break;
         }
         
@@ -410,7 +385,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_N
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int locked = 0;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -458,7 +433,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
     ARCONTROLLER_NETWORK_SendingConfiguration_t *sendingConfig = NULL;
     int bufferID = -1; 
     
-    // check parameters
+    // Check parameters
     if ((networkController == NULL) ||
         (data == NULL) || (dataSize <= 0) ||
         (dataType == ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX))
@@ -507,7 +482,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
                 break;
             
             default:
-                ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "dataType : %d not known", dataType);
+                ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "DataType : %d not known", dataType);
                 error = ARCONTROLLER_ERROR;
                 break;
         }
@@ -534,7 +509,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
 
 eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_SendJsonCallback ....");
     // -- Connection callback to receive the Json --
     
     // local declarations
@@ -567,14 +541,11 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *
     return error;
 }
 
-//eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (ARCONTROLLER_Network_t *networkController, json_object *jsonObj)
 eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_ReceiveJsonCallback ....");
-    
     // -- Connection callback to receive the Json --
     
-    // local declarations
+    // Local declarations
     ARCONTROLLER_Network_t *networkController = (ARCONTROLLER_Network_t *)customData;
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
     
@@ -586,7 +557,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, voi
     
     if (error == ARDISCOVERY_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "networkController->videoController :%p ....", networkController->videoController);
         if (networkController->videoController != NULL)
         {
             error = ARCONTROLLER_Stream_OnReceiveJson (networkController->videoController, jsonObj);
@@ -614,7 +584,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateNetworkThreads (ARCONTROLLER_Netw
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -648,7 +618,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StopNetworkThreads (ARCONTROLLER_Networ
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -682,7 +652,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateReaderThreads (ARCONTROLLER_Netwo
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -723,8 +693,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateReaderThreads (ARCONTROLLER_Netwo
             networkController->readerThreadsData[readerThreadIndex].networkController = networkController;
             networkController->readerThreadsData[readerThreadIndex].readerBufferId = networkController->networkConfig.deviceToControllerCommandsBufferIds[readerThreadIndex];
             
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "Start ReaderThreads readerThreadIndex:%d ...",readerThreadIndex);
-            ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "networkController->readerThreadsData[readerThreadIndex].readerBufferId:%d ...",networkController->readerThreadsData[readerThreadIndex].readerBufferId);
             if (ARSAL_Thread_Create(&(networkController->readerThreads[readerThreadIndex]), ARCONTROLLER_Network_ReaderRun, &(networkController->readerThreadsData[readerThreadIndex])) != 0)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Creation of reader thread failed.");
@@ -739,12 +707,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_CreateReaderThreads (ARCONTROLLER_Netwo
 
 eARCONTROLLER_ERROR ARCONTROLLER_Network_StopReaderThreads (ARCONTROLLER_Network_t *networkController)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_StopReaderThreads ...");
     // -- Stop the reader Threads --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    // check parameters
+    // Check parameters
     if (networkController == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
@@ -761,7 +728,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StopReaderThreads (ARCONTROLLER_Network
             {
                 if (networkController->readerThreads[readerThreadIndex] != NULL)
                 {
-                    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "StopReaderThreads readerThreadIndex:%d ...",readerThreadIndex);
                     ARSAL_Thread_Join (networkController->readerThreads[readerThreadIndex], NULL);
                     ARSAL_Thread_Destroy (&(networkController->readerThreads[readerThreadIndex]));
                     networkController->readerThreads[readerThreadIndex] = NULL;
@@ -881,8 +847,6 @@ void *ARCONTROLLER_Network_ReaderRun (void *data)
 
 void ARCONTROLLER_Network_OnDisconnectNetwork (ARNETWORK_Manager_t *manager, ARNETWORKAL_Manager_t *alManager, void *customData)
 {
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "OnDisconnectNetwork ...");
-    
     ARCONTROLLER_Network_t *networkController = (ARCONTROLLER_Network_t *)customData;
     
     if ((networkController != NULL) && (networkController->disconnectionCallback != NULL))

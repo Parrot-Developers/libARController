@@ -47,11 +47,39 @@
 
 typedef struct ARCONTROLLER_StreamPool_t ARCONTROLLER_StreamPool_t;
 
+/**
+ * @brief Create a new Stream Pool.
+ * @warning This function allocate memory.
+ * @post ARCONTROLLER_StreamPool_Delete() must be called to delete the Stream Pool and free the memory allocated.
+ * @param[in] capacity Capacity of the pool.
+ * @param[out] error Executing error.
+ * @return The new Stream Pool.
+ * @see ARCONTROLLER_StreamPool_Delete.
+ */
 ARCONTROLLER_StreamPool_t *ARCONTROLLER_StreamPool_New (uint32_t capacity, eARCONTROLLER_ERROR *error);
 
+/**
+ * @brief Delete the Stream Pool.
+ * @warning This function free memory.
+ * @param streamPool The Stream Pool to delete.
+ * @see ARCONTROLLER_StreamPool_New().
+ */
 void ARCONTROLLER_StreamPool_Delete (ARCONTROLLER_StreamPool_t **streamPool);
 
+/**
+ * @brief Return the first free frmae of the pool.
+ * @param streamPool The Stream Pool.
+ * @param[out] error Executing error.
+ * @return The new Stream Pool.
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetNextFreeFrame (ARCONTROLLER_StreamPool_t *streamPool, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Return the first free frmae of the pool.
+ * @param streamPool The Stream Pool.
+ * @param[out] error Executing error.
+ * @return The new Stream Pool.
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetFrameFromData (ARCONTROLLER_StreamPool_t *streamPool, uint8_t *frameData, eARCONTROLLER_ERROR *error);
 
 #endif /* _ARCONTROLLER_STREAM_POOL_H_ */

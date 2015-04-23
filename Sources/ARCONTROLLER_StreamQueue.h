@@ -41,7 +41,6 @@
 #include <libARSAL/ARSAL_Sem.h>
 #include <libARSAL/ARSAL_Mutex.h>
 #include <libARController/ARCONTROLLER_Frame.h>
-#include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_StreamQueue.h>
 
 #define ARCONTROLLER_STREAM_QUEUE_TAG "ARNETWORK_StreamQueue"
@@ -50,28 +49,27 @@ typedef struct ARCONTROLLER_StreamQueue_element_t ARCONTROLLER_StreamQueue_eleme
 
 struct ARCONTROLLER_StreamQueue_element_t
 {
-    ARCONTROLLER_Frame_t *frame;
-    ARCONTROLLER_StreamQueue_element_t *next;
-    ARCONTROLLER_StreamQueue_element_t *prev;
+    ARCONTROLLER_Frame_t *frame; /**< Frame used to store stream data */
+    
+    ARCONTROLLER_StreamQueue_element_t *next; /**<  Next element ; Do Not Modify */
+    ARCONTROLLER_StreamQueue_element_t *prev; /**<  Previous element ; Do Not Modify */
 };
 
 struct ARCONTROLLER_StreamQueue_t
 {
-    ARCONTROLLER_StreamPool_t *pool;
-    ARCONTROLLER_StreamQueue_element_t *frames;
-    //int frameCapacity;
-    //int numberOfFrame;
-    int flushOnIFrame;
-    ARSAL_Mutex_t mutex;
-    ARSAL_Sem_t semaphore;
+    ARCONTROLLER_StreamQueue_element_t *frames; /**< Queue of frames ready. */
+    int flushOnIFrame; /**< Flag to activate the flush of the frame queue when a IFrame is pushed ; '1' the flush is activated ; '0' the flush is  not activated. */
+    ARSAL_Mutex_t mutex; /**< Mutex to prevent concurrent access on "frames" */
+    ARSAL_Sem_t semaphore; /**< Semaphore of number of frame in the frame queue */
 };
 
-//eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_LocalPush (ARCONTROLLER_StreamQueue_t *streamQueue, ARCONTROLLER_Frame_t *frame);
-//ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalPop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error);
+// TODO ADD !!!!!!!!!
 ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalTryPop (ARCONTROLLER_StreamQueue_t *streamQueue, eARCONTROLLER_ERROR *error);
-//ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalPopWithTimeout (ARCONTROLLER_StreamQueue_t *streamQueue, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
+
+// TODO ADD !!!!!!!!!
 eARCONTROLLER_ERROR ARCONTROLLER_StreamQueue_LocalFlush (ARCONTROLLER_StreamQueue_t *streamQueue);
 
+// TODO ADD !!!!!!!!!
 ARCONTROLLER_Frame_t *ARCONTROLLER_StreamQueue_LocalPopFrame (ARCONTROLLER_StreamQueue_t *streamQueue);
 
 #endif /* _ARCONTROLLER_STREAM_QUEUE_PRIVATE_H_ */

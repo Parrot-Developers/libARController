@@ -28,6 +28,7 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
+
 /**
  * @file ARCONTROLLER_Frame.h
  * @brief ARCONTROLLER_Frame
@@ -40,29 +41,71 @@
 
 #include <stdint.h>
 
+#define ARCONTROLLER_FRAME_DEFAULT_CAPACITY 60000 /**< Default capacity of a new frame */
+
 /**
- * @brief 
+ * @brief Frame used to store stream data
  */
 typedef struct 
 {
-    uint8_t *data;
-    uint32_t capacity;
-    uint32_t used;
+    uint8_t *data; /**< Data of the frame */
+    uint32_t capacity; /**< Data capacity */
+    uint32_t used; /**< size of the data */
     uint32_t missed;
     uint32_t width;
     uint32_t height;
-    int isIFrame;
-    int available;
+    int isIFrame; /**< Flag to inform if the frame is an IFrame ; '1' is an IFrame ; '0' is not an IFrame */
+    int available; /**< Flag to inform if the frame is available ; '1' the frame is free ; '0' the frame is not available */
 }ARCONTROLLER_Frame_t;
 
+/**
+ * @brief Create a new frame
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_Frame_Delete() must be called to delete the frame and free the memory allocated.
+ * @note The capacity of the data frame wil be ARCONTROLLER_FRAME_DEFAULT_CAPACITY.
+ * @param[out] error Executing error.
+ * @return the new frame
+ * @see ARCONTROLLER_Frame_NewWithCapacity()
+ * @see ARCONTROLLER_Frame_Delete()
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_New (eARCONTROLLER_ERROR *error);
 
+/**
+ * @brief Create a new frame with specific capacity
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_Frame_Delete() must be called to delete the frame and free the memory allocated.
+ * @param[in] defaultCapacity The default capacity of the frame.
+ * @param[out] error Executing error.
+ * @return the new frame.
+ * @see ARCONTROLLER_Frame_New()
+ * @see ARCONTROLLER_Frame_Delete()
+ */
 ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_NewWithCapacity (uint32_t defaultCapacity, eARCONTROLLER_ERROR *error);
 
+/**
+ * @brief Delete the frame.
+ * @warning This function free memory.
+ * @param frame The frame to delete.
+ * @see ARCONTROLLER_Frame_New().
+ * @see ARCONTROLLER_Frame_NewWithCapacity().
+ */
 void ARCONTROLLER_Frame_Delete (ARCONTROLLER_Frame_t **frame);
 
+/**
+ * @brief Ensure the Capacity of the frame Is At Least 'minimumCapacity'.
+ * @note If the capacity is too small, data frame will be re-allocated to the good Capacity.
+ * @param frame The frame to delete.
+ * @param[out] error Executing error.
+ * @param[in] minimumCapacity The minimum capacity that the frame should have.
+ * @return '1' is the capacity is at least 'minimumCapacity', otherwise '0'
+ */
 int ARCONTROLLER_Frame_ensureCapacityIsAtLeast (ARCONTROLLER_Frame_t *frame, uint32_t minimumCapacity, eARCONTROLLER_ERROR *error);
 
+/**
+ * @brief Free a frame.
+ * @param frame The frame.r.
+ * @return error Executing error.
+ */
 eARCONTROLLER_ERROR ARCONTROLLER_Frame_SetFree (ARCONTROLLER_Frame_t *frame);
 
 #endif /* _ARCONTROLLER_FRAME_H_ */
