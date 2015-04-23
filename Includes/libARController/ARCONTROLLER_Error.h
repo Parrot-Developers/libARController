@@ -68,6 +68,7 @@ typedef enum
     ARCONTROLLER_ERROR_NO_VIDEO, /**< Error the device has no video */
     ARCONTROLLER_ERROR_NO_ELEMENT, /**< No element saved for this command */
     ARCONTROLLER_ERROR_NO_ARGUMENTS, /**< No argument saved for this command */
+    ARCONTROLLER_ERROR_CANCELED, /**< start canceled*/
     
     ARCONTROLLER_ERROR_COMMAND_GENERATING, /**< Error of command generating */
     

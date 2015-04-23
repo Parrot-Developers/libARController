@@ -49,7 +49,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <libARSAL/ARSAL_Print.h>
+#include <libARSAL/ARSAL.h>
 #include <libARDiscovery/ARDISCOVERY_Error.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
 #include <libARDiscovery/ARDISCOVERY_Connection.h>
@@ -137,6 +137,8 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest ()
  */
 
 int streamEnableReceived = 0;
+eARCONTROLLER_DEVICE_STATE deviceControllerState = 0;
+ARSAL_Sem_t stateSem;
 int cmdReceived = 0;
 
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
@@ -153,6 +155,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     ARDISCOVERY_Device_t *device = NULL;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Device_t *deviceController = NULL;
+    ARSAL_Sem_Init (&(stateSem), 0, 0);
     
     pid_t child = 0;
 #if DEVICE_TYPE == TEST_BEBOP
@@ -230,6 +233,19 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for state changed ... ");
+        
+        error = ARCONTROLLER_Device_AddStateChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback, deviceController);
+        
+        if (error != ARCONTROLLER_OK)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+    }
+    
+    if (failed == 0)
+    {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for command received ... ");
         
         error = ARCONTROLLER_Device_AddCommandRecievedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
@@ -243,27 +259,46 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     if (failed == 0)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for satus changed ... ");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Start ... ");
         
-        error = ARCONTROLLER_Device_AddStateChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback, deviceController);
-
-        if (error != ARCONTROLLER_OK)
+        error = ARCONTROLLER_Device_Start (deviceController);
+        
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait new status ... ");
+        ARSAL_Sem_Wait (&(stateSem)); // get semaphore for ARCONTROLLER_DEVICE_STATE_STARTING
+        
+        if ((error != ARCONTROLLER_OK))
         {
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+        else if(deviceControllerState != ARCONTROLLER_DEVICE_STATE_STARTING)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- deviceControllerState :%d instead of %d", deviceControllerState, ARCONTROLLER_DEVICE_STATE_STARTING);
+        }
+        else
+        {
+            ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait new status ... ");
+            ARSAL_Sem_Wait (&(stateSem));
+            
+            if (deviceControllerState != ARCONTROLLER_DEVICE_STATE_RUNNING)
+            {
+                failed++;
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- deviceControllerState :%d instead of %d", deviceControllerState, ARCONTROLLER_DEVICE_STATE_RUNNING);
+            }
         }
     }
     
     if (failed == 0)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Devcie_Start ... ");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- ARCONTROLLER_Device_GetState ... ");
         
-        error = ARCONTROLLER_Device_Start (deviceController);
+        eARCONTROLLER_DEVICE_STATE state = ARCONTROLLER_Device_GetState (deviceController, &error);
         
-        if (error != ARCONTROLLER_OK)
+        if (state != ARCONTROLLER_DEVICE_STATE_RUNNING)
         {
             failed++;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- state :%d instead of %d", state, ARCONTROLLER_DEVICE_STATE_RUNNING);
         }
     }
     
@@ -339,7 +374,6 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
-
     
     if (failed == 0)
     {
@@ -360,26 +394,44 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
         
         error = ARCONTROLLER_Device_Stop (deviceController);
         
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait new status ... ");
+        ARSAL_Sem_Wait (&(stateSem)); // get semaphore for ARCONTROLLER_DEVICE_STATE_STOPPING
+        
         if (error != ARCONTROLLER_OK)
         {
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
+        }
+        else if(deviceControllerState != ARCONTROLLER_DEVICE_STATE_STOPPING)
+        {
+            failed++;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- deviceControllerState :%d instead of %d", deviceControllerState, ARCONTROLLER_DEVICE_STATE_STOPPING);
+        }
+        else
+        {
+            ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- wait new status ... ");
+            ARSAL_Sem_Wait (&(stateSem));
+            
+            if (deviceControllerState != ARCONTROLLER_DEVICE_STATE_STOPPED)
+            {
+                failed++;
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- deviceControllerState :%d instead of %d", deviceControllerState, ARCONTROLLER_DEVICE_STATE_STOPPED);
+            }
         }
     }
     
     if (failed == 0)
     {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for satus changed ... ");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for state changed ... ");
         
         error = ARCONTROLLER_Device_RemoveStateChangedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback, deviceController);
-
+        
         if (error != ARCONTROLLER_OK)
         {
             failed++;
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error :%s", ARCONTROLLER_Error_ToString(error));
         }
     }
-    
     
     if (deviceController != NULL)
     {
@@ -392,6 +444,8 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
             ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "- error deviceController is not NULL ");
         }
     }
+    
+    ARSAL_Sem_Destroy (&(stateSem));
     
     if (videoOut != NULL)
     {
@@ -451,6 +505,20 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     }
     
     return failed;
+}
+
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData)
+{
+    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChanged newState:%d........", newState);
+    
+    ARCONTROLLER_Device_t *deviceController = customData;
+    
+    if (deviceController != NULL)
+    {
+        deviceControllerState = newState;
+        ARSAL_Sem_Post (&(stateSem));
+    }
+    
 }
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)
@@ -575,9 +643,4 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (AR
     {
         ARSAL_PRINT(ARSAL_PRINT_WARNING, TAG, "videoOut is NULL.");
     }
-}
-
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData)
-{
-    ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback newState:%d........", newState);
 }
