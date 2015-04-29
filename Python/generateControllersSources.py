@@ -58,8 +58,47 @@ args.pop (0)
 libARCommandsDir=MYDIR+'/../../libARCommands/'
 outputDir='.'
 
+#Relative path of SOURCE dir
+SRC_DIR = MYDIR + '/../Sources/'
+
+#Relative path of INCLUDES dir
+INC_DIR = MYDIR + '/../Includes/libARController/'
+
+
+# Create array of generated files (so we can cleanup only our files)
+GENERATED_FILES = []
+GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Device.h')
+GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.h')
+GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.c')
+
+GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Feature.h')
+GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.h')
+GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.c')
+
+GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
+GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
+
 while len(args) > 0:
     a = args.pop (0)
+    
+    #################################
+    # If "-fname" is passed as an   #
+    # argument, just output the     #
+    # name of the generated files   #
+    #################################
+    if a == "-fname":
+        for fil in GENERATED_FILES:
+            ARPrint (fil + ' ', True)
+        ARPrint ('')
+        EXIT (0)
+        
+    #################################
+    # If "-dname" is passed as an   #
+    # argument, just output the     #
+    # name of the generated dirs    #
+    #################################
+    elif a == "-dname":
+        EXIT (0)
     
     ####################################
     # If "-libARCommandsDir" is passed #
@@ -101,12 +140,6 @@ while len(args) > 0:
 
 ARPrint ('libARCommandsDir = ' + libARCommandsDir)
 #ARPrint ('outputDir = ' + outputDir)
-
-#Relative path of SOURCE dir
-SRC_DIR = MYDIR + '/../Sources/'
-
-#Relative path of INCLUDES dir
-INC_DIR = MYDIR + '/../Includes/libARController/'
 
 
 #################################

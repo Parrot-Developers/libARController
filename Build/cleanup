@@ -4,6 +4,14 @@ if [ -e Makefile ] ; then
     make clean
 fi
 
+#Python generated C/H files
+rm -rf $(python ../Python/generateControllersSources.py -fname)
+#Python generated Directories (if empty)
+PDIR=$(python ../Python/generateControllersSources.py -dname)
+for DIR in $PDIR; do
+    rmdir $DIR 2>/dev/null
+done
+
 # Generated files.
 rm -f \
     INSTALL \
