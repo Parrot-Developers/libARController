@@ -31,7 +31,7 @@
 
 /**
  * @file ARNETWORK_Command.h
- * @brief Dictionary controller allow to !!!!! TODO.
+ * @brief Dictionary controller allow to manage a dictionary.
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
@@ -69,7 +69,7 @@ typedef enum
 }eARCONTROLLER_DICTIONARY_VALUE_TYPE;
 
 /**
- * @brief .
+ * @brief Value Type.
  */
 typedef union 
 {

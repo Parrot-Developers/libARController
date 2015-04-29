@@ -95,7 +95,7 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData);
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, eARCONTROLLER_ERROR error, void *customData);
 
 /*****************************************
  *
@@ -509,7 +509,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCO
     return failed;
 }
 
-void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, void *customData)
+void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChangedCallback (eARCONTROLLER_DEVICE_STATE newState, eARCONTROLLER_ERROR error, void *customData)
 {
     ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "    - ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StateChanged newState:%d........", newState);
     

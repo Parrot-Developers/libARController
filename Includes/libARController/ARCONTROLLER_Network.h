@@ -85,7 +85,10 @@ typedef struct
     void *customData; /**< Custom data */
 }ARCONTROLLER_NETWORK_SendingConfiguration_t;
 
-//TODO add !!!!!!!!!
+/**
+ * @brief Callback used on disconnection of the network
+ * @param[in] customData Data given at the registering of the callback.
+ */
 typedef void (*ARCONTROLLER_Network_DisconnectionCallback_t) (void *customData);
 
 /**
