@@ -221,7 +221,7 @@ def xmlToJava (proj, cl, cmd, arg):
     
 def xmlToFormat (arg):
     if 'enum' == arg.type:
-        return "%d";
+        return '"%d"';
     xmlIndex = XMLTYPES.index (arg.type)
     return FORMATTYPES [xmlIndex]
 
