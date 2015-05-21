@@ -89,6 +89,8 @@
 
 int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ();
 
+int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_initDiscoveryDevice (ARDISCOVERY_Device_t **device);
+
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
 
 void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
@@ -161,9 +163,9 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     
     pid_t child = 0;
 #if DEVICE_TYPE == TEST_BEBOP
-    char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo_30fps";
+    char videoOutFileName[] ="./video_fifo_30fps";
 #elif DEVICE_TYPE == TEST_JS
-    char videoOutFileName[] ="/home/mmaitre/Documents/ARDrone/SDK3/git/ARSDKBuildUtils/Targets/Unix/Build/TestBench/Unix/video_fifo.mjpg";
+    char videoOutFileName[] ="./video_fifo.mjpg";
 #endif
     FILE *videoOut = NULL;
     

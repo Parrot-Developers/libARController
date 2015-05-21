@@ -39,7 +39,7 @@ MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
 if '' == MYDIR:
     MYDIR=os.getcwd()
 
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
+sys.path.append('%(MYDIR)s/../../ARSDKBuildUtils/Utils/Python' % locals())
 
 from ARFuncs import *
 from ARCommandsParser import *

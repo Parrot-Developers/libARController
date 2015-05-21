@@ -231,7 +231,7 @@ int ARCONTROLLER_TESTBENCH_NetworkControllerAutoTest_basicTest ()
             
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "error: %s", ARDISCOVERY_Error_ToString(error));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "error: %s", ARCONTROLLER_Error_ToString(error));
             }
             
             if (netError != ARNETWORK_OK)
