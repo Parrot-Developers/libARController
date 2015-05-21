@@ -562,6 +562,11 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
             case ARSTREAM_READER_CAUSE_COPY_COMPLETE:
                 error = ARCONTROLLER_Frame_SetFree (oldFrame);
                 oldFrame = NULL;
+                
+                if (error == ARCONTROLLER_OK)
+                {
+                    frame = ARCONTROLLER_StreamPool_GetFrameFromData (pool, frameData, &error);
+                }
                 break;
                 
             case ARSTREAM_READER_CAUSE_CANCEL:
@@ -573,6 +578,8 @@ uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
                 break;
                 
             default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM_TAG, "cause %d not known", cause);
+                error = ARCONTROLLER_ERROR;
                 break;
         }
     }
