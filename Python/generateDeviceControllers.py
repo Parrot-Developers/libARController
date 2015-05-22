@@ -208,7 +208,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write (' * @param[in] customData custom data given as parameter to the callback.\n')
     hfile.write (' * @return executing error.\n')
     hfile.write (' */\n')
-    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
     
     hfile.write ('/**\n')
@@ -218,7 +218,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write (' * @param[in] customData custom data associated to the callback.\n')
     hfile.write (' * @return executing error.\n')
     hfile.write (' */\n')
-    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
     
     hfile.write ('/**\n')
@@ -1073,7 +1073,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add Command received callback --\n')
     cFile.write ('    \n')
@@ -1114,7 +1114,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandRecievedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove Command received callback --\n')
     cFile.write ('    \n')

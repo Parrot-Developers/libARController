@@ -252,7 +252,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- add callback for command received ... ");
         
-        error = ARCONTROLLER_Device_AddCommandRecievedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
+        error = ARCONTROLLER_Device_AddCommandReceivedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
         
         if (error != ARCONTROLLER_OK)
         {
@@ -383,7 +383,7 @@ int ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_basicTest ()
     {
         ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "- remove callback for command received ... ");
         
-        error = ARCONTROLLER_Device_RemoveCommandRecievedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
+        error = ARCONTROLLER_Device_RemoveCommandReceivedCallback (deviceController, ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_commandReceived, deviceController);
         
         if (error != ARCONTROLLER_OK)
         {
@@ -584,8 +584,8 @@ void ARCONTROLLER_TESTBENCH_DeviceControllerAutoTest_StreamEnable (eARCONTROLLER
                 
                         if (arg != NULL)
                         {
-                            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->valueType %d",arg->valueType);
-                            ARSAL_PRINT(ARSAL_PRINT_ERROR, TAG, "arg->value %d",arg->value.U8);
+                            ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "arg->valueType %d",arg->valueType);
+                            ARSAL_PRINT(ARSAL_PRINT_INFO, TAG, "arg->value %d",arg->value.U8);
                             streamEnableReceived = 1;
                         }
                         else
