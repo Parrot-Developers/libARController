@@ -936,8 +936,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK) \n')
     cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
 
     cFile.write ('        if (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_STOPPED)\n')
     cFile.write ('        {\n')
@@ -956,8 +954,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            \n')
     cFile.write ('        }\n')
     cFile.write ('        \n')
-    
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
@@ -984,8 +980,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK) \n')
     cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
 
     cFile.write ('        if (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_RUNNING)\n')
     cFile.write ('        {\n')
@@ -1007,14 +1001,15 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        {\n')
     cFile.write ('            // Cancel the connection\n')
     cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, ARCONTROLLER_OK);\n')
+    
+    cFile.write ('            ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('            deviceController->privatePart->startCancelled = 1;\n')
     cFile.write ('            ARSAL_Sem_Post (&(deviceController->privatePart->initSem));\n')
     cFile.write ('            ARSAL_Sem_Post (&(deviceController->privatePart->initSem));\n')
+    cFile.write ('            ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     
     cFile.write ('        }\n')
     cFile.write ('        \n')
-    
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
@@ -1404,9 +1399,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, ARCONTROLLER_OK);\n')
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
     cFile.write ('    else\n')
     cFile.write ('    {\n')
@@ -1418,9 +1411,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            error = ARCONTROLLER_ERROR_CANCELED;\n')
     cFile.write ('        }\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "Start failed or canceled.");\n')
-    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, error);\n')
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopRun')+' (deviceController);\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
@@ -1443,7 +1434,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = ('+className+' *) data;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    int locked = 0;\n')
     cFile.write ('    \n')
     
     cFile.write ('    // Check parameters\n')
@@ -1474,25 +1464,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        locked = 1;\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('    {\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED, ARCONTROLLER_OK);\n')
     cFile.write ('    }\n')
     cFile.write ('    //else // TODO see what to do\n')
     cFile.write ('    //{\n')
     cFile.write ('    //    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE ???? , ARCONTROLLER_OK;\n')
     cFile.write ('    //}\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (locked)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
-    cFile.write ('    }\n')
     cFile.write ('    \n')
     
     cFile.write ('    // Print error\n')
@@ -2216,9 +2193,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // -- Set the Device Controller State and notify all listeners.\n')
     cFile.write ('    \n')
     
+    cFile.write ('    ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    deviceController->privatePart->state = state;\n')
+    cFile.write ('    ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInList')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state, error);\n')
     cFile.write ('    \n')
+    
     cFile.write ('}\n')
     cFile.write ('\n')
     
