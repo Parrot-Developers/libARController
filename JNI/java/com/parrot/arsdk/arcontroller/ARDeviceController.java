@@ -124,9 +124,6 @@ public class ARDeviceController
     
     public ARCONTROLLER_ERROR_ENUM stop ()
     {
-        ARSALPrint.d(TAG,"stop ...");
-        ARSALPrint.wtf(TAG,"stop ... jniDeviceController: " + jniDeviceController);
-        
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
@@ -195,24 +192,22 @@ public class ARDeviceController
         }
     }
     
-    private void  didReceiveFrameCallback (long data, int dataSize)
+    private void  didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed)
     {
-        //ARSALPrint.d(TAG,"didReceiveFrameCallback ... data: " + data + " dataSize:" + dataSize);
+        boolean isIFrame = (nativeIsIFrame != 0);
         
-        ARNativeData frame = new ARNativeData (data, dataSize);
-        
-        //ARSALPrint.d(TAG,"frame : " + frame);
+        ARFrame frame = new ARFrame (data, dataCapacity, dataSize, isIFrame, missed);
         
         for (ARDeviceControllerStreamListener l : streamlisteners)
         {
             l.onFrameReceived (this, frame);
         }
+        
+        frame.dispose();
     }
 
     private void  timeoutFrameCallback ()
     {
-        //ARSALPrint.d(TAG,"timeoutFrameCallback ... ");
-        
         for (ARDeviceControllerStreamListener l : streamlisteners)
         {
             l.onFrameTimeout (this);

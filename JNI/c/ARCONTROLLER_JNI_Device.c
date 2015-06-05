@@ -124,7 +124,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStaticInit (JNIEnv *
     jARDeviceControllerCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARDeviceController");
     
     ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onStateChanged", "(II)V");
-    ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "didReceiveFrameCallback", "(JI)V");
+    ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "didReceiveFrameCallback", "(JIIII)V");
     ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "timeoutFrameCallback", "()V");    
     ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onCommandReceived", "(IJ)V");    
     
@@ -385,7 +385,10 @@ void ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *fram
     jint attachResult = 1;
     
     jlong data = 0;
+    jint dataCapacity = 0;
     jint dataSize = 0;
+    jint isIFrame = 0;
+    jint missed = 0;
     
     ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;
         
@@ -419,11 +422,14 @@ void ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *fram
         if (frame != NULL)
         {
             data = frame->data;
-            dataSize = frame->used;            
+            dataCapacity = frame->capacity;
+            dataSize = frame->used;
+            isIFrame = frame->isIFrame;
+            missed = frame->missed;
         }
                 
         // java onStateChanged callback
-        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK, data, dataSize);
+        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK, data, dataCapacity, dataSize, isIFrame, missed);
     }
     
     // if the thread has been attached then detach the thread from the virtual machine
