@@ -120,8 +120,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('    ARCONTROLLER_DEVICE_STATE_STOPPING, /**< device controller is stopping */\n')
     hfile.write ('    \n')
     hfile.write ('    ARCONTROLLER_DEVICE_STATE_MAX /**< Max of the enumeration */\n')
-    hfile.write ('}\n')
-    hfile.write ('eARCONTROLLER_DEVICE_STATE;\n')
+    hfile.write ('}eARCONTROLLER_DEVICE_STATE;\n')
     hfile.write ('\n')
     
     hfile.write ('/**\n')

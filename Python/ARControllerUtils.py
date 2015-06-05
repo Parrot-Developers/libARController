@@ -87,13 +87,13 @@ def setNAckFunctionType( feature, cl, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return ARTypeName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
+    return ARTypeName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
     
 def setNAckFunctionName( feature, cl, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
+    return ARFunctionName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
 
 def setNAckFunction (cl, cmd, arg=None):
     argPart = ''

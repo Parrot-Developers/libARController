@@ -93,6 +93,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('#include <uthash/uthash.h>\n')
     hfile.write ('\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Error.h>\n')
+    hfile.write ('#include <libARController/ARCONTROLLER_Network.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Dictionary.h>\n')
     hfile.write ('\n')
@@ -963,7 +964,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         cFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name)
                     cFile.write (')\n')
                     cFile.write ('{\n')
-                    
                     cFile.write ('    // -- Send a command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> --\n')
                     cFile.write ('    \n')
                     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
@@ -983,7 +983,6 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
-                    
                     cFile.write ('        // Send ' + ARCapitalize(cmd.name) + ' command\n')
                     cFile.write ('        cmdError = ARCOMMANDS_Generator_Generate' + ARCapitalize(feature.name) + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + '(cmdBuffer, sizeof(cmdBuffer), &cmdSize')
                     for arg in cmd.args:
