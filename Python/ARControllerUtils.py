@@ -82,6 +82,9 @@ def sendingFunctionName(module, feature, cl, cmd):
     
 def sendingFunction (cl, cmd):
     return 'send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
+
+def nativeSendingFunction (cl, cmd):
+    return 'nativeSend' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
     
 def setNAckFunctionType( feature, cl, cmd, arg=None):
     argPart = ''
@@ -145,6 +148,18 @@ def decodeCallback(feature, cl, cmd):
     
 def discoveryProduct (productName):
     return 'ARDISCOVERY_PRODUCT_' + productName.upper ();
+    
+def javaFeatureClassName (feature):
+    return 'ARFeature'+ ARCapitalize(feature.name)
+    
+def javaFeatureName (feature):
+    return 'feature'+ ARCapitalize(feature.name)
+    
+def nativeFeatureName (feature):
+    return 'nativeFeature'+ ARCapitalize(feature.name)
+    
+def nativeGetFeature (feature):
+    return 'nativeGetFeature'+ ARCapitalize(feature.name)
 
 XMLTYPES = ['u8',       'i8',
             'u16',      'i16',
@@ -213,9 +228,9 @@ def xmlToObjC (proj, cl, cmd, arg):
     xmlIndex = XMLTYPES.index (arg.type)
     return '[NSNumber numberWith' + OBJCTYPES [xmlIndex] + ':' + arg.name + ']';
 
-def xmlToJava (proj, cl, cmd, arg):
+def xmlToJava (module, proj, cl, cmd, arg):
     if 'enum' == arg.type:
-        return ARJavaEnumType(LIB_MODULE, proj.name + cl.projExt + '_' + cl.name, cmd.name + '_' + arg.name);
+        return ARJavaEnumType(module, proj.name + cl.projExt + '_' + cl.name, cmd.name + '_' + arg.name);
     xmlIndex = XMLTYPES.index (arg.type)
     return JAVATYPES [xmlIndex]
     
@@ -224,6 +239,12 @@ def xmlToFormat (arg):
         return '"%d"';
     xmlIndex = XMLTYPES.index (arg.type)
     return FORMATTYPES [xmlIndex]
+    
+def xmlToJNI (arg):
+    if 'enum' == arg.type:
+        return 'jint';
+    xmlIndex = XMLTYPES.index (arg.type)
+    return JNITYPES [xmlIndex]
 
 
 class ARControllerDevice:

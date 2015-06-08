@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class ARControllerDictionary implements Map<String, ARControllerArgumentDictionary<Object>> /*Parcelable, Cloneable*/
+public class ARControllerDictionary implements Map<String, ARControllerArgumentDictionary<Object>>
 {
     private static String TAG = "ARControllerDictionary";
     

@@ -64,16 +64,24 @@ SRC_DIR = MYDIR + '/../Sources/'
 #Relative path of INCLUDES dir
 INC_DIR = MYDIR + '/../Includes/libARController/'
 
+#Relative path of INCLUDES dir
+JNI_DIR = MYDIR + '/../JNI/'
+JNI_C_DIR = JNI_DIR + '/c/'
+JNI_JAVA_DIR = JNI_DIR + '/java/com/parrot/arsdk/arcontroller/'
 
 # Create array of generated files (so we can cleanup only our files)
 GENERATED_FILES = []
 GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Device.h')
 GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.h')
 GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.c')
+GENERATED_FILES.append (JNI_C_DIR + 'ARCONTROLLER_JNI_Device.c')
+GENERATED_FILES.append (JNI_JAVA_DIR + 'ARDeviceController.java')
 
 GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Feature.h')
 GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.h')
 GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.c')
+GENERATED_FILES.append (JNI_C_DIR + 'ARCONTROLLER_JNI_Feature*.c')
+GENERATED_FILES.append (JNI_JAVA_DIR + 'ARFeature*.java')
 
 GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
 GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
@@ -215,9 +223,11 @@ if noGen: # called with "-nogen"
 
 # generate Feature Controllers
 generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR)
+generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR);
 
 # generate Device Controllers
 generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR)
+generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR)
 
 # generate DictionaryKeyEnum
 generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR)

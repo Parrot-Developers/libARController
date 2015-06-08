@@ -100,7 +100,7 @@ Java_com_parrot_arsdk_arcontroller_ARControllerDictionary_nativeGetElement (JNIE
     
     HASH_FIND_STR (nativeDictionary, nativeKey, element);
     
-    // clean up
+    // cleanup
     (*env)->ReleaseStringUTFChars(env, key, nativeKey);
     
     return (long) element;
@@ -119,7 +119,7 @@ Java_com_parrot_arsdk_arcontroller_ARControllerArgumentDictionary_nativeGetArg (
         HASH_FIND_STR (nativeDictionary->arguments, nativeKey, arg);
     }
     
-    // clean up
+    // cleanup
     (*env)->ReleaseStringUTFChars(env, key, nativeKey);
     
     return (long) arg;
