@@ -160,6 +160,18 @@ def nativeFeatureName (feature):
     
 def nativeGetFeature (feature):
     return 'nativeGetFeature'+ ARCapitalize(feature.name)
+    
+def javaSetNAckFunction(cl, cmd, arg=None):
+    argPart = ''
+    if arg:
+        argPart = ARCapitalize(arg.name)
+    return 'set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart
+    
+def nativeSetNAckFunction (cl, cmd, arg=None):
+    argPart = ''
+    if arg:
+        argPart = ARCapitalize(arg.name)
+    return 'nativeSet' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart
 
 XMLTYPES = ['u8',       'i8',
             'u16',      'i16',

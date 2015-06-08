@@ -1537,6 +1537,16 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     for arg in cmd.args:
                         jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name + '')
                     jfile.write (');\n')
+                
+                    if cmd.buf == ARCommandBuffer.NON_ACK:
+                        jfile.write ('    private native int '+nativeSetNAckFunction(cl, cmd)+' (long jFeature')
+                        for arg in cmd.args:
+                            jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name + '')
+                        jfile.write (');\n')
+                    
+                        for arg in cmd.args:
+                            jfile.write ('    private native int '+nativeSetNAckFunction(cl, cmd, arg)+' (long jFeature, ' + xmlToJava (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name + ');\n')
+                        
                     
         jfile.write ('\n')
         jfile.write ('    private long jniFeature;\n')
@@ -1617,6 +1627,50 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     jfile.write ('        return error;\n')
                     jfile.write ('    }\n')
                     jfile.write ('    \n')
+                    
+                    if cmd.buf == ARCommandBuffer.NON_ACK:
+                        jfile.write ('    public ARCONTROLLER_ERROR_ENUM '+javaSetNAckFunction (cl, cmd)+' (')
+                        isFirst = True
+                        for arg in cmd.args:
+                            if isFirst:
+                                isFirst = False
+                            else:
+                                jfile.write (', ')
+                            jfile.write (xmlToJava (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _' + arg.name)
+                        jfile.write (')\n')
+                        jfile.write ('    {\n')
+                        jfile.write ('        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;\n')
+                        jfile.write ('        synchronized (this)\n')
+                        jfile.write ('        {\n')
+                        jfile.write ('            if(initOk == true)\n')
+                        jfile.write ('            {\n')
+                        jfile.write ('                int nativeError = '+nativeSetNAckFunction(cl, cmd)+' (jniFeature')
+                        for arg in cmd.args:
+                            jfile.write (', _' + arg.name + '')
+                        jfile.write (');\n')
+                        jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
+                        jfile.write ('            }\n')
+                        jfile.write ('        }\n')
+                        jfile.write ('        return error;\n')
+                        jfile.write ('    }\n')
+                        jfile.write ('    \n')
+                        
+                        for arg in cmd.args:
+                            jfile.write ('    public ARCONTROLLER_ERROR_ENUM '+javaSetNAckFunction (cl, cmd, arg)+' (' + xmlToJava (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' _' + arg.name+')\n')
+                            jfile.write ('    {\n')
+                            jfile.write ('        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;\n')
+                            jfile.write ('        synchronized (this)\n')
+                            jfile.write ('        {\n')
+                            jfile.write ('            if(initOk == true)\n')
+                            jfile.write ('            {\n')
+                            jfile.write ('                int nativeError = '+nativeSetNAckFunction(cl, cmd, arg)+' (jniFeature, _' + arg.name + ');\n')
+                            jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
+                            jfile.write ('            }\n')
+                            jfile.write ('        }\n')
+                            jfile.write ('        return error;\n')
+                            jfile.write ('    }\n')
+                            jfile.write ('    \n')
+                        
                     
         jfile.write ('\n')
         jfile.write ('}\n')
@@ -1731,5 +1785,71 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     cFile.write ('    return error;\n')
                     cFile.write ('}\n')
                     cFile.write ('\n')
+                    
+                    if cmd.buf == ARCommandBuffer.NON_ACK:
+                        cFile.write ('JNIEXPORT jint JNICALL\n')
+                        cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSetNAckFunction(cl, cmd)+' (JNIEnv *env, jobject thizz, jlong jFeature')
+                        for arg in cmd.args:
+                            cFile.write (', ' + xmlToJNI (arg) + ' _' + arg.name + '')
+                        cFile.write (')\n')
+                        cFile.write ('{\n')
+                        cFile.write ('    // local declarations\n')
+                        cFile.write ('    '+className+' *nativeFeature = ('+className+'*) (intptr_t) jFeature;\n')
+                        cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+                        hasArgString = False
+                        for arg in cmd.args:
+                            if (arg.type == 'string'):
+                                hasArgString = True
+                                cFile.write ('    const char *native'+ARCapitalize(arg.name)+' = (*env)->GetStringUTFChars(env, _'+arg.name+', 0);\n')
+                        cFile.write ('    \n')
+                        cFile.write ('    error = nativeFeature->'+setNAckFunction(cl, cmd)+' (nativeFeature')
+                        for arg in cmd.args:
+                            if (arg.type == 'string'):
+                                cFile.write (', (char *)native'+ARCapitalize(arg.name))
+                            else:
+                                cFile.write (', _' + arg.name)
+                        cFile.write (');\n')
+                        cFile.write ('\n')
+        
+                        if hasArgString:
+                            cFile.write ('    // cleanup\n')
+                        for arg in cmd.args:
+                            if (arg.type == 'string'):
+                                cFile.write ('    (*env)->ReleaseStringUTFChars(env, _'+arg.name+', native'+ARCapitalize(arg.name)+');\n')
+                                
+                        if hasArgString:
+                            cFile.write ('\n')
+                        
+                        cFile.write ('    return error;\n')
+                        cFile.write ('}\n')
+                        cFile.write ('\n')
+                            
+                        for arg in cmd.args:
+                            cFile.write ('JNIEXPORT jint JNICALL\n')
+                            cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSetNAckFunction(cl, cmd, arg)+' (JNIEnv *env, jobject thizz, jlong jFeature, ' + xmlToJNI (arg) + ' _' + arg.name + ')\n')
+                            cFile.write ('{\n')
+                            cFile.write ('    // local declarations\n')
+                            cFile.write ('    '+className+' *nativeFeature = ('+className+'*) (intptr_t) jFeature;\n')
+                            cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
+
+                            if (arg.type == 'string'):
+                                cFile.write ('    const char *native'+ARCapitalize(arg.name)+' = (*env)->GetStringUTFChars(env, _'+arg.name+', 0);\n')
+                            cFile.write ('    \n')
+                            cFile.write ('    error = nativeFeature->'+setNAckFunction(cl, cmd, arg)+' (nativeFeature')
+                            if (arg.type == 'string'):
+                                cFile.write (', (char *)native'+ARCapitalize(arg.name))
+                            else:
+                                cFile.write (', _' + arg.name)
+                            cFile.write (');\n')
+                            cFile.write ('\n')
+            
+                            if (arg.type == 'string'):
+                                cFile.write ('    // cleanup\n')
+                                cFile.write ('    (*env)->ReleaseStringUTFChars(env, _'+arg.name+', native'+ARCapitalize(arg.name)+');\n')
+                                cFile.write ('\n')
+                            
+                            cFile.write ('    return error;\n')
+                            cFile.write ('}\n')
+                            cFile.write ('\n')
         
         cFile.close ()
