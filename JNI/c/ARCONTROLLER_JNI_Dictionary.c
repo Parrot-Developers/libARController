@@ -75,7 +75,7 @@ static jmethodID ARCONTROLLER_JNIDICTIONARY_METHOD_NEW_DOUBLE;
  *****************************************/
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARControllerDictionary_nativeGetSingleKey (JNIEnv *env, jclass class)
+Java_com_parrot_arsdk_arcontroller_ARControllerDictionary_nativeStaticGetSingleKey (JNIEnv *env, jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_SINGLE_KEY);
 }
@@ -104,6 +104,32 @@ Java_com_parrot_arsdk_arcontroller_ARControllerDictionary_nativeGetElement (JNIE
     (*env)->ReleaseStringUTFChars(env, key, nativeKey);
     
     return (long) element;
+}
+
+JNIEXPORT jlong JNICALL
+Java_com_parrot_arsdk_arcontroller_ARControllerDictionary_nativeGetAllElements (JNIEnv *env, jobject thizz, jlong jniDictionary)
+{
+    // local declarations
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *nativeDictionary = (ARCONTROLLER_DICTIONARY_ELEMENT_t*) (intptr_t) jniDictionary;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *elementTmp = NULL;
+    
+    int length = HASH_COUNT (nativeDictionary);
+    jlongArray jElements = (*env)->NewLongArray(env, length);
+    jlong *elementsArr = (*env)->GetLongArrayElements(env, jElements, NULL);
+    
+    int i = 0;
+    HASH_ITER (hh, nativeDictionary, element, elementTmp)
+    {
+        // For each element
+        elementsArr[i] = (long) element;
+        i++;
+    }
+    
+    // cleanup
+    (*env)->ReleaseLongArrayElements(env, jElements, elementsArr, NULL);
+    
+    return (long) jElements;
 }
 
 JNIEXPORT jlong JNICALL

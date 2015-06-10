@@ -9,6 +9,8 @@ import com.parrot.arsdk.arsal.ARSALPrint;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ARControllerDictionary implements Map<String, ARControllerArgumentDictionary<Object>>
 {
@@ -16,10 +18,11 @@ public class ARControllerDictionary implements Map<String, ARControllerArgumentD
     
     public static String ARCONTROLLER_DICTIONARY_SINGLE_KEY = "";
     
-    private static native String nativeGetSingleKey ();
+    private static native String nativeStaticGetSingleKey ();
 
     private native int nativeGetSize (long jniDictionary);
     private native long nativeGetElement (long jniDictionary, String key);
+    private native long[] nativeGetAllElements (long jniDictionary);
     
     private native long nativeGetArg (long jniDictionary, String key);
     private native int nativeGetArgType  (long jniArg);
@@ -33,7 +36,7 @@ public class ARControllerDictionary implements Map<String, ARControllerArgumentD
     
     static
     {
-        ARCONTROLLER_DICTIONARY_SINGLE_KEY = nativeGetSingleKey();
+        ARCONTROLLER_DICTIONARY_SINGLE_KEY = nativeStaticGetSingleKey();
     }
     
     /**
@@ -211,6 +214,26 @@ public class ARControllerDictionary implements Map<String, ARControllerArgumentD
     @Override
     public Collection<ARControllerArgumentDictionary<Object>> values()
     {
-        return null;
+        Collection<ARControllerArgumentDictionary<Object>> elements = null;
+        
+        synchronized (this)
+        {
+            if (initOk == true)
+            {
+                long nativeElements[] = nativeGetAllElements (jniDictionary);
+                
+                if (nativeElements != null)
+                {
+                    elements = new ArrayList<ARControllerArgumentDictionary<Object>> (nativeElements.length);
+                    
+                    for (long element : nativeElements)
+                    {
+                        elements.add(new ARControllerArgumentDictionary<Object> (element));
+                    }
+                }
+            }
+        }
+        
+        return elements;
     }
 }

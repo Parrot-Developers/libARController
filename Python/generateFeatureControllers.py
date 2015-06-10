@@ -1533,6 +1533,19 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         jfile.write ('    \n')
         
         for cl in feature.classes:
+            if isEvent(cl) or isState(cl):
+                for cmd in cl.cmds:
+                    for arg in cmd.args:
+                        jfile.write ('    public static String ' + defineNotification(feature, cl, cmd, arg) + ' = ""; /**< Key of the argument </code>'+arg.name+'</code> of class <code>' + ARCapitalize (cl.name) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+        jfile.write ('\n')
+        for cl in feature.classes:
+            if isEvent(cl) or isState(cl):
+                for cmd in cl.cmds:
+                    for arg in cmd.args:
+                        jfile.write ('    private static native String ' + nativeGetNotificationVal(feature, cl, cmd, arg) + ' ();\n')
+        jfile.write ('\n')
+        
+        for cl in feature.classes:
             if not isEvent(cl) and not isState(cl):
                 for cmd in cl.cmds:
                     jfile.write ('    private native int '+nativeSendingFunction(cl, cmd)+' (long jFeature')
@@ -1548,12 +1561,21 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     
                         for arg in cmd.args:
                             jfile.write ('    private native int '+nativeSetNAckFunction(cl, cmd, arg)+' (long jFeature, ' + xmlToJava (MODULE_ARCOMMANDS, feature, cl, cmd, arg) + ' ' + arg.name + ');\n')
-                        
-                    
         jfile.write ('\n')
+        
         jfile.write ('    private long jniFeature;\n')
         jfile.write ('    private boolean initOk;\n')
         jfile.write ('    \n')
+        jfile.write ('    static\n')
+        jfile.write ('    {\n')
+        for cl in feature.classes:
+            if isEvent(cl) or isState(cl):
+                for cmd in cl.cmds:
+                    for arg in cmd.args:
+                        jfile.write ('        ' + defineNotification(feature, cl, cmd, arg) + ' = '+ nativeGetNotificationVal(feature, cl, cmd, arg) + ' ();\n')
+        jfile.write ('    }\n')
+        jfile.write ('    \n')
+        
         jfile.write ('    /**\n')
         jfile.write ('     * Constructor\n')
         jfile.write ('     */\n')
@@ -1747,6 +1769,17 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         cFile.write (' *\n')
         cFile.write (' *****************************************/\n')
         cFile.write ('\n')
+        
+        for cl in feature.classes:
+            if isEvent(cl) or isState(cl):
+                for cmd in cl.cmds:
+                    for arg in cmd.args:
+                        cFile.write ('JNIEXPORT jstring JNICALL\n')
+                        cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_' + nativeGetNotificationVal(feature, cl, cmd, arg) + ' (JNIEnv *env , jclass class)\n')
+                        cFile.write ('{\n')
+                        cFile.write ('    return (*env)->NewStringUTF(env, '+defineNotification(feature, cl, cmd, arg)+');\n')
+                        cFile.write ('}\n')
+                        cFile.write ('\n')
         
         for cl in feature.classes:
             if not isEvent(cl) and not isState(cl):

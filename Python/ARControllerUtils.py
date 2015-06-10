@@ -117,8 +117,6 @@ def defineNotificationDef():
     return AREnumName(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY');
 
 def defineNotification(feature, cl=None, cmd=None, arg=None):
-    #return ARMacroName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #return ARGlobalConstName(module,  feature.name, cl.name + '_' + cmd.name + '_DICT');
     clPart = ''
     clPrjExt = ''
     if cl :
@@ -131,13 +129,21 @@ def defineNotification(feature, cl=None, cmd=None, arg=None):
     if arg :
         argPart = '_' + arg.name
     return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', feature.name + clPrjExt + clPart + cmdPart + argPart);
+    
+def nativeGetNotificationVal(feature, cl=None, cmd=None, arg=None):
+    clPart = ''
+    clPrjExt = ''
+    if cl :
+        clPart = cl.name
+        clPrjExt = cl.projExt
+    cmdPart = ''
+    if cmd :
+        cmdPart = cmd.name
+    argPart = ''
+    if arg :
+        argPart = '' + arg.name.replace("_", "");
+    return 'nativeStaticGetKey'+ARCapitalize(feature.name) + ARCapitalize(clPrjExt) + ARCapitalize(clPart) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
 
-#def defineNotificationKey(module, feature, cl, cmd, arg):
-    ##return defineNotification (module, feature, cl, cmd) + '_' + arg.name.upper() + '_KEY';
-    #return ARGlobalConstName(module, feature.name + cl.projExt, cl.name + '_' + cmd.name + '_DICT') + '_' + arg.name.upper() + '_KEY';
-
-#def commandController(feature, cl, cmd):
-#    return feature.name+ARCapitalize(cl.name)+ARCapitalize(cmd.name)+'Command'
 
 def arcommandsSetDecode(feature, cl, cmd):
     #return ARFunctionName (MODULE_ARCOMMANDS, 'Decoder', 'Set'+ARCapitalize(feature.name) + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Callback')
