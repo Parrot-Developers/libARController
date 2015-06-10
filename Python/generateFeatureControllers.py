@@ -1229,26 +1229,28 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         
                     cFile.write ('        //Alloc Element Key\n')
                     if cmd.listtype == ARCommandListType.MAP:
-                        if arg.type == 'string':
-                            cFile.write ('        elementKeyLength = strlen (_'+arg.name+');\n')
+                        if cmd.args[0].type == 'string':
+                            cFile.write ('        elementKeyLength = strlen (_'+cmd.args[0].name+');\n')
                         else:
-                            cFile.write ('        elementKeyLength = snprintf (NULL, 0, '+xmlToFormat(arg)+', _'+arg.name+');\n')
+                            cFile.write ('        elementKeyLength = snprintf (NULL, 0, '+xmlToFormat(cmd.args[0])+', _'+cmd.args[0].name+');\n')
                     elif cmd.listtype == ARCommandListType.LIST:
                         cFile.write ('        elementKeyLength = snprintf (NULL, 0, "%d", HASH_COUNT (dictCmdElement->elements));\n')
                     elif cmd.listtype == ARCommandListType.NONE:
                         cFile.write ('        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);\n')
+                    
                     cFile.write ('        newElement->key = malloc (elementKeyLength + 1);\n')
                     cFile.write ('        if (newElement->key != NULL)\n')
                     cFile.write ('        {\n')
                     if cmd.listtype == ARCommandListType.MAP:
-                        if arg.type == 'string':
-                            cFile.write ('            strncpy (newElement->key, _'+arg.name+', elementKeyLength);\n')
+                        if cmd.args[0].type == 'string':
+                            cFile.write ('            strncpy (newElement->key, _'+cmd.args[0].name+', (elementKeyLength + 1));\n')
                         else:
-                            cFile.write ('            snprintf (newElement->key, elementKeyLength, '+xmlToFormat(arg)+', _'+arg.name+');\n')
+                            cFile.write ('            snprintf (newElement->key, (elementKeyLength + 1), '+xmlToFormat(cmd.args[0])+', _'+cmd.args[0].name+');\n')
+                    
                     elif cmd.listtype == ARCommandListType.LIST:
-                        cFile.write ('            snprintf (newElement->key, elementKeyLength, "%d", HASH_COUNT (dictCmdElement->elements));\n')
+                        cFile.write ('            snprintf (newElement->key, (elementKeyLength + 1), "%d", HASH_COUNT (dictCmdElement->elements));\n')
                     elif cmd.listtype == ARCommandListType.NONE:
-                        cFile.write ('            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, elementKeyLength);\n')
+                        cFile.write ('            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));\n')
                     
                     cFile.write ('            newElement->key[elementKeyLength] = \'\\0\';\n')
                     cFile.write ('        }\n')
