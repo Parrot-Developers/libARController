@@ -1752,7 +1752,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ts = *localtime(&currentTime);\n')
-    cFile.write ('        strTimeSize = strftime(strTime, sizeof(data), "\'T\'%H%M%S%Z", &ts);\n')
+    cFile.write ('        strTimeSize = strftime(strTime, sizeof(data), "T%H%M%S%z", &ts);\n')
     cFile.write ('        if (strTimeSize == 0)\n')
     cFile.write ('        {\n')
     cFile.write ('            error = ARCONTROLLER_ERROR_INIT_GET_DATE;\n')
