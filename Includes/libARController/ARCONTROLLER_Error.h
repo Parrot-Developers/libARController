@@ -83,8 +83,8 @@ typedef enum
     ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY, /**< Error stream queue empty*/
     
     ARCONTROLLER_ERROR_JNI = -6000,
-    ARCONTROLLER_ERROR_JNI_ENV,
-    ARCONTROLLER_ERROR_JNI_INIT,
+    ARCONTROLLER_ERROR_JNI_ENV, /**< Error of JNI environment */
+    ARCONTROLLER_ERROR_JNI_INIT, /**< Native part not initialized */
 
 } eARCONTROLLER_ERROR;
 
