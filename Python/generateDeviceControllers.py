@@ -1061,7 +1061,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    {\n')
         for cl in feature.classes:
             
-            if isState(cl):
+            if isState(cl) or isEvent(cl):
                 for cmd in cl.cmds:
                     cFile.write ('        if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('        {\n')
@@ -1099,7 +1099,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('        {\n')
         
         for cl in feature.classes:
-            if isState(cl):
+            if isState(cl) or isEvent(cl):
                 for cmd in cl.cmds:
                     cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
                     cFile.write ('            if (error != ARCONTROLLER_OK)\n')
