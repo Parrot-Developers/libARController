@@ -55,8 +55,7 @@ typedef enum
     ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM, /**< strem data */
     
     ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX /**< Max of the enumeration */
-}
-eARCONTROLLER_NETWORK_SENDING_DATA_TYPE;
+}eARCONTROLLER_NETWORK_SENDING_DATA_TYPE;
 
 /**
  * Enum characterizing the states of the network controller
@@ -68,8 +67,7 @@ typedef enum
     ARCONTROLLER_NETWORK_STATE_PAUSE, /**< network controller in pause */
     
     ARCONTROLLER_NETWORK_STATE_MAX /**< Max of the enumeration */
-}
-eARCONTROLLER_NETWORK_STATE;
+}eARCONTROLLER_NETWORK_STATE;
 
 /**
  * @brief Network controller allow to operate an ARNETWORK_Manager for send and receive commands.
