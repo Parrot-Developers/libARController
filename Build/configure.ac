@@ -66,7 +66,7 @@ AC_MSG_RESULT([$sover])
 ##########################################################################
 
 # include local headers first
-LOCAL_CFLAGS+=" -I$srcdir/../Includes -I$srcdir/../Sources"
+LOCAL_CFLAGS+=" -I$srcdir/../Includes -I$srcdir/../Sources -I$srcdir/../gen/Includes"
 
 CPPFLAGS+="$LOCAL_CFLAGS"
 CFLAGS+="$LOCAL_CFLAGS"

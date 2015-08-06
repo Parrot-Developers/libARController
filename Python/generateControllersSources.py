@@ -58,14 +58,16 @@ args.pop (0)
 libARCommandsDir=MYDIR+'/../../libARCommands/'
 outputDir='.'
 
+MY_GEN_DIR = MYDIR + '/../gen/'
+
 #Relative path of SOURCE dir
-SRC_DIR = MYDIR + '/../Sources/'
+SRC_DIR = MY_GEN_DIR + '/Sources/'
 
 #Relative path of INCLUDES dir
-INC_DIR = MYDIR + '/../Includes/libARController/'
+INC_DIR = MY_GEN_DIR + '/Includes/libARController/'
 
 #Relative path of INCLUDES dir
-JNI_DIR = MYDIR + '/../JNI/'
+JNI_DIR = MY_GEN_DIR + '/JNI/'
 JNI_C_DIR = JNI_DIR + '/c/'
 JNI_JAVA_DIR = JNI_DIR + '/java/com/parrot/arsdk/arcontroller/'
 
@@ -85,6 +87,15 @@ GENERATED_FILES.append (JNI_JAVA_DIR + 'ARFeature*.java')
 
 GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
 GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
+
+def createDir(path):
+    if not os.path.exists(os.path.dirname(path)):
+        os.makedirs(os.path.dirname(path))
+
+createDir(INC_DIR)
+createDir(JNI_C_DIR)
+createDir(JNI_JAVA_DIR)
+createDir(SRC_DIR)
 
 while len(args) > 0:
     a = args.pop (0)

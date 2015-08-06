@@ -4,39 +4,40 @@
 ACLOCAL_AMFLAGS                                             =   -I m4
 
 # The list of header files that belong to the library (to be installed later)
-HEADER_FILES                                                =   ../Includes/libARController/ARCONTROLLER_Network.h \
+HEADER_FILES                                                =   ../Includes/libARController/ARCONTROLLER_Dictionary.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Error.h  \
-                                                                ../Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h \
-                                                                ../Includes/libARController/ARCONTROLLER_Dictionary.h \
-                                                                ../Includes/libARController/ARCONTROLLER_Feature.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Frame.h \
+                                                                ../Includes/libARController/ARController.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Network.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Stream.h \
                                                                 ../Includes/libARController/ARCONTROLLER_StreamPool.h \
                                                                 ../Includes/libARController/ARCONTROLLER_StreamQueue.h \
-                                                                ../Includes/libARController/ARCONTROLLER_Stream.h \
-                                                                ../Includes/libARController/ARCONTROLLER_Device.h \
-                                                                ../Includes/libARController/ARController.h
-
+                                                                ../gen/Includes/libARController/ARCONTROLLER_Device.h \
+                                                                ../gen/Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h \
+                                                                ../gen/Includes/libARController/ARCONTROLLER_Feature.h
 # The sources to add to the library and to add to the source distribution
 SOURCE_FILES                                                =   $(HEADER_FILES) \
-                                                                ../Sources/ARCONTROLLER_Network.h \
-                                                                ../Sources/ARCONTROLLER_Network.c \
-                                                                ../Sources/ARCONTROLLER_Error.c \
-                                                                ../Sources/ARCONTROLLER_DICTIONARY_Key.c \
-                                                                ../Sources/ARCONTROLLER_Dictionary.h \
                                                                 ../Sources/ARCONTROLLER_Dictionary.c \
-                                                                ../Sources/ARCONTROLLER_Feature.h \
-                                                                ../Sources/ARCONTROLLER_Feature.c \
-                                                                ../Sources/ARCONTROLLER_Frame.h \
+                                                                ../Sources/ARCONTROLLER_Dictionary.h \
                                                                 ../Sources/ARCONTROLLER_Frame.c \
-                                                                ../Sources/ARCONTROLLER_StreamPool.h \
-                                                                ../Sources/ARCONTROLLER_StreamPool.c \
-                                                                ../Sources/ARCONTROLLER_StreamQueue.h \
-                                                                ../Sources/ARCONTROLLER_StreamQueue.c \
-                                                                ../Sources/ARCONTROLLER_Stream.h \
+                                                                ../Sources/ARCONTROLLER_Frame.h \
+                                                                ../Sources/ARCONTROLLER_Network.c \
+                                                                ../Sources/ARCONTROLLER_Network.h \
                                                                 ../Sources/ARCONTROLLER_Stream.c \
-                                                                ../Sources/ARCONTROLLER_Device.h \
-                                                                ../Sources/ARCONTROLLER_Device.c
-
+                                                                ../Sources/ARCONTROLLER_Stream.h \
+                                                                ../Sources/ARCONTROLLER_StreamPool.c \
+                                                                ../Sources/ARCONTROLLER_StreamPool.h \
+                                                                ../Sources/ARCONTROLLER_StreamQueue.c \
+                                                                ../Sources/ARCONTROLLER_StreamQueue.h \
+                                                                ../gen/Includes/libARController/ARCONTROLLER_Device.h \
+                                                                ../gen/Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h \
+                                                                ../gen/Includes/libARController/ARCONTROLLER_Feature.h \
+                                                                ../gen/Sources/ARCONTROLLER_Device.c \
+                                                                ../gen/Sources/ARCONTROLLER_Device.h \
+                                                                ../gen/Sources/ARCONTROLLER_DICTIONARY_Key.c \
+                                                                ../gen/Sources/ARCONTROLLER_Feature.c \
+                                                                ../gen/Sources/ARCONTROLLER_Feature.h \
+                                                                ../gen/Sources/ARCONTROLLER_Error.c
 
 # The library names to build (note we are building static and shared libs)
 if DEBUG_MODE
