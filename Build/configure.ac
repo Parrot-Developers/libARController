@@ -108,43 +108,6 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN([libARController], [doxygen.cfg], [$srcdir/../Doc])
 AM_CONDITIONAL([HAVE_DOXYGEN], [test -n "$DOXYGEN"])
 
-# Check for python and run prebuild PY script
-AM_PATH_PYTHON(,, AC_MSG_ERROR(Python is required to generate source files for this library))
-
-
-
-
-# Check presence of the input XML file.
-AC_MSG_CHECKING([presence of XML commands file])
-line_proj=$(echo $with_projects | tr ',' '\n')
-for project in $line_proj; do
-    if ! test xall = x$project; then
-        xmlfile="$srcdir/../../libARCommands/Xml/""$project""_commands.xml"
-        if test -f "$xmlfile"; then
-            AC_MSG_RESULT(["$xmlfile"])
-        else
-            AC_MSG_ERROR([Could not find commands XML file "$xmlfile".
-                          Please check the value of the --with-projects option or create the file yourself.])
-        fi
-    else
-        AC_MSG_RESULT([Use all available files])
-    fi
-done
-
-# Generate source files from XML
-AC_MSG_NOTICE([generating source files from XML description of commands])
-#AM_CONDITIONAL([PYTHON_RUN_OK], [$PYTHON $srcdir/../Python/generateFeatureControllers.py -debug-cmds "$dbgcmds" -feature "$with_projects"])
-AM_CONDITIONAL([PYTHON_RUN_OK], [$PYTHON $srcdir/../Python/generateControllersSources.py -feature "$with_projects"])
-AM_COND_IF([PYTHON_RUN_OK], , AC_MSG_ERROR(Python processing failed --> XML files probably contains errors))
-
-
-
-
-# Run prebuild PY script
-AC_MSG_NOTICE([Executing python prebuild commands])
-AM_CONDITIONAL([PYTHON_RUN_OK], [$PYTHON $srcdir/../../ARSDKBuildUtils/Utils/Python/ARSDK_PrebuildActions.py $srcdir])
-AM_COND_IF([PYTHON_RUN_OK], , AC_MSG_ERROR(Python processing failed))
-
 # Checks for header files.
 AC_HEADER_STDC
 
