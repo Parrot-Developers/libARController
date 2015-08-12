@@ -712,7 +712,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // Get networkConfiguration of the device\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        dicoveryError = ARDISCOVERY_Device_InitNetworkCongifuration (deviceController->privatePart->discoveryDevice, &(deviceController->privatePart->networkConfiguration));\n')
+    cFile.write ('        dicoveryError = ARDISCOVERY_Device_InitNetworkConfiguration (deviceController->privatePart->discoveryDevice, &(deviceController->privatePart->networkConfiguration));\n')
     cFile.write ('        if (dicoveryError != ARDISCOVERY_OK)\n')
     cFile.write ('        {\n')
     cFile.write ('            localError = ARCONTROLLER_ERROR_INIT_DEVICE_GET_NETWORK_CONFIG;\n')

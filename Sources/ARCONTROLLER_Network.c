@@ -161,7 +161,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     {
         // Initialize the network Configuration
         eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;
-        dicoveryError = ARDISCOVERY_Device_InitNetworkCongifuration (networkController->discoveryDevice, &(networkController->networkConfig));
+        dicoveryError = ARDISCOVERY_Device_InitNetworkConfiguration (networkController->discoveryDevice, &(networkController->networkConfig));
         if (dicoveryError != ARDISCOVERY_OK)
         {
             localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
