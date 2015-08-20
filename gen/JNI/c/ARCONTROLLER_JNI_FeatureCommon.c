@@ -205,6 +205,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonCommo
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES);

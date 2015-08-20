@@ -10,7 +10,7 @@
 
 /**
 * @file ARCONTROLLER_Feature.h
-* @brief Feature controller allow to send command related of JumpingSumoDebug Feature.
+* @brief Feature controller allow to send command related of pro Feature.
 */
 
 #ifndef _ARCONTROLLER_FEATURE_PRIVATE_H_
@@ -22,2313 +22,6 @@
 
 void ARCONTROLLER_Feature_DeleteCommandsDictionary (ARCONTROLLER_DICTIONARY_COMMANDS_t **dictionary);
 void ARCONTROLLER_Feature_DeleteArgumentsDictionary (ARCONTROLLER_DICTIONARY_ARG_t **dictionary);
-
-/*******************************
- * --- FEATURE SkyController --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_SkyController_t.
- */
-struct ARCONTROLLER_FEATURE_SkyController_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_RegisterARCommands (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_UnregisterARCommands (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: WifiState 
- * Wifi state
- */
-
-/**
- * @brief callback used when the command <code>WifiList</code> of class <code>WifiState is decoded
- * @param feature The feature controller registred
- * @param bssid Wifi bssid
- * @param ssid Wifi ssid
- * @param secured Is wifi secured by passphrase
- * @param saved Is wifi saved in terminal
- * @param rssi Wifi rssi
- * @param frequency Wifi frequency
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_WifiStateWifiListCallback (char * _bssid, char * _ssid, uint8_t _secured, uint8_t _saved, int32_t _rssi, int32_t _frequency, void *customData);
-
-/**
- * @brief callback used when the command <code>ConnexionChanged</code> of class <code>WifiState is decoded
- * @param feature The feature controller registred
- * @param ssid Wifi ssid
- * @param status Wifi status
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_WifiStateConnexionChangedCallback (char * _ssid, eARCOMMANDS_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_STATUS _status, void *customData);
-
-/**
- * @brief callback used when the command <code>WifiAuthChannelListChanged</code> of class <code>WifiState is decoded
- * @param feature The feature controller registred
- * @param band The band of this channel : 2.4 GHz or 5 GHz
- * @param channel The authorized channel
- * @param in_or_out Bit 0 is 1 if channel is authorized outside (0 otherwise) ; Bit 1 is 1 if channel is authorized inside (0 otherwise)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_WifiStateWifiAuthChannelListChangedCallback (eARCOMMANDS_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_BAND _band, uint8_t _channel, uint8_t _in_or_out, void *customData);
-
-/**
- * @brief callback used when the command <code>AllWifiAuthChannelChanged</code> of class <code>WifiState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_WifiStateAllWifiAuthChannelChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>WifiSignalChanged</code> of class <code>WifiState is decoded
- * @param feature The feature controller registred
- * @param level Level of the signal. Levels are from 0 to 5. 0 is an unknown value. 1 is a weak wifi signal, 5 is the best.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_WifiStateWifiSignalChangedCallback (uint8_t _level, void *customData);
-
-/**
- * class: Wifi 
- * Wifi
- */
-
-/**
- * @brief Send a command <code>RequestWifiList</code> of class <code>Wifi</code> in project <code>SkyController</code>
- * Request wifi list
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiRequestWifiList (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>RequestCurrentWifi</code> of class <code>Wifi</code> in project <code>SkyController</code>
- * Request current connected wifi
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiRequestCurrentWifi (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>ConnectToWifi</code> of class <code>Wifi</code> in project <code>SkyController</code>
- * Connect to wifi
- * @param feature feature owning the commands
- * @param bssid Wifi bssid
- * @param ssid Wifi ssid
- * @param passphrase Wifi passphrase
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiConnectToWifi (ARCONTROLLER_FEATURE_SkyController_t *feature, char * bssid, char * ssid, char * passphrase);
-
-/**
- * @brief Send a command <code>ForgetWifi</code> of class <code>Wifi</code> in project <code>SkyController</code>
- * Forget wifi
- * @param feature feature owning the commands
- * @param ssid Wifi ssid
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiForgetWifi (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
-
-/**
- * @brief Send a command <code>WifiAuthChannel</code> of class <code>Wifi</code> in project <code>SkyController</code>
- * Controller inquire the list of authorized wifi channels
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiWifiAuthChannel (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: Device 
- * Device Connection commands
- */
-
-/**
- * @brief Send a command <code>RequestDeviceList</code> of class <code>Device</code> in project <code>SkyController</code>
- * Request Device list
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestDeviceList (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>RequestCurrentDevice</code> of class <code>Device</code> in project <code>SkyController</code>
- * Request current connected Device
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestCurrentDevice (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>ConnectToDevice</code> of class <code>Device</code> in project <code>SkyController</code>
- * ask to connect to a device
- * @param feature feature owning the commands
- * @param deviceName Device name
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendDeviceConnectToDevice (ARCONTROLLER_FEATURE_SkyController_t *feature, char * deviceName);
-
-/**
- * class: DeviceState 
- * Device state
- */
-
-/**
- * @brief callback used when the command <code>DeviceList</code> of class <code>DeviceState is decoded
- * @param feature The feature controller registred
- * @param name Device name
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_DeviceStateDeviceListCallback (char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>ConnexionChanged</code> of class <code>DeviceState is decoded
- * @param feature The feature controller registred
- * @param status Wifi status to Device
- * @param deviceName Device name
- * @param deviceProductID Device name
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_DeviceStateConnexionChangedCallback (eARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS _status, char * _deviceName, uint16_t _deviceProductID, void *customData);
-
-/**
- * class: Settings 
- * Settings commands
- */
-
-/**
- * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in project <code>SkyController</code>
- * Get all product settings, the product must send all settings
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendSettingsAllSettings (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>Reset</code> of class <code>Settings</code> in project <code>SkyController</code>
- * Reset all settings
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendSettingsReset (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: SettingsState 
- * Settings state from product
- */
-
-/**
- * @brief callback used when the command <code>AllSettingsChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_SettingsStateAllSettingsChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>ResetChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_SettingsStateResetChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>ProductSerialChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param serialNumber Serial number (hexadecimal value)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductSerialChangedCallback (char * _serialNumber, void *customData);
-
-/**
- * class: Common 
- * Common commands
- */
-
-/**
- * @brief Send a command <code>AllStates</code> of class <code>Common</code> in project <code>SkyController</code>
- * Get all product states
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCommonAllStates (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: CommonState 
- * Common state from product
- */
-
-/**
- * @brief callback used when the command <code>AllStatesChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_CommonStateAllStatesChangedCallback (void *customData);
-
-/**
- * class: SkyControllerState 
- * Sky Controller states
- */
-
-/**
- * @brief callback used when the command <code>BatteryChanged</code> of class <code>SkyControllerState is decoded
- * @param feature The feature controller registred
- * @param percent SkyController battery
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_SkyControllerStateBatteryChangedCallback (uint8_t _percent, void *customData);
-
-/**
- * @brief callback used when the command <code>GpsFixChanged</code> of class <code>SkyControllerState is decoded
- * @param feature The feature controller registred
- * @param fixed SkyController fixed
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_SkyControllerStateGpsFixChangedCallback (uint8_t _fixed, void *customData);
-
-/**
- * @brief callback used when the command <code>GpsPositionChanged</code> of class <code>SkyControllerState is decoded
- * @param feature The feature controller registred
- * @param latitude SkyController latitude (500. if not available)
- * @param longitude SkyController longiture (500. if not available)
- * @param altitude Altitude (in meters) above sea level
- * @param altitude Only meaningful if latitude and longiture are available
- * @param heading SkyController heading relative to magnetic north (500.f if not available)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_SkyControllerStateGpsPositionChangedCallback (double _latitude, double _longitude, double _altitude, float _heading, void *customData);
-
-/**
- * class: AccessPointSettings 
- * AccessPoint settings commands
- */
-
-/**
- * @brief Send a command <code>AccessPointSSID</code> of class <code>AccessPointSettings</code> in project <code>SkyController</code>
- * Set AccessPoint SSID
- * @param feature feature owning the commands
- * @param ssid AccessPoint SSID
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointSSID (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
-
-/**
- * @brief Send a command <code>AccessPointChannel</code> of class <code>AccessPointSettings</code> in project <code>SkyController</code>
- * Set AccessPoint Channel
- * @param feature feature owning the commands
- * @param channel AccessPoint Channel
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointChannel (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t channel);
-
-/**
- * @brief Send a command <code>WifiSelection</code> of class <code>AccessPointSettings</code> in project <code>SkyController</code>
- * Set AccessPoint Band and Channel
- * @param feature feature owning the commands
- * @param type The type of wifi selection (only manual at the moment)
- * @param band The allowed band : 2.4 Ghz or 5 Ghz
- * @param channel The channel
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsWifiSelection (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE type, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND band, uint8_t channel);
-
-/**
- * class: AccessPointSettingsState 
- * AccessPoint settings state from product
- */
-
-/**
- * @brief callback used when the command <code>AccessPointSSIDChanged</code> of class <code>AccessPointSettingsState is decoded
- * @param feature The feature controller registred
- * @param ssid AccessPoint SSID
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AccessPointSettingsStateAccessPointSSIDChangedCallback (char * _ssid, void *customData);
-
-/**
- * @brief callback used when the command <code>AccessPointChannelChanged</code> of class <code>AccessPointSettingsState is decoded
- * @param feature The feature controller registred
- * @param channel AccessPoint Channel
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AccessPointSettingsStateAccessPointChannelChangedCallback (uint8_t _channel, void *customData);
-
-/**
- * @brief callback used when the command <code>WifiSelectionChanged</code> of class <code>AccessPointSettingsState is decoded
- * @param feature The feature controller registred
- * @param type The type of wifi selection (only manual at the moment)
- * @param band The allowed band : 2.4 Ghz or 5 Ghz
- * @param channel The channel
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AccessPointSettingsStateWifiSelectionChangedCallback (eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE _type, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_BAND _band, uint8_t _channel, void *customData);
-
-/**
- * class: Camera 
- * Ask the drone to move camera
- */
-
-/**
- * @brief Send a command <code>ResetOrientation</code> of class <code>Camera</code> in project <code>SkyController</code>
- * Reset pan and tilt to center
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCameraResetOrientation (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: GamepadInfos 
- * Request infos about the gamepad of the SkyController
- */
-
-/**
- * @brief Send a command <code>GetGamepadControls</code> of class <code>GamepadInfos</code> in project <code>SkyController</code>
- * Asks the SkyController to send the button and axis list
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendGamepadInfosGetGamepadControls (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: GamepadInfosState 
- * Informations about the gamepad of the SkyController
- */
-
-/**
- * @brief callback used when the command <code>GamepadControl</code> of class <code>GamepadInfosState is decoded
- * @param feature The feature controller registred
- * @param type The type (axis/button) of the control
- * @param id The button or axis id
- * @param id @note A button and an axis can have the same ID, but their type is different
- * @param name Display name for the control
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_GamepadInfosStateGamepadControlCallback (eARCOMMANDS_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_TYPE _type, int32_t _id, char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>AllGamepadControlsSent</code> of class <code>GamepadInfosState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_GamepadInfosStateAllGamepadControlsSentCallback (void *customData);
-
-/**
- * class: ButtonMappings 
- * Controls the button mappings of the SkyController
- */
-
-/**
- * @brief Send a command <code>GetCurrentButtonMappings</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
- * Asks the SkyController to send its current button mapping
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetCurrentButtonMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>GetAvailableButtonMappings</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
- * Asks the SkyController to send the possible mappings for each button
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetAvailableButtonMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>SetButtonMapping</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
- * Set a button mapping to the SkyController
- * @note replaces previous mapping for the given key
- * @param feature feature owning the commands
- * @param key_id The keycode to map
- * @param mapping_uid The mapping to associate with the key
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsSetButtonMapping (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t key_id, char * mapping_uid);
-
-/**
- * @brief Send a command <code>DefaultButtonMapping</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
- * Asks the SkyController to reset the button mappings to the default value
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsDefaultButtonMapping (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: ButtonMappingsState 
- * State of the button mappings of the SkyController
- */
-
-/**
- * @brief callback used when the command <code>CurrentButtonMappings</code> of class <code>ButtonMappingsState is decoded
- * @param feature The feature controller registred
- * @param key_id The keycode mapped
- * @param mapping_uid The mapping associated
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateCurrentButtonMappingsCallback (int32_t _key_id, char * _mapping_uid, void *customData);
-
-/**
- * @brief callback used when the command <code>AllCurrentButtonMappingsSent</code> of class <code>ButtonMappingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateAllCurrentButtonMappingsSentCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>AvailableButtonMappings</code> of class <code>ButtonMappingsState is decoded
- * @param feature The feature controller registred
- * @param mapping_uid The mapping UID (used in communication with the SkyController)
- * @param name Display name for the user
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateAvailableButtonMappingsCallback (char * _mapping_uid, char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>AllAvailableButtonsMappingsSent</code> of class <code>ButtonMappingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateAllAvailableButtonsMappingsSentCallback (void *customData);
-
-/**
- * class: AxisMappings 
- * Controls the axis mappings of the SkyController
- */
-
-/**
- * @brief Send a command <code>GetCurrentAxisMappings</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
- * Asks the SkyController to send its current axis mapping
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetCurrentAxisMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>GetAvailableAxisMappings</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
- * Asks the SkyController to send the possible mappings for each axis
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetAvailableAxisMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>SetAxisMapping</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
- * Set a axis mapping to the SkyController
- * @note replaces previous mapping for the given axis
- * @param feature feature owning the commands
- * @param axis_id The axiscode to map
- * @param mapping_uid The mapping to associate with the axis
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsSetAxisMapping (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * mapping_uid);
-
-/**
- * @brief Send a command <code>DefaultAxisMapping</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
- * Asks the SkyController to reset the axis mappings to the default value
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsDefaultAxisMapping (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: AxisMappingsState 
- * State of the axis mappings of the SkyController
- */
-
-/**
- * @brief callback used when the command <code>CurrentAxisMappings</code> of class <code>AxisMappingsState is decoded
- * @param feature The feature controller registred
- * @param axis_id The axiscode mapped
- * @param mapping_uid The mapping associated
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateCurrentAxisMappingsCallback (int32_t _axis_id, char * _mapping_uid, void *customData);
-
-/**
- * @brief callback used when the command <code>AllCurrentAxisMappingsSent</code> of class <code>AxisMappingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateAllCurrentAxisMappingsSentCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>AvailableAxisMappings</code> of class <code>AxisMappingsState is decoded
- * @param feature The feature controller registred
- * @param mapping_uid The mapping UID (used in communication with the SkyController)
- * @param name Display name for the user
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateAvailableAxisMappingsCallback (char * _mapping_uid, char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>AllAvailableAxisMappingsSent</code> of class <code>AxisMappingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateAllAvailableAxisMappingsSentCallback (void *customData);
-
-/**
- * class: AxisFilters 
- * Controls the axis filters of the SkyController
- */
-
-/**
- * @brief Send a command <code>GetCurrentAxisFilters</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
- * Asks the SkyController to send its current axis filters
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetCurrentAxisFilters (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>GetPresetAxisFilters</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
- * Asks the SkyController to send the preset filters
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetPresetAxisFilters (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>SetAxisFilter</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
- * Set an axis filter to the SkyController
- * @note replaces previous filter for the given axis
- * @param feature feature owning the commands
- * @param axis_id The axiscode to filter
- * @param filter_uid_or_builder The mapping preset to associate with the axis
- * @param filter_uid_or_builder (Or a string to build a new one)
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersSetAxisFilter (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * filter_uid_or_builder);
-
-/**
- * @brief Send a command <code>DefaultAxisFilters</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
- * Asks the SkyController to reset the axis filters to the default value
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersDefaultAxisFilters (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: AxisFiltersState 
- * State of the axis filters of the SkyController
- */
-
-/**
- * @brief callback used when the command <code>CurrentAxisFilters</code> of class <code>AxisFiltersState is decoded
- * @param feature The feature controller registred
- * @param axis_id The axiscode filtered
- * @param filter_uid_or_builder The filter associated
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStateCurrentAxisFiltersCallback (int32_t _axis_id, char * _filter_uid_or_builder, void *customData);
-
-/**
- * @brief callback used when the command <code>AllCurrentFiltersSent</code> of class <code>AxisFiltersState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStateAllCurrentFiltersSentCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>PresetAxisFilters</code> of class <code>AxisFiltersState is decoded
- * @param feature The feature controller registred
- * @param filter_uid The filter UID (used in communication with the SkyController)
- * @param name Display name for the user
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStatePresetAxisFiltersCallback (char * _filter_uid, char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>AllPresetFiltersSent</code> of class <code>AxisFiltersState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStateAllPresetFiltersSentCallback (void *customData);
-
-/**
- * class: CoPiloting 
- * Configuration of the co-piloting feature
- */
-
-/**
- * @brief Send a command <code>SetPilotingSource</code> of class <code>CoPiloting</code> in project <code>SkyController</code>
- * Set the SkyController piloting source
- * @param feature feature owning the commands
- * @param source The source
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCoPilotingSetPilotingSource (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE source);
-
-/**
- * class: CoPilotingState 
- * State of the co-piloting feature
- */
-
-/**
- * @brief callback used when the command <code>PilotingSource</code> of class <code>CoPilotingState is decoded
- * @param feature The feature controller registred
- * @param source The source
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_CoPilotingStatePilotingSourceCallback (eARCOMMANDS_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE_SOURCE _source, void *customData);
-
-/**
- * class: Calibration 
- * Commands related to the SkyController sensors calibration
- */
-
-/**
- * @brief Send a command <code>EnableMagnetoCalibrationQualityUpdates</code> of class <code>Calibration</code> in project <code>SkyController</code>
- * Asks the SkyController to send (or not) the magneto calibration quality updates.
- * The MagnetoCalibrationState will always be sent when the status parameters changes,
- * regardless of this setting.
- * @param feature feature owning the commands
- * @param enable Flag to enable the feature.
- * @param enable 1 = enable quality updates
- * @param enable 0 = disable quality updates
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCalibrationEnableMagnetoCalibrationQualityUpdates (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t enable);
-
-/**
- * class: CalibrationState 
- * State of the SkyController calibration
- */
-
-/**
- * @brief callback used when the command <code>MagnetoCalibrationState</code> of class <code>CalibrationState is decoded
- * @param feature The feature controller registred
- * @param status The global status of the calibration
- * @param X_Quality Calibration quality on X axis.
- * @param X_Quality 0 is bad, 255 is perfect
- * @param Y_Quality Calibration quality on Y axis.
- * @param Y_Quality 0 is bad, 255 is perfect
- * @param Z_Quality Calibration quality on Z axis.
- * @param Z_Quality 0 is bad, 255 is perfect
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationStateCallback (eARCOMMANDS_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_STATUS _status, uint8_t _X_Quality, uint8_t _Y_Quality, uint8_t _Z_Quality, void *customData);
-
-/**
- * @brief callback used when the command <code>MagnetoCalibrationQualityUpdatesState</code> of class <code>CalibrationState is decoded
- * @param feature The feature controller registred
- * @param enabled Flag (is the feature enabled).
- * @param enabled 1 = The skycontroller sends updated when quality is updated
- * @param enabled 0 = The skycontroller only sent updated when state is updated
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationQualityUpdatesStateCallback (uint8_t _enabled, void *customData);
-
-
-/*******************************
- * --- FEATURE SkyControllerDebug --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t.
- */
-struct ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RegisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature);
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-/**
- * @brief Send a command <code>Test1</code> of class <code>Debug</code> in project <code>SkyControllerDebug</code>
- * Test 1 command
- * @param feature feature owning the commands
- * @param t1Args Test 1 argument
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1 (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args);
-
-
-/*******************************
- * --- FEATURE pro --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_Pro_t.
- */
-struct ARCONTROLLER_FEATURE_Pro_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_RegisterARCommands (ARCONTROLLER_FEATURE_Pro_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_UnregisterARCommands (ARCONTROLLER_FEATURE_Pro_t *feature);
-
-/**
- * class: Pro 
- * Pro related commands from the controller to the product
- */
-
-/**
- * @brief Send a command <code>BoughtFeatures</code> of class <code>Pro</code> in project <code>Pro</code>
- * Bought features on this pro version of the controller (features that have been bought)
- * This command starts the pro authentification process
- * @param feature feature owning the commands
- * @param features Bought features
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
-
-/**
- * @brief Send a command <code>Response</code> of class <code>Pro</code> in project <code>Pro</code>
- * Response to the challenge string sent by the controller
- * @param feature feature owning the commands
- * @param status Status of the response
- * @param signedChallenge the signed challenge
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
-
-/**
- * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in project <code>Pro</code>
- * Activate some pro features
- * Pro features activated should be part of the list returned by ProState->FeaturesSupported
- * @param feature feature owning the commands
- * @param features Pro features to activate
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProActivateFeatures (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
-
-/**
- * class: ProState 
- * Pro related commands from the product to the controller
- */
-
-/**
- * @brief callback used when the command <code>SupportedFeatures</code> of class <code>ProState is decoded
- * @param feature The feature controller registred
- * @param status Status of the supported features
- * @param features Supported pro features.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Pro_ProStateSupportedFeaturesCallback (eARCOMMANDS_PRO_PROSTATE_SUPPORTEDFEATURES_STATUS _status, uint64_t _features, void *customData);
-
-/**
- * @brief callback used when the command <code>FeaturesActivated</code> of class <code>ProState is decoded
- * @param feature The feature controller registred
- * @param features Activated pro features.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Pro_ProStateFeaturesActivatedCallback (uint64_t _features, void *customData);
-
-/**
- * class: ProEvent 
- * Pro related events from the product to the controller
- */
-
-/**
- * @brief callback used when the command <code>ChallengeEvent</code> of class <code>ProEvent is decoded
- * @param feature The feature controller registred
- * @param challenge the challenge that the receiver will have to sign
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Pro_ProEventChallengeEventCallback (char * _challenge, void *customData);
-
-
-/*******************************
- * --- FEATURE MiniDrone --- 
- ******************************/
-/**
- * @brief Parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- */
-typedef struct
-{
-    uint8_t flag; /**< */
-    int8_t roll; /**< */
-    int8_t pitch; /**< */
-    int8_t yaw; /**< */
-    int8_t gaz; /**< */
-    uint32_t timestamp; /**< */
-}ARCONTROLLER_MiniDrone_PilotingPCMDParameters_t;
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_MiniDrone_t.
- */
-struct ARCONTROLLER_FEATURE_MiniDrone_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-    ARCONTROLLER_MiniDrone_PilotingPCMDParameters_t *pilotingPCMDParameters; /**< */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RegisterARCommands (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_UnregisterARCommands (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * class: Piloting 
- * All commands related to piloting the MiniDrone
- */
-
-/**
- * @brief Send a command <code>FlatTrim</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Do a flat trim
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingFlatTrim (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>TakeOff</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to take off
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingTakeOff (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param flag Boolean flag to activate roll/pitch movement
- * @param roll Roll consign for the MiniDrone [-100;100]
- * @param pitch Pitch consign for the MiniDrone [-100;100]
- * @param yaw Yaw consign for the MiniDrone [-100;100]
- * @param gaz Gaz consign for the MiniDrone [-100;100]
- * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingPCMD (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestamp);
-
-/**
- * @brief Set the parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param flag Boolean flag to activate roll/pitch movement
- * @param roll Roll consign for the MiniDrone [-100;100]
- * @param pitch Pitch consign for the MiniDrone [-100;100]
- * @param yaw Yaw consign for the MiniDrone [-100;100]
- * @param gaz Gaz consign for the MiniDrone [-100;100]
- * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMD (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _flag, int8_t _roll, int8_t _pitch, int8_t _yaw, int8_t _gaz, uint32_t _timestamp);
-
-/**
- * @brief Set flag sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param flag Boolean flag to activate roll/pitch movement
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDFlag (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag);
-
-/**
- * @brief Set roll sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param roll Roll consign for the MiniDrone [-100;100]
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDRoll (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t roll);
-
-/**
- * @brief Set pitch sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param pitch Pitch consign for the MiniDrone [-100;100]
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDPitch (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t pitch);
-
-/**
- * @brief Set yaw sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param yaw Yaw consign for the MiniDrone [-100;100]
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDYaw (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t yaw);
-
-/**
- * @brief Set gaz sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param gaz Gaz consign for the MiniDrone [-100;100]
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDGaz (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t gaz);
-
-/**
- * @brief Set timestamp sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDTimestamp (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint32_t timestamp);
-
-/**
- * @brief Send a command <code>Landing</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the MiniDrone to land
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingLanding (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>Emergency</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Put drone in emergency state
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingEmergency (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>AutoTakeOffMode</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Set MiniDrone automatic take off mode
- * @param feature feature owning the commands
- * @param state State of automatic take off mode
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingAutoTakeOffMode (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t state);
-
-/**
- * class: PilotingState 
- * Occasional information
- */
-
-/**
- * @brief callback used when the command <code>FlatTrimChanged</code> of class <code>PilotingState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateFlatTrimChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>FlyingStateChanged</code> of class <code>PilotingState is decoded
- * @param feature The feature controller registred
- * @param state Drone flying state
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateFlyingStateChangedCallback (eARCOMMANDS_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE _state, void *customData);
-
-/**
- * @brief callback used when the command <code>AlertStateChanged</code> of class <code>PilotingState is decoded
- * @param feature The feature controller registred
- * @param state Drone alert state
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateAlertStateChangedCallback (eARCOMMANDS_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE _state, void *customData);
-
-/**
- * @brief callback used when the command <code>AutoTakeOffModeChanged</code> of class <code>PilotingState is decoded
- * @param feature The feature controller registred
- * @param state State of automatic take off mode
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateAutoTakeOffModeChangedCallback (uint8_t _state, void *customData);
-
-/**
- * class: Animations 
- * Animation commands
- */
-
-/**
- * @brief Send a command <code>Flip</code> of class <code>Animations</code> in project <code>MiniDrone</code>
- * Make a flip
- * @param feature feature owning the commands
- * @param direction Direction for the flip
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsFlip (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION direction);
-
-/**
- * @brief Send a command <code>Cap</code> of class <code>Animations</code> in project <code>MiniDrone</code>
- * Change the product cap
- * @param feature feature owning the commands
- * @param offset Change the cap with offset angle [-180;180]
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsCap (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int16_t offset);
-
-/**
- * class: MediaRecord 
- * Media recording management
- */
-
-/**
- * @brief Send a command <code>Picture</code> of class <code>MediaRecord</code> in project <code>MiniDrone</code>
- * @deprecated
- * Take picture
- * @param feature feature owning the commands
- * @param mass_storage_id Mass storage id to take picture
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPicture (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t mass_storage_id);
-
-/**
- * @brief Send a command <code>PictureV2</code> of class <code>MediaRecord</code> in project <code>MiniDrone</code>
- * Take picture
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2 (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * class: MediaRecordState 
- * State of media recording
- */
-
-/**
- * @brief callback used when the command <code>PictureStateChanged</code> of class <code>MediaRecordState is decoded
- * @param feature The feature controller registred
- * @param state 1 if picture has been taken, 0 otherwise
- * @param mass_storage_id Mass storage id to record
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_MediaRecordStatePictureStateChangedCallback (uint8_t _state, uint8_t _mass_storage_id, void *customData);
-
-/**
- * @brief callback used when the command <code>PictureStateChangedV2</code> of class <code>MediaRecordState is decoded
- * @param feature The feature controller registred
- * @param state State of device picture recording
- * @param error Error to explain the state
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_MediaRecordStatePictureStateChangedV2Callback (eARCOMMANDS_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE _state, eARCOMMANDS_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR _error, void *customData);
-
-/**
- * class: MediaRecordEvent 
- * Events of media recording
- */
-
-/**
- * @brief callback used when the command <code>PictureEventChanged</code> of class <code>MediaRecordEvent is decoded
- * @param feature The feature controller registred
- * @param event Last event of picture recording
- * @param error Error to explain the event
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_MediaRecordEventPictureEventChangedCallback (eARCOMMANDS_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT _event, eARCOMMANDS_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR _error, void *customData);
-
-/**
- * class: PilotingSettings 
- * Piloting Settings commands
- */
-
-/**
- * @brief Send a command <code>MaxAltitude</code> of class <code>PilotingSettings</code> in project <code>MiniDrone</code>
- * Set Max Altitude
- * @param feature feature owning the commands
- * @param current Current altitude max in m
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * @brief Send a command <code>MaxTilt</code> of class <code>PilotingSettings</code> in project <code>MiniDrone</code>
- * Set Max Tilt
- * @param feature feature owning the commands
- * @param current Current tilt max in degree
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * class: PilotingSettingsState 
- * Piloting Settings state from product
- */
-
-/**
- * @brief callback used when the command <code>MaxAltitudeChanged</code> of class <code>PilotingSettingsState is decoded
- * @param feature The feature controller registred
- * @param current Current altitude max
- * @param min Range min of altitude
- * @param max Range max of altitude
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxAltitudeChangedCallback (float _current, float _min, float _max, void *customData);
-
-/**
- * @brief callback used when the command <code>MaxTiltChanged</code> of class <code>PilotingSettingsState is decoded
- * @param feature The feature controller registred
- * @param current Current max tilt
- * @param min Range min of tilt
- * @param max Range max of tilt
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxTiltChangedCallback (float _current, float _min, float _max, void *customData);
-
-/**
- * class: SpeedSettings 
- * Speed Settings commands
- */
-
-/**
- * @brief Send a command <code>MaxVerticalSpeed</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
- * Set Max Vertical speed
- * @param feature feature owning the commands
- * @param current Current max vertical speed in m/s
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * @brief Send a command <code>MaxRotationSpeed</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
- * Set Max Rotation speed
- * @param feature feature owning the commands
- * @param current Current max rotation speed in degree/s
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * @brief Send a command <code>Wheels</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
- * Presence of wheels
- * @param feature feature owning the commands
- * @param present 1 if present, 0 if not present
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t present);
-
-/**
- * class: SpeedSettingsState 
- * Speed Settings state from product
- */
-
-/**
- * @brief callback used when the command <code>MaxVerticalSpeedChanged</code> of class <code>SpeedSettingsState is decoded
- * @param feature The feature controller registred
- * @param current Current max vertical speed in m/s
- * @param min Range min of vertical speed
- * @param max Range max of vertical speed
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxVerticalSpeedChangedCallback (float _current, float _min, float _max, void *customData);
-
-/**
- * @brief callback used when the command <code>MaxRotationSpeedChanged</code> of class <code>SpeedSettingsState is decoded
- * @param feature The feature controller registred
- * @param current Current max rotation speed in degree/s
- * @param min Range min of rotation speed
- * @param max Range max of rotation speed
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData);
-
-/**
- * @brief callback used when the command <code>WheelsChanged</code> of class <code>SpeedSettingsState is decoded
- * @param feature The feature controller registred
- * @param present 1 if present, 0 if not present
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateWheelsChangedCallback (uint8_t _present, void *customData);
-
-/**
- * class: Settings 
- * Settings commands
- */
-
-/**
- * @brief Send a command <code>CutOutMode</code> of class <code>Settings</code> in project <code>MiniDrone</code>
- * Set MiniDrone cut out mode
- * @param feature feature owning the commands
- * @param enable Enable cut out mode (1 if is activate, 0 otherwise)
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t enable);
-
-/**
- * class: SettingsState 
- * Settings state from product
- */
-
-/**
- * @brief callback used when the command <code>ProductMotorsVersionChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param motor Product Motor number [1 - 4]
- * @param type Product Motor type
- * @param software Product Motors software version
- * @param hardware Product Motors hardware version
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductMotorsVersionChangedCallback (uint8_t _motor, char * _type, char * _software, char * _hardware, void *customData);
-
-/**
- * @brief callback used when the command <code>ProductInertialVersionChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param software Product Inertial software version
- * @param hardware Product Inertial hardware version
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductInertialVersionChangedCallback (char * _software, char * _hardware, void *customData);
-
-/**
- * @brief callback used when the command <code>CutOutModeChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param enable State of cut out mode (1 if is activate, 0 otherwise)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateCutOutModeChangedCallback (uint8_t _enable, void *customData);
-
-/**
- * class: FloodControlState 
- * Settings state from product
- */
-
-/**
- * @brief callback used when the command <code>FloodControlChanged</code> of class <code>FloodControlState is decoded
- * @param feature The feature controller registred
- * @param delay Delay (in ms) between two PCMD
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_FloodControlStateFloodControlChangedCallback (uint16_t _delay, void *customData);
-
-/**
- * class: GPS 
- * GPS related commands
- */
-
-/**
- * @brief Send a command <code>ControllerLatitudeForRun</code> of class <code>GPS</code> in project <code>MiniDrone</code>
- * Set the controller latitude for a run.
- * @param feature feature owning the commands
- * @param latitude Controller latitude in decimal degrees
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double latitude);
-
-/**
- * @brief Send a command <code>ControllerLongitudeForRun</code> of class <code>GPS</code> in project <code>MiniDrone</code>
- * Set the controller longitude for a run.
- * @param feature feature owning the commands
- * @param longitude Controller longitude in decimal degrees
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double longitude);
-
-/**
- * class: Configuration 
- * Configuration related commands
- */
-
-/**
- * @brief Send a command <code>ControllerType</code> of class <code>Configuration</code> in project <code>MiniDrone</code>
- * Set the controller type.
- * @param feature feature owning the commands
- * @param type Controller type like iOS or Android
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * type);
-
-/**
- * @brief Send a command <code>ControllerName</code> of class <code>Configuration</code> in project <code>MiniDrone</code>
- * Set the controller name.
- * @param feature feature owning the commands
- * @param name Controller name like com.parrot.freeflight3
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * name);
-
-
-/*******************************
- * --- FEATURE MiniDroneDebug --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_MiniDroneDebug_t.
- */
-struct ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_RegisterARCommands (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature);
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-/**
- * @brief Send a command <code>Test1</code> of class <code>Debug</code> in project <code>MiniDroneDebug</code>
- * Test 1 command
- * @param feature feature owning the commands
- * @param t1Args Test 1 argument
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest1 (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t1Args);
-
-/**
- * @brief Send a command <code>Test2</code> of class <code>Debug</code> in project <code>MiniDroneDebug</code>
- * Test 2 command
- * @param feature feature owning the commands
- * @param t2Args Test 2 argument
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest2 (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t2Args);
-
-/**
- * @brief Send a command <code>Test3</code> of class <code>Debug</code> in project <code>MiniDroneDebug</code>
- * Test 3 command
- * @param feature feature owning the commands
- * @param t3Args Test 3 argument
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest3 (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t3Args);
-
-
-/*******************************
- * --- FEATURE common --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_Common_t.
- */
-struct ARCONTROLLER_FEATURE_Common_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_RegisterARCommands (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_UnregisterARCommands (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: Network 
- * Network related commands
- */
-
-/**
- * @brief Send a command <code>Disconnect</code> of class <code>Network</code> in project <code>Common</code>
- * Signals the remote that the host will disconnect and close its
- * libARNetwork instance (and all threads that use libARNetwork)
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendNetworkDisconnect (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: NetworkEvent 
- * Network Event from product
- */
-
-/**
- * @brief callback used when the command <code>Disconnection</code> of class <code>NetworkEvent is decoded
- * @param feature The feature controller registred
- * @param cause Cause of the disconnection of the product
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_NetworkEventDisconnectionCallback (eARCOMMANDS_COMMON_NETWORKEVENT_DISCONNECTION_CAUSE _cause, void *customData);
-
-/**
- * class: Settings 
- * Settings commands
- */
-
-/**
- * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in project <code>Common</code>
- * Get all product settings, the product must send all settings
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsAllSettings (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>Reset</code> of class <code>Settings</code> in project <code>Common</code>
- * Reset all settings
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsReset (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>ProductName</code> of class <code>Settings</code> in project <code>Common</code>
- * Set Product name
- * @param feature feature owning the commands
- * @param name Product name
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsProductName (ARCONTROLLER_FEATURE_Common_t *feature, char * name);
-
-/**
- * @brief Send a command <code>Country</code> of class <code>Settings</code> in project <code>Common</code>
- * Set current Country of controller
- * @param feature feature owning the commands
- * @param code Country code with ISO 3166 format
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsCountry (ARCONTROLLER_FEATURE_Common_t *feature, char * code);
-
-/**
- * @brief Send a command <code>AutoCountry</code> of class <code>Settings</code> in project <code>Common</code>
- * Set Auto Country Settings
- * @param feature feature owning the commands
- * @param automatic Boolean : 0 : Manual / 1 : Auto
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsAutoCountry (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t automatic);
-
-/**
- * class: SettingsState 
- * Settings state from product
- */
-
-/**
- * @brief callback used when the command <code>AllSettingsChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateAllSettingsChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>ResetChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateResetChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>ProductNameChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param name Product name
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateProductNameChangedCallback (char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>ProductVersionChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param software Product software version
- * @param hardware Product hardware version
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateProductVersionChangedCallback (char * _software, char * _hardware, void *customData);
-
-/**
- * @brief callback used when the command <code>ProductSerialHighChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param high Serial high number (hexadecimal value)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateProductSerialHighChangedCallback (char * _high, void *customData);
-
-/**
- * @brief callback used when the command <code>ProductSerialLowChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param low Serial low number (hexadecimal value)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateProductSerialLowChangedCallback (char * _low, void *customData);
-
-/**
- * @brief callback used when the command <code>CountryChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param code Country code with ISO 3166 format, empty string means unknown country.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateCountryChangedCallback (char * _code, void *customData);
-
-/**
- * @brief callback used when the command <code>AutoCountryChanged</code> of class <code>SettingsState is decoded
- * @param feature The feature controller registred
- * @param automatic Boolean : 0 : Manual / 1 : Auto
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_SettingsStateAutoCountryChangedCallback (uint8_t _automatic, void *customData);
-
-/**
- * class: Common 
- * Common commands
- */
-
-/**
- * @brief Send a command <code>AllStates</code> of class <code>Common</code> in project <code>Common</code>
- * Get all product states.
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonAllStates (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>CurrentDate</code> of class <code>Common</code> in project <code>Common</code>
- * Set current date of controller
- * @param feature feature owning the commands
- * @param date Date with ISO-8601 format
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonCurrentDate (ARCONTROLLER_FEATURE_Common_t *feature, char * date);
-
-/**
- * @brief Send a command <code>CurrentTime</code> of class <code>Common</code> in project <code>Common</code>
- * Set current time of controller
- * @param feature feature owning the commands
- * @param time Time with ISO-8601 format
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonCurrentTime (ARCONTROLLER_FEATURE_Common_t *feature, char * time);
-
-/**
- * @brief Send a command <code>Reboot</code> of class <code>Common</code> in project <code>Common</code>
- * Command to ask reboot to product
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonReboot (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: CommonState 
- * Common state from product
- */
-
-/**
- * @brief callback used when the command <code>AllStatesChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateAllStatesChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>BatteryStateChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param percent Battery percentage
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateBatteryStateChangedCallback (uint8_t _percent, void *customData);
-
-/**
- * @brief callback used when the command <code>MassStorageStateListChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param mass_storage_id Mass storage id (unique)
- * @param name Mass storage name
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageStateListChangedCallback (uint8_t _mass_storage_id, char * _name, void *customData);
-
-/**
- * @brief callback used when the command <code>MassStorageInfoStateListChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param mass_storage_id Mass storage state id (unique)
- * @param size Mass storage size in MBytes
- * @param used_size Mass storage used size in MBytes
- * @param plugged Mass storage plugged (1 if mass storage is plugged, otherwise 0)
- * @param full Mass storage full information state (1 if mass storage full, 0 otherwise).
- * @param internal Mass storage internal type state (1 if mass storage is internal, 0 otherwise)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageInfoStateListChangedCallback (uint8_t _mass_storage_id, uint32_t _size, uint32_t _used_size, uint8_t _plugged, uint8_t _full, uint8_t _internal, void *customData);
-
-/**
- * @brief callback used when the command <code>CurrentDateChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param date Date with ISO-8601 format
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateCurrentDateChangedCallback (char * _date, void *customData);
-
-/**
- * @brief callback used when the command <code>CurrentTimeChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param time Time with ISO-8601 format
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateCurrentTimeChangedCallback (char * _time, void *customData);
-
-/**
- * @brief callback used when the command <code>MassStorageInfoRemainingListChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param free_space Mass storage free space in MBytes
- * @param rec_time Mass storage record time reamining in minute
- * @param photo_remaining Mass storage photo remaining
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageInfoRemainingListChangedCallback (uint32_t _free_space, uint16_t _rec_time, uint32_t _photo_remaining, void *customData);
-
-/**
- * @brief callback used when the command <code>WifiSignalChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param rssi RSSI of the signal between controller and the product (in dbm)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateWifiSignalChangedCallback (int16_t _rssi, void *customData);
-
-/**
- * @brief callback used when the command <code>SensorsStatesListChanged</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param sensorName Sensor name
- * @param sensorState Sensor state (1 if the sensor is OK, 0 if the sensor is NOT OK)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateSensorsStatesListChangedCallback (eARCOMMANDS_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME _sensorName, uint8_t _sensorState, void *customData);
-
-/**
- * @brief callback used when the command <code>ProductModel</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param model The Model of the product.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateProductModelCallback (eARCOMMANDS_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL _model, void *customData);
-
-/**
- * @brief callback used when the command <code>CountryListKnown</code> of class <code>CommonState is decoded
- * @param feature The feature controller registred
- * @param countryCodes Following of country code with ISO 3166 format, separated by ";". Be careful of the command size allowed by the network used. If necessary, split the list in several commands.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CommonStateCountryListKnownCallback (char * _countryCodes, void *customData);
-
-/**
- * class: OverHeat 
- * Over heat commands
- */
-
-/**
- * @brief Send a command <code>SwitchOff</code> of class <code>OverHeat</code> in project <code>Common</code>
- * @deprecated
- * Switch off the drone when a overheat appeared
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>Ventilate</code> of class <code>OverHeat</code> in project <code>Common</code>
- * @deprecated
- * Ventilate the drone when a overheat appeared
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: OverHeatState 
- * Overheat state from product
- */
-
-/**
- * @brief callback used when the command <code>OverHeatChanged</code> of class <code>OverHeatState is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatChangedCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>OverHeatRegulationChanged</code> of class <code>OverHeatState is decoded
- * @param feature The feature controller registred
- * @param regulationType Type of overheat regulation : 0 for ventilation, 1 for switch off
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback (uint8_t _regulationType, void *customData);
-
-/**
- * class: ControllerState 
- * Notify the device about the state of the controller application.
- */
-
-/**
- * @brief callback used when the command <code>IsPilotingChanged</code> of class <code>ControllerState is decoded
- * @param feature The feature controller registred
- * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8_t _piloting, void *customData);
-
-/**
- * class: WifiSettings 
- * Wifi settings commands
- */
-
-/**
- * @brief Send a command <code>OutdoorSetting</code> of class <code>WifiSettings</code> in project <code>Common</code>
- * Send to product if it should use its outdoor wifi config, or indoor
- * @param feature feature owning the commands
- * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t outdoor);
-
-/**
- * class: WifiSettingsState 
- * Wifi settings state from product
- */
-
-/**
- * @brief callback used when the command <code>OutdoorSettingsChanged</code> of class <code>WifiSettingsState is decoded
- * @param feature The feature controller registred
- * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_WifiSettingsStateOutdoorSettingsChangedCallback (uint8_t _outdoor, void *customData);
-
-/**
- * class: Mavlink 
- * Mavlink flight plans commands
- */
-
-/**
- * @brief Send a command <code>Start</code> of class <code>Mavlink</code> in project <code>Common</code>
- * Start the flight plan
- * @param feature feature owning the commands
- * @param filepath flight plan file path from the mavlink ftp root
- * @param type type of the played mavlink file
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendMavlinkStart (ARCONTROLLER_FEATURE_Common_t *feature, char * filepath, eARCOMMANDS_COMMON_MAVLINK_START_TYPE type);
-
-/**
- * @brief Send a command <code>Pause</code> of class <code>Mavlink</code> in project <code>Common</code>
- * Pause the flightplan (can be restarted with a start)
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendMavlinkPause (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>Stop</code> of class <code>Mavlink</code> in project <code>Common</code>
- * Stop the flightplan
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendMavlinkStop (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: MavlinkState 
- * Mavlink flight plans states commands
- */
-
-/**
- * @brief callback used when the command <code>MavlinkFilePlayingStateChanged</code> of class <code>MavlinkState is decoded
- * @param feature The feature controller registred
- * @param state State of the mavlink
- * @param filepath flight plan file path from the mavlink ftp root
- * @param type type of the played mavlink file
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_MavlinkStateMavlinkFilePlayingStateChangedCallback (eARCOMMANDS_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE _state, char * _filepath, eARCOMMANDS_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE _type, void *customData);
-
-/**
- * @brief callback used when the command <code>MavlinkPlayErrorStateChanged</code> of class <code>MavlinkState is decoded
- * @param feature The feature controller registred
- * @param error State of play error
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_MavlinkStateMavlinkPlayErrorStateChangedCallback (eARCOMMANDS_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR _error, void *customData);
-
-/**
- * class: Calibration 
- * Calibration commands
- */
-
-/**
- * @brief Send a command <code>MagnetoCalibration</code> of class <code>Calibration</code> in project <code>Common</code>
- * Sent when a calibration of the magnetometer is asked or is aborted
- * @param feature feature owning the commands
- * @param calibrate 1 if the calibration should be started, 0 if it should be aborted
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCalibrationMagnetoCalibration (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t calibrate);
-
-/**
- * class: CalibrationState 
- * Status of the calibration
- */
-
-/**
- * @brief callback used when the command <code>MagnetoCalibrationStateChanged</code> of class <code>CalibrationState is decoded
- * @param feature The feature controller registred
- * @param xAxisCalibration State of the x axis (roll) calibration : 1 if calibration is done, 0 otherwise
- * @param yAxisCalibration State of the y axis (pitch) calibration : 1 if calibration is done, 0 otherwise
- * @param zAxisCalibration State of the z axis (yaw) calibration : 1 if calibration is done, 0 otherwise
- * @param calibrationFailed 1 if calibration has failed, 0 otherwise. If this arg is 1, consider all previous arg as 0
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationStateChangedCallback (uint8_t _xAxisCalibration, uint8_t _yAxisCalibration, uint8_t _zAxisCalibration, uint8_t _calibrationFailed, void *customData);
-
-/**
- * @brief callback used when the command <code>MagnetoCalibrationRequiredState</code> of class <code>CalibrationState is decoded
- * @param feature The feature controller registred
- * @param required 1 if calibration is required, 0 if current calibration is still valid
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationRequiredStateCallback (uint8_t _required, void *customData);
-
-/**
- * @brief callback used when the command <code>MagnetoCalibrationAxisToCalibrateChanged</code> of class <code>CalibrationState is decoded
- * @param feature The feature controller registred
- * @param axis The axis to calibrate
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationAxisToCalibrateChangedCallback (eARCOMMANDS_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS _axis, void *customData);
-
-/**
- * @brief callback used when the command <code>MagnetoCalibrationStartedChanged</code> of class <code>CalibrationState is decoded
- * @param feature The feature controller registred
- * @param started 1 if calibration has started, 0 otherwise
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationStartedChangedCallback (uint8_t _started, void *customData);
-
-/**
- * class: CameraSettingsState 
- * Status of the camera settings
- */
-
-/**
- * @brief callback used when the command <code>CameraSettingsChanged</code> of class <code>CameraSettingsState is decoded
- * @param feature The feature controller registred
- * @param fov Value of the camera horizontal fov (in degree)
- * @param panMax Value of max pan (right pan) (in degree)
- * @param panMin Value of min pan (left pan) (in degree)
- * @param tiltMax Value of max tilt (top tilt) (in degree)
- * @param tiltMin Value of min tilt (bottom tilt) (in degree)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_CameraSettingsStateCameraSettingsChangedCallback (float _fov, float _panMax, float _panMin, float _tiltMax, float _tiltMin, void *customData);
-
-/**
- * class: GPS 
- * GPS related commands
- */
-
-/**
- * @brief Send a command <code>ControllerPositionForRun</code> of class <code>GPS</code> in project <code>Common</code>
- * Set the controller position for a run. This command is used by all non gps products. Watch out, this command cannot be used with BLE products
- * @param feature feature owning the commands
- * @param latitude Controller latitude in decimal degrees
- * @param longitude Controller longitude in decimal degrees
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendGPSControllerPositionForRun (ARCONTROLLER_FEATURE_Common_t *feature, double latitude, double longitude);
-
-/**
- * class: FlightPlanState 
- * FlightPlan state commands
- */
-
-/**
- * @brief callback used when the command <code>AvailabilityStateChanged</code> of class <code>FlightPlanState is decoded
- * @param feature The feature controller registred
- * @param AvailabilityState Running a flightPlan file is available (1 running a flightPlan file is available, otherwise 0)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_FlightPlanStateAvailabilityStateChangedCallback (uint8_t _AvailabilityState, void *customData);
-
-/**
- * @brief callback used when the command <code>ComponentStateListChanged</code> of class <code>FlightPlanState is decoded
- * @param feature The feature controller registred
- * @param component Drone FlightPlan component id (unique)
- * @param State State of the FlightPlan component (1 FlightPlan component OK, otherwise 0)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_FlightPlanStateComponentStateListChangedCallback (eARCOMMANDS_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT _component, uint8_t _State, void *customData);
-
-/**
- * class: FlightPlanEvent 
- * FlightPlan Event commands
- */
-
-/**
- * @brief callback used when the command <code>StartingErrorEvent</code> of class <code>FlightPlanEvent is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_FlightPlanEventStartingErrorEventCallback (void *customData);
-
-/**
- * @brief callback used when the command <code>SpeedBridleEvent</code> of class <code>FlightPlanEvent is decoded
- * @param feature The feature controller registred
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_FlightPlanEventSpeedBridleEventCallback (void *customData);
-
-/**
- * class: ARLibsVersionsState 
- * ARlibs Versions Commands
- */
-
-/**
- * @brief callback used when the command <code>ControllerLibARCommandsVersion</code> of class <code>ARLibsVersionsState is decoded
- * @param feature The feature controller registred
- * @param version version of libARCommands ("1.2.3.4" format)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ARLibsVersionsStateControllerLibARCommandsVersionCallback (char * _version, void *customData);
-
-/**
- * @brief callback used when the command <code>SkyControllerLibARCommandsVersion</code> of class <code>ARLibsVersionsState is decoded
- * @param feature The feature controller registred
- * @param version version of libARCommands ("1.2.3.4" format)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ARLibsVersionsStateSkyControllerLibARCommandsVersionCallback (char * _version, void *customData);
-
-/**
- * @brief callback used when the command <code>DeviceLibARCommandsVersion</code> of class <code>ARLibsVersionsState is decoded
- * @param feature The feature controller registred
- * @param version version of libARCommands ("1.2.3.4" format)
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ARLibsVersionsStateDeviceLibARCommandsVersionCallback (char * _version, void *customData);
-
-/**
- * class: Audio 
- * Audio-related commands.
- */
-
-/**
- * @brief Send a command <code>ControllerReadyForStreaming</code> of class <code>Audio</code> in project <code>Common</code>
- * Tell the firmware whether the controller is ready to start audio streaming.
- * @param feature feature owning the commands
- * @param ready Bit field for TX and RX ready.
- * @param ready bit 0 is 1 if controller is ready and wants to receive sound (Drone TX)
- * @param ready bit 1 is 1 if controller is ready and wants to send sound (Drone RX)
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAudioControllerReadyForStreaming (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t ready);
-
-/**
- * class: AudioState 
- * Audio-related state updates.
- */
-
-/**
- * @brief callback used when the command <code>AudioStreamingRunning</code> of class <code>AudioState is decoded
- * @param feature The feature controller registred
- * @param running Bit field for TX and RX running
- * @param running bit 0 is 1 if Drone TX is running
- * @param running bit 1 is 1 if Drone RX is running
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_AudioStateAudioStreamingRunningCallback (uint8_t _running, void *customData);
-
-/**
- * class: Headlights 
- * Controls the headlight LEDs of the Evo variants.
- */
-
-/**
- * @brief Send a command <code>Intensity</code> of class <code>Headlights</code> in project <code>Common</code>
- * Set instensity of lighting LEDs.
- * @param feature feature owning the commands
- * @param left Set the left LED intensity value (0 through 255).
- * @param right Set the right LED intensity value (0 through 255).
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendHeadlightsIntensity (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t left, uint8_t right);
-
-/**
- * class: HeadlightsState 
- * Get information about the state of the Evo variants' LEDs.
- */
-
-/**
- * @brief callback used when the command <code>IntensityChanged</code> of class <code>HeadlightsState is decoded
- * @param feature The feature controller registred
- * @param left The intensity value for the left LED (0 through 255).
- * @param right The intensity value for the right LED (0 through 255).
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_HeadlightsStateIntensityChangedCallback (uint8_t _left, uint8_t _right, void *customData);
-
-/**
- * class: Animations 
- * Animations-related commands.
- */
-
-/**
- * @brief Send a command <code>StartAnimation</code> of class <code>Animations</code> in project <code>Common</code>
- * Start a paramaterless animation.
- * @param feature feature owning the commands
- * @param anim Animation to start.
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAnimationsStartAnimation (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM anim);
-
-/**
- * @brief Send a command <code>StopAnimation</code> of class <code>Animations</code> in project <code>Common</code>
- * Stop a running animation.
- * @param feature feature owning the commands
- * @param anim Animation to stop.
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAnimationsStopAnimation (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM anim);
-
-/**
- * @brief Send a command <code>StopAllAnimations</code> of class <code>Animations</code> in project <code>Common</code>
- * Stop all running animations.
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAnimationsStopAllAnimations (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: AnimationsState 
- * Animations-related notification/feedback commands.
- */
-
-/**
- * @brief callback used when the command <code>List</code> of class <code>AnimationsState is decoded
- * @param feature The feature controller registred
- * @param anim Animation type.
- * @param state State of the animation
- * @param error Error to explain the state
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_AnimationsStateListCallback (eARCOMMANDS_COMMON_ANIMATIONSSTATE_LIST_ANIM _anim, eARCOMMANDS_COMMON_ANIMATIONSSTATE_LIST_STATE _state, eARCOMMANDS_COMMON_ANIMATIONSSTATE_LIST_ERROR _error, void *customData);
-
-/**
- * class: Accessory 
- * Accessories-related commands.
- */
-
-/**
- * @brief Send a command <code>Config</code> of class <code>Accessory</code> in project <code>Common</code>
- * Set the current accessory configuration.
- * @param feature feature owning the commands
- * @param accessory Accessory configuration to set.
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAccessoryConfig (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY accessory);
-
-/**
- * class: AccessoryState 
- * Accessories-related commands.
- */
-
-/**
- * @brief callback used when the command <code>SupportedAccessoriesListChanged</code> of class <code>AccessoryState is decoded
- * @param feature The feature controller registred
- * @param accessory Accessory configurations supported by the product.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_AccessoryStateSupportedAccessoriesListChangedCallback (eARCOMMANDS_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY _accessory, void *customData);
-
-/**
- * @brief callback used when the command <code>AccessoryConfigChanged</code> of class <code>AccessoryState is decoded
- * @param feature The feature controller registred
- * @param newAccessory Accessory configuration reported by firmware.
- * @param error Error code.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_AccessoryStateAccessoryConfigChangedCallback (eARCOMMANDS_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY _newAccessory, eARCOMMANDS_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR _error, void *customData);
-
-/**
- * @brief callback used when the command <code>AccessoryConfigModificationEnabled</code> of class <code>AccessoryState is decoded
- * @param feature The feature controller registred
- * @param enabled 1 if the modification of the accessory Config is enabled, 0 otherwise
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_AccessoryStateAccessoryConfigModificationEnabledCallback (uint8_t _enabled, void *customData);
-
-/**
- * class: Charger 
- * Commands sent by the controller to set charger parameters.
- */
-
-/**
- * @brief Send a command <code>SetMaxChargeRate</code> of class <code>Charger</code> in project <code>Common</code>
- * @deprecated
- * Set the maximum charge rate allowed to charge a battery.
- * @param feature feature owning the commands
- * @param rate The new maximum charge rate.
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendChargerSetMaxChargeRate (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE rate);
-
-/**
- * class: ChargerState 
- * Commands sent by the firmware to advertise the charger status.
- */
-
-/**
- * @brief callback used when the command <code>MaxChargeRateChanged</code> of class <code>ChargerState is decoded
- * @param feature The feature controller registred
- * @param rate The current maximum charge rate.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ChargerStateMaxChargeRateChangedCallback (eARCOMMANDS_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE _rate, void *customData);
-
-/**
- * @brief callback used when the command <code>CurrentChargeStateChanged</code> of class <code>ChargerState is decoded
- * @param feature The feature controller registred
- * @param status Charger status.
- * @param phase The current charging phase.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ChargerStateCurrentChargeStateChangedCallback (eARCOMMANDS_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS _status, eARCOMMANDS_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE _phase, void *customData);
-
-/**
- * @brief callback used when the command <code>LastChargeRateChanged</code> of class <code>ChargerState is decoded
- * @param feature The feature controller registred
- * @param rate The charge rate recorded by the firmware for the last charge.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ChargerStateLastChargeRateChangedCallback (eARCOMMANDS_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE _rate, void *customData);
-
-/**
- * @brief callback used when the command <code>ChargingInfo</code> of class <code>ChargerState is decoded
- * @param feature The feature controller registred
- * @param phase The current charging phase.
- * @param rate The charge rate. If phase is DISCHARGING, refers to the last charge.
- * @param intensity The charging intensity, in dA. (12dA = 1,2A) ; If phase is DISCHARGING, refers to the last charge. Equals to 0 if not known.
- * @param fullChargingTime The full charging time estimated, in minute. If phase is DISCHARGING, refers to the last charge. Equals to 0 if not known.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ChargerStateChargingInfoCallback (eARCOMMANDS_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE _phase, eARCOMMANDS_COMMON_CHARGERSTATE_CHARGINGINFO_RATE _rate, uint8_t _intensity, uint8_t _fullChargingTime, void *customData);
-
-
-/*******************************
- * --- FEATURE commonDebug --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_CommonDebug_t.
- */
-struct ARCONTROLLER_FEATURE_CommonDebug_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
-
-/**
- * class: Stats 
- * Commands to make stats
- */
-
-/**
- * @brief Send a command <code>SendPacket</code> of class <code>Stats</code> in project <code>CommonDebug</code>
- * Send a packet to the drone
- * @param feature feature owning the commands
- * @param packet Packet to send to the drone
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet);
-
-/**
- * @brief Send a command <code>StartSendingPacketFromDrone</code> of class <code>Stats</code> in project <code>CommonDebug</code>
- * Ask drone to start sending packets
- * @param feature feature owning the commands
- * @param frequency Frequency of the packet
- * @param packetSize Size of the the packet
- * @param date time of day in sec
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date);
-
-/**
- * @brief Send a command <code>StopSendingPacketFromDrone</code> of class <code>Stats</code> in project <code>CommonDebug</code>
- * Ask drone to stop sending packets
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
-
-/**
- * class: StatsEvent 
- * Stats Event from drone
- */
-
-/**
- * @brief callback used when the command <code>SendPacket</code> of class <code>StatsEvent is decoded
- * @param feature The feature controller registred
- * @param packet packet from drone
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _packet, void *customData);
-
 
 /*******************************
  * --- FEATURE ARDrone3 --- 
@@ -4463,6 +2156,2317 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_JumpingSumoDebug_SendUserScriptUserScri
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_JumpingSumoDebug_UserScriptStateUserScriptParsedCallback (uint8_t _success, char * _message, void *customData);
+
+
+/*******************************
+ * --- FEATURE MiniDrone --- 
+ ******************************/
+/**
+ * @brief Parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ */
+typedef struct
+{
+    uint8_t flag; /**< */
+    int8_t roll; /**< */
+    int8_t pitch; /**< */
+    int8_t yaw; /**< */
+    int8_t gaz; /**< */
+    uint32_t timestamp; /**< */
+}ARCONTROLLER_MiniDrone_PilotingPCMDParameters_t;
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_MiniDrone_t.
+ */
+struct ARCONTROLLER_FEATURE_MiniDrone_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+    ARCONTROLLER_MiniDrone_PilotingPCMDParameters_t *pilotingPCMDParameters; /**< */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RegisterARCommands (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_UnregisterARCommands (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * class: Piloting 
+ * All commands related to piloting the MiniDrone
+ */
+
+/**
+ * @brief Send a command <code>FlatTrim</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Do a flat trim
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingFlatTrim (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>TakeOff</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to take off
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingTakeOff (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param flag Boolean flag to activate roll/pitch movement
+ * @param roll Roll consign for the MiniDrone [-100;100]
+ * @param pitch Pitch consign for the MiniDrone [-100;100]
+ * @param yaw Yaw consign for the MiniDrone [-100;100]
+ * @param gaz Gaz consign for the MiniDrone [-100;100]
+ * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingPCMD (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestamp);
+
+/**
+ * @brief Set the parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param flag Boolean flag to activate roll/pitch movement
+ * @param roll Roll consign for the MiniDrone [-100;100]
+ * @param pitch Pitch consign for the MiniDrone [-100;100]
+ * @param yaw Yaw consign for the MiniDrone [-100;100]
+ * @param gaz Gaz consign for the MiniDrone [-100;100]
+ * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMD (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _flag, int8_t _roll, int8_t _pitch, int8_t _yaw, int8_t _gaz, uint32_t _timestamp);
+
+/**
+ * @brief Set flag sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param flag Boolean flag to activate roll/pitch movement
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDFlag (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag);
+
+/**
+ * @brief Set roll sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param roll Roll consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDRoll (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t roll);
+
+/**
+ * @brief Set pitch sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param pitch Pitch consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDPitch (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t pitch);
+
+/**
+ * @brief Set yaw sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param yaw Yaw consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDYaw (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t yaw);
+
+/**
+ * @brief Set gaz sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param gaz Gaz consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDGaz (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t gaz);
+
+/**
+ * @brief Set timestamp sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDTimestamp (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint32_t timestamp);
+
+/**
+ * @brief Send a command <code>Landing</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the MiniDrone to land
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingLanding (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>Emergency</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Put drone in emergency state
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingEmergency (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>AutoTakeOffMode</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Set MiniDrone automatic take off mode
+ * @param feature feature owning the commands
+ * @param state State of automatic take off mode
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingAutoTakeOffMode (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t state);
+
+/**
+ * class: PilotingState 
+ * Occasional information
+ */
+
+/**
+ * @brief callback used when the command <code>FlatTrimChanged</code> of class <code>PilotingState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateFlatTrimChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>FlyingStateChanged</code> of class <code>PilotingState is decoded
+ * @param feature The feature controller registred
+ * @param state Drone flying state
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateFlyingStateChangedCallback (eARCOMMANDS_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE _state, void *customData);
+
+/**
+ * @brief callback used when the command <code>AlertStateChanged</code> of class <code>PilotingState is decoded
+ * @param feature The feature controller registred
+ * @param state Drone alert state
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateAlertStateChangedCallback (eARCOMMANDS_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE _state, void *customData);
+
+/**
+ * @brief callback used when the command <code>AutoTakeOffModeChanged</code> of class <code>PilotingState is decoded
+ * @param feature The feature controller registred
+ * @param state State of automatic take off mode
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingStateAutoTakeOffModeChangedCallback (uint8_t _state, void *customData);
+
+/**
+ * class: Animations 
+ * Animation commands
+ */
+
+/**
+ * @brief Send a command <code>Flip</code> of class <code>Animations</code> in project <code>MiniDrone</code>
+ * Make a flip
+ * @param feature feature owning the commands
+ * @param direction Direction for the flip
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsFlip (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION direction);
+
+/**
+ * @brief Send a command <code>Cap</code> of class <code>Animations</code> in project <code>MiniDrone</code>
+ * Change the product cap
+ * @param feature feature owning the commands
+ * @param offset Change the cap with offset angle [-180;180]
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsCap (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int16_t offset);
+
+/**
+ * class: MediaRecord 
+ * Media recording management
+ */
+
+/**
+ * @brief Send a command <code>Picture</code> of class <code>MediaRecord</code> in project <code>MiniDrone</code>
+ * @deprecated
+ * Take picture
+ * @param feature feature owning the commands
+ * @param mass_storage_id Mass storage id to take picture
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPicture (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t mass_storage_id);
+
+/**
+ * @brief Send a command <code>PictureV2</code> of class <code>MediaRecord</code> in project <code>MiniDrone</code>
+ * Take picture
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2 (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * class: MediaRecordState 
+ * State of media recording
+ */
+
+/**
+ * @brief callback used when the command <code>PictureStateChanged</code> of class <code>MediaRecordState is decoded
+ * @param feature The feature controller registred
+ * @param state 1 if picture has been taken, 0 otherwise
+ * @param mass_storage_id Mass storage id to record
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_MediaRecordStatePictureStateChangedCallback (uint8_t _state, uint8_t _mass_storage_id, void *customData);
+
+/**
+ * @brief callback used when the command <code>PictureStateChangedV2</code> of class <code>MediaRecordState is decoded
+ * @param feature The feature controller registred
+ * @param state State of device picture recording
+ * @param error Error to explain the state
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_MediaRecordStatePictureStateChangedV2Callback (eARCOMMANDS_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE _state, eARCOMMANDS_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR _error, void *customData);
+
+/**
+ * class: MediaRecordEvent 
+ * Events of media recording
+ */
+
+/**
+ * @brief callback used when the command <code>PictureEventChanged</code> of class <code>MediaRecordEvent is decoded
+ * @param feature The feature controller registred
+ * @param event Last event of picture recording
+ * @param error Error to explain the event
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_MediaRecordEventPictureEventChangedCallback (eARCOMMANDS_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT _event, eARCOMMANDS_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR _error, void *customData);
+
+/**
+ * class: PilotingSettings 
+ * Piloting Settings commands
+ */
+
+/**
+ * @brief Send a command <code>MaxAltitude</code> of class <code>PilotingSettings</code> in project <code>MiniDrone</code>
+ * Set Max Altitude
+ * @param feature feature owning the commands
+ * @param current Current altitude max in m
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>MaxTilt</code> of class <code>PilotingSettings</code> in project <code>MiniDrone</code>
+ * Set Max Tilt
+ * @param feature feature owning the commands
+ * @param current Current tilt max in degree
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * class: PilotingSettingsState 
+ * Piloting Settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>MaxAltitudeChanged</code> of class <code>PilotingSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param current Current altitude max
+ * @param min Range min of altitude
+ * @param max Range max of altitude
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxAltitudeChangedCallback (float _current, float _min, float _max, void *customData);
+
+/**
+ * @brief callback used when the command <code>MaxTiltChanged</code> of class <code>PilotingSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param current Current max tilt
+ * @param min Range min of tilt
+ * @param max Range max of tilt
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxTiltChangedCallback (float _current, float _min, float _max, void *customData);
+
+/**
+ * class: SpeedSettings 
+ * Speed Settings commands
+ */
+
+/**
+ * @brief Send a command <code>MaxVerticalSpeed</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
+ * Set Max Vertical speed
+ * @param feature feature owning the commands
+ * @param current Current max vertical speed in m/s
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>MaxRotationSpeed</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
+ * Set Max Rotation speed
+ * @param feature feature owning the commands
+ * @param current Current max rotation speed in degree/s
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>Wheels</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
+ * Presence of wheels
+ * @param feature feature owning the commands
+ * @param present 1 if present, 0 if not present
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t present);
+
+/**
+ * class: SpeedSettingsState 
+ * Speed Settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>MaxVerticalSpeedChanged</code> of class <code>SpeedSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param current Current max vertical speed in m/s
+ * @param min Range min of vertical speed
+ * @param max Range max of vertical speed
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxVerticalSpeedChangedCallback (float _current, float _min, float _max, void *customData);
+
+/**
+ * @brief callback used when the command <code>MaxRotationSpeedChanged</code> of class <code>SpeedSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param current Current max rotation speed in degree/s
+ * @param min Range min of rotation speed
+ * @param max Range max of rotation speed
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData);
+
+/**
+ * @brief callback used when the command <code>WheelsChanged</code> of class <code>SpeedSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param present 1 if present, 0 if not present
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateWheelsChangedCallback (uint8_t _present, void *customData);
+
+/**
+ * class: Settings 
+ * Settings commands
+ */
+
+/**
+ * @brief Send a command <code>CutOutMode</code> of class <code>Settings</code> in project <code>MiniDrone</code>
+ * Set MiniDrone cut out mode
+ * @param feature feature owning the commands
+ * @param enable Enable cut out mode (1 if is activate, 0 otherwise)
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t enable);
+
+/**
+ * class: SettingsState 
+ * Settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>ProductMotorsVersionChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param motor Product Motor number [1 - 4]
+ * @param type Product Motor type
+ * @param software Product Motors software version
+ * @param hardware Product Motors hardware version
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductMotorsVersionChangedCallback (uint8_t _motor, char * _type, char * _software, char * _hardware, void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductInertialVersionChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param software Product Inertial software version
+ * @param hardware Product Inertial hardware version
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductInertialVersionChangedCallback (char * _software, char * _hardware, void *customData);
+
+/**
+ * @brief callback used when the command <code>CutOutModeChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param enable State of cut out mode (1 if is activate, 0 otherwise)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateCutOutModeChangedCallback (uint8_t _enable, void *customData);
+
+/**
+ * class: FloodControlState 
+ * Settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>FloodControlChanged</code> of class <code>FloodControlState is decoded
+ * @param feature The feature controller registred
+ * @param delay Delay (in ms) between two PCMD
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_FloodControlStateFloodControlChangedCallback (uint16_t _delay, void *customData);
+
+/**
+ * class: GPS 
+ * GPS related commands
+ */
+
+/**
+ * @brief Send a command <code>ControllerLatitudeForRun</code> of class <code>GPS</code> in project <code>MiniDrone</code>
+ * Set the controller latitude for a run.
+ * @param feature feature owning the commands
+ * @param latitude Controller latitude in decimal degrees
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double latitude);
+
+/**
+ * @brief Send a command <code>ControllerLongitudeForRun</code> of class <code>GPS</code> in project <code>MiniDrone</code>
+ * Set the controller longitude for a run.
+ * @param feature feature owning the commands
+ * @param longitude Controller longitude in decimal degrees
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double longitude);
+
+/**
+ * class: Configuration 
+ * Configuration related commands
+ */
+
+/**
+ * @brief Send a command <code>ControllerType</code> of class <code>Configuration</code> in project <code>MiniDrone</code>
+ * Set the controller type.
+ * @param feature feature owning the commands
+ * @param type Controller type like iOS or Android
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * type);
+
+/**
+ * @brief Send a command <code>ControllerName</code> of class <code>Configuration</code> in project <code>MiniDrone</code>
+ * Set the controller name.
+ * @param feature feature owning the commands
+ * @param name Controller name like com.parrot.freeflight3
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * name);
+
+
+/*******************************
+ * --- FEATURE MiniDroneDebug --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_MiniDroneDebug_t.
+ */
+struct ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_RegisterARCommands (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature);
+
+/**
+ * class: Debug 
+ * Temporary, debug commands
+ */
+
+/**
+ * @brief Send a command <code>Test1</code> of class <code>Debug</code> in project <code>MiniDroneDebug</code>
+ * Test 1 command
+ * @param feature feature owning the commands
+ * @param t1Args Test 1 argument
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest1 (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t1Args);
+
+/**
+ * @brief Send a command <code>Test2</code> of class <code>Debug</code> in project <code>MiniDroneDebug</code>
+ * Test 2 command
+ * @param feature feature owning the commands
+ * @param t2Args Test 2 argument
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest2 (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t2Args);
+
+/**
+ * @brief Send a command <code>Test3</code> of class <code>Debug</code> in project <code>MiniDroneDebug</code>
+ * Test 3 command
+ * @param feature feature owning the commands
+ * @param t3Args Test 3 argument
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest3 (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t3Args);
+
+
+/*******************************
+ * --- FEATURE SkyController --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_SkyController_t.
+ */
+struct ARCONTROLLER_FEATURE_SkyController_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_RegisterARCommands (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_UnregisterARCommands (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: WifiState 
+ * Wifi state
+ */
+
+/**
+ * @brief callback used when the command <code>WifiList</code> of class <code>WifiState is decoded
+ * @param feature The feature controller registred
+ * @param bssid Wifi bssid
+ * @param ssid Wifi ssid
+ * @param secured Is wifi secured by passphrase
+ * @param saved Is wifi saved in terminal
+ * @param rssi Wifi rssi
+ * @param frequency Wifi frequency
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_WifiStateWifiListCallback (char * _bssid, char * _ssid, uint8_t _secured, uint8_t _saved, int32_t _rssi, int32_t _frequency, void *customData);
+
+/**
+ * @brief callback used when the command <code>ConnexionChanged</code> of class <code>WifiState is decoded
+ * @param feature The feature controller registred
+ * @param ssid Wifi ssid
+ * @param status Wifi status
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_WifiStateConnexionChangedCallback (char * _ssid, eARCOMMANDS_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_STATUS _status, void *customData);
+
+/**
+ * @brief callback used when the command <code>WifiAuthChannelListChanged</code> of class <code>WifiState is decoded
+ * @param feature The feature controller registred
+ * @param band The band of this channel : 2.4 GHz or 5 GHz
+ * @param channel The authorized channel
+ * @param in_or_out Bit 0 is 1 if channel is authorized outside (0 otherwise) ; Bit 1 is 1 if channel is authorized inside (0 otherwise)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_WifiStateWifiAuthChannelListChangedCallback (eARCOMMANDS_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_BAND _band, uint8_t _channel, uint8_t _in_or_out, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllWifiAuthChannelChanged</code> of class <code>WifiState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_WifiStateAllWifiAuthChannelChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>WifiSignalChanged</code> of class <code>WifiState is decoded
+ * @param feature The feature controller registred
+ * @param level Level of the signal. Levels are from 0 to 5. 0 is an unknown value. 1 is a weak wifi signal, 5 is the best.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_WifiStateWifiSignalChangedCallback (uint8_t _level, void *customData);
+
+/**
+ * class: Wifi 
+ * Wifi
+ */
+
+/**
+ * @brief Send a command <code>RequestWifiList</code> of class <code>Wifi</code> in project <code>SkyController</code>
+ * Request wifi list
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiRequestWifiList (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>RequestCurrentWifi</code> of class <code>Wifi</code> in project <code>SkyController</code>
+ * Request current connected wifi
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiRequestCurrentWifi (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>ConnectToWifi</code> of class <code>Wifi</code> in project <code>SkyController</code>
+ * Connect to wifi
+ * @param feature feature owning the commands
+ * @param bssid Wifi bssid
+ * @param ssid Wifi ssid
+ * @param passphrase Wifi passphrase
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiConnectToWifi (ARCONTROLLER_FEATURE_SkyController_t *feature, char * bssid, char * ssid, char * passphrase);
+
+/**
+ * @brief Send a command <code>ForgetWifi</code> of class <code>Wifi</code> in project <code>SkyController</code>
+ * Forget wifi
+ * @param feature feature owning the commands
+ * @param ssid Wifi ssid
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiForgetWifi (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
+
+/**
+ * @brief Send a command <code>WifiAuthChannel</code> of class <code>Wifi</code> in project <code>SkyController</code>
+ * Controller inquire the list of authorized wifi channels
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendWifiWifiAuthChannel (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: Device 
+ * Device Connection commands
+ */
+
+/**
+ * @brief Send a command <code>RequestDeviceList</code> of class <code>Device</code> in project <code>SkyController</code>
+ * Request Device list
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestDeviceList (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>RequestCurrentDevice</code> of class <code>Device</code> in project <code>SkyController</code>
+ * Request current connected Device
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestCurrentDevice (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>ConnectToDevice</code> of class <code>Device</code> in project <code>SkyController</code>
+ * ask to connect to a device
+ * @param feature feature owning the commands
+ * @param deviceName Device name
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendDeviceConnectToDevice (ARCONTROLLER_FEATURE_SkyController_t *feature, char * deviceName);
+
+/**
+ * class: DeviceState 
+ * Device state
+ */
+
+/**
+ * @brief callback used when the command <code>DeviceList</code> of class <code>DeviceState is decoded
+ * @param feature The feature controller registred
+ * @param name Device name
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_DeviceStateDeviceListCallback (char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>ConnexionChanged</code> of class <code>DeviceState is decoded
+ * @param feature The feature controller registred
+ * @param status Wifi status to Device
+ * @param deviceName Device name
+ * @param deviceProductID Device name
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_DeviceStateConnexionChangedCallback (eARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS _status, char * _deviceName, uint16_t _deviceProductID, void *customData);
+
+/**
+ * class: Settings 
+ * Settings commands
+ */
+
+/**
+ * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in project <code>SkyController</code>
+ * Get all product settings, the product must send all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendSettingsAllSettings (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>Reset</code> of class <code>Settings</code> in project <code>SkyController</code>
+ * Reset all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendSettingsReset (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: SettingsState 
+ * Settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>AllSettingsChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SettingsStateAllSettingsChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>ResetChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SettingsStateResetChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductSerialChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param serialNumber Serial number (hexadecimal value)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductSerialChangedCallback (char * _serialNumber, void *customData);
+
+/**
+ * class: Common 
+ * Common commands
+ */
+
+/**
+ * @brief Send a command <code>AllStates</code> of class <code>Common</code> in project <code>SkyController</code>
+ * Get all product states
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCommonAllStates (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: CommonState 
+ * Common state from product
+ */
+
+/**
+ * @brief callback used when the command <code>AllStatesChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_CommonStateAllStatesChangedCallback (void *customData);
+
+/**
+ * class: SkyControllerState 
+ * Sky Controller states
+ */
+
+/**
+ * @brief callback used when the command <code>BatteryChanged</code> of class <code>SkyControllerState is decoded
+ * @param feature The feature controller registred
+ * @param percent SkyController battery
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SkyControllerStateBatteryChangedCallback (uint8_t _percent, void *customData);
+
+/**
+ * @brief callback used when the command <code>GpsFixChanged</code> of class <code>SkyControllerState is decoded
+ * @param feature The feature controller registred
+ * @param fixed SkyController fixed
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SkyControllerStateGpsFixChangedCallback (uint8_t _fixed, void *customData);
+
+/**
+ * @brief callback used when the command <code>GpsPositionChanged</code> of class <code>SkyControllerState is decoded
+ * @param feature The feature controller registred
+ * @param latitude SkyController latitude (500. if not available)
+ * @param longitude SkyController longiture (500. if not available)
+ * @param altitude Altitude (in meters) above sea level
+ * @param altitude Only meaningful if latitude and longiture are available
+ * @param heading SkyController heading relative to magnetic north (500.f if not available)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SkyControllerStateGpsPositionChangedCallback (double _latitude, double _longitude, double _altitude, float _heading, void *customData);
+
+/**
+ * class: AccessPointSettings 
+ * AccessPoint settings commands
+ */
+
+/**
+ * @brief Send a command <code>AccessPointSSID</code> of class <code>AccessPointSettings</code> in project <code>SkyController</code>
+ * Set AccessPoint SSID
+ * @param feature feature owning the commands
+ * @param ssid AccessPoint SSID
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointSSID (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
+
+/**
+ * @brief Send a command <code>AccessPointChannel</code> of class <code>AccessPointSettings</code> in project <code>SkyController</code>
+ * Set AccessPoint Channel
+ * @param feature feature owning the commands
+ * @param channel AccessPoint Channel
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointChannel (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t channel);
+
+/**
+ * @brief Send a command <code>WifiSelection</code> of class <code>AccessPointSettings</code> in project <code>SkyController</code>
+ * Set AccessPoint Band and Channel
+ * @param feature feature owning the commands
+ * @param type The type of wifi selection (only manual at the moment)
+ * @param band The allowed band : 2.4 Ghz or 5 Ghz
+ * @param channel The channel
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsWifiSelection (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE type, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND band, uint8_t channel);
+
+/**
+ * class: AccessPointSettingsState 
+ * AccessPoint settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>AccessPointSSIDChanged</code> of class <code>AccessPointSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param ssid AccessPoint SSID
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AccessPointSettingsStateAccessPointSSIDChangedCallback (char * _ssid, void *customData);
+
+/**
+ * @brief callback used when the command <code>AccessPointChannelChanged</code> of class <code>AccessPointSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param channel AccessPoint Channel
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AccessPointSettingsStateAccessPointChannelChangedCallback (uint8_t _channel, void *customData);
+
+/**
+ * @brief callback used when the command <code>WifiSelectionChanged</code> of class <code>AccessPointSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param type The type of wifi selection (only manual at the moment)
+ * @param band The allowed band : 2.4 Ghz or 5 Ghz
+ * @param channel The channel
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AccessPointSettingsStateWifiSelectionChangedCallback (eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE _type, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_BAND _band, uint8_t _channel, void *customData);
+
+/**
+ * class: Camera 
+ * Ask the drone to move camera
+ */
+
+/**
+ * @brief Send a command <code>ResetOrientation</code> of class <code>Camera</code> in project <code>SkyController</code>
+ * Reset pan and tilt to center
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCameraResetOrientation (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: GamepadInfos 
+ * Request infos about the gamepad of the SkyController
+ */
+
+/**
+ * @brief Send a command <code>GetGamepadControls</code> of class <code>GamepadInfos</code> in project <code>SkyController</code>
+ * Asks the SkyController to send the button and axis list
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendGamepadInfosGetGamepadControls (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: GamepadInfosState 
+ * Informations about the gamepad of the SkyController
+ */
+
+/**
+ * @brief callback used when the command <code>GamepadControl</code> of class <code>GamepadInfosState is decoded
+ * @param feature The feature controller registred
+ * @param type The type (axis/button) of the control
+ * @param id The button or axis id
+ * @param id @note A button and an axis can have the same ID, but their type is different
+ * @param name Display name for the control
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_GamepadInfosStateGamepadControlCallback (eARCOMMANDS_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_TYPE _type, int32_t _id, char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllGamepadControlsSent</code> of class <code>GamepadInfosState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_GamepadInfosStateAllGamepadControlsSentCallback (void *customData);
+
+/**
+ * class: ButtonMappings 
+ * Controls the button mappings of the SkyController
+ */
+
+/**
+ * @brief Send a command <code>GetCurrentButtonMappings</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
+ * Asks the SkyController to send its current button mapping
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetCurrentButtonMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>GetAvailableButtonMappings</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
+ * Asks the SkyController to send the possible mappings for each button
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetAvailableButtonMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>SetButtonMapping</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
+ * Set a button mapping to the SkyController
+ * @note replaces previous mapping for the given key
+ * @param feature feature owning the commands
+ * @param key_id The keycode to map
+ * @param mapping_uid The mapping to associate with the key
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsSetButtonMapping (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t key_id, char * mapping_uid);
+
+/**
+ * @brief Send a command <code>DefaultButtonMapping</code> of class <code>ButtonMappings</code> in project <code>SkyController</code>
+ * Asks the SkyController to reset the button mappings to the default value
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsDefaultButtonMapping (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: ButtonMappingsState 
+ * State of the button mappings of the SkyController
+ */
+
+/**
+ * @brief callback used when the command <code>CurrentButtonMappings</code> of class <code>ButtonMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param key_id The keycode mapped
+ * @param mapping_uid The mapping associated
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateCurrentButtonMappingsCallback (int32_t _key_id, char * _mapping_uid, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllCurrentButtonMappingsSent</code> of class <code>ButtonMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateAllCurrentButtonMappingsSentCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>AvailableButtonMappings</code> of class <code>ButtonMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param mapping_uid The mapping UID (used in communication with the SkyController)
+ * @param name Display name for the user
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateAvailableButtonMappingsCallback (char * _mapping_uid, char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllAvailableButtonsMappingsSent</code> of class <code>ButtonMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_ButtonMappingsStateAllAvailableButtonsMappingsSentCallback (void *customData);
+
+/**
+ * class: AxisMappings 
+ * Controls the axis mappings of the SkyController
+ */
+
+/**
+ * @brief Send a command <code>GetCurrentAxisMappings</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
+ * Asks the SkyController to send its current axis mapping
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetCurrentAxisMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>GetAvailableAxisMappings</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
+ * Asks the SkyController to send the possible mappings for each axis
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetAvailableAxisMappings (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>SetAxisMapping</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
+ * Set a axis mapping to the SkyController
+ * @note replaces previous mapping for the given axis
+ * @param feature feature owning the commands
+ * @param axis_id The axiscode to map
+ * @param mapping_uid The mapping to associate with the axis
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsSetAxisMapping (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * mapping_uid);
+
+/**
+ * @brief Send a command <code>DefaultAxisMapping</code> of class <code>AxisMappings</code> in project <code>SkyController</code>
+ * Asks the SkyController to reset the axis mappings to the default value
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsDefaultAxisMapping (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: AxisMappingsState 
+ * State of the axis mappings of the SkyController
+ */
+
+/**
+ * @brief callback used when the command <code>CurrentAxisMappings</code> of class <code>AxisMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param axis_id The axiscode mapped
+ * @param mapping_uid The mapping associated
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateCurrentAxisMappingsCallback (int32_t _axis_id, char * _mapping_uid, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllCurrentAxisMappingsSent</code> of class <code>AxisMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateAllCurrentAxisMappingsSentCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>AvailableAxisMappings</code> of class <code>AxisMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param mapping_uid The mapping UID (used in communication with the SkyController)
+ * @param name Display name for the user
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateAvailableAxisMappingsCallback (char * _mapping_uid, char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllAvailableAxisMappingsSent</code> of class <code>AxisMappingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisMappingsStateAllAvailableAxisMappingsSentCallback (void *customData);
+
+/**
+ * class: AxisFilters 
+ * Controls the axis filters of the SkyController
+ */
+
+/**
+ * @brief Send a command <code>GetCurrentAxisFilters</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
+ * Asks the SkyController to send its current axis filters
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetCurrentAxisFilters (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>GetPresetAxisFilters</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
+ * Asks the SkyController to send the preset filters
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetPresetAxisFilters (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>SetAxisFilter</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
+ * Set an axis filter to the SkyController
+ * @note replaces previous filter for the given axis
+ * @param feature feature owning the commands
+ * @param axis_id The axiscode to filter
+ * @param filter_uid_or_builder The mapping preset to associate with the axis
+ * @param filter_uid_or_builder (Or a string to build a new one)
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersSetAxisFilter (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * filter_uid_or_builder);
+
+/**
+ * @brief Send a command <code>DefaultAxisFilters</code> of class <code>AxisFilters</code> in project <code>SkyController</code>
+ * Asks the SkyController to reset the axis filters to the default value
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersDefaultAxisFilters (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: AxisFiltersState 
+ * State of the axis filters of the SkyController
+ */
+
+/**
+ * @brief callback used when the command <code>CurrentAxisFilters</code> of class <code>AxisFiltersState is decoded
+ * @param feature The feature controller registred
+ * @param axis_id The axiscode filtered
+ * @param filter_uid_or_builder The filter associated
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStateCurrentAxisFiltersCallback (int32_t _axis_id, char * _filter_uid_or_builder, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllCurrentFiltersSent</code> of class <code>AxisFiltersState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStateAllCurrentFiltersSentCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>PresetAxisFilters</code> of class <code>AxisFiltersState is decoded
+ * @param feature The feature controller registred
+ * @param filter_uid The filter UID (used in communication with the SkyController)
+ * @param name Display name for the user
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStatePresetAxisFiltersCallback (char * _filter_uid, char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>AllPresetFiltersSent</code> of class <code>AxisFiltersState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_AxisFiltersStateAllPresetFiltersSentCallback (void *customData);
+
+/**
+ * class: CoPiloting 
+ * Configuration of the co-piloting feature
+ */
+
+/**
+ * @brief Send a command <code>SetPilotingSource</code> of class <code>CoPiloting</code> in project <code>SkyController</code>
+ * Set the SkyController piloting source
+ * @param feature feature owning the commands
+ * @param source The source
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCoPilotingSetPilotingSource (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE source);
+
+/**
+ * class: CoPilotingState 
+ * State of the co-piloting feature
+ */
+
+/**
+ * @brief callback used when the command <code>PilotingSource</code> of class <code>CoPilotingState is decoded
+ * @param feature The feature controller registred
+ * @param source The source
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_CoPilotingStatePilotingSourceCallback (eARCOMMANDS_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE_SOURCE _source, void *customData);
+
+/**
+ * class: Calibration 
+ * Commands related to the SkyController sensors calibration
+ */
+
+/**
+ * @brief Send a command <code>EnableMagnetoCalibrationQualityUpdates</code> of class <code>Calibration</code> in project <code>SkyController</code>
+ * Asks the SkyController to send (or not) the magneto calibration quality updates.
+ * The MagnetoCalibrationState will always be sent when the status parameters changes,
+ * regardless of this setting.
+ * @param feature feature owning the commands
+ * @param enable Flag to enable the feature.
+ * @param enable 1 = enable quality updates
+ * @param enable 0 = disable quality updates
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SendCalibrationEnableMagnetoCalibrationQualityUpdates (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t enable);
+
+/**
+ * class: CalibrationState 
+ * State of the SkyController calibration
+ */
+
+/**
+ * @brief callback used when the command <code>MagnetoCalibrationState</code> of class <code>CalibrationState is decoded
+ * @param feature The feature controller registred
+ * @param status The global status of the calibration
+ * @param X_Quality Calibration quality on X axis.
+ * @param X_Quality 0 is bad, 255 is perfect
+ * @param Y_Quality Calibration quality on Y axis.
+ * @param Y_Quality 0 is bad, 255 is perfect
+ * @param Z_Quality Calibration quality on Z axis.
+ * @param Z_Quality 0 is bad, 255 is perfect
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationStateCallback (eARCOMMANDS_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_STATUS _status, uint8_t _X_Quality, uint8_t _Y_Quality, uint8_t _Z_Quality, void *customData);
+
+/**
+ * @brief callback used when the command <code>MagnetoCalibrationQualityUpdatesState</code> of class <code>CalibrationState is decoded
+ * @param feature The feature controller registred
+ * @param enabled Flag (is the feature enabled).
+ * @param enabled 1 = The skycontroller sends updated when quality is updated
+ * @param enabled 0 = The skycontroller only sent updated when state is updated
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationQualityUpdatesStateCallback (uint8_t _enabled, void *customData);
+
+
+/*******************************
+ * --- FEATURE SkyControllerDebug --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t.
+ */
+struct ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RegisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature);
+
+/**
+ * class: Debug 
+ * Temporary, debug commands
+ */
+
+/**
+ * @brief Send a command <code>Test1</code> of class <code>Debug</code> in project <code>SkyControllerDebug</code>
+ * Test 1 command
+ * @param feature feature owning the commands
+ * @param t1Args Test 1 argument
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1 (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args);
+
+
+/*******************************
+ * --- FEATURE common --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Common_t.
+ */
+struct ARCONTROLLER_FEATURE_Common_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_RegisterARCommands (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_UnregisterARCommands (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: Network 
+ * Network related commands
+ */
+
+/**
+ * @brief Send a command <code>Disconnect</code> of class <code>Network</code> in project <code>Common</code>
+ * Signals the remote that the host will disconnect and close its
+ * libARNetwork instance (and all threads that use libARNetwork)
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendNetworkDisconnect (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: NetworkEvent 
+ * Network Event from product
+ */
+
+/**
+ * @brief callback used when the command <code>Disconnection</code> of class <code>NetworkEvent is decoded
+ * @param feature The feature controller registred
+ * @param cause Cause of the disconnection of the product
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_NetworkEventDisconnectionCallback (eARCOMMANDS_COMMON_NETWORKEVENT_DISCONNECTION_CAUSE _cause, void *customData);
+
+/**
+ * class: Settings 
+ * Settings commands
+ */
+
+/**
+ * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in project <code>Common</code>
+ * Get all product settings, the product must send all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsAllSettings (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>Reset</code> of class <code>Settings</code> in project <code>Common</code>
+ * Reset all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsReset (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>ProductName</code> of class <code>Settings</code> in project <code>Common</code>
+ * Set Product name
+ * @param feature feature owning the commands
+ * @param name Product name
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsProductName (ARCONTROLLER_FEATURE_Common_t *feature, char * name);
+
+/**
+ * @brief Send a command <code>Country</code> of class <code>Settings</code> in project <code>Common</code>
+ * Set current Country of controller
+ * @param feature feature owning the commands
+ * @param code Country code with ISO 3166 format
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsCountry (ARCONTROLLER_FEATURE_Common_t *feature, char * code);
+
+/**
+ * @brief Send a command <code>AutoCountry</code> of class <code>Settings</code> in project <code>Common</code>
+ * Set Auto Country Settings
+ * @param feature feature owning the commands
+ * @param automatic Boolean : 0 : Manual / 1 : Auto
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendSettingsAutoCountry (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t automatic);
+
+/**
+ * class: SettingsState 
+ * Settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>AllSettingsChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateAllSettingsChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>ResetChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateResetChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductNameChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param name Product name
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateProductNameChangedCallback (char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductVersionChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param software Product software version
+ * @param hardware Product hardware version
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateProductVersionChangedCallback (char * _software, char * _hardware, void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductSerialHighChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param high Serial high number (hexadecimal value)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateProductSerialHighChangedCallback (char * _high, void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductSerialLowChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param low Serial low number (hexadecimal value)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateProductSerialLowChangedCallback (char * _low, void *customData);
+
+/**
+ * @brief callback used when the command <code>CountryChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param code Country code with ISO 3166 format, empty string means unknown country.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateCountryChangedCallback (char * _code, void *customData);
+
+/**
+ * @brief callback used when the command <code>AutoCountryChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param automatic Boolean : 0 : Manual / 1 : Auto
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_SettingsStateAutoCountryChangedCallback (uint8_t _automatic, void *customData);
+
+/**
+ * class: Common 
+ * Common commands
+ */
+
+/**
+ * @brief Send a command <code>AllStates</code> of class <code>Common</code> in project <code>Common</code>
+ * Get all product states.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonAllStates (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>CurrentDate</code> of class <code>Common</code> in project <code>Common</code>
+ * Set current date of controller
+ * @param feature feature owning the commands
+ * @param date Date with ISO-8601 format
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonCurrentDate (ARCONTROLLER_FEATURE_Common_t *feature, char * date);
+
+/**
+ * @brief Send a command <code>CurrentTime</code> of class <code>Common</code> in project <code>Common</code>
+ * Set current time of controller
+ * @param feature feature owning the commands
+ * @param time Time with ISO-8601 format
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonCurrentTime (ARCONTROLLER_FEATURE_Common_t *feature, char * time);
+
+/**
+ * @brief Send a command <code>Reboot</code> of class <code>Common</code> in project <code>Common</code>
+ * Command to ask reboot to product
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCommonReboot (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: CommonState 
+ * Common state from product
+ */
+
+/**
+ * @brief callback used when the command <code>AllStatesChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateAllStatesChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>BatteryStateChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param percent Battery percentage
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateBatteryStateChangedCallback (uint8_t _percent, void *customData);
+
+/**
+ * @brief callback used when the command <code>MassStorageStateListChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param mass_storage_id Mass storage id (unique)
+ * @param name Mass storage name
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageStateListChangedCallback (uint8_t _mass_storage_id, char * _name, void *customData);
+
+/**
+ * @brief callback used when the command <code>MassStorageInfoStateListChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param mass_storage_id Mass storage state id (unique)
+ * @param size Mass storage size in MBytes
+ * @param used_size Mass storage used size in MBytes
+ * @param plugged Mass storage plugged (1 if mass storage is plugged, otherwise 0)
+ * @param full Mass storage full information state (1 if mass storage full, 0 otherwise).
+ * @param internal Mass storage internal type state (1 if mass storage is internal, 0 otherwise)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageInfoStateListChangedCallback (uint8_t _mass_storage_id, uint32_t _size, uint32_t _used_size, uint8_t _plugged, uint8_t _full, uint8_t _internal, void *customData);
+
+/**
+ * @brief callback used when the command <code>CurrentDateChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param date Date with ISO-8601 format
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateCurrentDateChangedCallback (char * _date, void *customData);
+
+/**
+ * @brief callback used when the command <code>CurrentTimeChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param time Time with ISO-8601 format
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateCurrentTimeChangedCallback (char * _time, void *customData);
+
+/**
+ * @brief callback used when the command <code>MassStorageInfoRemainingListChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param free_space Mass storage free space in MBytes
+ * @param rec_time Mass storage record time reamining in minute
+ * @param photo_remaining Mass storage photo remaining
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageInfoRemainingListChangedCallback (uint32_t _free_space, uint16_t _rec_time, uint32_t _photo_remaining, void *customData);
+
+/**
+ * @brief callback used when the command <code>WifiSignalChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param rssi RSSI of the signal between controller and the product (in dbm)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateWifiSignalChangedCallback (int16_t _rssi, void *customData);
+
+/**
+ * @brief callback used when the command <code>SensorsStatesListChanged</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param sensorName Sensor name
+ * @param sensorState Sensor state (1 if the sensor is OK, 0 if the sensor is NOT OK)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateSensorsStatesListChangedCallback (eARCOMMANDS_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME _sensorName, uint8_t _sensorState, void *customData);
+
+/**
+ * @brief callback used when the command <code>ProductModel</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param model The Model of the product.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateProductModelCallback (eARCOMMANDS_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL _model, void *customData);
+
+/**
+ * @brief callback used when the command <code>CountryListKnown</code> of class <code>CommonState is decoded
+ * @param feature The feature controller registred
+ * @param listFlags List entry attribute Bitfield.
+ * @param listFlags 0x01: First: indicate it's the first element of the list.
+ * @param listFlags 0x02: Last:  indicate it's the last element of the list.
+ * @param listFlags 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
+ * @param countryCodes Following of country code with ISO 3166 format, separated by ";". Be careful of the command size allowed by the network used. If necessary, split the list in several commands.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateCountryListKnownCallback (uint8_t _listFlags, char * _countryCodes, void *customData);
+
+/**
+ * class: OverHeat 
+ * Over heat commands
+ */
+
+/**
+ * @brief Send a command <code>SwitchOff</code> of class <code>OverHeat</code> in project <code>Common</code>
+ * @deprecated
+ * Switch off the drone when a overheat appeared
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>Ventilate</code> of class <code>OverHeat</code> in project <code>Common</code>
+ * @deprecated
+ * Ventilate the drone when a overheat appeared
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: OverHeatState 
+ * Overheat state from product
+ */
+
+/**
+ * @brief callback used when the command <code>OverHeatChanged</code> of class <code>OverHeatState is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatChangedCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>OverHeatRegulationChanged</code> of class <code>OverHeatState is decoded
+ * @param feature The feature controller registred
+ * @param regulationType Type of overheat regulation : 0 for ventilation, 1 for switch off
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback (uint8_t _regulationType, void *customData);
+
+/**
+ * class: ControllerState 
+ * Notify the device about the state of the controller application.
+ */
+
+/**
+ * @brief callback used when the command <code>IsPilotingChanged</code> of class <code>ControllerState is decoded
+ * @param feature The feature controller registred
+ * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8_t _piloting, void *customData);
+
+/**
+ * class: WifiSettings 
+ * Wifi settings commands
+ */
+
+/**
+ * @brief Send a command <code>OutdoorSetting</code> of class <code>WifiSettings</code> in project <code>Common</code>
+ * Send to product if it should use its outdoor wifi config, or indoor
+ * @param feature feature owning the commands
+ * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t outdoor);
+
+/**
+ * class: WifiSettingsState 
+ * Wifi settings state from product
+ */
+
+/**
+ * @brief callback used when the command <code>OutdoorSettingsChanged</code> of class <code>WifiSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_WifiSettingsStateOutdoorSettingsChangedCallback (uint8_t _outdoor, void *customData);
+
+/**
+ * class: Mavlink 
+ * Mavlink flight plans commands
+ */
+
+/**
+ * @brief Send a command <code>Start</code> of class <code>Mavlink</code> in project <code>Common</code>
+ * Start the flight plan
+ * @param feature feature owning the commands
+ * @param filepath flight plan file path from the mavlink ftp root
+ * @param type type of the played mavlink file
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendMavlinkStart (ARCONTROLLER_FEATURE_Common_t *feature, char * filepath, eARCOMMANDS_COMMON_MAVLINK_START_TYPE type);
+
+/**
+ * @brief Send a command <code>Pause</code> of class <code>Mavlink</code> in project <code>Common</code>
+ * Pause the flightplan (can be restarted with a start)
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendMavlinkPause (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>Stop</code> of class <code>Mavlink</code> in project <code>Common</code>
+ * Stop the flightplan
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendMavlinkStop (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: MavlinkState 
+ * Mavlink flight plans states commands
+ */
+
+/**
+ * @brief callback used when the command <code>MavlinkFilePlayingStateChanged</code> of class <code>MavlinkState is decoded
+ * @param feature The feature controller registred
+ * @param state State of the mavlink
+ * @param filepath flight plan file path from the mavlink ftp root
+ * @param type type of the played mavlink file
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_MavlinkStateMavlinkFilePlayingStateChangedCallback (eARCOMMANDS_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE _state, char * _filepath, eARCOMMANDS_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE _type, void *customData);
+
+/**
+ * @brief callback used when the command <code>MavlinkPlayErrorStateChanged</code> of class <code>MavlinkState is decoded
+ * @param feature The feature controller registred
+ * @param error State of play error
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_MavlinkStateMavlinkPlayErrorStateChangedCallback (eARCOMMANDS_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR _error, void *customData);
+
+/**
+ * class: Calibration 
+ * Calibration commands
+ */
+
+/**
+ * @brief Send a command <code>MagnetoCalibration</code> of class <code>Calibration</code> in project <code>Common</code>
+ * Sent when a calibration of the magnetometer is asked or is aborted
+ * @param feature feature owning the commands
+ * @param calibrate 1 if the calibration should be started, 0 if it should be aborted
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendCalibrationMagnetoCalibration (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t calibrate);
+
+/**
+ * class: CalibrationState 
+ * Status of the calibration
+ */
+
+/**
+ * @brief callback used when the command <code>MagnetoCalibrationStateChanged</code> of class <code>CalibrationState is decoded
+ * @param feature The feature controller registred
+ * @param xAxisCalibration State of the x axis (roll) calibration : 1 if calibration is done, 0 otherwise
+ * @param yAxisCalibration State of the y axis (pitch) calibration : 1 if calibration is done, 0 otherwise
+ * @param zAxisCalibration State of the z axis (yaw) calibration : 1 if calibration is done, 0 otherwise
+ * @param calibrationFailed 1 if calibration has failed, 0 otherwise. If this arg is 1, consider all previous arg as 0
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationStateChangedCallback (uint8_t _xAxisCalibration, uint8_t _yAxisCalibration, uint8_t _zAxisCalibration, uint8_t _calibrationFailed, void *customData);
+
+/**
+ * @brief callback used when the command <code>MagnetoCalibrationRequiredState</code> of class <code>CalibrationState is decoded
+ * @param feature The feature controller registred
+ * @param required 1 if calibration is required, 0 if current calibration is still valid
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationRequiredStateCallback (uint8_t _required, void *customData);
+
+/**
+ * @brief callback used when the command <code>MagnetoCalibrationAxisToCalibrateChanged</code> of class <code>CalibrationState is decoded
+ * @param feature The feature controller registred
+ * @param axis The axis to calibrate
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationAxisToCalibrateChangedCallback (eARCOMMANDS_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS _axis, void *customData);
+
+/**
+ * @brief callback used when the command <code>MagnetoCalibrationStartedChanged</code> of class <code>CalibrationState is decoded
+ * @param feature The feature controller registred
+ * @param started 1 if calibration has started, 0 otherwise
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CalibrationStateMagnetoCalibrationStartedChangedCallback (uint8_t _started, void *customData);
+
+/**
+ * class: CameraSettingsState 
+ * Status of the camera settings
+ */
+
+/**
+ * @brief callback used when the command <code>CameraSettingsChanged</code> of class <code>CameraSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param fov Value of the camera horizontal fov (in degree)
+ * @param panMax Value of max pan (right pan) (in degree)
+ * @param panMin Value of min pan (left pan) (in degree)
+ * @param tiltMax Value of max tilt (top tilt) (in degree)
+ * @param tiltMin Value of min tilt (bottom tilt) (in degree)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CameraSettingsStateCameraSettingsChangedCallback (float _fov, float _panMax, float _panMin, float _tiltMax, float _tiltMin, void *customData);
+
+/**
+ * class: GPS 
+ * GPS related commands
+ */
+
+/**
+ * @brief Send a command <code>ControllerPositionForRun</code> of class <code>GPS</code> in project <code>Common</code>
+ * Set the controller position for a run. This command is used by all non gps products. Watch out, this command cannot be used with BLE products
+ * @param feature feature owning the commands
+ * @param latitude Controller latitude in decimal degrees
+ * @param longitude Controller longitude in decimal degrees
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendGPSControllerPositionForRun (ARCONTROLLER_FEATURE_Common_t *feature, double latitude, double longitude);
+
+/**
+ * class: FlightPlanState 
+ * FlightPlan state commands
+ */
+
+/**
+ * @brief callback used when the command <code>AvailabilityStateChanged</code> of class <code>FlightPlanState is decoded
+ * @param feature The feature controller registred
+ * @param AvailabilityState Running a flightPlan file is available (1 running a flightPlan file is available, otherwise 0)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_FlightPlanStateAvailabilityStateChangedCallback (uint8_t _AvailabilityState, void *customData);
+
+/**
+ * @brief callback used when the command <code>ComponentStateListChanged</code> of class <code>FlightPlanState is decoded
+ * @param feature The feature controller registred
+ * @param component Drone FlightPlan component id (unique)
+ * @param State State of the FlightPlan component (1 FlightPlan component OK, otherwise 0)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_FlightPlanStateComponentStateListChangedCallback (eARCOMMANDS_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT _component, uint8_t _State, void *customData);
+
+/**
+ * class: FlightPlanEvent 
+ * FlightPlan Event commands
+ */
+
+/**
+ * @brief callback used when the command <code>StartingErrorEvent</code> of class <code>FlightPlanEvent is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_FlightPlanEventStartingErrorEventCallback (void *customData);
+
+/**
+ * @brief callback used when the command <code>SpeedBridleEvent</code> of class <code>FlightPlanEvent is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_FlightPlanEventSpeedBridleEventCallback (void *customData);
+
+/**
+ * class: ARLibsVersionsState 
+ * ARlibs Versions Commands
+ */
+
+/**
+ * @brief callback used when the command <code>ControllerLibARCommandsVersion</code> of class <code>ARLibsVersionsState is decoded
+ * @param feature The feature controller registred
+ * @param version version of libARCommands ("1.2.3.4" format)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ARLibsVersionsStateControllerLibARCommandsVersionCallback (char * _version, void *customData);
+
+/**
+ * @brief callback used when the command <code>SkyControllerLibARCommandsVersion</code> of class <code>ARLibsVersionsState is decoded
+ * @param feature The feature controller registred
+ * @param version version of libARCommands ("1.2.3.4" format)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ARLibsVersionsStateSkyControllerLibARCommandsVersionCallback (char * _version, void *customData);
+
+/**
+ * @brief callback used when the command <code>DeviceLibARCommandsVersion</code> of class <code>ARLibsVersionsState is decoded
+ * @param feature The feature controller registred
+ * @param version version of libARCommands ("1.2.3.4" format)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ARLibsVersionsStateDeviceLibARCommandsVersionCallback (char * _version, void *customData);
+
+/**
+ * class: Audio 
+ * Audio-related commands.
+ */
+
+/**
+ * @brief Send a command <code>ControllerReadyForStreaming</code> of class <code>Audio</code> in project <code>Common</code>
+ * Tell the firmware whether the controller is ready to start audio streaming.
+ * @param feature feature owning the commands
+ * @param ready Bit field for TX and RX ready.
+ * @param ready bit 0 is 1 if controller is ready and wants to receive sound (Drone TX)
+ * @param ready bit 1 is 1 if controller is ready and wants to send sound (Drone RX)
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAudioControllerReadyForStreaming (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t ready);
+
+/**
+ * class: AudioState 
+ * Audio-related state updates.
+ */
+
+/**
+ * @brief callback used when the command <code>AudioStreamingRunning</code> of class <code>AudioState is decoded
+ * @param feature The feature controller registred
+ * @param running Bit field for TX and RX running
+ * @param running bit 0 is 1 if Drone TX is running
+ * @param running bit 1 is 1 if Drone RX is running
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_AudioStateAudioStreamingRunningCallback (uint8_t _running, void *customData);
+
+/**
+ * class: Headlights 
+ * Controls the headlight LEDs of the Evo variants.
+ */
+
+/**
+ * @brief Send a command <code>Intensity</code> of class <code>Headlights</code> in project <code>Common</code>
+ * Set instensity of lighting LEDs.
+ * @param feature feature owning the commands
+ * @param left Set the left LED intensity value (0 through 255).
+ * @param right Set the right LED intensity value (0 through 255).
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendHeadlightsIntensity (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t left, uint8_t right);
+
+/**
+ * class: HeadlightsState 
+ * Get information about the state of the Evo variants' LEDs.
+ */
+
+/**
+ * @brief callback used when the command <code>IntensityChanged</code> of class <code>HeadlightsState is decoded
+ * @param feature The feature controller registred
+ * @param left The intensity value for the left LED (0 through 255).
+ * @param right The intensity value for the right LED (0 through 255).
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_HeadlightsStateIntensityChangedCallback (uint8_t _left, uint8_t _right, void *customData);
+
+/**
+ * class: Animations 
+ * Animations-related commands.
+ */
+
+/**
+ * @brief Send a command <code>StartAnimation</code> of class <code>Animations</code> in project <code>Common</code>
+ * Start a paramaterless animation.
+ * @param feature feature owning the commands
+ * @param anim Animation to start.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAnimationsStartAnimation (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM anim);
+
+/**
+ * @brief Send a command <code>StopAnimation</code> of class <code>Animations</code> in project <code>Common</code>
+ * Stop a running animation.
+ * @param feature feature owning the commands
+ * @param anim Animation to stop.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAnimationsStopAnimation (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM anim);
+
+/**
+ * @brief Send a command <code>StopAllAnimations</code> of class <code>Animations</code> in project <code>Common</code>
+ * Stop all running animations.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAnimationsStopAllAnimations (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: AnimationsState 
+ * Animations-related notification/feedback commands.
+ */
+
+/**
+ * @brief callback used when the command <code>List</code> of class <code>AnimationsState is decoded
+ * @param feature The feature controller registred
+ * @param anim Animation type.
+ * @param state State of the animation
+ * @param error Error to explain the state
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_AnimationsStateListCallback (eARCOMMANDS_COMMON_ANIMATIONSSTATE_LIST_ANIM _anim, eARCOMMANDS_COMMON_ANIMATIONSSTATE_LIST_STATE _state, eARCOMMANDS_COMMON_ANIMATIONSSTATE_LIST_ERROR _error, void *customData);
+
+/**
+ * class: Accessory 
+ * Accessories-related commands.
+ */
+
+/**
+ * @brief Send a command <code>Config</code> of class <code>Accessory</code> in project <code>Common</code>
+ * Set the current accessory configuration.
+ * @param feature feature owning the commands
+ * @param accessory Accessory configuration to set.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendAccessoryConfig (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY accessory);
+
+/**
+ * class: AccessoryState 
+ * Accessories-related commands.
+ */
+
+/**
+ * @brief callback used when the command <code>SupportedAccessoriesListChanged</code> of class <code>AccessoryState is decoded
+ * @param feature The feature controller registred
+ * @param accessory Accessory configurations supported by the product.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_AccessoryStateSupportedAccessoriesListChangedCallback (eARCOMMANDS_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY _accessory, void *customData);
+
+/**
+ * @brief callback used when the command <code>AccessoryConfigChanged</code> of class <code>AccessoryState is decoded
+ * @param feature The feature controller registred
+ * @param newAccessory Accessory configuration reported by firmware.
+ * @param error Error code.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_AccessoryStateAccessoryConfigChangedCallback (eARCOMMANDS_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY _newAccessory, eARCOMMANDS_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR _error, void *customData);
+
+/**
+ * @brief callback used when the command <code>AccessoryConfigModificationEnabled</code> of class <code>AccessoryState is decoded
+ * @param feature The feature controller registred
+ * @param enabled 1 if the modification of the accessory Config is enabled, 0 otherwise
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_AccessoryStateAccessoryConfigModificationEnabledCallback (uint8_t _enabled, void *customData);
+
+/**
+ * class: Charger 
+ * Commands sent by the controller to set charger parameters.
+ */
+
+/**
+ * @brief Send a command <code>SetMaxChargeRate</code> of class <code>Charger</code> in project <code>Common</code>
+ * @deprecated
+ * Set the maximum charge rate allowed to charge a battery.
+ * @param feature feature owning the commands
+ * @param rate The new maximum charge rate.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendChargerSetMaxChargeRate (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE rate);
+
+/**
+ * class: ChargerState 
+ * Commands sent by the firmware to advertise the charger status.
+ */
+
+/**
+ * @brief callback used when the command <code>MaxChargeRateChanged</code> of class <code>ChargerState is decoded
+ * @param feature The feature controller registred
+ * @param rate The current maximum charge rate.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ChargerStateMaxChargeRateChangedCallback (eARCOMMANDS_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE _rate, void *customData);
+
+/**
+ * @brief callback used when the command <code>CurrentChargeStateChanged</code> of class <code>ChargerState is decoded
+ * @param feature The feature controller registred
+ * @param status Charger status.
+ * @param phase The current charging phase.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ChargerStateCurrentChargeStateChangedCallback (eARCOMMANDS_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS _status, eARCOMMANDS_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE _phase, void *customData);
+
+/**
+ * @brief callback used when the command <code>LastChargeRateChanged</code> of class <code>ChargerState is decoded
+ * @param feature The feature controller registred
+ * @param rate The charge rate recorded by the firmware for the last charge.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ChargerStateLastChargeRateChangedCallback (eARCOMMANDS_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE _rate, void *customData);
+
+/**
+ * @brief callback used when the command <code>ChargingInfo</code> of class <code>ChargerState is decoded
+ * @param feature The feature controller registred
+ * @param phase The current charging phase.
+ * @param rate The charge rate. If phase is DISCHARGING, refers to the last charge.
+ * @param intensity The charging intensity, in dA. (12dA = 1,2A) ; If phase is DISCHARGING, refers to the last charge. Equals to 0 if not known.
+ * @param fullChargingTime The full charging time estimated, in minute. If phase is DISCHARGING, refers to the last charge. Equals to 0 if not known.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_ChargerStateChargingInfoCallback (eARCOMMANDS_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE _phase, eARCOMMANDS_COMMON_CHARGERSTATE_CHARGINGINFO_RATE _rate, uint8_t _intensity, uint8_t _fullChargingTime, void *customData);
+
+
+/*******************************
+ * --- FEATURE commonDebug --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_CommonDebug_t.
+ */
+struct ARCONTROLLER_FEATURE_CommonDebug_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * class: Stats 
+ * Commands to make stats
+ */
+
+/**
+ * @brief Send a command <code>SendPacket</code> of class <code>Stats</code> in project <code>CommonDebug</code>
+ * Send a packet to the drone
+ * @param feature feature owning the commands
+ * @param packet Packet to send to the drone
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet);
+
+/**
+ * @brief Send a command <code>StartSendingPacketFromDrone</code> of class <code>Stats</code> in project <code>CommonDebug</code>
+ * Ask drone to start sending packets
+ * @param feature feature owning the commands
+ * @param frequency Frequency of the packet
+ * @param packetSize Size of the the packet
+ * @param date time of day in sec
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date);
+
+/**
+ * @brief Send a command <code>StopSendingPacketFromDrone</code> of class <code>Stats</code> in project <code>CommonDebug</code>
+ * Ask drone to stop sending packets
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * class: StatsEvent 
+ * Stats Event from drone
+ */
+
+/**
+ * @brief callback used when the command <code>SendPacket</code> of class <code>StatsEvent is decoded
+ * @param feature The feature controller registred
+ * @param packet packet from drone
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _packet, void *customData);
+
+
+/*******************************
+ * --- FEATURE pro --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Pro_t.
+ */
+struct ARCONTROLLER_FEATURE_Pro_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_RegisterARCommands (ARCONTROLLER_FEATURE_Pro_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_UnregisterARCommands (ARCONTROLLER_FEATURE_Pro_t *feature);
+
+/**
+ * class: Pro 
+ * Pro related commands from the controller to the product
+ */
+
+/**
+ * @brief Send a command <code>BoughtFeatures</code> of class <code>Pro</code> in project <code>Pro</code>
+ * Bought features on this pro version of the controller (features that have been bought)
+ * This command starts the pro authentification process
+ * @param feature feature owning the commands
+ * @param features Bought features
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
+
+/**
+ * @brief Send a command <code>Response</code> of class <code>Pro</code> in project <code>Pro</code>
+ * Response to the challenge string sent by the controller
+ * @param feature feature owning the commands
+ * @param status Status of the response
+ * @param signedChallenge the signed challenge
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
+
+/**
+ * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in project <code>Pro</code>
+ * Activate some pro features
+ * Pro features activated should be part of the list returned by ProState->FeaturesSupported
+ * @param feature feature owning the commands
+ * @param features Pro features to activate
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProActivateFeatures (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
+
+/**
+ * class: ProState 
+ * Pro related commands from the product to the controller
+ */
+
+/**
+ * @brief callback used when the command <code>SupportedFeatures</code> of class <code>ProState is decoded
+ * @param feature The feature controller registred
+ * @param status Status of the supported features
+ * @param features Supported pro features.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Pro_ProStateSupportedFeaturesCallback (eARCOMMANDS_PRO_PROSTATE_SUPPORTEDFEATURES_STATUS _status, uint64_t _features, void *customData);
+
+/**
+ * @brief callback used when the command <code>FeaturesActivated</code> of class <code>ProState is decoded
+ * @param feature The feature controller registred
+ * @param features Activated pro features.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Pro_ProStateFeaturesActivatedCallback (uint64_t _features, void *customData);
+
+/**
+ * class: ProEvent 
+ * Pro related events from the product to the controller
+ */
+
+/**
+ * @brief callback used when the command <code>ChallengeEvent</code> of class <code>ProEvent is decoded
+ * @param feature The feature controller registred
+ * @param challenge the challenge that the receiver will have to sign
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Pro_ProEventChallengeEventCallback (char * _challenge, void *customData);
 
 
 #endif /* _ARCONTROLLER_FEATURE_PRIVATE_H_ */

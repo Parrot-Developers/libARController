@@ -29,2174 +29,6 @@
 #include <libARController/ARCONTROLLER_Dictionary.h>
 
 /*******************************
- * --- FEATURE SkyController --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_SkyController_t.
- */
-typedef struct ARCONTROLLER_FEATURE_SkyController_Private_t ARCONTROLLER_FEATURE_SkyController_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of SkyController Feature.
- * All SkyController-only commands
- */
-typedef struct ARCONTROLLER_FEATURE_SkyController_t ARCONTROLLER_FEATURE_SkyController_t;
-
-/**
- * @brief Create a new SkyController Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_SkyController_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_SkyController_SetNetworkController().
- * @param[out] error executing error.
- * @return the new SkyController Feature Controller
- * @see ARCONTROLLER_FEATURE_SkyController_Delete
- */
-ARCONTROLLER_FEATURE_SkyController_t *ARCONTROLLER_FEATURE_SkyController_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the SkyController Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_SkyController_New
- */
-void ARCONTROLLER_FEATURE_SkyController_Delete (ARCONTROLLER_FEATURE_SkyController_t **feature);
-
-/**
- * @brief Get the dictionay of the SkyController Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_SkyController_GetDictionary (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>SkyController</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_SkyController_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_AddCallback (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>SkyController</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_RemoveCallback (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: WifiState 
- * Wifi state
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_BSSID; /**< Key of the argument </code>bssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SSID; /**< Key of the argument </code>ssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SECURED; /**< Key of the argument </code>secured</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SAVED; /**< Key of the argument </code>saved</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_RSSI; /**< Key of the argument </code>rssi</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_FREQUENCY; /**< Key of the argument </code>frequency</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_SSID; /**< Key of the argument </code>ssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_STATUS; /**< Key of the argument </code>status</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_BAND; /**< Key of the argument </code>band</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT; /**< Key of the argument </code>in_or_out</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFISIGNALCHANGED_LEVEL; /**< Key of the argument </code>level</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-
-/**
- * class: Wifi 
- * Wifi
- */
-
-
-/**
- * @brief Send a command <code>RequestWifiList</code> of class <code>Wifi</code> in feature <code>SkyController</code>
- * Request wifi list
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiRequestWifiList_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>RequestCurrentWifi</code> of class <code>Wifi</code> in feature <code>SkyController</code>
- * Request current connected wifi
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiRequestCurrentWifi_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>ConnectToWifi</code> of class <code>Wifi</code> in feature <code>SkyController</code>
- * Connect to wifi
- * @param feature feature owning the commands
- * @param bssid Wifi bssid
- * @param ssid Wifi ssid
- * @param passphrase Wifi passphrase
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiConnectToWifi_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * bssid, char * ssid, char * passphrase);
-
-/**
- * @brief Send a command <code>ForgetWifi</code> of class <code>Wifi</code> in feature <code>SkyController</code>
- * Forget wifi
- * @param feature feature owning the commands
- * @param ssid Wifi ssid
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiForgetWifi_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
-
-/**
- * @brief Send a command <code>WifiAuthChannel</code> of class <code>Wifi</code> in feature <code>SkyController</code>
- * Controller inquire the list of authorized wifi channels
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiWifiAuthChannel_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: Device 
- * Device Connection commands
- */
-
-
-/**
- * @brief Send a command <code>RequestDeviceList</code> of class <code>Device</code> in feature <code>SkyController</code>
- * Request Device list
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestDeviceList_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>RequestCurrentDevice</code> of class <code>Device</code> in feature <code>SkyController</code>
- * Request current connected Device
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestCurrentDevice_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>ConnectToDevice</code> of class <code>Device</code> in feature <code>SkyController</code>
- * ask to connect to a device
- * @param feature feature owning the commands
- * @param deviceName Device name
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendDeviceConnectToDevice_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * deviceName);
-
-/**
- * class: DeviceState 
- * Device state
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_DEVICELIST_NAME; /**< Key of the argument </code>name</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS; /**< Key of the argument </code>status</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME; /**< Key of the argument </code>deviceName</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID; /**< Key of the argument </code>deviceProductID</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-
-/**
- * class: Settings 
- * Settings commands
- */
-
-
-/**
- * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in feature <code>SkyController</code>
- * Get all product settings, the product must send all settings
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendSettingsAllSettings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>Reset</code> of class <code>Settings</code> in feature <code>SkyController</code>
- * Reset all settings
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendSettingsReset_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: SettingsState 
- * Settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER; /**< Key of the argument </code>serialNumber</code> of class <code>SettingsState</code> in feature <code>SkyController</code> */
-
-/**
- * class: Common 
- * Common commands
- */
-
-
-/**
- * @brief Send a command <code>AllStates</code> of class <code>Common</code> in feature <code>SkyController</code>
- * Get all product states
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCommonAllStates_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: CommonState 
- * Common state from product
- */
-
-
-/**
- * class: SkyControllerState 
- * Sky Controller states
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT; /**< Key of the argument </code>percent</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED; /**< Key of the argument </code>fixed</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE; /**< Key of the argument </code>latitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LONGITUDE; /**< Key of the argument </code>longitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_ALTITUDE; /**< Key of the argument </code>altitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_HEADING; /**< Key of the argument </code>heading</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-
-/**
- * class: AccessPointSettings 
- * AccessPoint settings commands
- */
-
-
-/**
- * @brief Send a command <code>AccessPointSSID</code> of class <code>AccessPointSettings</code> in feature <code>SkyController</code>
- * Set AccessPoint SSID
- * @param feature feature owning the commands
- * @param ssid AccessPoint SSID
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointSSID_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
-
-/**
- * @brief Send a command <code>AccessPointChannel</code> of class <code>AccessPointSettings</code> in feature <code>SkyController</code>
- * Set AccessPoint Channel
- * @param feature feature owning the commands
- * @param channel AccessPoint Channel
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointChannel_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t channel);
-
-/**
- * @brief Send a command <code>WifiSelection</code> of class <code>AccessPointSettings</code> in feature <code>SkyController</code>
- * Set AccessPoint Band and Channel
- * @param feature feature owning the commands
- * @param type The type of wifi selection (only manual at the moment)
- * @param band The allowed band : 2.4 Ghz or 5 Ghz
- * @param channel The channel
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsWifiSelection_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE type, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND band, uint8_t channel);
-
-/**
- * class: AccessPointSettingsState 
- * AccessPoint settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTSSIDCHANGED_SSID; /**< Key of the argument </code>ssid</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTCHANNELCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_BAND; /**< Key of the argument </code>band</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-
-/**
- * class: Camera 
- * Ask the drone to move camera
- */
-
-
-/**
- * @brief Send a command <code>ResetOrientation</code> of class <code>Camera</code> in feature <code>SkyController</code>
- * Reset pan and tilt to center
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCameraResetOrientation_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: GamepadInfos 
- * Request infos about the gamepad of the SkyController
- */
-
-
-/**
- * @brief Send a command <code>GetGamepadControls</code> of class <code>GamepadInfos</code> in feature <code>SkyController</code>
- * Asks the SkyController to send the button and axis list
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendGamepadInfosGetGamepadControls_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: GamepadInfosState 
- * Informations about the gamepad of the SkyController
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_TYPE; /**< Key of the argument </code>type</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_ID; /**< Key of the argument </code>id</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_NAME; /**< Key of the argument </code>name</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
-
-/**
- * class: ButtonMappings 
- * Controls the button mappings of the SkyController
- */
-
-
-/**
- * @brief Send a command <code>GetCurrentButtonMappings</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
- * Asks the SkyController to send its current button mapping
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetCurrentButtonMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>GetAvailableButtonMappings</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
- * Asks the SkyController to send the possible mappings for each button
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetAvailableButtonMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>SetButtonMapping</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
- * Set a button mapping to the SkyController
- * @note replaces previous mapping for the given key
- * @param feature feature owning the commands
- * @param key_id The keycode to map
- * @param mapping_uid The mapping to associate with the key
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsSetButtonMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t key_id, char * mapping_uid);
-
-/**
- * @brief Send a command <code>DefaultButtonMapping</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
- * Asks the SkyController to reset the button mappings to the default value
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsDefaultButtonMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: ButtonMappingsState 
- * State of the button mappings of the SkyController
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_KEY_ID; /**< Key of the argument </code>key_id</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_NAME; /**< Key of the argument </code>name</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-
-/**
- * class: AxisMappings 
- * Controls the axis mappings of the SkyController
- */
-
-
-/**
- * @brief Send a command <code>GetCurrentAxisMappings</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
- * Asks the SkyController to send its current axis mapping
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetCurrentAxisMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>GetAvailableAxisMappings</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
- * Asks the SkyController to send the possible mappings for each axis
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetAvailableAxisMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>SetAxisMapping</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
- * Set a axis mapping to the SkyController
- * @note replaces previous mapping for the given axis
- * @param feature feature owning the commands
- * @param axis_id The axiscode to map
- * @param mapping_uid The mapping to associate with the axis
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsSetAxisMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * mapping_uid);
-
-/**
- * @brief Send a command <code>DefaultAxisMapping</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
- * Asks the SkyController to reset the axis mappings to the default value
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsDefaultAxisMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: AxisMappingsState 
- * State of the axis mappings of the SkyController
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_AXIS_ID; /**< Key of the argument </code>axis_id</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_NAME; /**< Key of the argument </code>name</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-
-/**
- * class: AxisFilters 
- * Controls the axis filters of the SkyController
- */
-
-
-/**
- * @brief Send a command <code>GetCurrentAxisFilters</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
- * Asks the SkyController to send its current axis filters
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetCurrentAxisFilters_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>GetPresetAxisFilters</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
- * Asks the SkyController to send the preset filters
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetPresetAxisFilters_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * @brief Send a command <code>SetAxisFilter</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
- * Set an axis filter to the SkyController
- * @note replaces previous filter for the given axis
- * @param feature feature owning the commands
- * @param axis_id The axiscode to filter
- * @param filter_uid_or_builder The mapping preset to associate with the axis
- * @param filter_uid_or_builder (Or a string to build a new one)
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersSetAxisFilter_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * filter_uid_or_builder);
-
-/**
- * @brief Send a command <code>DefaultAxisFilters</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
- * Asks the SkyController to reset the axis filters to the default value
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersDefaultAxisFilters_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
-
-/**
- * class: AxisFiltersState 
- * State of the axis filters of the SkyController
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_AXIS_ID; /**< Key of the argument </code>axis_id</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_FILTER_UID_OR_BUILDER; /**< Key of the argument </code>filter_uid_or_builder</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_FILTER_UID; /**< Key of the argument </code>filter_uid</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_NAME; /**< Key of the argument </code>name</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-
-/**
- * class: CoPiloting 
- * Configuration of the co-piloting feature
- */
-
-
-/**
- * @brief Send a command <code>SetPilotingSource</code> of class <code>CoPiloting</code> in feature <code>SkyController</code>
- * Set the SkyController piloting source
- * @param feature feature owning the commands
- * @param source The source
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCoPilotingSetPilotingSource_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE source);
-
-/**
- * class: CoPilotingState 
- * State of the co-piloting feature
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE_SOURCE; /**< Key of the argument </code>source</code> of class <code>CoPilotingState</code> in feature <code>SkyController</code> */
-
-/**
- * class: Calibration 
- * Commands related to the SkyController sensors calibration
- */
-
-
-/**
- * @brief Send a command <code>EnableMagnetoCalibrationQualityUpdates</code> of class <code>Calibration</code> in feature <code>SkyController</code>
- * Asks the SkyController to send (or not) the magneto calibration quality updates.
- * The MagnetoCalibrationState will always be sent when the status parameters changes,
- * regardless of this setting.
- * @param feature feature owning the commands
- * @param enable Flag to enable the feature.
- * @param enable 1 = enable quality updates
- * @param enable 0 = disable quality updates
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCalibrationEnableMagnetoCalibrationQualityUpdates_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t enable);
-
-/**
- * class: CalibrationState 
- * State of the SkyController calibration
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_STATUS; /**< Key of the argument </code>status</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_X_QUALITY; /**< Key of the argument </code>X_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Y_QUALITY; /**< Key of the argument </code>Y_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Z_QUALITY; /**< Key of the argument </code>Z_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE_ENABLED; /**< Key of the argument </code>enabled</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-
-/**
- * @brief Feature controller allow to send command related of SkyController Feature.
- * All SkyController-only commands
- */
-struct ARCONTROLLER_FEATURE_SkyController_t
-{
-    ARCONTROLLER_FEATURE_SkyController_SendWifiRequestWifiList_t sendWifiRequestWifiList;
-    ARCONTROLLER_FEATURE_SkyController_SendWifiRequestCurrentWifi_t sendWifiRequestCurrentWifi;
-    ARCONTROLLER_FEATURE_SkyController_SendWifiConnectToWifi_t sendWifiConnectToWifi;
-    ARCONTROLLER_FEATURE_SkyController_SendWifiForgetWifi_t sendWifiForgetWifi;
-    ARCONTROLLER_FEATURE_SkyController_SendWifiWifiAuthChannel_t sendWifiWifiAuthChannel;
-    ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestDeviceList_t sendDeviceRequestDeviceList;
-    ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestCurrentDevice_t sendDeviceRequestCurrentDevice;
-    ARCONTROLLER_FEATURE_SkyController_SendDeviceConnectToDevice_t sendDeviceConnectToDevice;
-    ARCONTROLLER_FEATURE_SkyController_SendSettingsAllSettings_t sendSettingsAllSettings;
-    ARCONTROLLER_FEATURE_SkyController_SendSettingsReset_t sendSettingsReset;
-    ARCONTROLLER_FEATURE_SkyController_SendCommonAllStates_t sendCommonAllStates;
-    ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointSSID_t sendAccessPointSettingsAccessPointSSID;
-    ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointChannel_t sendAccessPointSettingsAccessPointChannel;
-    ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsWifiSelection_t sendAccessPointSettingsWifiSelection;
-    ARCONTROLLER_FEATURE_SkyController_SendCameraResetOrientation_t sendCameraResetOrientation;
-    ARCONTROLLER_FEATURE_SkyController_SendGamepadInfosGetGamepadControls_t sendGamepadInfosGetGamepadControls;
-    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetCurrentButtonMappings_t sendButtonMappingsGetCurrentButtonMappings;
-    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetAvailableButtonMappings_t sendButtonMappingsGetAvailableButtonMappings;
-    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsSetButtonMapping_t sendButtonMappingsSetButtonMapping;
-    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsDefaultButtonMapping_t sendButtonMappingsDefaultButtonMapping;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetCurrentAxisMappings_t sendAxisMappingsGetCurrentAxisMappings;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetAvailableAxisMappings_t sendAxisMappingsGetAvailableAxisMappings;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsSetAxisMapping_t sendAxisMappingsSetAxisMapping;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsDefaultAxisMapping_t sendAxisMappingsDefaultAxisMapping;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetCurrentAxisFilters_t sendAxisFiltersGetCurrentAxisFilters;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetPresetAxisFilters_t sendAxisFiltersGetPresetAxisFilters;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersSetAxisFilter_t sendAxisFiltersSetAxisFilter;
-    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersDefaultAxisFilters_t sendAxisFiltersDefaultAxisFilters;
-    ARCONTROLLER_FEATURE_SkyController_SendCoPilotingSetPilotingSource_t sendCoPilotingSetPilotingSource;
-    ARCONTROLLER_FEATURE_SkyController_SendCalibrationEnableMagnetoCalibrationQualityUpdates_t sendCalibrationEnableMagnetoCalibrationQualityUpdates;
-    ARCONTROLLER_FEATURE_SkyController_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_SkyController_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SetNetworkController (ARCONTROLLER_FEATURE_SkyController_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_GetCommandElements (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE SkyControllerDebug --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t.
- */
-typedef struct ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
- * All debug SkyController-only commands
- */
-typedef struct ARCONTROLLER_FEATURE_SkyControllerDebug_t ARCONTROLLER_FEATURE_SkyControllerDebug_t;
-
-/**
- * @brief Create a new SkyControllerDebug Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_SkyControllerDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController().
- * @param[out] error executing error.
- * @return the new SkyControllerDebug Feature Controller
- * @see ARCONTROLLER_FEATURE_SkyControllerDebug_Delete
- */
-ARCONTROLLER_FEATURE_SkyControllerDebug_t *ARCONTROLLER_FEATURE_SkyControllerDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the SkyControllerDebug Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_SkyControllerDebug_New
- */
-void ARCONTROLLER_FEATURE_SkyControllerDebug_Delete (ARCONTROLLER_FEATURE_SkyControllerDebug_t **feature);
-
-/**
- * @brief Get the dictionay of the SkyControllerDebug Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_SkyControllerDebug_GetDictionary (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>SkyControllerDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_AddCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>SkyControllerDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-
-/**
- * @brief Send a command <code>Test1</code> of class <code>Debug</code> in feature <code>SkyControllerDebug</code>
- * Test 1 command
- * @param feature feature owning the commands
- * @param t1Args Test 1 argument
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1_t) (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args);
-
-/**
- * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
- * All debug SkyController-only commands
- */
-struct ARCONTROLLER_FEATURE_SkyControllerDebug_t
-{
-    ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1_t sendDebugTest1;
-    ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyControllerDebug_GetCommandElements (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE pro --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_Pro_t.
- */
-typedef struct ARCONTROLLER_FEATURE_Pro_Private_t ARCONTROLLER_FEATURE_Pro_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of pro Feature.
- * Pro Feature
- */
-typedef struct ARCONTROLLER_FEATURE_Pro_t ARCONTROLLER_FEATURE_Pro_t;
-
-/**
- * @brief Create a new pro Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_Pro_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Pro_SetNetworkController().
- * @param[out] error executing error.
- * @return the new pro Feature Controller
- * @see ARCONTROLLER_FEATURE_Pro_Delete
- */
-ARCONTROLLER_FEATURE_Pro_t *ARCONTROLLER_FEATURE_Pro_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the pro Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_Pro_New
- */
-void ARCONTROLLER_FEATURE_Pro_Delete (ARCONTROLLER_FEATURE_Pro_t **feature);
-
-/**
- * @brief Get the dictionay of the pro Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Pro_GetDictionary (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>Pro</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_Pro_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_AddCallback (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>Pro</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_RemoveCallback (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Pro 
- * Pro related commands from the controller to the product
- */
-
-
-/**
- * @brief Send a command <code>BoughtFeatures</code> of class <code>Pro</code> in feature <code>Pro</code>
- * Bought features on this pro version of the controller (features that have been bought)
- * This command starts the pro authentification process
- * @param feature feature owning the commands
- * @param features Bought features
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures_t) (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
-
-/**
- * @brief Send a command <code>Response</code> of class <code>Pro</code> in feature <code>Pro</code>
- * Response to the challenge string sent by the controller
- * @param feature feature owning the commands
- * @param status Status of the response
- * @param signedChallenge the signed challenge
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProResponse_t) (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
-
-/**
- * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in feature <code>Pro</code>
- * Activate some pro features
- * Pro features activated should be part of the list returned by ProState->FeaturesSupported
- * @param feature feature owning the commands
- * @param features Pro features to activate
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProActivateFeatures_t) (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
-
-/**
- * class: ProState 
- * Pro related commands from the product to the controller
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_STATUS; /**< Key of the argument </code>status</code> of class <code>ProState</code> in feature <code>Pro</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_FEATURES; /**< Key of the argument </code>features</code> of class <code>ProState</code> in feature <code>Pro</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED_FEATURES; /**< Key of the argument </code>features</code> of class <code>ProState</code> in feature <code>Pro</code> */
-
-/**
- * class: ProEvent 
- * Pro related events from the product to the controller
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT_CHALLENGE; /**< Key of the argument </code>challenge</code> of class <code>ProEvent</code> in feature <code>Pro</code> */
-
-/**
- * @brief Feature controller allow to send command related of pro Feature.
- * Pro Feature
- */
-struct ARCONTROLLER_FEATURE_Pro_t
-{
-    ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures_t sendProBoughtFeatures;
-    ARCONTROLLER_FEATURE_Pro_SendProResponse_t sendProResponse;
-    ARCONTROLLER_FEATURE_Pro_SendProActivateFeatures_t sendProActivateFeatures;
-    ARCONTROLLER_FEATURE_Pro_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Pro_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SetNetworkController (ARCONTROLLER_FEATURE_Pro_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Pro_GetCommandElements (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE MiniDrone --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_MiniDrone_t.
- */
-typedef struct ARCONTROLLER_FEATURE_MiniDrone_Private_t ARCONTROLLER_FEATURE_MiniDrone_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of MiniDrone Feature.
- * All MiniDrone-only commands
- */
-typedef struct ARCONTROLLER_FEATURE_MiniDrone_t ARCONTROLLER_FEATURE_MiniDrone_t;
-
-/**
- * @brief Create a new MiniDrone Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_MiniDrone_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController().
- * @param[out] error executing error.
- * @return the new MiniDrone Feature Controller
- * @see ARCONTROLLER_FEATURE_MiniDrone_Delete
- */
-ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the MiniDrone Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_MiniDrone_New
- */
-void ARCONTROLLER_FEATURE_MiniDrone_Delete (ARCONTROLLER_FEATURE_MiniDrone_t **feature);
-
-/**
- * @brief Get the dictionay of the MiniDrone Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_MiniDrone_GetDictionary (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>MiniDrone</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_AddCallback (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>MiniDrone</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Piloting 
- * All commands related to piloting the MiniDrone
- */
-
-
-/**
- * @brief Send a command <code>FlatTrim</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
- * Do a flat trim
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingFlatTrim_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>TakeOff</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
- * Ask the drone to take off
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingTakeOff_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param flag Boolean flag to activate roll/pitch movement
- * @param roll Roll consign for the MiniDrone [-100;100]
- * @param pitch Pitch consign for the MiniDrone [-100;100]
- * @param yaw Yaw consign for the MiniDrone [-100;100]
- * @param gaz Gaz consign for the MiniDrone [-100;100]
- * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingPCMD_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestamp);
-
-/**
- * @brief Set the parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param flag Boolean flag to activate roll/pitch movement
- * @param roll Roll consign for the MiniDrone [-100;100]
- * @param pitch Pitch consign for the MiniDrone [-100;100]
- * @param yaw Yaw consign for the MiniDrone [-100;100]
- * @param gaz Gaz consign for the MiniDrone [-100;100]
- * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMD_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestamp);
-
-/**
- * @brief Send the a command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code> with the parame set beforehand 
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param cmdBuffer buffer to store the command
- * @param cmdBufferSize size of the buffer
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_MiniDrone_SendPilotingPCMDStruct (ARCONTROLLER_FEATURE_MiniDrone_t *feature, u_int8_t *cmdBuffer, int32_t cmdBufferSize);
-
-/**
- * @brief Set flag sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param flag Boolean flag to activate roll/pitch movement
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDFlag_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag);
-
-/**
- * @brief Set roll sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param roll Roll consign for the MiniDrone [-100;100]
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDRoll_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t roll);
-
-/**
- * @brief Set pitch sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param pitch Pitch consign for the MiniDrone [-100;100]
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDPitch_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t pitch);
-
-/**
- * @brief Set yaw sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param yaw Yaw consign for the MiniDrone [-100;100]
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDYaw_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t yaw);
-
-/**
- * @brief Set gaz sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param gaz Gaz consign for the MiniDrone [-100;100]
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDGaz_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t gaz);
-
-/**
- * @brief Set timestamp sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
- * Ask the drone to move around.
- * @param feature feature owning the commands
- * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDTimestamp_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint32_t timestamp);
-
-/**
- * @brief Send a command <code>Landing</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
- * Ask the MiniDrone to land
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingLanding_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>Emergency</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
- * Put drone in emergency state
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingEmergency_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * @brief Send a command <code>AutoTakeOffMode</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
- * Set MiniDrone automatic take off mode
- * @param feature feature owning the commands
- * @param state State of automatic take off mode
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingAutoTakeOffMode_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t state);
-
-/**
- * class: PilotingState 
- * Occasional information
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: Animations 
- * Animation commands
- */
-
-
-/**
- * @brief Send a command <code>Flip</code> of class <code>Animations</code> in feature <code>MiniDrone</code>
- * Make a flip
- * @param feature feature owning the commands
- * @param direction Direction for the flip
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsFlip_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION direction);
-
-/**
- * @brief Send a command <code>Cap</code> of class <code>Animations</code> in feature <code>MiniDrone</code>
- * Change the product cap
- * @param feature feature owning the commands
- * @param offset Change the cap with offset angle [-180;180]
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsCap_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int16_t offset);
-
-/**
- * class: MediaRecord 
- * Media recording management
- */
-
-
-/**
- * @brief Send a command <code>Picture</code> of class <code>MediaRecord</code> in feature <code>MiniDrone</code>
- * @deprecated
- * Take picture
- * @param feature feature owning the commands
- * @param mass_storage_id Mass storage id to take picture
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPicture_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t mass_storage_id);
-
-/**
- * @brief Send a command <code>PictureV2</code> of class <code>MediaRecord</code> in feature <code>MiniDrone</code>
- * Take picture
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
-
-/**
- * class: MediaRecordState 
- * State of media recording
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: MediaRecordEvent 
- * Events of media recording
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: PilotingSettings 
- * Piloting Settings commands
- */
-
-
-/**
- * @brief Send a command <code>MaxAltitude</code> of class <code>PilotingSettings</code> in feature <code>MiniDrone</code>
- * Set Max Altitude
- * @param feature feature owning the commands
- * @param current Current altitude max in m
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * @brief Send a command <code>MaxTilt</code> of class <code>PilotingSettings</code> in feature <code>MiniDrone</code>
- * Set Max Tilt
- * @param feature feature owning the commands
- * @param current Current tilt max in degree
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * class: PilotingSettingsState 
- * Piloting Settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: SpeedSettings 
- * Speed Settings commands
- */
-
-
-/**
- * @brief Send a command <code>MaxVerticalSpeed</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
- * Set Max Vertical speed
- * @param feature feature owning the commands
- * @param current Current max vertical speed in m/s
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * @brief Send a command <code>MaxRotationSpeed</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
- * Set Max Rotation speed
- * @param feature feature owning the commands
- * @param current Current max rotation speed in degree/s
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
-
-/**
- * @brief Send a command <code>Wheels</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
- * Presence of wheels
- * @param feature feature owning the commands
- * @param present 1 if present, 0 if not present
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t present);
-
-/**
- * class: SpeedSettingsState 
- * Speed Settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: Settings 
- * Settings commands
- */
-
-
-/**
- * @brief Send a command <code>CutOutMode</code> of class <code>Settings</code> in feature <code>MiniDrone</code>
- * Set MiniDrone cut out mode
- * @param feature feature owning the commands
- * @param enable Enable cut out mode (1 if is activate, 0 otherwise)
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t enable);
-
-/**
- * class: SettingsState 
- * Settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR; /**< Key of the argument </code>motor</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED_ENABLE; /**< Key of the argument </code>enable</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: FloodControlState 
- * Settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY; /**< Key of the argument </code>delay</code> of class <code>FloodControlState</code> in feature <code>MiniDrone</code> */
-
-/**
- * class: GPS 
- * GPS related commands
- */
-
-
-/**
- * @brief Send a command <code>ControllerLatitudeForRun</code> of class <code>GPS</code> in feature <code>MiniDrone</code>
- * Set the controller latitude for a run.
- * @param feature feature owning the commands
- * @param latitude Controller latitude in decimal degrees
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double latitude);
-
-/**
- * @brief Send a command <code>ControllerLongitudeForRun</code> of class <code>GPS</code> in feature <code>MiniDrone</code>
- * Set the controller longitude for a run.
- * @param feature feature owning the commands
- * @param longitude Controller longitude in decimal degrees
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double longitude);
-
-/**
- * class: Configuration 
- * Configuration related commands
- */
-
-
-/**
- * @brief Send a command <code>ControllerType</code> of class <code>Configuration</code> in feature <code>MiniDrone</code>
- * Set the controller type.
- * @param feature feature owning the commands
- * @param type Controller type like iOS or Android
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * type);
-
-/**
- * @brief Send a command <code>ControllerName</code> of class <code>Configuration</code> in feature <code>MiniDrone</code>
- * Set the controller name.
- * @param feature feature owning the commands
- * @param name Controller name like com.parrot.freeflight3
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * name);
-
-/**
- * @brief Feature controller allow to send command related of MiniDrone Feature.
- * All MiniDrone-only commands
- */
-struct ARCONTROLLER_FEATURE_MiniDrone_t
-{
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingFlatTrim_t sendPilotingFlatTrim;
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingTakeOff_t sendPilotingTakeOff;
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingPCMD_t sendPilotingPCMD;
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMD_t setPilotingPCMD;
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDFlag_t setPilotingPCMDFlag; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDRoll_t setPilotingPCMDRoll; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDPitch_t setPilotingPCMDPitch; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDYaw_t setPilotingPCMDYaw; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDGaz_t setPilotingPCMDGaz; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
-    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDTimestamp_t setPilotingPCMDTimestamp; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingLanding_t sendPilotingLanding;
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingEmergency_t sendPilotingEmergency;
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingAutoTakeOffMode_t sendPilotingAutoTakeOffMode;
-    ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsFlip_t sendAnimationsFlip;
-    ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsCap_t sendAnimationsCap;
-    ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPicture_t sendMediaRecordPicture;
-    ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2_t sendMediaRecordPictureV2;
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude_t sendPilotingSettingsMaxAltitude;
-    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt_t sendPilotingSettingsMaxTilt;
-    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed_t sendSpeedSettingsMaxVerticalSpeed;
-    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
-    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t sendSpeedSettingsWheels;
-    ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode_t sendSettingsCutOutMode;
-    ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun_t sendGPSControllerLatitudeForRun;
-    ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t sendGPSControllerLongitudeForRun;
-    ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType_t sendConfigurationControllerType;
-    ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName_t sendConfigurationControllerName;
-    ARCONTROLLER_FEATURE_MiniDrone_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_MiniDrone_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController (ARCONTROLLER_FEATURE_MiniDrone_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_GetCommandElements (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE MiniDroneDebug --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_MiniDroneDebug_t.
- */
-typedef struct ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of MiniDroneDebug Feature.
- * All MiniDrone-only debug commands
- */
-typedef struct ARCONTROLLER_FEATURE_MiniDroneDebug_t ARCONTROLLER_FEATURE_MiniDroneDebug_t;
-
-/**
- * @brief Create a new MiniDroneDebug Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_MiniDroneDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_MiniDroneDebug_SetNetworkController().
- * @param[out] error executing error.
- * @return the new MiniDroneDebug Feature Controller
- * @see ARCONTROLLER_FEATURE_MiniDroneDebug_Delete
- */
-ARCONTROLLER_FEATURE_MiniDroneDebug_t *ARCONTROLLER_FEATURE_MiniDroneDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the MiniDroneDebug Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_MiniDroneDebug_New
- */
-void ARCONTROLLER_FEATURE_MiniDroneDebug_Delete (ARCONTROLLER_FEATURE_MiniDroneDebug_t **feature);
-
-/**
- * @brief Get the dictionay of the MiniDroneDebug Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_MiniDroneDebug_GetDictionary (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>MiniDroneDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_MiniDroneDebug_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_AddCallback (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>MiniDroneDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_RemoveCallback (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-
-/**
- * @brief Send a command <code>Test1</code> of class <code>Debug</code> in feature <code>MiniDroneDebug</code>
- * Test 1 command
- * @param feature feature owning the commands
- * @param t1Args Test 1 argument
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest1_t) (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t1Args);
-
-/**
- * @brief Send a command <code>Test2</code> of class <code>Debug</code> in feature <code>MiniDroneDebug</code>
- * Test 2 command
- * @param feature feature owning the commands
- * @param t2Args Test 2 argument
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest2_t) (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t2Args);
-
-/**
- * @brief Send a command <code>Test3</code> of class <code>Debug</code> in feature <code>MiniDroneDebug</code>
- * Test 3 command
- * @param feature feature owning the commands
- * @param t3Args Test 3 argument
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest3_t) (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t3Args);
-
-/**
- * @brief Feature controller allow to send command related of MiniDroneDebug Feature.
- * All MiniDrone-only debug commands
- */
-struct ARCONTROLLER_FEATURE_MiniDroneDebug_t
-{
-    ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest1_t sendDebugTest1;
-    ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest2_t sendDebugTest2;
-    ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest3_t sendDebugTest3;
-    ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_MiniDroneDebug_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SetNetworkController (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDroneDebug_GetCommandElements (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE common --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_Common_t.
- */
-typedef struct ARCONTROLLER_FEATURE_Common_Private_t ARCONTROLLER_FEATURE_Common_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of common Feature.
- * All common commands shared between all projects
- */
-typedef struct ARCONTROLLER_FEATURE_Common_t ARCONTROLLER_FEATURE_Common_t;
-
-/**
- * @brief Create a new common Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_Common_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Common_SetNetworkController().
- * @param[out] error executing error.
- * @return the new common Feature Controller
- * @see ARCONTROLLER_FEATURE_Common_Delete
- */
-ARCONTROLLER_FEATURE_Common_t *ARCONTROLLER_FEATURE_Common_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the common Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_Common_New
- */
-void ARCONTROLLER_FEATURE_Common_Delete (ARCONTROLLER_FEATURE_Common_t **feature);
-
-/**
- * @brief Get the dictionay of the common Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Common_GetDictionary (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>Common</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_Common_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_AddCallback (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>Common</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_RemoveCallback (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Network 
- * Network related commands
- */
-
-
-/**
- * @brief Send a command <code>Disconnect</code> of class <code>Network</code> in feature <code>Common</code>
- * Signals the remote that the host will disconnect and close its
- * libARNetwork instance (and all threads that use libARNetwork)
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendNetworkDisconnect_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: NetworkEvent 
- * Network Event from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_NETWORKEVENT_DISCONNECTION_CAUSE; /**< Key of the argument </code>cause</code> of class <code>NetworkEvent</code> in feature <code>Common</code> */
-
-/**
- * class: Settings 
- * Settings commands
- */
-
-
-/**
- * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in feature <code>Common</code>
- * Get all product settings, the product must send all settings
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsAllSettings_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>Reset</code> of class <code>Settings</code> in feature <code>Common</code>
- * Reset all settings
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsReset_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>ProductName</code> of class <code>Settings</code> in feature <code>Common</code>
- * Set Product name
- * @param feature feature owning the commands
- * @param name Product name
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsProductName_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * name);
-
-/**
- * @brief Send a command <code>Country</code> of class <code>Settings</code> in feature <code>Common</code>
- * Set current Country of controller
- * @param feature feature owning the commands
- * @param code Country code with ISO 3166 format
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsCountry_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * code);
-
-/**
- * @brief Send a command <code>AutoCountry</code> of class <code>Settings</code> in feature <code>Common</code>
- * Set Auto Country Settings
- * @param feature feature owning the commands
- * @param automatic Boolean : 0 : Manual / 1 : Auto
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsAutoCountry_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t automatic);
-
-/**
- * class: SettingsState 
- * Settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTNAMECHANGED_NAME; /**< Key of the argument </code>name</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALHIGHCHANGED_HIGH; /**< Key of the argument </code>high</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALLOWCHANGED_LOW; /**< Key of the argument </code>low</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_COUNTRYCHANGED_CODE; /**< Key of the argument </code>code</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_AUTOCOUNTRYCHANGED_AUTOMATIC; /**< Key of the argument </code>automatic</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-
-/**
- * class: Common 
- * Common commands
- */
-
-
-/**
- * @brief Send a command <code>AllStates</code> of class <code>Common</code> in feature <code>Common</code>
- * Get all product states.
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonAllStates_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>CurrentDate</code> of class <code>Common</code> in feature <code>Common</code>
- * Set current date of controller
- * @param feature feature owning the commands
- * @param date Date with ISO-8601 format
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonCurrentDate_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * date);
-
-/**
- * @brief Send a command <code>CurrentTime</code> of class <code>Common</code> in feature <code>Common</code>
- * Set current time of controller
- * @param feature feature owning the commands
- * @param time Time with ISO-8601 format
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonCurrentTime_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * time);
-
-/**
- * @brief Send a command <code>Reboot</code> of class <code>Common</code> in feature <code>Common</code>
- * Command to ask reboot to product
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonReboot_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: CommonState 
- * Common state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED_PERCENT; /**< Key of the argument </code>percent</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_NAME; /**< Key of the argument </code>name</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_SIZE; /**< Key of the argument </code>size</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_USED_SIZE; /**< Key of the argument </code>used_size</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_PLUGGED; /**< Key of the argument </code>plugged</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_FULL; /**< Key of the argument </code>full</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_INTERNAL; /**< Key of the argument </code>internal</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED_DATE; /**< Key of the argument </code>date</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED_TIME; /**< Key of the argument </code>time</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_FREE_SPACE; /**< Key of the argument </code>free_space</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_REC_TIME; /**< Key of the argument </code>rec_time</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_PHOTO_REMAINING; /**< Key of the argument </code>photo_remaining</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED_RSSI; /**< Key of the argument </code>rssi</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME; /**< Key of the argument </code>sensorName</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE; /**< Key of the argument </code>sensorState</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL; /**< Key of the argument </code>model</code> of class <code>CommonState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES; /**< Key of the argument </code>countryCodes</code> of class <code>CommonState</code> in feature <code>Common</code> */
-
-/**
- * class: OverHeat 
- * Over heat commands
- */
-
-
-/**
- * @brief Send a command <code>SwitchOff</code> of class <code>OverHeat</code> in feature <code>Common</code>
- * @deprecated
- * Switch off the drone when a overheat appeared
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>Ventilate</code> of class <code>OverHeat</code> in feature <code>Common</code>
- * @deprecated
- * Ventilate the drone when a overheat appeared
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: OverHeatState 
- * Overheat state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE; /**< Key of the argument </code>regulationType</code> of class <code>OverHeatState</code> in feature <code>Common</code> */
-
-/**
- * class: ControllerState 
- * Notify the device about the state of the controller application.
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING; /**< Key of the argument </code>piloting</code> of class <code>ControllerState</code> in feature <code>Common</code> */
-
-/**
- * class: WifiSettings 
- * Wifi settings commands
- */
-
-
-/**
- * @brief Send a command <code>OutdoorSetting</code> of class <code>WifiSettings</code> in feature <code>Common</code>
- * Send to product if it should use its outdoor wifi config, or indoor
- * @param feature feature owning the commands
- * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t outdoor);
-
-/**
- * class: WifiSettingsState 
- * Wifi settings state from product
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR; /**< Key of the argument </code>outdoor</code> of class <code>WifiSettingsState</code> in feature <code>Common</code> */
-
-/**
- * class: Mavlink 
- * Mavlink flight plans commands
- */
-
-
-/**
- * @brief Send a command <code>Start</code> of class <code>Mavlink</code> in feature <code>Common</code>
- * Start the flight plan
- * @param feature feature owning the commands
- * @param filepath flight plan file path from the mavlink ftp root
- * @param type type of the played mavlink file
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendMavlinkStart_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * filepath, eARCOMMANDS_COMMON_MAVLINK_START_TYPE type);
-
-/**
- * @brief Send a command <code>Pause</code> of class <code>Mavlink</code> in feature <code>Common</code>
- * Pause the flightplan (can be restarted with a start)
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendMavlinkPause_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * @brief Send a command <code>Stop</code> of class <code>Mavlink</code> in feature <code>Common</code>
- * Stop the flightplan
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendMavlinkStop_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: MavlinkState 
- * Mavlink flight plans states commands
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_FILEPATH; /**< Key of the argument </code>filepath</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-
-/**
- * class: Calibration 
- * Calibration commands
- */
-
-
-/**
- * @brief Send a command <code>MagnetoCalibration</code> of class <code>Calibration</code> in feature <code>Common</code>
- * Sent when a calibration of the magnetometer is asked or is aborted
- * @param feature feature owning the commands
- * @param calibrate 1 if the calibration should be started, 0 if it should be aborted
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCalibrationMagnetoCalibration_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t calibrate);
-
-/**
- * class: CalibrationState 
- * Status of the calibration
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_XAXISCALIBRATION; /**< Key of the argument </code>xAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_YAXISCALIBRATION; /**< Key of the argument </code>yAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_ZAXISCALIBRATION; /**< Key of the argument </code>zAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_CALIBRATIONFAILED; /**< Key of the argument </code>calibrationFailed</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE_REQUIRED; /**< Key of the argument </code>required</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS; /**< Key of the argument </code>axis</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED_STARTED; /**< Key of the argument </code>started</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-
-/**
- * class: CameraSettingsState 
- * Status of the camera settings
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_FOV; /**< Key of the argument </code>fov</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMAX; /**< Key of the argument </code>panMax</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMIN; /**< Key of the argument </code>panMin</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMAX; /**< Key of the argument </code>tiltMax</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMIN; /**< Key of the argument </code>tiltMin</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-
-/**
- * class: GPS 
- * GPS related commands
- */
-
-
-/**
- * @brief Send a command <code>ControllerPositionForRun</code> of class <code>GPS</code> in feature <code>Common</code>
- * Set the controller position for a run. This command is used by all non gps products. Watch out, this command cannot be used with BLE products
- * @param feature feature owning the commands
- * @param latitude Controller latitude in decimal degrees
- * @param longitude Controller longitude in decimal degrees
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendGPSControllerPositionForRun_t) (ARCONTROLLER_FEATURE_Common_t *feature, double latitude, double longitude);
-
-/**
- * class: FlightPlanState 
- * FlightPlan state commands
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED_AVAILABILITYSTATE; /**< Key of the argument </code>AvailabilityState</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT; /**< Key of the argument </code>component</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_STATE; /**< Key of the argument </code>State</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
-
-/**
- * class: FlightPlanEvent 
- * FlightPlan Event commands
- */
-
-
-/**
- * class: ARLibsVersionsState 
- * ARlibs Versions Commands
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION_VERSION; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION_VERSION; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION_VERSION; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
-
-/**
- * class: Audio 
- * Audio-related commands.
- */
-
-
-/**
- * @brief Send a command <code>ControllerReadyForStreaming</code> of class <code>Audio</code> in feature <code>Common</code>
- * Tell the firmware whether the controller is ready to start audio streaming.
- * @param feature feature owning the commands
- * @param ready Bit field for TX and RX ready.
- * @param ready bit 0 is 1 if controller is ready and wants to receive sound (Drone TX)
- * @param ready bit 1 is 1 if controller is ready and wants to send sound (Drone RX)
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAudioControllerReadyForStreaming_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t ready);
-
-/**
- * class: AudioState 
- * Audio-related state updates.
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING_RUNNING; /**< Key of the argument </code>running</code> of class <code>AudioState</code> in feature <code>Common</code> */
-
-/**
- * class: Headlights 
- * Controls the headlight LEDs of the Evo variants.
- */
-
-
-/**
- * @brief Send a command <code>Intensity</code> of class <code>Headlights</code> in feature <code>Common</code>
- * Set instensity of lighting LEDs.
- * @param feature feature owning the commands
- * @param left Set the left LED intensity value (0 through 255).
- * @param right Set the right LED intensity value (0 through 255).
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendHeadlightsIntensity_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t left, uint8_t right);
-
-/**
- * class: HeadlightsState 
- * Get information about the state of the Evo variants' LEDs.
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_LEFT; /**< Key of the argument </code>left</code> of class <code>HeadlightsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_RIGHT; /**< Key of the argument </code>right</code> of class <code>HeadlightsState</code> in feature <code>Common</code> */
-
-/**
- * class: Animations 
- * Animations-related commands.
- */
-
-
-/**
- * @brief Send a command <code>StartAnimation</code> of class <code>Animations</code> in feature <code>Common</code>
- * Start a paramaterless animation.
- * @param feature feature owning the commands
- * @param anim Animation to start.
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAnimationsStartAnimation_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM anim);
-
-/**
- * @brief Send a command <code>StopAnimation</code> of class <code>Animations</code> in feature <code>Common</code>
- * Stop a running animation.
- * @param feature feature owning the commands
- * @param anim Animation to stop.
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAnimationsStopAnimation_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM anim);
-
-/**
- * @brief Send a command <code>StopAllAnimations</code> of class <code>Animations</code> in feature <code>Common</code>
- * Stop all running animations.
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAnimationsStopAllAnimations_t) (ARCONTROLLER_FEATURE_Common_t *feature);
-
-/**
- * class: AnimationsState 
- * Animations-related notification/feedback commands.
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ANIM; /**< Key of the argument </code>anim</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_STATE; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ERROR; /**< Key of the argument </code>error</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
-
-/**
- * class: Accessory 
- * Accessories-related commands.
- */
-
-
-/**
- * @brief Send a command <code>Config</code> of class <code>Accessory</code> in feature <code>Common</code>
- * Set the current accessory configuration.
- * @param feature feature owning the commands
- * @param accessory Accessory configuration to set.
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAccessoryConfig_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY accessory);
-
-/**
- * class: AccessoryState 
- * Accessories-related commands.
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY; /**< Key of the argument </code>accessory</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY; /**< Key of the argument </code>newAccessory</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED_ENABLED; /**< Key of the argument </code>enabled</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-
-/**
- * class: Charger 
- * Commands sent by the controller to set charger parameters.
- */
-
-
-/**
- * @brief Send a command <code>SetMaxChargeRate</code> of class <code>Charger</code> in feature <code>Common</code>
- * @deprecated
- * Set the maximum charge rate allowed to charge a battery.
- * @param feature feature owning the commands
- * @param rate The new maximum charge rate.
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendChargerSetMaxChargeRate_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE rate);
-
-/**
- * class: ChargerState 
- * Commands sent by the firmware to advertise the charger status.
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS; /**< Key of the argument </code>status</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE; /**< Key of the argument </code>phase</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE; /**< Key of the argument </code>phase</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_INTENSITY; /**< Key of the argument </code>intensity</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME; /**< Key of the argument </code>fullChargingTime</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-
-/**
- * @brief Feature controller allow to send command related of common Feature.
- * All common commands shared between all projects
- */
-struct ARCONTROLLER_FEATURE_Common_t
-{
-    ARCONTROLLER_FEATURE_Common_SendNetworkDisconnect_t sendNetworkDisconnect;
-    ARCONTROLLER_FEATURE_Common_SendSettingsAllSettings_t sendSettingsAllSettings;
-    ARCONTROLLER_FEATURE_Common_SendSettingsReset_t sendSettingsReset;
-    ARCONTROLLER_FEATURE_Common_SendSettingsProductName_t sendSettingsProductName;
-    ARCONTROLLER_FEATURE_Common_SendSettingsCountry_t sendSettingsCountry;
-    ARCONTROLLER_FEATURE_Common_SendSettingsAutoCountry_t sendSettingsAutoCountry;
-    ARCONTROLLER_FEATURE_Common_SendCommonAllStates_t sendCommonAllStates;
-    ARCONTROLLER_FEATURE_Common_SendCommonCurrentDate_t sendCommonCurrentDate;
-    ARCONTROLLER_FEATURE_Common_SendCommonCurrentTime_t sendCommonCurrentTime;
-    ARCONTROLLER_FEATURE_Common_SendCommonReboot_t sendCommonReboot;
-    ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_t sendOverHeatSwitchOff;
-    ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t sendOverHeatVentilate;
-    ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting_t sendWifiSettingsOutdoorSetting;
-    ARCONTROLLER_FEATURE_Common_SendMavlinkStart_t sendMavlinkStart;
-    ARCONTROLLER_FEATURE_Common_SendMavlinkPause_t sendMavlinkPause;
-    ARCONTROLLER_FEATURE_Common_SendMavlinkStop_t sendMavlinkStop;
-    ARCONTROLLER_FEATURE_Common_SendCalibrationMagnetoCalibration_t sendCalibrationMagnetoCalibration;
-    ARCONTROLLER_FEATURE_Common_SendGPSControllerPositionForRun_t sendGPSControllerPositionForRun;
-    ARCONTROLLER_FEATURE_Common_SendAudioControllerReadyForStreaming_t sendAudioControllerReadyForStreaming;
-    ARCONTROLLER_FEATURE_Common_SendHeadlightsIntensity_t sendHeadlightsIntensity;
-    ARCONTROLLER_FEATURE_Common_SendAnimationsStartAnimation_t sendAnimationsStartAnimation;
-    ARCONTROLLER_FEATURE_Common_SendAnimationsStopAnimation_t sendAnimationsStopAnimation;
-    ARCONTROLLER_FEATURE_Common_SendAnimationsStopAllAnimations_t sendAnimationsStopAllAnimations;
-    ARCONTROLLER_FEATURE_Common_SendAccessoryConfig_t sendAccessoryConfig;
-    ARCONTROLLER_FEATURE_Common_SendChargerSetMaxChargeRate_t sendChargerSetMaxChargeRate;
-    ARCONTROLLER_FEATURE_Common_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Common_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SetNetworkController (ARCONTROLLER_FEATURE_Common_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_GetCommandElements (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE commonDebug --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_CommonDebug_t.
- */
-typedef struct ARCONTROLLER_FEATURE_CommonDebug_Private_t ARCONTROLLER_FEATURE_CommonDebug_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of commonDebug Feature.
- * All debug commands shared between all projects
- */
-typedef struct ARCONTROLLER_FEATURE_CommonDebug_t ARCONTROLLER_FEATURE_CommonDebug_t;
-
-/**
- * @brief Create a new commonDebug Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_CommonDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController().
- * @param[out] error executing error.
- * @return the new commonDebug Feature Controller
- * @see ARCONTROLLER_FEATURE_CommonDebug_Delete
- */
-ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the commonDebug Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_CommonDebug_New
- */
-void ARCONTROLLER_FEATURE_CommonDebug_Delete (ARCONTROLLER_FEATURE_CommonDebug_t **feature);
-
-/**
- * @brief Get the dictionay of the commonDebug Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_CommonDebug_GetDictionary (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>CommonDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_AddCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>CommonDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Stats 
- * Commands to make stats
- */
-
-
-/**
- * @brief Send a command <code>SendPacket</code> of class <code>Stats</code> in feature <code>CommonDebug</code>
- * Send a packet to the drone
- * @param feature feature owning the commands
- * @param packet Packet to send to the drone
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet);
-
-/**
- * @brief Send a command <code>StartSendingPacketFromDrone</code> of class <code>Stats</code> in feature <code>CommonDebug</code>
- * Ask drone to start sending packets
- * @param feature feature owning the commands
- * @param frequency Frequency of the packet
- * @param packetSize Size of the the packet
- * @param date time of day in sec
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date);
-
-/**
- * @brief Send a command <code>StopSendingPacketFromDrone</code> of class <code>Stats</code> in feature <code>CommonDebug</code>
- * Ask drone to stop sending packets
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
-
-/**
- * class: StatsEvent 
- * Stats Event from drone
- */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET; /**< Key of the argument </code>packet</code> of class <code>StatsEvent</code> in feature <code>CommonDebug</code> */
-
-/**
- * @brief Feature controller allow to send command related of commonDebug Feature.
- * All debug commands shared between all projects
- */
-struct ARCONTROLLER_FEATURE_CommonDebug_t
-{
-    ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t sendStatsSendPacket;
-    ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t sendStatsStartSendingPacketFromDrone;
-    ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t sendStatsStopSendingPacketFromDrone;
-    ARCONTROLLER_FEATURE_CommonDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_CommonDebug_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (ARCONTROLLER_FEATURE_CommonDebug_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_GetCommandElements (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
  * --- FEATURE ARDrone3 --- 
  ******************************/
 
@@ -4059,6 +1891,2175 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_JumpingSumoDebug_SetNetworkController (
  * @return Element dictionary of the command ; Can be null if an error is occurred.
  */
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumoDebug_GetCommandElements (ARCONTROLLER_FEATURE_JumpingSumoDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE MiniDrone --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_MiniDrone_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_MiniDrone_Private_t ARCONTROLLER_FEATURE_MiniDrone_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of MiniDrone Feature.
+ * All MiniDrone-only commands
+ */
+typedef struct ARCONTROLLER_FEATURE_MiniDrone_t ARCONTROLLER_FEATURE_MiniDrone_t;
+
+/**
+ * @brief Create a new MiniDrone Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_MiniDrone_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new MiniDrone Feature Controller
+ * @see ARCONTROLLER_FEATURE_MiniDrone_Delete
+ */
+ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the MiniDrone Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_MiniDrone_New
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_Delete (ARCONTROLLER_FEATURE_MiniDrone_t **feature);
+
+/**
+ * @brief Get the dictionay of the MiniDrone Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_MiniDrone_GetDictionary (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>MiniDrone</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_AddCallback (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>MiniDrone</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: Piloting 
+ * All commands related to piloting the MiniDrone
+ */
+
+
+/**
+ * @brief Send a command <code>FlatTrim</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
+ * Do a flat trim
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingFlatTrim_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>TakeOff</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
+ * Ask the drone to take off
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingTakeOff_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param flag Boolean flag to activate roll/pitch movement
+ * @param roll Roll consign for the MiniDrone [-100;100]
+ * @param pitch Pitch consign for the MiniDrone [-100;100]
+ * @param yaw Yaw consign for the MiniDrone [-100;100]
+ * @param gaz Gaz consign for the MiniDrone [-100;100]
+ * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingPCMD_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestamp);
+
+/**
+ * @brief Set the parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param flag Boolean flag to activate roll/pitch movement
+ * @param roll Roll consign for the MiniDrone [-100;100]
+ * @param pitch Pitch consign for the MiniDrone [-100;100]
+ * @param yaw Yaw consign for the MiniDrone [-100;100]
+ * @param gaz Gaz consign for the MiniDrone [-100;100]
+ * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMD_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestamp);
+
+/**
+ * @brief Send the a command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code> with the parame set beforehand 
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param cmdBuffer buffer to store the command
+ * @param cmdBufferSize size of the buffer
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_MiniDrone_SendPilotingPCMDStruct (ARCONTROLLER_FEATURE_MiniDrone_t *feature, u_int8_t *cmdBuffer, int32_t cmdBufferSize);
+
+/**
+ * @brief Set flag sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param flag Boolean flag to activate roll/pitch movement
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDFlag_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t flag);
+
+/**
+ * @brief Set roll sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param roll Roll consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDRoll_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t roll);
+
+/**
+ * @brief Set pitch sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param pitch Pitch consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDPitch_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t pitch);
+
+/**
+ * @brief Set yaw sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param yaw Yaw consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDYaw_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t yaw);
+
+/**
+ * @brief Set gaz sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param gaz Gaz consign for the MiniDrone [-100;100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDGaz_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int8_t gaz);
+
+/**
+ * @brief Set timestamp sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>MiniDrone</code>
+ * Ask the drone to move around.
+ * @param feature feature owning the commands
+ * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDTimestamp_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint32_t timestamp);
+
+/**
+ * @brief Send a command <code>Landing</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
+ * Ask the MiniDrone to land
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingLanding_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>Emergency</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
+ * Put drone in emergency state
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingEmergency_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * @brief Send a command <code>AutoTakeOffMode</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>
+ * Set MiniDrone automatic take off mode
+ * @param feature feature owning the commands
+ * @param state State of automatic take off mode
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingAutoTakeOffMode_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t state);
+
+/**
+ * class: PilotingState 
+ * Occasional information
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: Animations 
+ * Animation commands
+ */
+
+
+/**
+ * @brief Send a command <code>Flip</code> of class <code>Animations</code> in feature <code>MiniDrone</code>
+ * Make a flip
+ * @param feature feature owning the commands
+ * @param direction Direction for the flip
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsFlip_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION direction);
+
+/**
+ * @brief Send a command <code>Cap</code> of class <code>Animations</code> in feature <code>MiniDrone</code>
+ * Change the product cap
+ * @param feature feature owning the commands
+ * @param offset Change the cap with offset angle [-180;180]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsCap_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, int16_t offset);
+
+/**
+ * class: MediaRecord 
+ * Media recording management
+ */
+
+
+/**
+ * @brief Send a command <code>Picture</code> of class <code>MediaRecord</code> in feature <code>MiniDrone</code>
+ * @deprecated
+ * Take picture
+ * @param feature feature owning the commands
+ * @param mass_storage_id Mass storage id to take picture
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPicture_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t mass_storage_id);
+
+/**
+ * @brief Send a command <code>PictureV2</code> of class <code>MediaRecord</code> in feature <code>MiniDrone</code>
+ * Take picture
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature);
+
+/**
+ * class: MediaRecordState 
+ * State of media recording
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: MediaRecordEvent 
+ * Events of media recording
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: PilotingSettings 
+ * Piloting Settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>MaxAltitude</code> of class <code>PilotingSettings</code> in feature <code>MiniDrone</code>
+ * Set Max Altitude
+ * @param feature feature owning the commands
+ * @param current Current altitude max in m
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>MaxTilt</code> of class <code>PilotingSettings</code> in feature <code>MiniDrone</code>
+ * Set Max Tilt
+ * @param feature feature owning the commands
+ * @param current Current tilt max in degree
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * class: PilotingSettingsState 
+ * Piloting Settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: SpeedSettings 
+ * Speed Settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>MaxVerticalSpeed</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
+ * Set Max Vertical speed
+ * @param feature feature owning the commands
+ * @param current Current max vertical speed in m/s
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>MaxRotationSpeed</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
+ * Set Max Rotation speed
+ * @param feature feature owning the commands
+ * @param current Current max rotation speed in degree/s
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>Wheels</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
+ * Presence of wheels
+ * @param feature feature owning the commands
+ * @param present 1 if present, 0 if not present
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t present);
+
+/**
+ * class: SpeedSettingsState 
+ * Speed Settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: Settings 
+ * Settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>CutOutMode</code> of class <code>Settings</code> in feature <code>MiniDrone</code>
+ * Set MiniDrone cut out mode
+ * @param feature feature owning the commands
+ * @param enable Enable cut out mode (1 if is activate, 0 otherwise)
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t enable);
+
+/**
+ * class: SettingsState 
+ * Settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR; /**< Key of the argument </code>motor</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED_ENABLE; /**< Key of the argument </code>enable</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: FloodControlState 
+ * Settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY; /**< Key of the argument </code>delay</code> of class <code>FloodControlState</code> in feature <code>MiniDrone</code> */
+
+/**
+ * class: GPS 
+ * GPS related commands
+ */
+
+
+/**
+ * @brief Send a command <code>ControllerLatitudeForRun</code> of class <code>GPS</code> in feature <code>MiniDrone</code>
+ * Set the controller latitude for a run.
+ * @param feature feature owning the commands
+ * @param latitude Controller latitude in decimal degrees
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double latitude);
+
+/**
+ * @brief Send a command <code>ControllerLongitudeForRun</code> of class <code>GPS</code> in feature <code>MiniDrone</code>
+ * Set the controller longitude for a run.
+ * @param feature feature owning the commands
+ * @param longitude Controller longitude in decimal degrees
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, double longitude);
+
+/**
+ * class: Configuration 
+ * Configuration related commands
+ */
+
+
+/**
+ * @brief Send a command <code>ControllerType</code> of class <code>Configuration</code> in feature <code>MiniDrone</code>
+ * Set the controller type.
+ * @param feature feature owning the commands
+ * @param type Controller type like iOS or Android
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * type);
+
+/**
+ * @brief Send a command <code>ControllerName</code> of class <code>Configuration</code> in feature <code>MiniDrone</code>
+ * Set the controller name.
+ * @param feature feature owning the commands
+ * @param name Controller name like com.parrot.freeflight3
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * name);
+
+/**
+ * @brief Feature controller allow to send command related of MiniDrone Feature.
+ * All MiniDrone-only commands
+ */
+struct ARCONTROLLER_FEATURE_MiniDrone_t
+{
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingFlatTrim_t sendPilotingFlatTrim;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingTakeOff_t sendPilotingTakeOff;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingPCMD_t sendPilotingPCMD;
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMD_t setPilotingPCMD;
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDFlag_t setPilotingPCMDFlag; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDRoll_t setPilotingPCMDRoll; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDPitch_t setPilotingPCMDPitch; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDYaw_t setPilotingPCMDYaw; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDGaz_t setPilotingPCMDGaz; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
+    ARCONTROLLER_FEATURE_MiniDrone_SetPilotingPCMDTimestamp_t setPilotingPCMDTimestamp; /**< Send a command <code>PCMD</code> of class <code>Piloting</code> in feature <code>MiniDrone</code>. */
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingLanding_t sendPilotingLanding;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingEmergency_t sendPilotingEmergency;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingAutoTakeOffMode_t sendPilotingAutoTakeOffMode;
+    ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsFlip_t sendAnimationsFlip;
+    ARCONTROLLER_FEATURE_MiniDrone_SendAnimationsCap_t sendAnimationsCap;
+    ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPicture_t sendMediaRecordPicture;
+    ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2_t sendMediaRecordPictureV2;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude_t sendPilotingSettingsMaxAltitude;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt_t sendPilotingSettingsMaxTilt;
+    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed_t sendSpeedSettingsMaxVerticalSpeed;
+    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
+    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t sendSpeedSettingsWheels;
+    ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode_t sendSettingsCutOutMode;
+    ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun_t sendGPSControllerLatitudeForRun;
+    ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t sendGPSControllerLongitudeForRun;
+    ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType_t sendConfigurationControllerType;
+    ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName_t sendConfigurationControllerName;
+    ARCONTROLLER_FEATURE_MiniDrone_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_MiniDrone_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController (ARCONTROLLER_FEATURE_MiniDrone_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_GetCommandElements (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE MiniDroneDebug --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_MiniDroneDebug_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of MiniDroneDebug Feature.
+ * All MiniDrone-only debug commands
+ */
+typedef struct ARCONTROLLER_FEATURE_MiniDroneDebug_t ARCONTROLLER_FEATURE_MiniDroneDebug_t;
+
+/**
+ * @brief Create a new MiniDroneDebug Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_MiniDroneDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_MiniDroneDebug_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new MiniDroneDebug Feature Controller
+ * @see ARCONTROLLER_FEATURE_MiniDroneDebug_Delete
+ */
+ARCONTROLLER_FEATURE_MiniDroneDebug_t *ARCONTROLLER_FEATURE_MiniDroneDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the MiniDroneDebug Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_MiniDroneDebug_New
+ */
+void ARCONTROLLER_FEATURE_MiniDroneDebug_Delete (ARCONTROLLER_FEATURE_MiniDroneDebug_t **feature);
+
+/**
+ * @brief Get the dictionay of the MiniDroneDebug Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_MiniDroneDebug_GetDictionary (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>MiniDroneDebug</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_MiniDroneDebug_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_AddCallback (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>MiniDroneDebug</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_RemoveCallback (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: Debug 
+ * Temporary, debug commands
+ */
+
+
+/**
+ * @brief Send a command <code>Test1</code> of class <code>Debug</code> in feature <code>MiniDroneDebug</code>
+ * Test 1 command
+ * @param feature feature owning the commands
+ * @param t1Args Test 1 argument
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest1_t) (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t1Args);
+
+/**
+ * @brief Send a command <code>Test2</code> of class <code>Debug</code> in feature <code>MiniDroneDebug</code>
+ * Test 2 command
+ * @param feature feature owning the commands
+ * @param t2Args Test 2 argument
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest2_t) (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t2Args);
+
+/**
+ * @brief Send a command <code>Test3</code> of class <code>Debug</code> in feature <code>MiniDroneDebug</code>
+ * Test 3 command
+ * @param feature feature owning the commands
+ * @param t3Args Test 3 argument
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest3_t) (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, int8_t t3Args);
+
+/**
+ * @brief Feature controller allow to send command related of MiniDroneDebug Feature.
+ * All MiniDrone-only debug commands
+ */
+struct ARCONTROLLER_FEATURE_MiniDroneDebug_t
+{
+    ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest1_t sendDebugTest1;
+    ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest2_t sendDebugTest2;
+    ARCONTROLLER_FEATURE_MiniDroneDebug_SendDebugTest3_t sendDebugTest3;
+    ARCONTROLLER_FEATURE_MiniDroneDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_MiniDroneDebug_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDroneDebug_SetNetworkController (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDroneDebug_GetCommandElements (ARCONTROLLER_FEATURE_MiniDroneDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE SkyController --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_SkyController_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_SkyController_Private_t ARCONTROLLER_FEATURE_SkyController_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of SkyController Feature.
+ * All SkyController-only commands
+ */
+typedef struct ARCONTROLLER_FEATURE_SkyController_t ARCONTROLLER_FEATURE_SkyController_t;
+
+/**
+ * @brief Create a new SkyController Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_SkyController_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_SkyController_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new SkyController Feature Controller
+ * @see ARCONTROLLER_FEATURE_SkyController_Delete
+ */
+ARCONTROLLER_FEATURE_SkyController_t *ARCONTROLLER_FEATURE_SkyController_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the SkyController Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_SkyController_New
+ */
+void ARCONTROLLER_FEATURE_SkyController_Delete (ARCONTROLLER_FEATURE_SkyController_t **feature);
+
+/**
+ * @brief Get the dictionay of the SkyController Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_SkyController_GetDictionary (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>SkyController</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_SkyController_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_AddCallback (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>SkyController</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_RemoveCallback (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: WifiState 
+ * Wifi state
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_BSSID; /**< Key of the argument </code>bssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SSID; /**< Key of the argument </code>ssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SECURED; /**< Key of the argument </code>secured</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SAVED; /**< Key of the argument </code>saved</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_RSSI; /**< Key of the argument </code>rssi</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_FREQUENCY; /**< Key of the argument </code>frequency</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_SSID; /**< Key of the argument </code>ssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_STATUS; /**< Key of the argument </code>status</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_BAND; /**< Key of the argument </code>band</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT; /**< Key of the argument </code>in_or_out</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFISIGNALCHANGED_LEVEL; /**< Key of the argument </code>level</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: Wifi 
+ * Wifi
+ */
+
+
+/**
+ * @brief Send a command <code>RequestWifiList</code> of class <code>Wifi</code> in feature <code>SkyController</code>
+ * Request wifi list
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiRequestWifiList_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>RequestCurrentWifi</code> of class <code>Wifi</code> in feature <code>SkyController</code>
+ * Request current connected wifi
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiRequestCurrentWifi_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>ConnectToWifi</code> of class <code>Wifi</code> in feature <code>SkyController</code>
+ * Connect to wifi
+ * @param feature feature owning the commands
+ * @param bssid Wifi bssid
+ * @param ssid Wifi ssid
+ * @param passphrase Wifi passphrase
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiConnectToWifi_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * bssid, char * ssid, char * passphrase);
+
+/**
+ * @brief Send a command <code>ForgetWifi</code> of class <code>Wifi</code> in feature <code>SkyController</code>
+ * Forget wifi
+ * @param feature feature owning the commands
+ * @param ssid Wifi ssid
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiForgetWifi_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
+
+/**
+ * @brief Send a command <code>WifiAuthChannel</code> of class <code>Wifi</code> in feature <code>SkyController</code>
+ * Controller inquire the list of authorized wifi channels
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendWifiWifiAuthChannel_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: Device 
+ * Device Connection commands
+ */
+
+
+/**
+ * @brief Send a command <code>RequestDeviceList</code> of class <code>Device</code> in feature <code>SkyController</code>
+ * Request Device list
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestDeviceList_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>RequestCurrentDevice</code> of class <code>Device</code> in feature <code>SkyController</code>
+ * Request current connected Device
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestCurrentDevice_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>ConnectToDevice</code> of class <code>Device</code> in feature <code>SkyController</code>
+ * ask to connect to a device
+ * @param feature feature owning the commands
+ * @param deviceName Device name
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendDeviceConnectToDevice_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * deviceName);
+
+/**
+ * class: DeviceState 
+ * Device state
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_DEVICELIST_NAME; /**< Key of the argument </code>name</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS; /**< Key of the argument </code>status</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME; /**< Key of the argument </code>deviceName</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID; /**< Key of the argument </code>deviceProductID</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: Settings 
+ * Settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in feature <code>SkyController</code>
+ * Get all product settings, the product must send all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendSettingsAllSettings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>Reset</code> of class <code>Settings</code> in feature <code>SkyController</code>
+ * Reset all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendSettingsReset_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: SettingsState 
+ * Settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER; /**< Key of the argument </code>serialNumber</code> of class <code>SettingsState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: Common 
+ * Common commands
+ */
+
+
+/**
+ * @brief Send a command <code>AllStates</code> of class <code>Common</code> in feature <code>SkyController</code>
+ * Get all product states
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCommonAllStates_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: CommonState 
+ * Common state from product
+ */
+
+
+/**
+ * class: SkyControllerState 
+ * Sky Controller states
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT; /**< Key of the argument </code>percent</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED; /**< Key of the argument </code>fixed</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE; /**< Key of the argument </code>latitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LONGITUDE; /**< Key of the argument </code>longitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_ALTITUDE; /**< Key of the argument </code>altitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_HEADING; /**< Key of the argument </code>heading</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: AccessPointSettings 
+ * AccessPoint settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>AccessPointSSID</code> of class <code>AccessPointSettings</code> in feature <code>SkyController</code>
+ * Set AccessPoint SSID
+ * @param feature feature owning the commands
+ * @param ssid AccessPoint SSID
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointSSID_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, char * ssid);
+
+/**
+ * @brief Send a command <code>AccessPointChannel</code> of class <code>AccessPointSettings</code> in feature <code>SkyController</code>
+ * Set AccessPoint Channel
+ * @param feature feature owning the commands
+ * @param channel AccessPoint Channel
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointChannel_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t channel);
+
+/**
+ * @brief Send a command <code>WifiSelection</code> of class <code>AccessPointSettings</code> in feature <code>SkyController</code>
+ * Set AccessPoint Band and Channel
+ * @param feature feature owning the commands
+ * @param type The type of wifi selection (only manual at the moment)
+ * @param band The allowed band : 2.4 Ghz or 5 Ghz
+ * @param channel The channel
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsWifiSelection_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE type, eARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND band, uint8_t channel);
+
+/**
+ * class: AccessPointSettingsState 
+ * AccessPoint settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTSSIDCHANGED_SSID; /**< Key of the argument </code>ssid</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTCHANNELCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_BAND; /**< Key of the argument </code>band</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: Camera 
+ * Ask the drone to move camera
+ */
+
+
+/**
+ * @brief Send a command <code>ResetOrientation</code> of class <code>Camera</code> in feature <code>SkyController</code>
+ * Reset pan and tilt to center
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCameraResetOrientation_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: GamepadInfos 
+ * Request infos about the gamepad of the SkyController
+ */
+
+
+/**
+ * @brief Send a command <code>GetGamepadControls</code> of class <code>GamepadInfos</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send the button and axis list
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendGamepadInfosGetGamepadControls_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: GamepadInfosState 
+ * Informations about the gamepad of the SkyController
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_TYPE; /**< Key of the argument </code>type</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_ID; /**< Key of the argument </code>id</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_NAME; /**< Key of the argument </code>name</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: ButtonMappings 
+ * Controls the button mappings of the SkyController
+ */
+
+
+/**
+ * @brief Send a command <code>GetCurrentButtonMappings</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send its current button mapping
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetCurrentButtonMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>GetAvailableButtonMappings</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send the possible mappings for each button
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetAvailableButtonMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>SetButtonMapping</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
+ * Set a button mapping to the SkyController
+ * @note replaces previous mapping for the given key
+ * @param feature feature owning the commands
+ * @param key_id The keycode to map
+ * @param mapping_uid The mapping to associate with the key
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsSetButtonMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t key_id, char * mapping_uid);
+
+/**
+ * @brief Send a command <code>DefaultButtonMapping</code> of class <code>ButtonMappings</code> in feature <code>SkyController</code>
+ * Asks the SkyController to reset the button mappings to the default value
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsDefaultButtonMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: ButtonMappingsState 
+ * State of the button mappings of the SkyController
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_KEY_ID; /**< Key of the argument </code>key_id</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_NAME; /**< Key of the argument </code>name</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: AxisMappings 
+ * Controls the axis mappings of the SkyController
+ */
+
+
+/**
+ * @brief Send a command <code>GetCurrentAxisMappings</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send its current axis mapping
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetCurrentAxisMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>GetAvailableAxisMappings</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send the possible mappings for each axis
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetAvailableAxisMappings_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>SetAxisMapping</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
+ * Set a axis mapping to the SkyController
+ * @note replaces previous mapping for the given axis
+ * @param feature feature owning the commands
+ * @param axis_id The axiscode to map
+ * @param mapping_uid The mapping to associate with the axis
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsSetAxisMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * mapping_uid);
+
+/**
+ * @brief Send a command <code>DefaultAxisMapping</code> of class <code>AxisMappings</code> in feature <code>SkyController</code>
+ * Asks the SkyController to reset the axis mappings to the default value
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsDefaultAxisMapping_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: AxisMappingsState 
+ * State of the axis mappings of the SkyController
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_AXIS_ID; /**< Key of the argument </code>axis_id</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_MAPPING_UID; /**< Key of the argument </code>mapping_uid</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_NAME; /**< Key of the argument </code>name</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: AxisFilters 
+ * Controls the axis filters of the SkyController
+ */
+
+
+/**
+ * @brief Send a command <code>GetCurrentAxisFilters</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send its current axis filters
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetCurrentAxisFilters_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>GetPresetAxisFilters</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send the preset filters
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetPresetAxisFilters_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * @brief Send a command <code>SetAxisFilter</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
+ * Set an axis filter to the SkyController
+ * @note replaces previous filter for the given axis
+ * @param feature feature owning the commands
+ * @param axis_id The axiscode to filter
+ * @param filter_uid_or_builder The mapping preset to associate with the axis
+ * @param filter_uid_or_builder (Or a string to build a new one)
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersSetAxisFilter_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, int32_t axis_id, char * filter_uid_or_builder);
+
+/**
+ * @brief Send a command <code>DefaultAxisFilters</code> of class <code>AxisFilters</code> in feature <code>SkyController</code>
+ * Asks the SkyController to reset the axis filters to the default value
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersDefaultAxisFilters_t) (ARCONTROLLER_FEATURE_SkyController_t *feature);
+
+/**
+ * class: AxisFiltersState 
+ * State of the axis filters of the SkyController
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_AXIS_ID; /**< Key of the argument </code>axis_id</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_FILTER_UID_OR_BUILDER; /**< Key of the argument </code>filter_uid_or_builder</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_FILTER_UID; /**< Key of the argument </code>filter_uid</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_NAME; /**< Key of the argument </code>name</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: CoPiloting 
+ * Configuration of the co-piloting feature
+ */
+
+
+/**
+ * @brief Send a command <code>SetPilotingSource</code> of class <code>CoPiloting</code> in feature <code>SkyController</code>
+ * Set the SkyController piloting source
+ * @param feature feature owning the commands
+ * @param source The source
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCoPilotingSetPilotingSource_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE source);
+
+/**
+ * class: CoPilotingState 
+ * State of the co-piloting feature
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE_SOURCE; /**< Key of the argument </code>source</code> of class <code>CoPilotingState</code> in feature <code>SkyController</code> */
+
+/**
+ * class: Calibration 
+ * Commands related to the SkyController sensors calibration
+ */
+
+
+/**
+ * @brief Send a command <code>EnableMagnetoCalibrationQualityUpdates</code> of class <code>Calibration</code> in feature <code>SkyController</code>
+ * Asks the SkyController to send (or not) the magneto calibration quality updates.
+ * The MagnetoCalibrationState will always be sent when the status parameters changes,
+ * regardless of this setting.
+ * @param feature feature owning the commands
+ * @param enable Flag to enable the feature.
+ * @param enable 1 = enable quality updates
+ * @param enable 0 = disable quality updates
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyController_SendCalibrationEnableMagnetoCalibrationQualityUpdates_t) (ARCONTROLLER_FEATURE_SkyController_t *feature, uint8_t enable);
+
+/**
+ * class: CalibrationState 
+ * State of the SkyController calibration
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_STATUS; /**< Key of the argument </code>status</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_X_QUALITY; /**< Key of the argument </code>X_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Y_QUALITY; /**< Key of the argument </code>Y_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Z_QUALITY; /**< Key of the argument </code>Z_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE_ENABLED; /**< Key of the argument </code>enabled</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
+
+/**
+ * @brief Feature controller allow to send command related of SkyController Feature.
+ * All SkyController-only commands
+ */
+struct ARCONTROLLER_FEATURE_SkyController_t
+{
+    ARCONTROLLER_FEATURE_SkyController_SendWifiRequestWifiList_t sendWifiRequestWifiList;
+    ARCONTROLLER_FEATURE_SkyController_SendWifiRequestCurrentWifi_t sendWifiRequestCurrentWifi;
+    ARCONTROLLER_FEATURE_SkyController_SendWifiConnectToWifi_t sendWifiConnectToWifi;
+    ARCONTROLLER_FEATURE_SkyController_SendWifiForgetWifi_t sendWifiForgetWifi;
+    ARCONTROLLER_FEATURE_SkyController_SendWifiWifiAuthChannel_t sendWifiWifiAuthChannel;
+    ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestDeviceList_t sendDeviceRequestDeviceList;
+    ARCONTROLLER_FEATURE_SkyController_SendDeviceRequestCurrentDevice_t sendDeviceRequestCurrentDevice;
+    ARCONTROLLER_FEATURE_SkyController_SendDeviceConnectToDevice_t sendDeviceConnectToDevice;
+    ARCONTROLLER_FEATURE_SkyController_SendSettingsAllSettings_t sendSettingsAllSettings;
+    ARCONTROLLER_FEATURE_SkyController_SendSettingsReset_t sendSettingsReset;
+    ARCONTROLLER_FEATURE_SkyController_SendCommonAllStates_t sendCommonAllStates;
+    ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointSSID_t sendAccessPointSettingsAccessPointSSID;
+    ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsAccessPointChannel_t sendAccessPointSettingsAccessPointChannel;
+    ARCONTROLLER_FEATURE_SkyController_SendAccessPointSettingsWifiSelection_t sendAccessPointSettingsWifiSelection;
+    ARCONTROLLER_FEATURE_SkyController_SendCameraResetOrientation_t sendCameraResetOrientation;
+    ARCONTROLLER_FEATURE_SkyController_SendGamepadInfosGetGamepadControls_t sendGamepadInfosGetGamepadControls;
+    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetCurrentButtonMappings_t sendButtonMappingsGetCurrentButtonMappings;
+    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsGetAvailableButtonMappings_t sendButtonMappingsGetAvailableButtonMappings;
+    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsSetButtonMapping_t sendButtonMappingsSetButtonMapping;
+    ARCONTROLLER_FEATURE_SkyController_SendButtonMappingsDefaultButtonMapping_t sendButtonMappingsDefaultButtonMapping;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetCurrentAxisMappings_t sendAxisMappingsGetCurrentAxisMappings;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsGetAvailableAxisMappings_t sendAxisMappingsGetAvailableAxisMappings;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsSetAxisMapping_t sendAxisMappingsSetAxisMapping;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisMappingsDefaultAxisMapping_t sendAxisMappingsDefaultAxisMapping;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetCurrentAxisFilters_t sendAxisFiltersGetCurrentAxisFilters;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersGetPresetAxisFilters_t sendAxisFiltersGetPresetAxisFilters;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersSetAxisFilter_t sendAxisFiltersSetAxisFilter;
+    ARCONTROLLER_FEATURE_SkyController_SendAxisFiltersDefaultAxisFilters_t sendAxisFiltersDefaultAxisFilters;
+    ARCONTROLLER_FEATURE_SkyController_SendCoPilotingSetPilotingSource_t sendCoPilotingSetPilotingSource;
+    ARCONTROLLER_FEATURE_SkyController_SendCalibrationEnableMagnetoCalibrationQualityUpdates_t sendCalibrationEnableMagnetoCalibrationQualityUpdates;
+    ARCONTROLLER_FEATURE_SkyController_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_SkyController_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SetNetworkController (ARCONTROLLER_FEATURE_SkyController_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_GetCommandElements (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE SkyControllerDebug --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
+ * All debug SkyController-only commands
+ */
+typedef struct ARCONTROLLER_FEATURE_SkyControllerDebug_t ARCONTROLLER_FEATURE_SkyControllerDebug_t;
+
+/**
+ * @brief Create a new SkyControllerDebug Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_SkyControllerDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new SkyControllerDebug Feature Controller
+ * @see ARCONTROLLER_FEATURE_SkyControllerDebug_Delete
+ */
+ARCONTROLLER_FEATURE_SkyControllerDebug_t *ARCONTROLLER_FEATURE_SkyControllerDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the SkyControllerDebug Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_SkyControllerDebug_New
+ */
+void ARCONTROLLER_FEATURE_SkyControllerDebug_Delete (ARCONTROLLER_FEATURE_SkyControllerDebug_t **feature);
+
+/**
+ * @brief Get the dictionay of the SkyControllerDebug Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_SkyControllerDebug_GetDictionary (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>SkyControllerDebug</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_AddCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>SkyControllerDebug</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: Debug 
+ * Temporary, debug commands
+ */
+
+
+/**
+ * @brief Send a command <code>Test1</code> of class <code>Debug</code> in feature <code>SkyControllerDebug</code>
+ * Test 1 command
+ * @param feature feature owning the commands
+ * @param t1Args Test 1 argument
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1_t) (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args);
+
+/**
+ * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
+ * All debug SkyController-only commands
+ */
+struct ARCONTROLLER_FEATURE_SkyControllerDebug_t
+{
+    ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1_t sendDebugTest1;
+    ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyControllerDebug_GetCommandElements (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE common --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Common_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_Common_Private_t ARCONTROLLER_FEATURE_Common_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of common Feature.
+ * All common commands shared between all projects
+ */
+typedef struct ARCONTROLLER_FEATURE_Common_t ARCONTROLLER_FEATURE_Common_t;
+
+/**
+ * @brief Create a new common Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_Common_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Common_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new common Feature Controller
+ * @see ARCONTROLLER_FEATURE_Common_Delete
+ */
+ARCONTROLLER_FEATURE_Common_t *ARCONTROLLER_FEATURE_Common_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the common Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_Common_New
+ */
+void ARCONTROLLER_FEATURE_Common_Delete (ARCONTROLLER_FEATURE_Common_t **feature);
+
+/**
+ * @brief Get the dictionay of the common Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Common_GetDictionary (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>Common</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_Common_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_AddCallback (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>Common</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_RemoveCallback (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: Network 
+ * Network related commands
+ */
+
+
+/**
+ * @brief Send a command <code>Disconnect</code> of class <code>Network</code> in feature <code>Common</code>
+ * Signals the remote that the host will disconnect and close its
+ * libARNetwork instance (and all threads that use libARNetwork)
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendNetworkDisconnect_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: NetworkEvent 
+ * Network Event from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_NETWORKEVENT_DISCONNECTION_CAUSE; /**< Key of the argument </code>cause</code> of class <code>NetworkEvent</code> in feature <code>Common</code> */
+
+/**
+ * class: Settings 
+ * Settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>AllSettings</code> of class <code>Settings</code> in feature <code>Common</code>
+ * Get all product settings, the product must send all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsAllSettings_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>Reset</code> of class <code>Settings</code> in feature <code>Common</code>
+ * Reset all settings
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsReset_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>ProductName</code> of class <code>Settings</code> in feature <code>Common</code>
+ * Set Product name
+ * @param feature feature owning the commands
+ * @param name Product name
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsProductName_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * name);
+
+/**
+ * @brief Send a command <code>Country</code> of class <code>Settings</code> in feature <code>Common</code>
+ * Set current Country of controller
+ * @param feature feature owning the commands
+ * @param code Country code with ISO 3166 format
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsCountry_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * code);
+
+/**
+ * @brief Send a command <code>AutoCountry</code> of class <code>Settings</code> in feature <code>Common</code>
+ * Set Auto Country Settings
+ * @param feature feature owning the commands
+ * @param automatic Boolean : 0 : Manual / 1 : Auto
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendSettingsAutoCountry_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t automatic);
+
+/**
+ * class: SettingsState 
+ * Settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTNAMECHANGED_NAME; /**< Key of the argument </code>name</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALHIGHCHANGED_HIGH; /**< Key of the argument </code>high</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALLOWCHANGED_LOW; /**< Key of the argument </code>low</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_COUNTRYCHANGED_CODE; /**< Key of the argument </code>code</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_AUTOCOUNTRYCHANGED_AUTOMATIC; /**< Key of the argument </code>automatic</code> of class <code>SettingsState</code> in feature <code>Common</code> */
+
+/**
+ * class: Common 
+ * Common commands
+ */
+
+
+/**
+ * @brief Send a command <code>AllStates</code> of class <code>Common</code> in feature <code>Common</code>
+ * Get all product states.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonAllStates_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>CurrentDate</code> of class <code>Common</code> in feature <code>Common</code>
+ * Set current date of controller
+ * @param feature feature owning the commands
+ * @param date Date with ISO-8601 format
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonCurrentDate_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * date);
+
+/**
+ * @brief Send a command <code>CurrentTime</code> of class <code>Common</code> in feature <code>Common</code>
+ * Set current time of controller
+ * @param feature feature owning the commands
+ * @param time Time with ISO-8601 format
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonCurrentTime_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * time);
+
+/**
+ * @brief Send a command <code>Reboot</code> of class <code>Common</code> in feature <code>Common</code>
+ * Command to ask reboot to product
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCommonReboot_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: CommonState 
+ * Common state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED_PERCENT; /**< Key of the argument </code>percent</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_NAME; /**< Key of the argument </code>name</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_SIZE; /**< Key of the argument </code>size</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_USED_SIZE; /**< Key of the argument </code>used_size</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_PLUGGED; /**< Key of the argument </code>plugged</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_FULL; /**< Key of the argument </code>full</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_INTERNAL; /**< Key of the argument </code>internal</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED_DATE; /**< Key of the argument </code>date</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED_TIME; /**< Key of the argument </code>time</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_FREE_SPACE; /**< Key of the argument </code>free_space</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_REC_TIME; /**< Key of the argument </code>rec_time</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_PHOTO_REMAINING; /**< Key of the argument </code>photo_remaining</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED_RSSI; /**< Key of the argument </code>rssi</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME; /**< Key of the argument </code>sensorName</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE; /**< Key of the argument </code>sensorState</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL; /**< Key of the argument </code>model</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS; /**< Key of the argument </code>listFlags</code> of class <code>CommonState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES; /**< Key of the argument </code>countryCodes</code> of class <code>CommonState</code> in feature <code>Common</code> */
+
+/**
+ * class: OverHeat 
+ * Over heat commands
+ */
+
+
+/**
+ * @brief Send a command <code>SwitchOff</code> of class <code>OverHeat</code> in feature <code>Common</code>
+ * @deprecated
+ * Switch off the drone when a overheat appeared
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>Ventilate</code> of class <code>OverHeat</code> in feature <code>Common</code>
+ * @deprecated
+ * Ventilate the drone when a overheat appeared
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: OverHeatState 
+ * Overheat state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE; /**< Key of the argument </code>regulationType</code> of class <code>OverHeatState</code> in feature <code>Common</code> */
+
+/**
+ * class: ControllerState 
+ * Notify the device about the state of the controller application.
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING; /**< Key of the argument </code>piloting</code> of class <code>ControllerState</code> in feature <code>Common</code> */
+
+/**
+ * class: WifiSettings 
+ * Wifi settings commands
+ */
+
+
+/**
+ * @brief Send a command <code>OutdoorSetting</code> of class <code>WifiSettings</code> in feature <code>Common</code>
+ * Send to product if it should use its outdoor wifi config, or indoor
+ * @param feature feature owning the commands
+ * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t outdoor);
+
+/**
+ * class: WifiSettingsState 
+ * Wifi settings state from product
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR; /**< Key of the argument </code>outdoor</code> of class <code>WifiSettingsState</code> in feature <code>Common</code> */
+
+/**
+ * class: Mavlink 
+ * Mavlink flight plans commands
+ */
+
+
+/**
+ * @brief Send a command <code>Start</code> of class <code>Mavlink</code> in feature <code>Common</code>
+ * Start the flight plan
+ * @param feature feature owning the commands
+ * @param filepath flight plan file path from the mavlink ftp root
+ * @param type type of the played mavlink file
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendMavlinkStart_t) (ARCONTROLLER_FEATURE_Common_t *feature, char * filepath, eARCOMMANDS_COMMON_MAVLINK_START_TYPE type);
+
+/**
+ * @brief Send a command <code>Pause</code> of class <code>Mavlink</code> in feature <code>Common</code>
+ * Pause the flightplan (can be restarted with a start)
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendMavlinkPause_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * @brief Send a command <code>Stop</code> of class <code>Mavlink</code> in feature <code>Common</code>
+ * Stop the flightplan
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendMavlinkStop_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: MavlinkState 
+ * Mavlink flight plans states commands
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_FILEPATH; /**< Key of the argument </code>filepath</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
+
+/**
+ * class: Calibration 
+ * Calibration commands
+ */
+
+
+/**
+ * @brief Send a command <code>MagnetoCalibration</code> of class <code>Calibration</code> in feature <code>Common</code>
+ * Sent when a calibration of the magnetometer is asked or is aborted
+ * @param feature feature owning the commands
+ * @param calibrate 1 if the calibration should be started, 0 if it should be aborted
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendCalibrationMagnetoCalibration_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t calibrate);
+
+/**
+ * class: CalibrationState 
+ * Status of the calibration
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_XAXISCALIBRATION; /**< Key of the argument </code>xAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_YAXISCALIBRATION; /**< Key of the argument </code>yAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_ZAXISCALIBRATION; /**< Key of the argument </code>zAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_CALIBRATIONFAILED; /**< Key of the argument </code>calibrationFailed</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE_REQUIRED; /**< Key of the argument </code>required</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS; /**< Key of the argument </code>axis</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED_STARTED; /**< Key of the argument </code>started</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
+
+/**
+ * class: CameraSettingsState 
+ * Status of the camera settings
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_FOV; /**< Key of the argument </code>fov</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMAX; /**< Key of the argument </code>panMax</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMIN; /**< Key of the argument </code>panMin</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMAX; /**< Key of the argument </code>tiltMax</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMIN; /**< Key of the argument </code>tiltMin</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
+
+/**
+ * class: GPS 
+ * GPS related commands
+ */
+
+
+/**
+ * @brief Send a command <code>ControllerPositionForRun</code> of class <code>GPS</code> in feature <code>Common</code>
+ * Set the controller position for a run. This command is used by all non gps products. Watch out, this command cannot be used with BLE products
+ * @param feature feature owning the commands
+ * @param latitude Controller latitude in decimal degrees
+ * @param longitude Controller longitude in decimal degrees
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendGPSControllerPositionForRun_t) (ARCONTROLLER_FEATURE_Common_t *feature, double latitude, double longitude);
+
+/**
+ * class: FlightPlanState 
+ * FlightPlan state commands
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED_AVAILABILITYSTATE; /**< Key of the argument </code>AvailabilityState</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT; /**< Key of the argument </code>component</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_STATE; /**< Key of the argument </code>State</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
+
+/**
+ * class: FlightPlanEvent 
+ * FlightPlan Event commands
+ */
+
+
+/**
+ * class: ARLibsVersionsState 
+ * ARlibs Versions Commands
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION_VERSION; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION_VERSION; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION_VERSION; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
+
+/**
+ * class: Audio 
+ * Audio-related commands.
+ */
+
+
+/**
+ * @brief Send a command <code>ControllerReadyForStreaming</code> of class <code>Audio</code> in feature <code>Common</code>
+ * Tell the firmware whether the controller is ready to start audio streaming.
+ * @param feature feature owning the commands
+ * @param ready Bit field for TX and RX ready.
+ * @param ready bit 0 is 1 if controller is ready and wants to receive sound (Drone TX)
+ * @param ready bit 1 is 1 if controller is ready and wants to send sound (Drone RX)
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAudioControllerReadyForStreaming_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t ready);
+
+/**
+ * class: AudioState 
+ * Audio-related state updates.
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING_RUNNING; /**< Key of the argument </code>running</code> of class <code>AudioState</code> in feature <code>Common</code> */
+
+/**
+ * class: Headlights 
+ * Controls the headlight LEDs of the Evo variants.
+ */
+
+
+/**
+ * @brief Send a command <code>Intensity</code> of class <code>Headlights</code> in feature <code>Common</code>
+ * Set instensity of lighting LEDs.
+ * @param feature feature owning the commands
+ * @param left Set the left LED intensity value (0 through 255).
+ * @param right Set the right LED intensity value (0 through 255).
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendHeadlightsIntensity_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t left, uint8_t right);
+
+/**
+ * class: HeadlightsState 
+ * Get information about the state of the Evo variants' LEDs.
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_LEFT; /**< Key of the argument </code>left</code> of class <code>HeadlightsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_RIGHT; /**< Key of the argument </code>right</code> of class <code>HeadlightsState</code> in feature <code>Common</code> */
+
+/**
+ * class: Animations 
+ * Animations-related commands.
+ */
+
+
+/**
+ * @brief Send a command <code>StartAnimation</code> of class <code>Animations</code> in feature <code>Common</code>
+ * Start a paramaterless animation.
+ * @param feature feature owning the commands
+ * @param anim Animation to start.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAnimationsStartAnimation_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM anim);
+
+/**
+ * @brief Send a command <code>StopAnimation</code> of class <code>Animations</code> in feature <code>Common</code>
+ * Stop a running animation.
+ * @param feature feature owning the commands
+ * @param anim Animation to stop.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAnimationsStopAnimation_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM anim);
+
+/**
+ * @brief Send a command <code>StopAllAnimations</code> of class <code>Animations</code> in feature <code>Common</code>
+ * Stop all running animations.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAnimationsStopAllAnimations_t) (ARCONTROLLER_FEATURE_Common_t *feature);
+
+/**
+ * class: AnimationsState 
+ * Animations-related notification/feedback commands.
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ANIM; /**< Key of the argument </code>anim</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_STATE; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ERROR; /**< Key of the argument </code>error</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
+
+/**
+ * class: Accessory 
+ * Accessories-related commands.
+ */
+
+
+/**
+ * @brief Send a command <code>Config</code> of class <code>Accessory</code> in feature <code>Common</code>
+ * Set the current accessory configuration.
+ * @param feature feature owning the commands
+ * @param accessory Accessory configuration to set.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendAccessoryConfig_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY accessory);
+
+/**
+ * class: AccessoryState 
+ * Accessories-related commands.
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY; /**< Key of the argument </code>accessory</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY; /**< Key of the argument </code>newAccessory</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED_ENABLED; /**< Key of the argument </code>enabled</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
+
+/**
+ * class: Charger 
+ * Commands sent by the controller to set charger parameters.
+ */
+
+
+/**
+ * @brief Send a command <code>SetMaxChargeRate</code> of class <code>Charger</code> in feature <code>Common</code>
+ * @deprecated
+ * Set the maximum charge rate allowed to charge a battery.
+ * @param feature feature owning the commands
+ * @param rate The new maximum charge rate.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendChargerSetMaxChargeRate_t) (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE rate);
+
+/**
+ * class: ChargerState 
+ * Commands sent by the firmware to advertise the charger status.
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS; /**< Key of the argument </code>status</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE; /**< Key of the argument </code>phase</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE; /**< Key of the argument </code>phase</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_INTENSITY; /**< Key of the argument </code>intensity</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME; /**< Key of the argument </code>fullChargingTime</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+
+/**
+ * @brief Feature controller allow to send command related of common Feature.
+ * All common commands shared between all projects
+ */
+struct ARCONTROLLER_FEATURE_Common_t
+{
+    ARCONTROLLER_FEATURE_Common_SendNetworkDisconnect_t sendNetworkDisconnect;
+    ARCONTROLLER_FEATURE_Common_SendSettingsAllSettings_t sendSettingsAllSettings;
+    ARCONTROLLER_FEATURE_Common_SendSettingsReset_t sendSettingsReset;
+    ARCONTROLLER_FEATURE_Common_SendSettingsProductName_t sendSettingsProductName;
+    ARCONTROLLER_FEATURE_Common_SendSettingsCountry_t sendSettingsCountry;
+    ARCONTROLLER_FEATURE_Common_SendSettingsAutoCountry_t sendSettingsAutoCountry;
+    ARCONTROLLER_FEATURE_Common_SendCommonAllStates_t sendCommonAllStates;
+    ARCONTROLLER_FEATURE_Common_SendCommonCurrentDate_t sendCommonCurrentDate;
+    ARCONTROLLER_FEATURE_Common_SendCommonCurrentTime_t sendCommonCurrentTime;
+    ARCONTROLLER_FEATURE_Common_SendCommonReboot_t sendCommonReboot;
+    ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_t sendOverHeatSwitchOff;
+    ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t sendOverHeatVentilate;
+    ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting_t sendWifiSettingsOutdoorSetting;
+    ARCONTROLLER_FEATURE_Common_SendMavlinkStart_t sendMavlinkStart;
+    ARCONTROLLER_FEATURE_Common_SendMavlinkPause_t sendMavlinkPause;
+    ARCONTROLLER_FEATURE_Common_SendMavlinkStop_t sendMavlinkStop;
+    ARCONTROLLER_FEATURE_Common_SendCalibrationMagnetoCalibration_t sendCalibrationMagnetoCalibration;
+    ARCONTROLLER_FEATURE_Common_SendGPSControllerPositionForRun_t sendGPSControllerPositionForRun;
+    ARCONTROLLER_FEATURE_Common_SendAudioControllerReadyForStreaming_t sendAudioControllerReadyForStreaming;
+    ARCONTROLLER_FEATURE_Common_SendHeadlightsIntensity_t sendHeadlightsIntensity;
+    ARCONTROLLER_FEATURE_Common_SendAnimationsStartAnimation_t sendAnimationsStartAnimation;
+    ARCONTROLLER_FEATURE_Common_SendAnimationsStopAnimation_t sendAnimationsStopAnimation;
+    ARCONTROLLER_FEATURE_Common_SendAnimationsStopAllAnimations_t sendAnimationsStopAllAnimations;
+    ARCONTROLLER_FEATURE_Common_SendAccessoryConfig_t sendAccessoryConfig;
+    ARCONTROLLER_FEATURE_Common_SendChargerSetMaxChargeRate_t sendChargerSetMaxChargeRate;
+    ARCONTROLLER_FEATURE_Common_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Common_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SetNetworkController (ARCONTROLLER_FEATURE_Common_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_GetCommandElements (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE commonDebug --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_CommonDebug_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_CommonDebug_Private_t ARCONTROLLER_FEATURE_CommonDebug_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of commonDebug Feature.
+ * All debug commands shared between all projects
+ */
+typedef struct ARCONTROLLER_FEATURE_CommonDebug_t ARCONTROLLER_FEATURE_CommonDebug_t;
+
+/**
+ * @brief Create a new commonDebug Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_CommonDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new commonDebug Feature Controller
+ * @see ARCONTROLLER_FEATURE_CommonDebug_Delete
+ */
+ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the commonDebug Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_CommonDebug_New
+ */
+void ARCONTROLLER_FEATURE_CommonDebug_Delete (ARCONTROLLER_FEATURE_CommonDebug_t **feature);
+
+/**
+ * @brief Get the dictionay of the commonDebug Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_CommonDebug_GetDictionary (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>CommonDebug</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_AddCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>CommonDebug</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: Stats 
+ * Commands to make stats
+ */
+
+
+/**
+ * @brief Send a command <code>SendPacket</code> of class <code>Stats</code> in feature <code>CommonDebug</code>
+ * Send a packet to the drone
+ * @param feature feature owning the commands
+ * @param packet Packet to send to the drone
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet);
+
+/**
+ * @brief Send a command <code>StartSendingPacketFromDrone</code> of class <code>Stats</code> in feature <code>CommonDebug</code>
+ * Ask drone to start sending packets
+ * @param feature feature owning the commands
+ * @param frequency Frequency of the packet
+ * @param packetSize Size of the the packet
+ * @param date time of day in sec
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date);
+
+/**
+ * @brief Send a command <code>StopSendingPacketFromDrone</code> of class <code>Stats</code> in feature <code>CommonDebug</code>
+ * Ask drone to stop sending packets
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * class: StatsEvent 
+ * Stats Event from drone
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET; /**< Key of the argument </code>packet</code> of class <code>StatsEvent</code> in feature <code>CommonDebug</code> */
+
+/**
+ * @brief Feature controller allow to send command related of commonDebug Feature.
+ * All debug commands shared between all projects
+ */
+struct ARCONTROLLER_FEATURE_CommonDebug_t
+{
+    ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t sendStatsSendPacket;
+    ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t sendStatsStartSendingPacketFromDrone;
+    ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t sendStatsStopSendingPacketFromDrone;
+    ARCONTROLLER_FEATURE_CommonDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_CommonDebug_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (ARCONTROLLER_FEATURE_CommonDebug_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_GetCommandElements (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE pro --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Pro_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_Pro_Private_t ARCONTROLLER_FEATURE_Pro_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of pro Feature.
+ * Pro Feature
+ */
+typedef struct ARCONTROLLER_FEATURE_Pro_t ARCONTROLLER_FEATURE_Pro_t;
+
+/**
+ * @brief Create a new pro Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_Pro_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Pro_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new pro Feature Controller
+ * @see ARCONTROLLER_FEATURE_Pro_Delete
+ */
+ARCONTROLLER_FEATURE_Pro_t *ARCONTROLLER_FEATURE_Pro_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the pro Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_Pro_New
+ */
+void ARCONTROLLER_FEATURE_Pro_Delete (ARCONTROLLER_FEATURE_Pro_t **feature);
+
+/**
+ * @brief Get the dictionay of the pro Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Pro_GetDictionary (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>Pro</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_Pro_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_AddCallback (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>Pro</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_RemoveCallback (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * class: Pro 
+ * Pro related commands from the controller to the product
+ */
+
+
+/**
+ * @brief Send a command <code>BoughtFeatures</code> of class <code>Pro</code> in feature <code>Pro</code>
+ * Bought features on this pro version of the controller (features that have been bought)
+ * This command starts the pro authentification process
+ * @param feature feature owning the commands
+ * @param features Bought features
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures_t) (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
+
+/**
+ * @brief Send a command <code>Response</code> of class <code>Pro</code> in feature <code>Pro</code>
+ * Response to the challenge string sent by the controller
+ * @param feature feature owning the commands
+ * @param status Status of the response
+ * @param signedChallenge the signed challenge
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProResponse_t) (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
+
+/**
+ * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in feature <code>Pro</code>
+ * Activate some pro features
+ * Pro features activated should be part of the list returned by ProState->FeaturesSupported
+ * @param feature feature owning the commands
+ * @param features Pro features to activate
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProActivateFeatures_t) (ARCONTROLLER_FEATURE_Pro_t *feature, uint64_t features);
+
+/**
+ * class: ProState 
+ * Pro related commands from the product to the controller
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_STATUS; /**< Key of the argument </code>status</code> of class <code>ProState</code> in feature <code>Pro</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_FEATURES; /**< Key of the argument </code>features</code> of class <code>ProState</code> in feature <code>Pro</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED_FEATURES; /**< Key of the argument </code>features</code> of class <code>ProState</code> in feature <code>Pro</code> */
+
+/**
+ * class: ProEvent 
+ * Pro related events from the product to the controller
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT_CHALLENGE; /**< Key of the argument </code>challenge</code> of class <code>ProEvent</code> in feature <code>Pro</code> */
+
+/**
+ * @brief Feature controller allow to send command related of pro Feature.
+ * Pro Feature
+ */
+struct ARCONTROLLER_FEATURE_Pro_t
+{
+    ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures_t sendProBoughtFeatures;
+    ARCONTROLLER_FEATURE_Pro_SendProResponse_t sendProResponse;
+    ARCONTROLLER_FEATURE_Pro_SendProActivateFeatures_t sendProActivateFeatures;
+    ARCONTROLLER_FEATURE_Pro_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Pro_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SetNetworkController (ARCONTROLLER_FEATURE_Pro_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Pro_GetCommandElements (ARCONTROLLER_FEATURE_Pro_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 #endif /* _ARCONTROLLER_FEATURE_H_ */
 

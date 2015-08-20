@@ -52,6 +52,7 @@ public class ARFeatureCommon
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME = ""; /**< Key of the argument </code>sensorName</code> of class <code>CommonState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE = ""; /**< Key of the argument </code>sensorState</code> of class <code>CommonState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL = ""; /**< Key of the argument </code>model</code> of class <code>CommonState</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of class <code>CommonState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = ""; /**< Key of the argument </code>countryCodes</code> of class <code>CommonState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = ""; /**< Key of the argument </code>regulationType</code> of class <code>OverHeatState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING = ""; /**< Key of the argument </code>piloting</code> of class <code>ControllerState</code> in feature <code>Common</code> */
@@ -123,6 +124,7 @@ public class ARFeatureCommon
     private static native String nativeStaticGetKeyCommonCommonStateSensorsStatesListChangedSensorName ();
     private static native String nativeStaticGetKeyCommonCommonStateSensorsStatesListChangedSensorState ();
     private static native String nativeStaticGetKeyCommonCommonStateProductModelModel ();
+    private static native String nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags ();
     private static native String nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes ();
     private static native String nativeStaticGetKeyCommonOverHeatStateOverHeatRegulationChangedRegulationType ();
     private static native String nativeStaticGetKeyCommonControllerStateIsPilotingChangedPiloting ();
@@ -225,6 +227,7 @@ public class ARFeatureCommon
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME = nativeStaticGetKeyCommonCommonStateSensorsStatesListChangedSensorName ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE = nativeStaticGetKeyCommonCommonStateSensorsStatesListChangedSensorState ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL = nativeStaticGetKeyCommonCommonStateProductModelModel ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = nativeStaticGetKeyCommonOverHeatStateOverHeatRegulationChangedRegulationType ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING = nativeStaticGetKeyCommonControllerStateIsPilotingChangedPiloting ();
