@@ -42,14 +42,6 @@ AC_ARG_WITH([projects],
             [],
             [with_projects=all])
 
-AC_MSG_CHECKING([whether we need to generate debug commands])
-AC_ARG_ENABLE([debug-commands],
-            [AS_HELP_STRING([--enable-debug-commands],
-                            [enable generation of debug commands @<:@default=disabled@:>@])],
-            [dbgcmds="$enableval"],
-            [dbgcmds=no])
-AC_MSG_RESULT([$dbgcmds])
-
 ##########################################################################
 # Non versionned .so compilation support (for Android)
 ##########################################################################
