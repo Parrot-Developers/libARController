@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['JNI/java', 'gen/JNI/java']
+        }
+    }
+}
+
+dependencies {
+    compile project(':libARCommands')
+    compile project(':libARDiscovery')
+    compile project(':libARSAL')
+}

@@ -29,7 +29,7 @@ if test x"$debugit" = x"yes"; then
     LOCAL_CFLAGS+=" -g -Wall -Werror -Wno-uninitialized -O0"
 else
     AC_DEFINE([NDEBUG],[],[No-debug Mode])
-    LOCAL_CFLAGS+=" -O3"
+    LOCAL_CFLAGS+=" -O0"
 fi
 AM_CONDITIONAL([DEBUG_MODE], [test "$debugit" = "yes"])
 
