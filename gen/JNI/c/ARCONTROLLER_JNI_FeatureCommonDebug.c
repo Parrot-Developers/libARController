@@ -54,6 +54,72 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommon
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET);
 }
 
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoListFlags (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoId (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoLabel (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoType (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoMode (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangemin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangemax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangestep (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateInfoValue (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateListChangedId (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeStaticGetKeyCommonDebugDebugSettingsStateListChangedValue (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE);
+}
+
 JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeSendStatsSendPacket (JNIEnv *env, jobject thizz, jlong jFeature, jstring _packet)
 {
@@ -90,6 +156,34 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeSendStatsStopSendi
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendStatsStopSendingPacketFromDrone (nativeFeature);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeSendDebugSettingsGetAll (JNIEnv *env, jobject thizz, jlong jFeature)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_CommonDebug_t *nativeFeature = (ARCONTROLLER_FEATURE_CommonDebug_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendDebugSettingsGetAll (nativeFeature);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommonDebug_nativeSendDebugSettingsSet (JNIEnv *env, jobject thizz, jlong jFeature, jshort _id, jstring _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_CommonDebug_t *nativeFeature = (ARCONTROLLER_FEATURE_CommonDebug_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    const char *nativeValue = (*env)->GetStringUTFChars(env, _value, 0);
+    
+    error = nativeFeature->sendDebugSettingsSet (nativeFeature, _id, (char *)nativeValue);
+
+    // cleanup
+    (*env)->ReleaseStringUTFChars(env, _value, nativeValue);
 
     return error;
 }

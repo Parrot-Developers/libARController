@@ -133,6 +133,8 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED_DELAY = ""; /**< Key of the argument </code>delay</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT = ""; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN = ""; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT = ""; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN = ""; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY = ""; /**< Key of the argument </code>frequency</code> of class <code>AntiflickeringState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of class <code>AntiflickeringState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED_NUMBEROFSATELLITE = ""; /**< Key of the argument </code>numberOfSatellite</code> of class <code>GPSState</code> in feature <code>ARDrone3</code> */
@@ -248,6 +250,8 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateReturnHomeDelayChangedDelay ();
     private static native String nativeStaticGetKeyARDrone3CameraStateOrientationTilt ();
     private static native String nativeStaticGetKeyARDrone3CameraStateOrientationPan ();
+    private static native String nativeStaticGetKeyARDrone3CameraStateDefaultCameraOrientationTilt ();
+    private static native String nativeStaticGetKeyARDrone3CameraStateDefaultCameraOrientationPan ();
     private static native String nativeStaticGetKeyARDrone3AntiflickeringStateElectricFrequencyChangedFrequency ();
     private static native String nativeStaticGetKeyARDrone3AntiflickeringStateModeChangedMode ();
     private static native String nativeStaticGetKeyARDrone3GPSStateNumberOfSatelliteChangedNumberOfSatellite ();
@@ -421,6 +425,8 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED_DELAY = nativeStaticGetKeyARDrone3GPSSettingsStateReturnHomeDelayChangedDelay ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT = nativeStaticGetKeyARDrone3CameraStateOrientationTilt ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN = nativeStaticGetKeyARDrone3CameraStateOrientationPan ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT = nativeStaticGetKeyARDrone3CameraStateDefaultCameraOrientationTilt ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN = nativeStaticGetKeyARDrone3CameraStateDefaultCameraOrientationPan ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY = nativeStaticGetKeyARDrone3AntiflickeringStateElectricFrequencyChangedFrequency ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED_MODE = nativeStaticGetKeyARDrone3AntiflickeringStateModeChangedMode ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED_NUMBEROFSATELLITE = nativeStaticGetKeyARDrone3GPSStateNumberOfSatelliteChangedNumberOfSatellite ();

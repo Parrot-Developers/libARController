@@ -85,14 +85,14 @@ Java_com_parrot_arsdk_arcontroller_ARFeaturePro_nativeSendProBoughtFeatures (JNI
 }
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeaturePro_nativeSendProResponse (JNIEnv *env, jobject thizz, jlong jFeature, jint _status, jstring _signedChallenge)
+Java_com_parrot_arsdk_arcontroller_ARFeaturePro_nativeSendProResponse (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _listFlags, jstring _signedChallenge)
 {
     // local declarations
     ARCONTROLLER_FEATURE_Pro_t *nativeFeature = (ARCONTROLLER_FEATURE_Pro_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     const char *nativeSignedChallenge = (*env)->GetStringUTFChars(env, _signedChallenge, 0);
     
-    error = nativeFeature->sendProResponse (nativeFeature, _status, (char *)nativeSignedChallenge);
+    error = nativeFeature->sendProResponse (nativeFeature, _listFlags, (char *)nativeSignedChallenge);
 
     // cleanup
     (*env)->ReleaseStringUTFChars(env, _signedChallenge, nativeSignedChallenge);

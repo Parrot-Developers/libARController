@@ -1179,6 +1179,15 @@ void ARCONTROLLER_FEATURE_ARDrone3_GPSSettingsStateReturnHomeDelayChangedCallbac
 void ARCONTROLLER_FEATURE_ARDrone3_CameraStateOrientationCallback (int8_t _tilt, int8_t _pan, void *customData);
 
 /**
+ * @brief callback used when the command <code>DefaultCameraOrientation</code> of class <code>CameraState is decoded
+ * @param feature The feature controller registred
+ * @param tilt Tilt value (in degree)
+ * @param pan Pan value (in degree)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_CameraStateDefaultCameraOrientationCallback (int8_t _tilt, int8_t _pan, void *customData);
+
+/**
  * class: Antiflickering 
  * Anti-flickering related commands
  */
@@ -4369,6 +4378,63 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketF
  */
 void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _packet, void *customData);
 
+/**
+ * class: DebugSettings 
+ * Debug custom commands sent to the drone
+ */
+
+/**
+ * @brief Send a command <code>GetAll</code> of class <code>DebugSettings</code> in project <code>CommonDebug</code>
+ * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * @brief Send a command <code>Set</code> of class <code>DebugSettings</code> in project <code>CommonDebug</code>
+ * Change setting value.
+ * Cmd sent by controller to change a writable setting.
+ * @param feature feature owning the commands
+ * @param id Setting Id.
+ * @param value New setting value (string encoded).
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value);
+
+/**
+ * class: DebugSettingsState 
+ * Debug custom commands sent by the drone
+ */
+
+/**
+ * @brief callback used when the command <code>Info</code> of class <code>DebugSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param listFlags List entry attribute Bitfield.
+ * @param listFlags 0x01: First: indicate it's the first element of the list.
+ * @param listFlags 0x02: Last:  indicate it's the last element of the list.
+ * @param listFlags 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
+ * @param id Setting Id.
+ * @param label Setting displayed label (single line).
+ * @param type Setting type.
+ * @param mode Setting mode.
+ * @param range_min Setting range minimal value for decimal type.
+ * @param range_max Setting range max value for decimal type.
+ * @param range_step Setting step value for decimal type
+ * @param value Current Setting value (string encoded).
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData);
+
+/**
+ * @brief callback used when the command <code>ListChanged</code> of class <code>DebugSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param id Setting Id.
+ * @param value New setting value (string encoded).
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uint16_t _id, char * _value, void *customData);
+
 
 /*******************************
  * --- FEATURE pro --- 
@@ -4417,11 +4483,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures (ARCONTROLLER
  * @brief Send a command <code>Response</code> of class <code>Pro</code> in project <code>Pro</code>
  * Response to the challenge string sent by the controller
  * @param feature feature owning the commands
- * @param status Status of the response
+ * @param listFlags List entry attribute Bitfield.
+ * @param listFlags 0x01: First: indicate it's the first element of the list.
+ * @param listFlags 0x02: Last:  indicate it's the last element of the list.
+ * @param listFlags 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
  * @param signedChallenge the signed challenge
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, uint8_t listFlags, char * signedChallenge);
 
 /**
  * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in project <code>Pro</code>

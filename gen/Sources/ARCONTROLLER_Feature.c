@@ -250,6 +250,8 @@ const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELA
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT = "arcontroller_dictionary_key_ardrone3_camerastate_orientation_tilt";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN = "arcontroller_dictionary_key_ardrone3_camerastate_orientation_pan";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT = "arcontroller_dictionary_key_ardrone3_camerastate_defaultcameraorientation_tilt";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN = "arcontroller_dictionary_key_ardrone3_camerastate_defaultcameraorientation_pan";
 
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY = "arcontroller_dictionary_key_ardrone3_antiflickeringstate_electricfrequencychanged_frequency";
@@ -590,6 +592,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_RegisterARCommands (ARCONTROLL
         ARCOMMANDS_Decoder_SetARDrone3GPSSettingsStateReturnHomeDelayChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_GPSSettingsStateReturnHomeDelayChangedCallback, feature);
         // Commands of class : CameraState:
         ARCOMMANDS_Decoder_SetARDrone3CameraStateOrientationCallback (&ARCONTROLLER_FEATURE_ARDrone3_CameraStateOrientationCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3CameraStateDefaultCameraOrientationCallback (&ARCONTROLLER_FEATURE_ARDrone3_CameraStateDefaultCameraOrientationCallback, feature);
         // Commands of class : AntiflickeringState:
         ARCOMMANDS_Decoder_SetARDrone3AntiflickeringStateElectricFrequencyChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_AntiflickeringStateElectricFrequencyChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3AntiflickeringStateModeChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_AntiflickeringStateModeChangedCallback, feature);
@@ -689,6 +692,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_UnregisterARCommands (ARCONTRO
         ARCOMMANDS_Decoder_SetARDrone3GPSSettingsStateReturnHomeDelayChangedCallback (NULL, NULL);
         // Commands of class : CameraState:
         ARCOMMANDS_Decoder_SetARDrone3CameraStateOrientationCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3CameraStateDefaultCameraOrientationCallback (NULL, NULL);
         // Commands of class : AntiflickeringState:
         ARCOMMANDS_Decoder_SetARDrone3AntiflickeringStateElectricFrequencyChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3AntiflickeringStateModeChangedCallback (NULL, NULL);
@@ -13063,6 +13067,194 @@ void ARCONTROLLER_FEATURE_ARDrone3_CameraStateOrientationCallback (int8_t _tilt,
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8;
             argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN;
+            argDictNewElement->value.I8 = _pan;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find if the element already exist
+        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);
+        if (oldElement != NULL)
+        {
+            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);
+            
+            ARCONTROLLER_Feature_DeleteArgumentsDictionary (&(oldElement->arguments));
+            free (oldElement);
+            oldElement = NULL;
+        }
+        else
+        {
+            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);
+        }
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Callback notification
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (!elementAdded ))
+        {
+            if (newElement != NULL)
+            {
+                if (newElement->arguments != NULL)
+                {
+                    free (newElement->arguments);
+                    newElement->arguments = NULL;
+                }
+                
+                if (newElement->key != NULL)
+                {
+                    free (newElement->key);
+                    newElement->key = NULL;
+                }
+                
+                free (newElement);
+                newElement = NULL;
+            }
+            if (isANewCommandElement)
+            {
+                free (dictCmdElement);
+                dictCmdElement = NULL;
+            }
+        }
+    }
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_CameraStateDefaultCameraOrientationCallback (int8_t _tilt, int8_t _pan, void *customData)
+{
+    // -- callback used when the command <code>DefaultCameraOrientation</code> of class <code>CameraState is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION;
+    int elementAdded = 0;
+    int isANewCommandElement = 0;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *oldElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find command elements
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_COMMANDS_t));
+            if (dictCmdElement != NULL)
+            {
+                dictCmdElement->command = commandKey;
+                dictCmdElement->elements = NULL;
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+        }
+        // No Else ; commandElement already exists.
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    //Create Element Dictionary
+    if (error == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT;
+            argDictNewElement->value.I8 = _tilt;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN;
             argDictNewElement->value.I8 = _pan;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
@@ -46535,6 +46727,19 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_GetCommandElements (ARCON
 
 const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET = "arcontroller_dictionary_key_commondebug_statsevent_sendpacket_packet";
 
+
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_listflags";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_label";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_type";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_mode";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_range_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_range_max";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_range_step";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_value";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID = "arcontroller_dictionary_key_commondebug_debugsettingsstate_listchanged_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_listchanged_value";
+
 ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Feature Controller --
@@ -46552,6 +46757,8 @@ ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONT
             featureController->sendStatsSendPacket = ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket;
             featureController->sendStatsStartSendingPacketFromDrone = ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone;
             featureController->sendStatsStopSendingPacketFromDrone = ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone;
+            featureController->sendDebugSettingsGetAll = ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll;
+            featureController->sendDebugSettingsSet = ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet;
             
             featureController->privatePart = NULL;
         }
@@ -46730,6 +46937,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (ARCONTR
     {
         // Commands of class : StatsEvent:
         ARCOMMANDS_Decoder_SetCommonDebugStatsEventSendPacketCallback (&ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback, feature);
+        // Commands of class : DebugSettingsState:
+        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateInfoCallback (&ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback, feature);
+        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateListChangedCallback (&ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback, feature);
     }
     
     return error;
@@ -46752,6 +46962,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands (ARCON
     {
         // Commands of class : StatsEvent:
         ARCOMMANDS_Decoder_SetCommonDebugStatsEventSendPacketCallback (NULL, NULL);
+        // Commands of class : DebugSettingsState:
+        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateInfoCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateListChangedCallback (NULL, NULL);
     }
     
     return error;
@@ -46968,6 +47181,715 @@ void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _pack
             if (argDictNewElement->value.String != NULL)
             {
                 strncpy (argDictNewElement->value.String, _packet, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find if the element already exist
+        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);
+        if (oldElement != NULL)
+        {
+            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);
+            
+            ARCONTROLLER_Feature_DeleteArgumentsDictionary (&(oldElement->arguments));
+            free (oldElement);
+            oldElement = NULL;
+        }
+        else
+        {
+            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);
+        }
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Callback notification
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (!elementAdded ))
+        {
+            if (newElement != NULL)
+            {
+                if (newElement->arguments != NULL)
+                {
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    free (newElement->arguments);
+                    newElement->arguments = NULL;
+                }
+                
+                if (newElement->key != NULL)
+                {
+                    free (newElement->key);
+                    newElement->key = NULL;
+                }
+                
+                free (newElement);
+                newElement = NULL;
+            }
+            if (isANewCommandElement)
+            {
+                free (dictCmdElement);
+                dictCmdElement = NULL;
+            }
+        }
+    }
+}
+
+/**
+ * class: DebugSettings 
+ * Debug custom commands sent to the drone
+ */
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll (ARCONTROLLER_FEATURE_CommonDebug_t *feature)
+{
+    // -- Send a command <code>GetAll</code> of class <code>DebugSettings</code> in project <code>CommonDebug</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send GetAll command
+        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugDebugSettingsGetAll(cmdBuffer, sizeof(cmdBuffer), &cmdSize);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value)
+{
+    // -- Send a command <code>Set</code> of class <code>DebugSettings</code> in project <code>CommonDebug</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send Set command
+        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugDebugSettingsSet(cmdBuffer, sizeof(cmdBuffer), &cmdSize, id, value);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+/**
+ * class: DebugSettingsState 
+ * Debug custom commands sent by the drone
+ */
+
+void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData)
+{
+    // -- callback used when the command <code>Info</code> of class <code>DebugSettingsState is decoded -- 
+    
+    ARCONTROLLER_FEATURE_CommonDebug_t *feature = (ARCONTROLLER_FEATURE_CommonDebug_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO;
+    int elementAdded = 0;
+    int isANewCommandElement = 0;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *oldElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    int strLength = 0;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find command elements
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_COMMANDS_t));
+            if (dictCmdElement != NULL)
+            {
+                dictCmdElement->command = commandKey;
+                dictCmdElement->elements = NULL;
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+        }
+        // No Else ; commandElement already exists.
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    //Create Element Dictionary
+    if (error == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        //Alloc Element Key
+        elementKeyLength = snprintf (NULL, 0, "%d", HASH_COUNT (dictCmdElement->elements));
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            snprintf (newElement->key, (elementKeyLength + 1), "%d", HASH_COUNT (dictCmdElement->elements));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS;
+            argDictNewElement->value.U8 = _listFlags;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID;
+            argDictNewElement->value.U16 = _id;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL;
+            strLength = strlen (_label);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _label, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE;
+            argDictNewElement->value.I32 = _type;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE;
+            argDictNewElement->value.I32 = _mode;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN;
+            strLength = strlen (_range_min);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _range_min, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX;
+            strLength = strlen (_range_max);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _range_max, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP;
+            strLength = strlen (_range_step);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _range_step, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE;
+            strLength = strlen (_value);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _value, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find if the element already exist
+        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);
+        if (oldElement != NULL)
+        {
+            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);
+            
+            ARCONTROLLER_Feature_DeleteArgumentsDictionary (&(oldElement->arguments));
+            free (oldElement);
+            oldElement = NULL;
+        }
+        else
+        {
+            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);
+        }
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Callback notification
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (!elementAdded ))
+        {
+            if (newElement != NULL)
+            {
+                if (newElement->arguments != NULL)
+                {
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    free (newElement->arguments);
+                    newElement->arguments = NULL;
+                }
+                
+                if (newElement->key != NULL)
+                {
+                    free (newElement->key);
+                    newElement->key = NULL;
+                }
+                
+                free (newElement);
+                newElement = NULL;
+            }
+            if (isANewCommandElement)
+            {
+                free (dictCmdElement);
+                dictCmdElement = NULL;
+            }
+        }
+    }
+}
+
+void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uint16_t _id, char * _value, void *customData)
+{
+    // -- callback used when the command <code>ListChanged</code> of class <code>DebugSettingsState is decoded -- 
+    
+    ARCONTROLLER_FEATURE_CommonDebug_t *feature = (ARCONTROLLER_FEATURE_CommonDebug_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED;
+    int elementAdded = 0;
+    int isANewCommandElement = 0;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *oldElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    int strLength = 0;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find command elements
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_COMMANDS_t));
+            if (dictCmdElement != NULL)
+            {
+                dictCmdElement->command = commandKey;
+                dictCmdElement->elements = NULL;
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+        }
+        // No Else ; commandElement already exists.
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    //Create Element Dictionary
+    if (error == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID;
+            argDictNewElement->value.U16 = _id;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE;
+            strLength = strlen (_value);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _value, strLength);
                 argDictNewElement->value.String[strLength] = '\0';
             }
             else
@@ -47418,7 +48340,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures (ARCONTROLLER
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, uint8_t listFlags, char * signedChallenge)
 {
     // -- Send a command <code>Response</code> of class <code>Pro</code> in project <code>Pro</code> --
     
@@ -47438,7 +48360,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATU
     if (error == ARCONTROLLER_OK)
     {
         // Send Response command
-        cmdError = ARCOMMANDS_Generator_GenerateProProResponse(cmdBuffer, sizeof(cmdBuffer), &cmdSize, status, signedChallenge);
+        cmdError = ARCOMMANDS_Generator_GenerateProProResponse(cmdBuffer, sizeof(cmdBuffer), &cmdSize, listFlags, signedChallenge);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;

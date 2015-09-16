@@ -847,6 +847,8 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNH
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
 
 /**
  * class: Antiflickering 
@@ -3888,6 +3890,48 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSend
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET; /**< Key of the argument </code>packet</code> of class <code>StatsEvent</code> in feature <code>CommonDebug</code> */
 
 /**
+ * class: DebugSettings 
+ * Debug custom commands sent to the drone
+ */
+
+
+/**
+ * @brief Send a command <code>GetAll</code> of class <code>DebugSettings</code> in feature <code>CommonDebug</code>
+ * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * @brief Send a command <code>Set</code> of class <code>DebugSettings</code> in feature <code>CommonDebug</code>
+ * Change setting value.
+ * Cmd sent by controller to change a writable setting.
+ * @param feature feature owning the commands
+ * @param id Setting Id.
+ * @param value New setting value (string encoded).
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value);
+
+/**
+ * class: DebugSettingsState 
+ * Debug custom commands sent by the drone
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS; /**< Key of the argument </code>listFlags</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL; /**< Key of the argument </code>label</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE; /**< Key of the argument </code>type</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE; /**< Key of the argument </code>mode</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN; /**< Key of the argument </code>range_min</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX; /**< Key of the argument </code>range_max</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP; /**< Key of the argument </code>range_step</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+
+/**
  * @brief Feature controller allow to send command related of commonDebug Feature.
  * All debug commands shared between all projects
  */
@@ -3896,6 +3940,8 @@ struct ARCONTROLLER_FEATURE_CommonDebug_t
     ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t sendStatsSendPacket;
     ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t sendStatsStartSendingPacketFromDrone;
     ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t sendStatsStopSendingPacketFromDrone;
+    ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll_t sendDebugSettingsGetAll;
+    ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet_t sendDebugSettingsSet;
     ARCONTROLLER_FEATURE_CommonDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_CommonDebug_t */
 };
 
@@ -3999,11 +4045,14 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures_t) 
  * @brief Send a command <code>Response</code> of class <code>Pro</code> in feature <code>Pro</code>
  * Response to the challenge string sent by the controller
  * @param feature feature owning the commands
- * @param status Status of the response
+ * @param listFlags List entry attribute Bitfield.
+ * @param listFlags 0x01: First: indicate it's the first element of the list.
+ * @param listFlags 0x02: Last:  indicate it's the last element of the list.
+ * @param listFlags 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
  * @param signedChallenge the signed challenge
  * return executing error
  */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProResponse_t) (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Pro_SendProResponse_t) (ARCONTROLLER_FEATURE_Pro_t *feature, uint8_t listFlags, char * signedChallenge);
 
 /**
  * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in feature <code>Pro</code>
