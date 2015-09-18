@@ -57,6 +57,8 @@ public enum ARCONTROLLER_ERROR_ENUM {
     ARCONTROLLER_ERROR_INIT_MUTEX (-996, "Mutex initialization error"),
    /** Bad state of the Network Controller to call this function */
     ARCONTROLLER_ERROR_STATE (-995, "Bad state of the Network Controller to call this function"),
+   /** Buffer is too small */
+    ARCONTROLLER_ERROR_BUFFER_SIZE (-994, "Buffer is too small"),
    /** Error of initialization */
     ARCONTROLLER_ERROR_INIT (-2000, "Error of initialization"),
    /** Thread initialization error */
@@ -99,17 +101,24 @@ public enum ARCONTROLLER_ERROR_ENUM {
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_ALREADY_REGISTERED (-2999, "the command callback is already registered"),
    /** the command callback is not registred */
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED (-2998, "the command callback is not registred"),
-   ARCONTROLLER_ERROR_STREAMPOOL (-4000),
+   /** Generic stream pool error */
+    ARCONTROLLER_ERROR_STREAMPOOL (-4000, "Generic stream pool error"),
    /** no frame found */
     ARCONTROLLER_ERROR_STREAMPOOL_FRAME_NOT_FOUND (-3999, "no frame found"),
-   ARCONTROLLER_ERROR_STREAMQUEUE (-5000),
+   /** Generic stream queue error */
+    ARCONTROLLER_ERROR_STREAMQUEUE (-5000, "Generic stream queue error"),
    /** Error stream queue empty */
     ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY (-4999, "Error stream queue empty"),
-   ARCONTROLLER_ERROR_JNI (-6000),
+   /** Generic JNI error */
+    ARCONTROLLER_ERROR_JNI (-6000, "Generic JNI error"),
    /** Error of JNI environment */
     ARCONTROLLER_ERROR_JNI_ENV (-5999, "Error of JNI environment"),
    /** Native part not initialized */
-    ARCONTROLLER_ERROR_JNI_INIT (-5998, "Native part not initialized");
+    ARCONTROLLER_ERROR_JNI_INIT (-5998, "Native part not initialized"),
+   /** Generic extension related error */
+    ARCONTROLLER_ERROR_EXTENSION (-7000, "Generic extension related error"),
+   /** Product not valid to be an extension */
+    ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID (-6999, "Product not valid to be an extension");
 
     private final int value;
     private final String comment;

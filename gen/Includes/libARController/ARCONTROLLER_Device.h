@@ -50,6 +50,16 @@ typedef enum
 typedef void (*ARCONTROLLER_Device_StateChangedCallback_t) (eARCONTROLLER_DEVICE_STATE newState, eARCONTROLLER_ERROR error, void *customData);
 
 /**
+ * @brief Callback used when the extension state of the device Controller is changed.
+ * @param[in] newState The new state of the extension of the Device Contoller
+ * @param[in] product the type of the extension.
+ * @param[in] name the name of the extension.
+ * @param[in] error Error causing this new state.
+ * @param[in] customData Custom Data set by the register
+ */
+typedef void (*ARCONTROLLER_Device_ExtensionStateChangedCallback_t) (eARCONTROLLER_DEVICE_STATE newState, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error, void *customData);
+
+/**
  * @brief Private part of the Device controller.
  */
 typedef struct ARCONTROLLER_Device_Private_t ARCONTROLLER_Device_Private_t;
@@ -147,6 +157,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCommandReceivedCallback (ARCONTROL
 eARCONTROLLER_ERROR ARCONTROLLER_Device_AddStateChangedCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Device_StateChangedCallback_t stateChangedCallback, void *customData);
 
 /**
+ * @brief Add callback of Device Controller extension state changed information.
+ * @param deviceController The device controller.
+ * @param extensionStateChangedCallback The callback to add.
+ * @param[in] customData custom data given as parameter to the callback.
+ * @return executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionStateChangedCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Device_ExtensionStateChangedCallback_t extensionStateChangedCallback, void *customData);
+
+/**
  * @brief Remove callback of Device Controller state changed information.
  * @param deviceController The device controller.
  * @param StateChangedCallback The callback to remove.
@@ -165,11 +184,33 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveStateChangedCallback (ARCONTROLLER
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /**
- * @brief Get the Device Controller state and notify all listeners.
+ * @brief Get the Device Controller state.
  * @param deviceController The device controller.
  * @return The state of the Device Controller.
  */
 eARCONTROLLER_DEVICE_STATE ARCONTROLLER_Device_GetState (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Get the Device Controller extension state.
+ * @param deviceController The device controller.
+ * @return The extension state of the Device Controller.
+ */
+eARCONTROLLER_DEVICE_STATE ARCONTROLLER_Device_GetExtensionState (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Get the Device Controller extension name.
+ * @param deviceController The device controller.
+ * @param[out] buffer The buffer to receive the name.
+ * @param[in] bufferSize The allocated size of the given buffer.
+ */
+void ARCONTROLLER_Device_GetExtensionName (ARCONTROLLER_Device_t *deviceController, char *buffer, int bufferSize, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Get the Device Controller extension product type.
+ * @param deviceController The device controller.
+ * @return The product of the extension of the Device Controller.
+ */
+eARDISCOVERY_PRODUCT ARCONTROLLER_Device_GetExtensionProduct (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_ERROR *error);
 
 #endif /* _ARCONTROLLER_DEVICE_H_ */
 
