@@ -65,6 +65,9 @@ char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
     case ARCONTROLLER_ERROR_STATE:
         return "Bad state of the Network Controller to call this function";
         break;
+    case ARCONTROLLER_ERROR_BUFFER_SIZE:
+        return "Buffer is too small";
+        break;
     case ARCONTROLLER_ERROR_INIT:
         return "Error of initialization";
         break;
@@ -129,25 +132,31 @@ char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
         return "the command callback is not registred";
         break;
     case ARCONTROLLER_ERROR_STREAMPOOL:
-        return "";
+        return "Generic stream pool error";
         break;
     case ARCONTROLLER_ERROR_STREAMPOOL_FRAME_NOT_FOUND:
         return "no frame found";
         break;
     case ARCONTROLLER_ERROR_STREAMQUEUE:
-        return "";
+        return "Generic stream queue error";
         break;
     case ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY:
         return "Error stream queue empty";
         break;
     case ARCONTROLLER_ERROR_JNI:
-        return "";
+        return "Generic JNI error";
         break;
     case ARCONTROLLER_ERROR_JNI_ENV:
         return "Error of JNI environment";
         break;
     case ARCONTROLLER_ERROR_JNI_INIT:
         return "Native part not initialized";
+        break;
+    case ARCONTROLLER_ERROR_EXTENSION:
+        return "Generic extension related error";
+        break;
+    case ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID:
+        return "Product not valid to be an extension";
         break;
     default:
         return "Unknown value";

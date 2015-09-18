@@ -38,7 +38,9 @@
  *
  ****************************************/
 
-int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *b);
+static int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *b);
+
+static int ARCONTROLLER_Device_ExtensionElementCompare(ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *b);
 
 /*****************************************
  *
@@ -103,6 +105,11 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
             deviceController->privatePart->videoReceiveCallback = NULL;
             deviceController->privatePart->videoTimeoutCallback = NULL;
             deviceController->privatePart->videoReceiveCustomData = NULL;
+            // Extension part
+            deviceController->privatePart->extensionState = ARCONTROLLER_DEVICE_STATE_STOPPED;
+            deviceController->privatePart->extensionStateChangedCallbacks = NULL;
+            deviceController->privatePart->extensionName = NULL;
+            deviceController->privatePart->extensionProduct = ARDISCOVERY_PRODUCT_MAX;
             
             // Create the mutex/condition 
             if ((ARSAL_Mutex_Init (&(deviceController->privatePart->mutex)) != 0) ||
@@ -266,6 +273,9 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
                     ARCONTROLLER_Dictionary_DeleteCallbackList(&((*deviceController)->privatePart->commandCallbacks));
                 }
                 
+                // delete all extension related vars
+                ARCONTROLLER_Device_DeleteExtension(*deviceController);
+                
                 if ((*deviceController)->privatePart->stateChangedCallbacks != NULL)
                 {
                     // -- Delete all callback in array --
@@ -329,6 +339,42 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
     }
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Device_DeleteExtension (ARCONTROLLER_Device_t *deviceController)
+{
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    if (deviceController != NULL && deviceController->privatePart != NULL)
+    {
+        if (deviceController->privatePart->stateChangedCallbacks != NULL)
+        {
+            // -- Delete all callback in array --
+            ARCONTROLLER_Device_DeleteExtensionCallbackList(&(deviceController->privatePart->extensionStateChangedCallbacks));
+        }
+        
+        // Delete extension feature
+        switch (deviceController->privatePart->extensionProduct)
+        {
+            case ARDISCOVERY_PRODUCT_ARDRONE:
+                ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+                ARCONTROLLER_FEATURE_ARDrone3_Delete (&(deviceController->aRDrone3));
+                ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
+                break;
+            case ARDISCOVERY_PRODUCT_MAX:
+                // not connected to an extension device, so don't do anything
+                break;
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "device : %d can not be an extension", deviceController->privatePart->extensionProduct);
+                error = ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID;
+                break;
+        }
+        
+        if (deviceController->privatePart->extensionName != NULL)
+        {
+            free(deviceController->privatePart->extensionName);
+            deviceController->privatePart->extensionName = NULL;
+        }
+    }
+    return error;
+}
 eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController)
 {
     // -- Register the Callbacks --
@@ -1349,7 +1395,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device_t *deviceController)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device_t *deviceController, void *specificFeature)
 {
     // -- Unregister the Callbacks --
     
@@ -1365,7 +1411,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
     
     if (error == ARCONTROLLER_OK)
     {
-        if (deviceController->aRDrone3 != NULL)
+        if ((deviceController->aRDrone3 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3)))
         {
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -1735,7 +1781,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->aRDrone3Debug != NULL)
+        if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
         {
             removingError = ARCONTROLLER_FEATURE_ARDrone3Debug_RemoveCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -1751,7 +1797,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->jumpingSumo != NULL)
+        if ((deviceController->jumpingSumo != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumo)))
         {
             removingError = ARCONTROLLER_FEATURE_JumpingSumo_RemoveCallback (deviceController->jumpingSumo, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -1917,7 +1963,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->jumpingSumoDebug != NULL)
+        if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
         {
             removingError = ARCONTROLLER_FEATURE_JumpingSumoDebug_RemoveCallback (deviceController->jumpingSumoDebug, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -1927,7 +1973,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->miniDrone != NULL)
+        if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
         {
             removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -2027,11 +2073,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->miniDroneDebug != NULL)
+        if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
         {
         }
         
-        if (deviceController->skyController != NULL)
+        if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
         {
             removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -2245,11 +2291,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->skyControllerDebug != NULL)
+        if ((deviceController->skyControllerDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyControllerDebug)))
         {
         }
         
-        if (deviceController->common != NULL)
+        if ((deviceController->common != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->common)))
         {
             removingError = ARCONTROLLER_FEATURE_Common_RemoveCallback (deviceController->common, ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_ALLSETTINGSCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -2529,7 +2575,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->commonDebug != NULL)
+        if ((deviceController->commonDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->commonDebug)))
         {
             removingError = ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -2545,7 +2591,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if (deviceController->pro != NULL)
+        if ((deviceController->pro != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->pro)))
         {
             removingError = ARCONTROLLER_FEATURE_Pro_RemoveCallback (deviceController->pro, ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
@@ -2655,7 +2701,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_De
     // -- Set Video receive callback --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int locked = 1;
+    int locked = 0;
     
     // Check parameters
     if ((deviceController == NULL) ||
@@ -2700,7 +2746,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCommandReceivedCallback (ARCONTROLLER
     // -- Add Command received callback --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int locked = 1;
+    int locked = 0;
     
     // Check parameters
     if ((deviceController == NULL) ||
@@ -2735,7 +2781,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCommandReceivedCallback (ARCONTROL
     // -- Remove Command received callback --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int locked = 1;
+    int locked = 0;
     
     // Check parameters
     if ((deviceController == NULL) ||
@@ -2772,7 +2818,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;
     eARCONTROLLER_DICTIONARY_KEY featureKey = ARCONTROLLER_DICTIONARY_Key_GetFeatureFromCommandKey (commandKey);
-    int locked = 1;
+    int locked = 0;
     
     // Check parameters
     if ((deviceController == NULL) ||
@@ -2875,7 +2921,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddStateChangedCallback (ARCONTROLLER_De
     // -- Add State Changed callback --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int locked = 1;
+    int locked = 0;
     
     // Check parameters
     if ((deviceController == NULL) ||
@@ -2905,12 +2951,47 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddStateChangedCallback (ARCONTROLLER_De
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionStateChangedCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Device_ExtensionStateChangedCallback_t extensionStateChangedCallback, void *customData)
+{
+    // -- Add Extension State Changed callback --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+        locked = 1;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Device_AddExtensionCallbackInList (&(deviceController->privatePart->extensionStateChangedCallbacks), extensionStateChangedCallback, customData);
+    }
+    
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+        locked = 0;
+    }
+    
+    return error;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveStateChangedCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Device_StateChangedCallback_t stateChangedCallback, void *customData)
 {
     // -- Remove State Changed Callback --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int locked = 1;
+    int locked = 0;
     
     // Check parameters
     if ((deviceController == NULL) ||
@@ -2974,6 +3055,117 @@ eARCONTROLLER_DEVICE_STATE ARCONTROLLER_Device_GetState (ARCONTROLLER_Device_t *
     return state;
 }
 
+eARCONTROLLER_DEVICE_STATE ARCONTROLLER_Device_GetExtensionState (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_ERROR *error)
+{
+    // -- Get Extension State --
+    
+    eARCONTROLLER_DEVICE_STATE extensionState = ARCONTROLLER_DEVICE_STATE_MAX;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+        
+        extensionState = deviceController->privatePart->extensionState;
+        
+        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+    }
+    
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return extensionState;
+}
+
+void ARCONTROLLER_Device_GetExtensionName (ARCONTROLLER_Device_t *deviceController, char *buffer, int bufferSize, eARCONTROLLER_ERROR *error)
+{
+    // -- Get Extension Name --
+    
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL) ||
+        (buffer == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+        
+        if (deviceController->privatePart->extensionName != NULL)
+        {
+            int desiredChars = snprintf(buffer, bufferSize, "%s", deviceController->privatePart->extensionName);
+            if (desiredChars >= bufferSize)
+            {
+                localError = ARCONTROLLER_ERROR_BUFFER_SIZE;
+            }
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_STATE;
+        }
+        
+        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+    }
+    
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+}
+
+eARDISCOVERY_PRODUCT ARCONTROLLER_Device_GetExtensionProduct (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_ERROR *error)
+{
+    // -- Get Extension Product --
+    
+    eARDISCOVERY_PRODUCT extensionProduct = ARDISCOVERY_PRODUCT_MAX;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+        
+        extensionProduct = deviceController->privatePart->extensionProduct;
+        
+        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+    }
+    
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return extensionProduct;
+}
+
 
 /********************
 * Private Functions *
@@ -3016,7 +3208,7 @@ void *ARCONTROLLER_Device_StartRun (void *data)
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
     {
-        error = ARCONTROLLER_Device_OnStart (deviceController);
+        error = ARCONTROLLER_Device_OnStart (deviceController, 0);
     }
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
@@ -3062,7 +3254,7 @@ void *ARCONTROLLER_Device_StopRun (void *data)
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Device_UnregisterCallbacks (deviceController);
+        error = ARCONTROLLER_Device_UnregisterCallbacks (deviceController, NULL);
     }
     
     if (error == ARCONTROLLER_OK)
@@ -3092,6 +3284,71 @@ void *ARCONTROLLER_Device_StopRun (void *data)
     
     return NULL;
 }
+
+void *ARCONTROLLER_Device_ExtensionStopRun (void *data)
+{
+    // -- Thread Run of Stop --
+    
+    // Local declarations
+    ARCONTROLLER_Device_t *deviceController = (ARCONTROLLER_Device_t *) data;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((deviceController == NULL) || (deviceController->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (deviceController->privatePart->extensionProduct)
+        {
+            case ARDISCOVERY_PRODUCT_ARDRONE:
+                if (error == ARCONTROLLER_OK && deviceController->aRDrone3 != NULL)
+                {
+                    error = ARCONTROLLER_Device_UnregisterCallbacks (deviceController, deviceController->aRDrone3);
+                }
+                
+                if (error == ARCONTROLLER_OK)
+                {
+                    ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+                    ARCONTROLLER_FEATURE_ARDrone3_Delete (&(deviceController->aRDrone3));
+                    ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
+                }
+                break;
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "device : %d can not be an extension", deviceController->privatePart->extensionProduct);
+                error = ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID;
+                    break;
+        }
+    }
+    // reset extension values
+    if (error == ARCONTROLLER_OK)
+    {
+        if (deviceController->privatePart->extensionName != NULL)
+        {
+            free(deviceController->privatePart->extensionName);
+            deviceController->privatePart->extensionName = NULL;
+        }
+        deviceController->privatePart->extensionProduct = ARDISCOVERY_PRODUCT_MAX;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED, ARCONTROLLER_OK);
+    }
+    //else TODO: see what to do in case of error here
+    
+    // Print error
+    if (error != ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Stop fail error :%s", ARCONTROLLER_Error_ToString (error));
+    }
+    
+    return NULL;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_Device_StartNetwork (ARCONTROLLER_Device_t *deviceController)
 {
     // -- Start the Network --
@@ -3334,7 +3591,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_StopControllerLooperThread (ARCONTROLLER
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_OnStart (ARCONTROLLER_Device_t *deviceController)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_OnStart (ARCONTROLLER_Device_t *deviceController, int isExtensionDevice)
 {
     // -- Device On Start --
     
@@ -3355,13 +3612,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_OnStart (ARCONTROLLER_Device_t *deviceCo
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
     {
-        error = ARCONTROLLER_Device_GetInitialSettings (deviceController);
+        error = ARCONTROLLER_Device_GetInitialSettings (deviceController, isExtensionDevice);
     }
     // No else: skipped by an error
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
     {
-        error = ARCONTROLLER_Device_GetInitialStates (deviceController);
+        error = ARCONTROLLER_Device_GetInitialStates (deviceController, isExtensionDevice);
     }
     // No else: skipped by an error
     
@@ -3441,7 +3698,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetInitialDate (ARCONTROLLER_Device_t *d
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialSettings (ARCONTROLLER_Device_t *deviceController)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialSettings (ARCONTROLLER_Device_t *deviceController, int onExtensionDevice)
 {
     // -- Get initial all Settings --
     
@@ -3456,7 +3713,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialSettings (ARCONTROLLER_Device_
     
     if (error == ARCONTROLLER_OK)
     {
-        error = deviceController->common->sendSettingsAllSettings (deviceController->common);
+        if (!onExtensionDevice && deviceController->skyController != NULL)
+        {
+            error = deviceController->skyController->sendSettingsAllSettings (deviceController->skyController);
+        }
+        else
+        {
+            error = deviceController->common->sendSettingsAllSettings (deviceController->common);
+        }
     }
     
     if (error == ARCONTROLLER_OK)
@@ -3467,7 +3731,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialSettings (ARCONTROLLER_Device_
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialStates (ARCONTROLLER_Device_t *deviceController)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialStates (ARCONTROLLER_Device_t *deviceController, int onExtensionDevice)
 {
     // -- Get initial all States --
     
@@ -3482,7 +3746,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_GetInitialStates (ARCONTROLLER_Device_t 
     
     if (error == ARCONTROLLER_OK)
     {
-        error = deviceController->common->sendCommonAllStates (deviceController->common);
+        if (!onExtensionDevice && deviceController->skyController != NULL)
+        {
+            error = deviceController->skyController->sendCommonAllStates (deviceController->skyController);
+        }
+        else
+        {
+            error = deviceController->common->sendCommonAllStates (deviceController->common);
+        }
     }
     
     if (error == ARCONTROLLER_OK)
@@ -3520,11 +3791,18 @@ void ARCONTROLLER_Device_DictionaryChangedCallback (eARCONTROLLER_DICTIONARY_KEY
         switch (commandKey)
         {
             case ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_ALLSTATESCHANGED:
+            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED:
                 ARCONTROLLER_Device_OnAllStatesEnd (deviceController);
                 break;
             
             case ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_ALLSETTINGSCHANGED:
+            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_ALLSETTINGSCHANGED:
                 ARCONTROLLER_Device_OnAllSettingsEnd (deviceController);
+                break;
+            
+            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED:
+                ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Connexion changed received");
+                ARCONTROLLER_Device_OnSkyControllerConnectionChangedReceived (deviceController);
                 break;
             
             default :
@@ -3575,6 +3853,187 @@ void ARCONTROLLER_Device_OnAllSettingsEnd (ARCONTROLLER_Device_t *deviceControll
         ARSAL_Sem_Post (&(deviceController->privatePart->initSem));
     }
     
+}
+
+void ARCONTROLLER_Device_OnSkyControllerConnectionChangedReceived (ARCONTROLLER_Device_t *deviceController)
+{
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;
+    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
+
+    eARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS connectionStatus = ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_MAX;
+    
+    // Check parameters
+    if ((deviceController == NULL) || (deviceController->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        element = ARCONTROLLER_Device_GetCommandElements(deviceController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED, &error);
+    }
+    // read the connection status from the command
+    if (error == ARCONTROLLER_OK)
+    {
+        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS, arg);
+        if (arg != NULL)
+        {
+            connectionStatus = arg->value.U8;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "ConnectionStatus : %i", connectionStatus);
+        }
+        
+        // if not all args are valid, generate an error
+        if (connectionStatus == ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_MAX)
+        {
+            error = ARCONTROLLER_ERROR;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (connectionStatus)
+        {
+            case ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_CONNECTED:
+            {
+                ARSAL_Thread_t startingThread = NULL;
+                char *productName = NULL;
+                eARDISCOVERY_PRODUCT product = ARDISCOVERY_PRODUCT_MAX;
+                
+                // read product and name
+                if (error == ARCONTROLLER_OK)
+                {
+                    HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME, arg);
+                    if (arg != NULL)
+                    {
+                        productName = arg->value.String;
+                    }
+                    
+                    HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID, arg);
+                    if (arg != NULL)
+                    {
+                        product = ARDISCOVERY_getProductFromProductID(arg->value.U16);
+                    }
+                    
+                    // if not all args are valid, generate an error
+                    if ((productName == NULL) ||
+                        (product == ARDISCOVERY_PRODUCT_MAX))
+                    {
+                        error = ARCONTROLLER_ERROR;
+                    }
+                }
+                
+                // product should be of the Bebop family
+                if (error == ARCONTROLLER_OK)
+                {
+                    if (ARDISCOVERY_PRODUCT_FAMILY_ARDRONE != ARDISCOVERY_getProductFamily(product))
+                    {
+                        error = ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID;
+                    }
+                }
+                
+                if (error == ARCONTROLLER_OK)
+                {
+                    deviceController->privatePart->extensionProduct = product;
+                    if (asprintf((&(deviceController->privatePart->extensionName)), "%s", productName) <= 0)
+                    {
+                        error = ARCONTROLLER_ERROR_ALLOC;
+                    }
+                }
+                
+                if (error == ARCONTROLLER_OK)
+                {
+                    ARCONTROLLER_Device_SetExtensionState(deviceController, ARCONTROLLER_DEVICE_STATE_STARTING, error);
+                    if (ARSAL_Thread_Create (&startingThread, ARCONTROLLER_Device_ExtensionStartRun, deviceController) != 0)
+                    {
+                        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Creation of Starting thread failed.");
+                        error = ARCONTROLLER_ERROR_INIT_THREAD;
+                    }
+                    else
+                    {
+                        // Destroy the pointer because we don't care about it. The thread will run anyway
+                        ARSAL_Thread_Destroy (&startingThread);
+                        startingThread = NULL;
+                        
+                        // TODO: what to do ???
+                    }
+                }
+            }
+            break;
+            case ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_DISCONNECTING:
+            
+                ARCONTROLLER_Device_SetExtensionState(deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, error);
+                
+                break;
+            
+            case ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_NOTCONNECTED:
+            {
+                if (deviceController->privatePart->extensionProduct != ARDISCOVERY_PRODUCT_MAX)
+                {
+                    ARSAL_Thread_t stoppingThread = NULL;
+                    
+                    if (ARSAL_Thread_Create (&stoppingThread, ARCONTROLLER_Device_ExtensionStopRun, deviceController) != 0)
+                    {
+                        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Creation of Stopping thread failed.");
+                        error = ARCONTROLLER_ERROR_INIT_THREAD;
+                    }
+                    else
+                    {
+                        // Destroy the pointer because we don't care about it. The thread will run anyway
+                        ARSAL_Thread_Destroy (&stoppingThread);
+                        stoppingThread = NULL;
+                        
+                        // TODO: what to do ???
+                    }
+                    
+                }
+            }
+            break;
+            
+            default:
+                break;
+        }
+    }
+    
+    if (error != ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ARController_Device_OnSkyControllerConnectionChangedReceived : %s", ARCONTROLLER_Error_ToString (error));
+    }
+}
+void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
+{
+    // -- Start the Thread of the Extension --
+
+    // Local declarations
+    ARCONTROLLER_Device_t *deviceController = (ARCONTROLLER_Device_t *) data;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+
+    switch (deviceController->privatePart->extensionProduct)
+    {
+        case ARDISCOVERY_PRODUCT_ARDRONE:
+            // TODO: see how to automate this (product AND features)
+            ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+            deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &error);
+            ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
+            ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);
+            break;
+        
+        default:
+            error = ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID;
+            break;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Device_OnStart (deviceController, 1);
+    }
+    
+    if (error != ARCONTROLLER_OK)
+    {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ExtensionStartRun : %s", ARCONTROLLER_Error_ToString (error));
+    }
+    
+    return NULL;
 }
 
 eARDISCOVERY_ERROR ARCONTROLLER_Device_SendJsonCallback (json_object *jsonObj, void *customData)
@@ -3687,6 +4146,8 @@ void *ARCONTROLLER_Device_ControllerLooperThread (void *data)
             //TODO manager pause !!!!!!!!!!!!!!!!!!!!!!!!!
             usleep (controllerLoopIntervalUs);
             
+            ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+            
             if (deviceController->aRDrone3 != NULL)
             {
                 error = ARCONTROLLER_ARDrone3_SendPilotingPCMDStruct (deviceController->aRDrone3, cmdBuffer, ARCONTROLLER_DEVICE_DEFAULT_LOOPER_CMD_BUFFER_SIZE);
@@ -3694,7 +4155,6 @@ void *ARCONTROLLER_Device_ControllerLooperThread (void *data)
                 {
                     ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured while send PCMD : %s", ARCONTROLLER_Error_ToString (error));
                 }
-                
             }
             
             if (deviceController->jumpingSumo != NULL)
@@ -3704,7 +4164,6 @@ void *ARCONTROLLER_Device_ControllerLooperThread (void *data)
                 {
                     ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured while send PCMD : %s", ARCONTROLLER_Error_ToString (error));
                 }
-                
             }
             
             if (deviceController->miniDrone != NULL)
@@ -3714,9 +4173,9 @@ void *ARCONTROLLER_Device_ControllerLooperThread (void *data)
                 {
                     ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured while send PCMD : %s", ARCONTROLLER_Error_ToString (error));
                 }
-                
             }
             
+            ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
         }
     }
     
@@ -3733,6 +4192,30 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_S
 
     // Add the callback
     newElement = malloc (sizeof(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t));
+    if (newElement != NULL)
+    {
+        newElement->callback = callback;
+        newElement->customData = customData;
+        DL_APPEND ((*callbackList), newElement);
+    }
+    else
+    {
+        error = ARCONTROLLER_ERROR_ALLOC;
+    }
+
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData)
+{
+    // -- Add extension callback in array --
+    
+    // Local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *newElement = NULL;
+
+    // Add the callback
+    newElement = malloc (sizeof(ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t));
     if (newElement != NULL)
     {
         newElement->callback = callback;
@@ -3773,6 +4256,32 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCallbackFromList (ARCONTROLLER_Dev
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveExtensionCallbackFromList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData)
+{
+    // -- Remove callback from array --
+
+    // Local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t likeElement;
+
+    // Element to find
+    likeElement.callback = callback;
+    likeElement.customData = customData;
+
+    DL_SEARCH ((*callbackList), elementFind, &likeElement, ARCONTROLLER_Device_ExtensionElementCompare);
+    if (elementFind != NULL)
+    {
+        DL_DELETE ((*callbackList), elementFind);
+    }
+    else
+    {
+        error = ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED;
+    }
+    
+    return error;
+}
+
 void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList)
 {
     // -- Delete all callback in array --
@@ -3780,6 +4289,21 @@ void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATE_CHANGED_C
     // Local declarations
     ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *element = NULL;
     ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *elementTmp = NULL;
+
+    // Delete each element, use the safe iterator
+    DL_FOREACH_SAFE ((*callbackList), element, elementTmp)
+    {
+        DL_DELETE ((*callbackList), element);
+    }
+}
+
+void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList)
+{
+    // -- Delete all callback in array --
+    
+    // Local declarations
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *element = NULL;
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *elementTmp = NULL;
 
     // Delete each element, use the safe iterator
     DL_FOREACH_SAFE ((*callbackList), element, elementTmp)
@@ -3805,6 +4329,23 @@ void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATE_CHAN
     }
 }
 
+void ARCONTROLLER_Device_NotifyAllExtensionCallbackInList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error)
+{
+    // -- Notify all listeners --
+    
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *callbackElement = NULL;
+    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *callbackElementTmp = NULL;
+
+    // for each callback
+    DL_FOREACH_SAFE ((*callbackList), callbackElement, callbackElementTmp)
+    {
+        if (callbackElement->callback != NULL)
+        {
+            callbackElement->callback (state, product, name, error, callbackElement->customData);
+        }
+    }
+}
+
 void ARCONTROLLER_Device_SetState (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_DEVICE_STATE state,  eARCONTROLLER_ERROR error)
 {
     // -- Set the Device Controller State and notify all listeners.
@@ -3816,13 +4357,29 @@ void ARCONTROLLER_Device_SetState (ARCONTROLLER_Device_t *deviceController, eARC
     
 }
 
+void ARCONTROLLER_Device_SetExtensionState (ARCONTROLLER_Device_t *deviceController, eARCONTROLLER_DEVICE_STATE state,  eARCONTROLLER_ERROR error)
+{
+    // -- Set the Device Controller Extension State and notify all listeners.
+    
+    ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));
+    deviceController->privatePart->extensionState = state;
+    ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+    ARCONTROLLER_Device_NotifyAllExtensionCallbackInList (&(deviceController->privatePart->extensionStateChangedCallbacks), deviceController->privatePart->extensionState, deviceController->privatePart->extensionProduct, deviceController->privatePart->extensionName, error);
+    
+}
+
 /*****************************************
  *
  *             local implementation:
  *
  ****************************************/
 
-int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *b)
+static int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *b)
+{
+    return !((a->callback == b->callback) && (a->customData == b->customData));
+}
+
+static int ARCONTROLLER_Device_ExtensionElementCompare(ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *b)
 {
     return !((a->callback == b->callback) && (a->customData == b->customData));
 }

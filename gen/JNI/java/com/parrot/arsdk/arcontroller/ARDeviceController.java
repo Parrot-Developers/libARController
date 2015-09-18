@@ -15,6 +15,7 @@
 
 package com.parrot.arsdk.arcontroller;
 
+import com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_ENUM;
 import com.parrot.arsdk.arsal.ARSALPrint;
 import com.parrot.arsdk.arcommands.*;
 import com.parrot.arsdk.ardiscovery.ARDiscoveryDevice;
@@ -48,6 +49,9 @@ public class ARDeviceController
     private native long nativeGetFeatureCommonDebug (long jDeviceController);
     private native long nativeGetFeaturePro (long jDeviceController);
     private native int nativeGetState (long jDeviceController) throws ARControllerException;
+    private native int nativeGetExtensionState (long jDeviceController);
+    private native String nativeGetExtensionName (long jDeviceController);
+    private native int nativeGetExtensionProduct (long jDeviceController);
     private native long nativeGetCommandElements(long jDeviceController, int commandKey) throws ARControllerException;
 
     private long jniDeviceController;
@@ -95,72 +99,7 @@ public class ARDeviceController
             streamlisteners = new ArrayList<ARDeviceControllerStreamListener>();
             initOk = true;
             
-            long nativeFeatureARDrone3 = nativeGetFeatureARDrone3 (jniDeviceController);
-            if (nativeFeatureARDrone3 != 0)
-            {
-                featureARDrone3 = new ARFeatureARDrone3(nativeFeatureARDrone3);
-            }
-            
-            long nativeFeatureARDrone3Debug = nativeGetFeatureARDrone3Debug (jniDeviceController);
-            if (nativeFeatureARDrone3Debug != 0)
-            {
-                featureARDrone3Debug = new ARFeatureARDrone3Debug(nativeFeatureARDrone3Debug);
-            }
-            
-            long nativeFeatureJumpingSumo = nativeGetFeatureJumpingSumo (jniDeviceController);
-            if (nativeFeatureJumpingSumo != 0)
-            {
-                featureJumpingSumo = new ARFeatureJumpingSumo(nativeFeatureJumpingSumo);
-            }
-            
-            long nativeFeatureJumpingSumoDebug = nativeGetFeatureJumpingSumoDebug (jniDeviceController);
-            if (nativeFeatureJumpingSumoDebug != 0)
-            {
-                featureJumpingSumoDebug = new ARFeatureJumpingSumoDebug(nativeFeatureJumpingSumoDebug);
-            }
-            
-            long nativeFeatureMiniDrone = nativeGetFeatureMiniDrone (jniDeviceController);
-            if (nativeFeatureMiniDrone != 0)
-            {
-                featureMiniDrone = new ARFeatureMiniDrone(nativeFeatureMiniDrone);
-            }
-            
-            long nativeFeatureMiniDroneDebug = nativeGetFeatureMiniDroneDebug (jniDeviceController);
-            if (nativeFeatureMiniDroneDebug != 0)
-            {
-                featureMiniDroneDebug = new ARFeatureMiniDroneDebug(nativeFeatureMiniDroneDebug);
-            }
-            
-            long nativeFeatureSkyController = nativeGetFeatureSkyController (jniDeviceController);
-            if (nativeFeatureSkyController != 0)
-            {
-                featureSkyController = new ARFeatureSkyController(nativeFeatureSkyController);
-            }
-            
-            long nativeFeatureSkyControllerDebug = nativeGetFeatureSkyControllerDebug (jniDeviceController);
-            if (nativeFeatureSkyControllerDebug != 0)
-            {
-                featureSkyControllerDebug = new ARFeatureSkyControllerDebug(nativeFeatureSkyControllerDebug);
-            }
-            
-            long nativeFeatureCommon = nativeGetFeatureCommon (jniDeviceController);
-            if (nativeFeatureCommon != 0)
-            {
-                featureCommon = new ARFeatureCommon(nativeFeatureCommon);
-            }
-            
-            long nativeFeatureCommonDebug = nativeGetFeatureCommonDebug (jniDeviceController);
-            if (nativeFeatureCommonDebug != 0)
-            {
-                featureCommonDebug = new ARFeatureCommonDebug(nativeFeatureCommonDebug);
-            }
-            
-            long nativeFeaturePro = nativeGetFeaturePro (jniDeviceController);
-            if (nativeFeaturePro != 0)
-            {
-                featurePro = new ARFeaturePro(nativeFeaturePro);
-            }
-            
+            reloadFeatures();
         }
 
         if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)
@@ -403,6 +342,50 @@ public class ARDeviceController
         return state;
     }
     
+    public ARCONTROLLER_DEVICE_STATE_ENUM getExtensionState ()
+    {
+        ARCONTROLLER_DEVICE_STATE_ENUM extensionState = ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_MAX;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeExtensionState = nativeGetExtensionState(jniDeviceController);
+                extensionState = ARCONTROLLER_DEVICE_STATE_ENUM.getFromValue(nativeExtensionState);
+            }
+        }
+        
+        return extensionState;
+    }
+    
+    public String getExtensionName ()
+    {
+        String extensionName = null;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                extensionName = nativeGetExtensionName(jniDeviceController);
+            }
+        }
+        
+        return extensionName;
+    }
+    
+    public ARDISCOVERY_PRODUCT_ENUM getExtensionProduct ()
+    {
+        ARDISCOVERY_PRODUCT_ENUM extensionProduct = ARDISCOVERY_PRODUCT_ENUM.ARDISCOVERY_PRODUCT_MAX;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeExtensionProduct = nativeGetExtensionProduct(jniDeviceController);
+                extensionProduct = ARDISCOVERY_PRODUCT_ENUM.getFromValue(nativeExtensionProduct);
+            }
+        }
+        
+        return extensionProduct;
+    }
+    
     public synchronized void addListener (ARDeviceControllerListener listener)
     {
        if (! listeners.contains(listener))
@@ -429,11 +412,135 @@ public class ARDeviceController
         streamlisteners.remove (listener);
     }
     
+    private void reloadFeatures()
+    {
+        long nativeFeatureARDrone3 = nativeGetFeatureARDrone3 (jniDeviceController);
+        if ((featureARDrone3 == null) && (nativeFeatureARDrone3 != 0))
+        {
+            featureARDrone3 = new ARFeatureARDrone3(nativeFeatureARDrone3);
+        }
+        else
+        {
+            featureARDrone3 = null;
+        }
+        
+        long nativeFeatureARDrone3Debug = nativeGetFeatureARDrone3Debug (jniDeviceController);
+        if ((featureARDrone3Debug == null) && (nativeFeatureARDrone3Debug != 0))
+        {
+            featureARDrone3Debug = new ARFeatureARDrone3Debug(nativeFeatureARDrone3Debug);
+        }
+        else
+        {
+            featureARDrone3Debug = null;
+        }
+        
+        long nativeFeatureJumpingSumo = nativeGetFeatureJumpingSumo (jniDeviceController);
+        if ((featureJumpingSumo == null) && (nativeFeatureJumpingSumo != 0))
+        {
+            featureJumpingSumo = new ARFeatureJumpingSumo(nativeFeatureJumpingSumo);
+        }
+        else
+        {
+            featureJumpingSumo = null;
+        }
+        
+        long nativeFeatureJumpingSumoDebug = nativeGetFeatureJumpingSumoDebug (jniDeviceController);
+        if ((featureJumpingSumoDebug == null) && (nativeFeatureJumpingSumoDebug != 0))
+        {
+            featureJumpingSumoDebug = new ARFeatureJumpingSumoDebug(nativeFeatureJumpingSumoDebug);
+        }
+        else
+        {
+            featureJumpingSumoDebug = null;
+        }
+        
+        long nativeFeatureMiniDrone = nativeGetFeatureMiniDrone (jniDeviceController);
+        if ((featureMiniDrone == null) && (nativeFeatureMiniDrone != 0))
+        {
+            featureMiniDrone = new ARFeatureMiniDrone(nativeFeatureMiniDrone);
+        }
+        else
+        {
+            featureMiniDrone = null;
+        }
+        
+        long nativeFeatureMiniDroneDebug = nativeGetFeatureMiniDroneDebug (jniDeviceController);
+        if ((featureMiniDroneDebug == null) && (nativeFeatureMiniDroneDebug != 0))
+        {
+            featureMiniDroneDebug = new ARFeatureMiniDroneDebug(nativeFeatureMiniDroneDebug);
+        }
+        else
+        {
+            featureMiniDroneDebug = null;
+        }
+        
+        long nativeFeatureSkyController = nativeGetFeatureSkyController (jniDeviceController);
+        if ((featureSkyController == null) && (nativeFeatureSkyController != 0))
+        {
+            featureSkyController = new ARFeatureSkyController(nativeFeatureSkyController);
+        }
+        else
+        {
+            featureSkyController = null;
+        }
+        
+        long nativeFeatureSkyControllerDebug = nativeGetFeatureSkyControllerDebug (jniDeviceController);
+        if ((featureSkyControllerDebug == null) && (nativeFeatureSkyControllerDebug != 0))
+        {
+            featureSkyControllerDebug = new ARFeatureSkyControllerDebug(nativeFeatureSkyControllerDebug);
+        }
+        else
+        {
+            featureSkyControllerDebug = null;
+        }
+        
+        long nativeFeatureCommon = nativeGetFeatureCommon (jniDeviceController);
+        if ((featureCommon == null) && (nativeFeatureCommon != 0))
+        {
+            featureCommon = new ARFeatureCommon(nativeFeatureCommon);
+        }
+        else
+        {
+            featureCommon = null;
+        }
+        
+        long nativeFeatureCommonDebug = nativeGetFeatureCommonDebug (jniDeviceController);
+        if ((featureCommonDebug == null) && (nativeFeatureCommonDebug != 0))
+        {
+            featureCommonDebug = new ARFeatureCommonDebug(nativeFeatureCommonDebug);
+        }
+        else
+        {
+            featureCommonDebug = null;
+        }
+        
+        long nativeFeaturePro = nativeGetFeaturePro (jniDeviceController);
+        if ((featurePro == null) && (nativeFeaturePro != 0))
+        {
+            featurePro = new ARFeaturePro(nativeFeaturePro);
+        }
+        else
+        {
+            featurePro = null;
+        }
+        
+    }
+    
     private void onStateChanged (int newState, int error)
     {
         for (ARDeviceControllerListener l : listeners)
         {
             l.onStateChanged (this, ARCONTROLLER_DEVICE_STATE_ENUM.getFromValue(newState), ARCONTROLLER_ERROR_ENUM.getFromValue(error));
+        }
+    }
+    
+    private void onExtensionStateChanged (int newState, int product, String name, int error)
+    {
+        // reload the features because they might have changed
+        reloadFeatures();
+        for (ARDeviceControllerListener l : listeners)
+        {
+            l.onExtensionStateChanged (this, ARCONTROLLER_DEVICE_STATE_ENUM.getFromValue(newState), ARDISCOVERY_PRODUCT_ENUM.getFromValue(product), name, ARCONTROLLER_ERROR_ENUM.getFromValue(error));
         }
     }
     
