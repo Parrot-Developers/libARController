@@ -51,6 +51,7 @@ typedef enum
     ARCONTROLLER_ERROR_MUTEX, /**< Mutex lock or unlock error  */
     ARCONTROLLER_ERROR_INIT_MUTEX, /**< Mutex initialization error */
     ARCONTROLLER_ERROR_STATE, /**< Bad state of the Network Controller to call this function */
+    ARCONTROLLER_ERROR_BUFFER_SIZE, /**< Buffer is too small */
     
     ARCONTROLLER_ERROR_INIT = -2000, /**< Error of initialization */
     ARCONTROLLER_ERROR_INIT_THREAD, /**< Thread initialization error */
@@ -69,22 +70,24 @@ typedef enum
     ARCONTROLLER_ERROR_NO_ELEMENT, /**< No element saved for this command */
     ARCONTROLLER_ERROR_NO_ARGUMENTS, /**< No argument saved for this command */
     ARCONTROLLER_ERROR_CANCELED, /**< start canceled*/
-    
     ARCONTROLLER_ERROR_COMMAND_GENERATING, /**< Error of command generating */
     
     ARCONTROLLER_ERROR_COMMAND_CALLBACK = -3000, /**< Error of command generating */
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_ALREADY_REGISTERED, /**< the command callback is already registered*/
     ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED, /**< the command callback is not registred*/
     
-    ARCONTROLLER_ERROR_STREAMPOOL = -4000,
+    ARCONTROLLER_ERROR_STREAMPOOL = -4000, /**< Generic stream pool error */
     ARCONTROLLER_ERROR_STREAMPOOL_FRAME_NOT_FOUND, /**< no frame found */
     
-    ARCONTROLLER_ERROR_STREAMQUEUE = -5000,
+    ARCONTROLLER_ERROR_STREAMQUEUE = -5000, /**< Generic stream queue error */
     ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY, /**< Error stream queue empty*/
     
-    ARCONTROLLER_ERROR_JNI = -6000,
+    ARCONTROLLER_ERROR_JNI = -6000, /**< Generic JNI error */
     ARCONTROLLER_ERROR_JNI_ENV, /**< Error of JNI environment */
     ARCONTROLLER_ERROR_JNI_INIT, /**< Native part not initialized */
+    
+    ARCONTROLLER_ERROR_EXTENSION = -7000, /**< Generic extension related error */
+    ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID, /**< Product not valid to be an extension  */
 
 } eARCONTROLLER_ERROR;
 

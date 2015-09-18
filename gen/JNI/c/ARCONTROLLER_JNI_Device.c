@@ -49,6 +49,7 @@ typedef struct
 static JavaVM *ARCONTROLLER_JNIDEVICE_VM; /**< reference to the java virtual machine */
 
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED;
+static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK;
@@ -62,6 +63,7 @@ ARCONTROLLER_JNIDeviceController_t *ARCONTROLLER_JNI_Device_NewJNIDeviceControll
 void ARCONTROLLER_JNI_Device_DeleteJNIDeviceController (JNIEnv *env, ARCONTROLLER_JNIDeviceController_t **jniDeviceController);
 
 void ARCONTROLLER_JNI_Device_StateChanged (eARCONTROLLER_DEVICE_STATE newState, eARCONTROLLER_ERROR error, void *customData);
+void ARCONTROLLER_JNI_Device_ExtensionStateChanged (eARCONTROLLER_DEVICE_STATE newState, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error, void *customData);
 void ARCONTROLLER_JNI_Device_CommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
 
 void ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
@@ -104,6 +106,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStaticInit (JNIEnv *
     jARDeviceControllerCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARDeviceController");
     
     ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onStateChanged", "(II)V");
+    ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onExtensionStateChanged", "(IILjava/lang/String;I)V");
     ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "didReceiveFrameCallback", "(JIIII)V");
     ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "timeoutFrameCallback", "()V");    
     ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onCommandReceived", "(IJ)V");    
@@ -139,6 +142,11 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeNew (JNIEnv *env, jo
     if (error == ARCONTROLLER_OK)
     {
         error = ARCONTROLLER_Device_AddStateChangedCallback (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_StateChanged, jniDeviceController);
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Device_AddExtensionStateChangedCallback (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_ExtensionStateChanged, jniDeviceController);
     }
 
     if (error == ARCONTROLLER_OK)
@@ -360,6 +368,89 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetState (JNIEnv *en
     return state;
 }
 
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetExtensionState (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    eARCONTROLLER_DEVICE_STATE extensionState = ARCONTROLLER_DEVICE_STATE_MAX;
+    
+    jclass exceptionCls = NULL;
+    jmethodID exceptionMethodInit = NULL;
+    jthrowable exception = NULL;
+    
+    extensionState = ARCONTROLLER_Device_GetExtensionState (jniDeviceController->nativeDeviceController, &error);
+    
+    if (error != ARCONTROLLER_OK)
+    {
+        // throw the exception
+        exceptionCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerException");
+        exceptionMethodInit = (*env)->GetMethodID(env, exceptionCls, "<init>", "(I)V");
+        exception = (*env)->NewObject(env, exceptionCls, exceptionMethodInit, error);
+        (*env)->Throw(env, exception);
+    }
+    
+    return extensionState;
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetExtensionName (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    jstring extensionNameStr = NULL;
+    
+    jclass exceptionCls = NULL;
+    jmethodID exceptionMethodInit = NULL;
+    jthrowable exception = NULL;
+    
+    char extensionNameBuffer[128];
+    ARCONTROLLER_Device_GetExtensionName (jniDeviceController->nativeDeviceController, extensionNameBuffer, 128, &error);
+    
+    if (error != ARCONTROLLER_OK)
+    {
+        // throw the exception
+        exceptionCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerException");
+        exceptionMethodInit = (*env)->GetMethodID(env, exceptionCls, "<init>", "(I)V");
+        exception = (*env)->NewObject(env, exceptionCls, exceptionMethodInit, error);
+        (*env)->Throw(env, exception);
+    }
+    else
+    {
+        extensionNameStr = (*env)->NewStringUTF(env, extensionNameBuffer);
+    }
+    
+    return extensionNameStr;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetExtensionProduct (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    eARDISCOVERY_PRODUCT extensionProduct = ARDISCOVERY_PRODUCT_MAX;
+    
+    jclass exceptionCls = NULL;
+    jmethodID exceptionMethodInit = NULL;
+    jthrowable exception = NULL;
+    
+    extensionProduct = ARCONTROLLER_Device_GetExtensionProduct (jniDeviceController->nativeDeviceController, &error);
+    
+    if (error != ARCONTROLLER_OK)
+    {
+        // throw the exception
+        exceptionCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerException");
+        exceptionMethodInit = (*env)->GetMethodID(env, exceptionCls, "<init>", "(I)V");
+        exception = (*env)->NewObject(env, exceptionCls, exceptionMethodInit, error);
+        (*env)->Throw(env, exception);
+    }
+    
+    return extensionProduct;
+}
+
 /*****************************************
  *
  *             private implementation:
@@ -444,6 +535,56 @@ void ARCONTROLLER_JNI_Device_StateChanged (eARCONTROLLER_DEVICE_STATE newState, 
     {
         // java onStateChanged callback
         (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED, newState, error);
+    }
+    
+    // if the thread has been attached then detach the thread from the virtual machine
+    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))
+    {
+        (*ARCONTROLLER_JNIDEVICE_VM)->DetachCurrentThread(ARCONTROLLER_JNIDEVICE_VM);
+    }
+}
+
+// called when the state of the extension has changed
+void ARCONTROLLER_JNI_Device_ExtensionStateChanged (eARCONTROLLER_DEVICE_STATE newState, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error, void *customData)
+{
+    // local declarations
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    JNIEnv* env = NULL;
+    jint getEnvResult = JNI_OK;
+    jint attachResult = 1;
+    jstring extensionNameStr = NULL;
+    
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;
+    
+    if ((jniDeviceController == NULL) ||
+        (jniDeviceController->jDeviceController == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+        
+    if (localError == ARCONTROLLER_OK)
+    {
+        // get the environment
+        getEnvResult = (*ARCONTROLLER_JNIDEVICE_VM)->GetEnv(ARCONTROLLER_JNIDEVICE_VM, (void **) &env, JNI_VERSION_1_6);
+        
+        // if no environment then attach the thread to the virtual machine
+        if (getEnvResult == JNI_EDETACHED)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_JNIDEVICE_TAG, "attach the thread to the virtual machine ...");
+            attachResult = (*ARCONTROLLER_JNIDEVICE_VM)->AttachCurrentThread(ARCONTROLLER_JNIDEVICE_VM, &env, NULL);
+        }
+        
+        if (env == NULL)
+        {
+            localError = ARCONTROLLER_ERROR_JNI_ENV;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        extensionNameStr = (*env)->NewStringUTF(env, name);
+        // java onStateChanged callback
+        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED, newState, product, extensionNameStr, error);
     }
     
     // if the thread has been attached then detach the thread from the virtual machine
