@@ -65,4 +65,12 @@
         
     </ARController_Device>
     
+    <ARController_Device name="Bebop2" product="BEBOP_2">
+        Bebop 2 project
+        
+        <feature name="common"/>
+        <feature name="ARDrone3"/>
+        
+    </ARController_Device>
+    
 </deviceControllers>

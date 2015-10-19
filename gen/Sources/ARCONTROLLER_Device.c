@@ -216,6 +216,19 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
                 
                 break;
             
+            case ARDISCOVERY_PRODUCT_BEBOP_2:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
             default:
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "device : %d not known", discoveryDevice->productID);
                 break;
@@ -297,6 +310,13 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
                         ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
                         
                         ARCONTROLLER_FEATURE_SkyController_Delete (&((*deviceController)->skyController));
+                        
+                        break;
+                    
+                    case ARDISCOVERY_PRODUCT_BEBOP_2:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_ARDrone3_Delete (&((*deviceController)->aRDrone3));
                         
                         break;
                     
