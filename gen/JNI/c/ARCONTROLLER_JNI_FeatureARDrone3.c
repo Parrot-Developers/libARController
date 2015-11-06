@@ -445,6 +445,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3N
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER);
@@ -769,25 +775,25 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingTakeOff (
 }
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingPCMD (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _flag, jbyte _roll, jbyte _pitch, jbyte _yaw, jbyte _gaz, jfloat _psi)
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingPCMD (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _flag, jbyte _roll, jbyte _pitch, jbyte _yaw, jbyte _gaz, jint _timestampAndSeqNum)
 {
     // local declarations
     ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    error = nativeFeature->sendPilotingPCMD (nativeFeature, _flag, _roll, _pitch, _yaw, _gaz, _psi);
+    error = nativeFeature->sendPilotingPCMD (nativeFeature, _flag, _roll, _pitch, _yaw, _gaz, _timestampAndSeqNum);
 
     return error;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSetPilotingPCMD (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _flag, jbyte _roll, jbyte _pitch, jbyte _yaw, jbyte _gaz, jfloat _psi)
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSetPilotingPCMD (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _flag, jbyte _roll, jbyte _pitch, jbyte _yaw, jbyte _gaz, jint _timestampAndSeqNum)
 {
     // local declarations
     ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    error = nativeFeature->setPilotingPCMD (nativeFeature, _flag, _roll, _pitch, _yaw, _gaz, _psi);
+    error = nativeFeature->setPilotingPCMD (nativeFeature, _flag, _roll, _pitch, _yaw, _gaz, _timestampAndSeqNum);
 
     return error;
 }
@@ -853,13 +859,13 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSetPilotingPCMDGaz (J
 }
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSetPilotingPCMDPsi (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _psi)
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSetPilotingPCMDTimestampAndSeqNum (JNIEnv *env, jobject thizz, jlong jFeature, jint _timestampAndSeqNum)
 {
     // local declarations
     ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    error = nativeFeature->setPilotingPCMDPsi (nativeFeature, _psi);
+    error = nativeFeature->setPilotingPCMDTimestampAndSeqNum (nativeFeature, _timestampAndSeqNum);
 
     return error;
 }
@@ -1196,6 +1202,22 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendNetworkSettingsWi
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendNetworkSettingsWifiSelection (nativeFeature, _type, _band, _channel);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendNetworkSettingsWifiSecurity (JNIEnv *env, jobject thizz, jlong jFeature, jint _type, jstring _key, jint _keyType)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    const char *nativeKey = (*env)->GetStringUTFChars(env, _key, 0);
+    
+    error = nativeFeature->sendNetworkSettingsWifiSecurity (nativeFeature, _type, (char *)nativeKey, _keyType);
+
+    // cleanup
+    (*env)->ReleaseStringUTFChars(env, _key, nativeKey);
 
     return error;
 }

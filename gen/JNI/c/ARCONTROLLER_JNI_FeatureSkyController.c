@@ -151,6 +151,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureSkyController_nativeStaticGetKeySkyC
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureSkyController_nativeStaticGetKeySkyControllerSettingsStateProductVariantChangedVariant (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureSkyController_nativeStaticGetKeySkyControllerSkyControllerStateBatteryChangedPercent (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT);

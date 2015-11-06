@@ -48,6 +48,9 @@ public class ARFeatureMiniDrone
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT = ""; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = ""; /**< Key of the argument </code>motor</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
@@ -79,6 +82,9 @@ public class ARFeatureMiniDrone
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxRotationSpeedChangedMin ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxRotationSpeedChangedMax ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateWheelsChangedPresent ();
+    private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCurrent ();
+    private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMin ();
+    private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMax ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedMotor ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedType ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedSoftware ();
@@ -110,6 +116,7 @@ public class ARFeatureMiniDrone
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsWheels (long jFeature, byte present);
+    private native int nativeSendSpeedSettingsMaxHorizontalSpeed (long jFeature, float current);
     private native int nativeSendSettingsCutOutMode (long jFeature, byte enable);
     private native int nativeSendGPSControllerLatitudeForRun (long jFeature, double latitude);
     private native int nativeSendGPSControllerLongitudeForRun (long jFeature, double longitude);
@@ -143,6 +150,9 @@ public class ARFeatureMiniDrone
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxRotationSpeedChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxRotationSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT = nativeStaticGetKeyMiniDroneSpeedSettingsStateWheelsChangedPresent ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedMotor ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE = nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedSoftware ();
@@ -500,6 +510,20 @@ public class ARFeatureMiniDrone
             if(initOk == true)
             {
                 int nativeError = nativeSendSpeedSettingsWheels (jniFeature, _present);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxHorizontalSpeed (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendSpeedSettingsMaxHorizontalSpeed (jniFeature, _current);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

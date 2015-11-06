@@ -92,6 +92,7 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = ""; /**< Key of the argument </code>motor_number</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
@@ -209,6 +210,7 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedType ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedBand ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedChannel ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedType ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedSoftware ();
@@ -262,14 +264,14 @@ public class ARFeatureARDrone3
 
     private native int nativeSendPilotingFlatTrim (long jFeature);
     private native int nativeSendPilotingTakeOff (long jFeature);
-    private native int nativeSendPilotingPCMD (long jFeature, byte flag, byte roll, byte pitch, byte yaw, byte gaz, float psi);
-    private native int nativeSetPilotingPCMD (long jFeature, byte flag, byte roll, byte pitch, byte yaw, byte gaz, float psi);
+    private native int nativeSendPilotingPCMD (long jFeature, byte flag, byte roll, byte pitch, byte yaw, byte gaz, int timestampAndSeqNum);
+    private native int nativeSetPilotingPCMD (long jFeature, byte flag, byte roll, byte pitch, byte yaw, byte gaz, int timestampAndSeqNum);
     private native int nativeSetPilotingPCMDFlag (long jFeature, byte flag);
     private native int nativeSetPilotingPCMDRoll (long jFeature, byte roll);
     private native int nativeSetPilotingPCMDPitch (long jFeature, byte pitch);
     private native int nativeSetPilotingPCMDYaw (long jFeature, byte yaw);
     private native int nativeSetPilotingPCMDGaz (long jFeature, byte gaz);
-    private native int nativeSetPilotingPCMDPsi (long jFeature, float psi);
+    private native int nativeSetPilotingPCMDTimestampAndSeqNum (long jFeature, int timestampAndSeqNum);
     private native int nativeSendPilotingLanding (long jFeature);
     private native int nativeSendPilotingEmergency (long jFeature);
     private native int nativeSendPilotingNavigateHome (long jFeature, byte start);
@@ -298,6 +300,7 @@ public class ARFeatureARDrone3
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
     private native int nativeSendSpeedSettingsOutdoor (long jFeature, byte outdoor);
     private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
+    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, int type, String key, int keyType);
     private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, int type);
     private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, int type);
     private native int nativeSendPictureSettingsExpositionSelection (long jFeature, float value);
@@ -384,6 +387,7 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedBand ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedChannel ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedSoftware ();
@@ -509,28 +513,28 @@ public class ARFeatureARDrone3
         return error;
     }
     
-    public ARCONTROLLER_ERROR_ENUM sendPilotingPCMD (byte _flag, byte _roll, byte _pitch, byte _yaw, byte _gaz, float _psi)
+    public ARCONTROLLER_ERROR_ENUM sendPilotingPCMD (byte _flag, byte _roll, byte _pitch, byte _yaw, byte _gaz, int _timestampAndSeqNum)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingPCMD (jniFeature, _flag, _roll, _pitch, _yaw, _gaz, _psi);
+                int nativeError = nativeSendPilotingPCMD (jniFeature, _flag, _roll, _pitch, _yaw, _gaz, _timestampAndSeqNum);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
-    public ARCONTROLLER_ERROR_ENUM setPilotingPCMD (byte _flag, byte _roll, byte _pitch, byte _yaw, byte _gaz, float _psi)
+    public ARCONTROLLER_ERROR_ENUM setPilotingPCMD (byte _flag, byte _roll, byte _pitch, byte _yaw, byte _gaz, int _timestampAndSeqNum)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSetPilotingPCMD (jniFeature, _flag, _roll, _pitch, _yaw, _gaz, _psi);
+                int nativeError = nativeSetPilotingPCMD (jniFeature, _flag, _roll, _pitch, _yaw, _gaz, _timestampAndSeqNum);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -607,14 +611,14 @@ public class ARFeatureARDrone3
         return error;
     }
     
-    public ARCONTROLLER_ERROR_ENUM setPilotingPCMDPsi (float _psi)
+    public ARCONTROLLER_ERROR_ENUM setPilotingPCMDTimestampAndSeqNum (int _timestampAndSeqNum)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSetPilotingPCMDPsi (jniFeature, _psi);
+                int nativeError = nativeSetPilotingPCMDTimestampAndSeqNum (jniFeature, _timestampAndSeqNum);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1007,6 +1011,20 @@ public class ARFeatureARDrone3
             if(initOk == true)
             {
                 int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendNetworkSettingsWifiSecurity (ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_TYPE_ENUM _type, String _key, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_KEYTYPE_ENUM _keyType)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type.getValue(), _key, _keyType.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

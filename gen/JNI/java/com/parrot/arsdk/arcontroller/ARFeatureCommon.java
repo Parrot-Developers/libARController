@@ -97,6 +97,7 @@ public class ARFeatureCommon
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE = ""; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_INTENSITY = ""; /**< Key of the argument </code>intensity</code> of class <code>ChargerState</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME = ""; /**< Key of the argument </code>fullChargingTime</code> of class <code>ChargerState</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID = ""; /**< Key of the argument </code>runId</code> of class <code>RunState</code> in feature <code>Common</code> */
 
     private static native String nativeStaticGetKeyCommonNetworkEventDisconnectionCause ();
     private static native String nativeStaticGetKeyCommonSettingsStateProductNameChangedName ();
@@ -169,6 +170,7 @@ public class ARFeatureCommon
     private static native String nativeStaticGetKeyCommonChargerStateChargingInfoRate ();
     private static native String nativeStaticGetKeyCommonChargerStateChargingInfoIntensity ();
     private static native String nativeStaticGetKeyCommonChargerStateChargingInfoFullChargingTime ();
+    private static native String nativeStaticGetKeyCommonRunStateRunIdChangedRunId ();
 
     private native int nativeSendNetworkDisconnect (long jFeature);
     private native int nativeSendSettingsAllSettings (long jFeature);
@@ -272,6 +274,7 @@ public class ARFeatureCommon
         ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE = nativeStaticGetKeyCommonChargerStateChargingInfoRate ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_INTENSITY = nativeStaticGetKeyCommonChargerStateChargingInfoIntensity ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME = nativeStaticGetKeyCommonChargerStateChargingInfoFullChargingTime ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID = nativeStaticGetKeyCommonRunStateRunIdChangedRunId ();
     }
     
     /**

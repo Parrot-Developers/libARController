@@ -43,6 +43,7 @@ public class ARFeatureSkyController
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME = ""; /**< Key of the argument </code>deviceName</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID = ""; /**< Key of the argument </code>deviceProductID</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER = ""; /**< Key of the argument </code>serialNumber</code> of class <code>SettingsState</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT = ""; /**< Key of the argument </code>variant</code> of class <code>SettingsState</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT = ""; /**< Key of the argument </code>percent</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED = ""; /**< Key of the argument </code>fixed</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
@@ -93,6 +94,7 @@ public class ARFeatureSkyController
     private static native String nativeStaticGetKeySkyControllerDeviceStateConnexionChangedDeviceName ();
     private static native String nativeStaticGetKeySkyControllerDeviceStateConnexionChangedDeviceProductID ();
     private static native String nativeStaticGetKeySkyControllerSettingsStateProductSerialChangedSerialNumber ();
+    private static native String nativeStaticGetKeySkyControllerSettingsStateProductVariantChangedVariant ();
     private static native String nativeStaticGetKeySkyControllerSkyControllerStateBatteryChangedPercent ();
     private static native String nativeStaticGetKeySkyControllerSkyControllerStateGpsFixChangedFixed ();
     private static native String nativeStaticGetKeySkyControllerSkyControllerStateGpsPositionChangedLatitude ();
@@ -179,6 +181,7 @@ public class ARFeatureSkyController
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME = nativeStaticGetKeySkyControllerDeviceStateConnexionChangedDeviceName ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID = nativeStaticGetKeySkyControllerDeviceStateConnexionChangedDeviceProductID ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER = nativeStaticGetKeySkyControllerSettingsStateProductSerialChangedSerialNumber ();
+        ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT = nativeStaticGetKeySkyControllerSettingsStateProductVariantChangedVariant ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT = nativeStaticGetKeySkyControllerSkyControllerStateBatteryChangedPercent ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED = nativeStaticGetKeySkyControllerSkyControllerStateGpsFixChangedFixed ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE = nativeStaticGetKeySkyControllerSkyControllerStateGpsPositionChangedLatitude ();

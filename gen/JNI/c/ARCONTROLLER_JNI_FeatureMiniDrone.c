@@ -181,6 +181,24 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDron
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCurrent (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedMotor (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR);
@@ -488,6 +506,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendSpeedSettingsWhe
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendSpeedSettingsWheels (nativeFeature, _present);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendSpeedSettingsMaxHorizontalSpeed (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _current)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendSpeedSettingsMaxHorizontalSpeed (nativeFeature, _current);
 
     return error;
 }
