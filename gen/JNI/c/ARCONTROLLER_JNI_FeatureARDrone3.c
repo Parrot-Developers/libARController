@@ -691,6 +691,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3C
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3CameraStateDefaultCameraOrientationTilt (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3CameraStateDefaultCameraOrientationPan (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3AntiflickeringStateElectricFrequencyChangedFrequency (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY);

@@ -27,12 +27,36 @@ public class ARFeatureCommonDebug
     private static String TAG = "ARFeatureCommonDebug";
     
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET = ""; /**< Key of the argument </code>packet</code> of class <code>StatsEvent</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID = ""; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL = ""; /**< Key of the argument </code>label</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE = ""; /**< Key of the argument </code>mode</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN = ""; /**< Key of the argument </code>range_min</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX = ""; /**< Key of the argument </code>range_max</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP = ""; /**< Key of the argument </code>range_step</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID = ""; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
 
     private static native String nativeStaticGetKeyCommonDebugStatsEventSendPacketPacket ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoListFlags ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoId ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoLabel ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoType ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoMode ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangemin ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangemax ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangestep ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoValue ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateListChangedId ();
+    private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateListChangedValue ();
 
     private native int nativeSendStatsSendPacket (long jFeature, String packet);
     private native int nativeSendStatsStartSendingPacketFromDrone (long jFeature, byte frequency, byte packetSize, int date);
     private native int nativeSendStatsStopSendingPacketFromDrone (long jFeature);
+    private native int nativeSendDebugSettingsGetAll (long jFeature);
+    private native int nativeSendDebugSettingsSet (long jFeature, short id, String value);
 
     private long jniFeature;
     private boolean initOk;
@@ -40,6 +64,17 @@ public class ARFeatureCommonDebug
     static
     {
         ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET = nativeStaticGetKeyCommonDebugStatsEventSendPacketPacket ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoListFlags ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoId ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoLabel ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoType ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoMode ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangemin ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangemax ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoRangestep ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE = nativeStaticGetKeyCommonDebugDebugSettingsStateInfoValue ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID = nativeStaticGetKeyCommonDebugDebugSettingsStateListChangedId ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE = nativeStaticGetKeyCommonDebugDebugSettingsStateListChangedValue ();
     }
     
     /**
@@ -123,6 +158,34 @@ public class ARFeatureCommonDebug
             if(initOk == true)
             {
                 int nativeError = nativeSendStatsStopSendingPacketFromDrone (jniFeature);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendDebugSettingsGetAll ()
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendDebugSettingsGetAll (jniFeature);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendDebugSettingsSet (short _id, String _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendDebugSettingsSet (jniFeature, _id, _value);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

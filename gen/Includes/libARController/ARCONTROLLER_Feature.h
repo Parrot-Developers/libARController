@@ -240,6 +240,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTake
 
 /**
  * @brief Send a command <code>MoveBy</code> of class <code>Piloting</code> in feature <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Move the drone to a relative position and rotate heading by a given angle
  * The frame is horizontal and relative to the current drone orientation:
  * - X is front
@@ -479,6 +480,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxHorizontalSpeed</code> of class <code>PilotingSettings</code> in feature <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum horizontal speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal speed [m/s]
@@ -488,6 +490,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxVerticalSpeed</code> of class <code>PilotingSettings</code> in feature <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum vertical speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical speed [m/s]
@@ -497,6 +500,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxHorizontalAcceleration</code> of class <code>PilotingSettings</code> in feature <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum horizontal acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal acceleration [m/s2]
@@ -506,6 +510,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxVerticalAcceleration</code> of class <code>PilotingSettings</code> in feature <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum vertical acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical acceleration [m/s2]
@@ -515,6 +520,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxRotationSpeed</code> of class <code>PilotingSettings</code> in feature <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum yaw rotation speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum yaw rotation speed [rad/s]
@@ -847,6 +853,8 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNH
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
 
 /**
  * class: Antiflickering 
@@ -2238,6 +2246,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMa
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t present);
 
 /**
+ * @brief Send a command <code>MaxHorizontalSpeed</code> of class <code>SpeedSettings</code> in feature <code>MiniDrone</code>
+ * Set Max Horizontal speed (only used in case where PilotingSettings_MaxTilt is not used like in hydrofoil mode)
+ * @param feature feature owning the commands
+ * @param current Current max Horizontal speed in m/s
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
  * class: SpeedSettingsState 
  * Speed Settings state from product
  */
@@ -2249,6 +2266,9 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXR
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
 
 /**
  * class: Settings 
@@ -2361,6 +2381,7 @@ struct ARCONTROLLER_FEATURE_MiniDrone_t
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed_t sendSpeedSettingsMaxVerticalSpeed;
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t sendSpeedSettingsWheels;
+    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed_t sendSpeedSettingsMaxHorizontalSpeed;
     ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode_t sendSettingsCutOutMode;
     ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun_t sendGPSControllerLatitudeForRun;
     ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t sendGPSControllerLongitudeForRun;
@@ -3888,6 +3909,48 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSend
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET; /**< Key of the argument </code>packet</code> of class <code>StatsEvent</code> in feature <code>CommonDebug</code> */
 
 /**
+ * class: DebugSettings 
+ * Debug custom commands sent to the drone
+ */
+
+
+/**
+ * @brief Send a command <code>GetAll</code> of class <code>DebugSettings</code> in feature <code>CommonDebug</code>
+ * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * @brief Send a command <code>Set</code> of class <code>DebugSettings</code> in feature <code>CommonDebug</code>
+ * Change setting value.
+ * Cmd sent by controller to change a writable setting.
+ * @param feature feature owning the commands
+ * @param id Setting Id.
+ * @param value New setting value (string encoded).
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value);
+
+/**
+ * class: DebugSettingsState 
+ * Debug custom commands sent by the drone
+ */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS; /**< Key of the argument </code>listFlags</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL; /**< Key of the argument </code>label</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE; /**< Key of the argument </code>type</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE; /**< Key of the argument </code>mode</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN; /**< Key of the argument </code>range_min</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX; /**< Key of the argument </code>range_max</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP; /**< Key of the argument </code>range_step</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+
+/**
  * @brief Feature controller allow to send command related of commonDebug Feature.
  * All debug commands shared between all projects
  */
@@ -3896,6 +3959,8 @@ struct ARCONTROLLER_FEATURE_CommonDebug_t
     ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t sendStatsSendPacket;
     ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t sendStatsStartSendingPacketFromDrone;
     ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t sendStatsStopSendingPacketFromDrone;
+    ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll_t sendDebugSettingsGetAll;
+    ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet_t sendDebugSettingsSet;
     ARCONTROLLER_FEATURE_CommonDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_CommonDebug_t */
 };
 

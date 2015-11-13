@@ -204,6 +204,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTakeOffMode (A
 
 /**
  * @brief Send a command <code>MoveBy</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Move the drone to a relative position and rotate heading by a given angle
  * The frame is horizontal and relative to the current drone orientation:
  * - X is front
@@ -573,6 +574,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsNoFlyOverM
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxHorizontalSpeed</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum horizontal speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal speed [m/s]
@@ -582,6 +584,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxVerticalSpeed</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum vertical speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical speed [m/s]
@@ -591,6 +594,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxHorizontalAcceleration</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum horizontal acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal acceleration [m/s2]
@@ -600,6 +604,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxVerticalAcceleration</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum vertical acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical acceleration [m/s2]
@@ -609,6 +614,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxRotationSpeed</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
+ * Draft: this command is not implemented yet by the firmware
  * Set the maximum yaw rotation speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum yaw rotation speed [rad/s]
@@ -1177,6 +1183,15 @@ void ARCONTROLLER_FEATURE_ARDrone3_GPSSettingsStateReturnHomeDelayChangedCallbac
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_CameraStateOrientationCallback (int8_t _tilt, int8_t _pan, void *customData);
+
+/**
+ * @brief callback used when the command <code>DefaultCameraOrientation</code> of class <code>CameraState is decoded
+ * @param feature The feature controller registred
+ * @param tilt Tilt value (in degree)
+ * @param pan Pan value (in degree)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_CameraStateDefaultCameraOrientationCallback (int8_t _tilt, int8_t _pan, void *customData);
 
 /**
  * class: Antiflickering 
@@ -2528,6 +2543,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationS
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t present);
 
 /**
+ * @brief Send a command <code>MaxHorizontalSpeed</code> of class <code>SpeedSettings</code> in project <code>MiniDrone</code>
+ * Set Max Horizontal speed (only used in case where PilotingSettings_MaxTilt is not used like in hydrofoil mode)
+ * @param feature feature owning the commands
+ * @param current Current max Horizontal speed in m/s
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
  * class: SpeedSettingsState 
  * Speed Settings state from product
  */
@@ -2559,6 +2583,16 @@ void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxRotationSpeedChangedCal
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateWheelsChangedCallback (uint8_t _present, void *customData);
+
+/**
+ * @brief callback used when the command <code>MaxHorizontalSpeedChanged</code> of class <code>SpeedSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param current Current max horizontal speed in m/s
+ * @param min Range min of horizontal speed
+ * @param max Range max of horizontal speed
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxHorizontalSpeedChangedCallback (float _current, float _min, float _max, void *customData);
 
 /**
  * class: Settings 
@@ -4368,6 +4402,63 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketF
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _packet, void *customData);
+
+/**
+ * class: DebugSettings 
+ * Debug custom commands sent to the drone
+ */
+
+/**
+ * @brief Send a command <code>GetAll</code> of class <code>DebugSettings</code> in project <code>CommonDebug</code>
+ * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+
+/**
+ * @brief Send a command <code>Set</code> of class <code>DebugSettings</code> in project <code>CommonDebug</code>
+ * Change setting value.
+ * Cmd sent by controller to change a writable setting.
+ * @param feature feature owning the commands
+ * @param id Setting Id.
+ * @param value New setting value (string encoded).
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value);
+
+/**
+ * class: DebugSettingsState 
+ * Debug custom commands sent by the drone
+ */
+
+/**
+ * @brief callback used when the command <code>Info</code> of class <code>DebugSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param listFlags List entry attribute Bitfield.
+ * @param listFlags 0x01: First: indicate it's the first element of the list.
+ * @param listFlags 0x02: Last:  indicate it's the last element of the list.
+ * @param listFlags 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
+ * @param id Setting Id.
+ * @param label Setting displayed label (single line).
+ * @param type Setting type.
+ * @param mode Setting mode.
+ * @param range_min Setting range minimal value for decimal type.
+ * @param range_max Setting range max value for decimal type.
+ * @param range_step Setting step value for decimal type
+ * @param value Current Setting value (string encoded).
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData);
+
+/**
+ * @brief callback used when the command <code>ListChanged</code> of class <code>DebugSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param id Setting Id.
+ * @param value New setting value (string encoded).
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uint16_t _id, char * _value, void *customData);
 
 
 /*******************************
