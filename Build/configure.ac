@@ -113,7 +113,6 @@ AC_HEADER_STDC
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
-AC_CHECK_FUNCS([asprintf], [], [AC_MSG_ERROR(asprintf function is required)])
 
 # Generate libtool version info number
 if test x"$sover" = x"yes"; then
