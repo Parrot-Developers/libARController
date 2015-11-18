@@ -354,6 +354,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_DeleteExtension (ARCONTROLLER_Device_t *
         switch (deviceController->privatePart->extensionProduct)
         {
             case ARDISCOVERY_PRODUCT_ARDRONE:
+            case ARDISCOVERY_PRODUCT_BEBOP_2:
                 ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
                 ARCONTROLLER_FEATURE_ARDrone3_Delete (&(deviceController->aRDrone3));
                 ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
@@ -3272,6 +3273,7 @@ void *ARCONTROLLER_Device_ExtensionStopRun (void *data)
         switch (deviceController->privatePart->extensionProduct)
         {
             case ARDISCOVERY_PRODUCT_ARDRONE:
+            case ARDISCOVERY_PRODUCT_BEBOP_2:
                 if (error == ARCONTROLLER_OK && deviceController->aRDrone3 != NULL)
                 {
                     error = ARCONTROLLER_Device_UnregisterCallbacks (deviceController, deviceController->aRDrone3);
@@ -3978,6 +3980,7 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
     switch (deviceController->privatePart->extensionProduct)
     {
         case ARDISCOVERY_PRODUCT_ARDRONE:
+        case ARDISCOVERY_PRODUCT_BEBOP_2:
             // TODO: see how to automate this (product AND features)
             ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
             deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &error);
