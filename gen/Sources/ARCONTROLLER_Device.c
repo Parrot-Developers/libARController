@@ -1145,11 +1145,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
             error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
     }
     
     if (deviceController->skyControllerDebug != NULL)
@@ -2357,12 +2352,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-            removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
         }
