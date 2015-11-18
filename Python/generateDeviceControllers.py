@@ -943,6 +943,10 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('        {\n')
     cFile.write ('            if ((*deviceController)->privatePart != NULL)\n')
     cFile.write ('            {\n')
+    cFile.write ('                // delete all extension related vars\n')
+    cFile.write ('                ARCONTROLLER_Device_DeleteExtension(*deviceController);\n')
+    cFile.write ('                \n')
+    
     cFile.write ('                ARSAL_Mutex_Destroy (&((*deviceController)->privatePart->mutex));\n')
     cFile.write ('                \n')
     
@@ -954,10 +958,6 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('                    // -- Delete all callback in array --\n')
     cFile.write ('                    ARCONTROLLER_Dictionary_DeleteCallbackList(&((*deviceController)->privatePart->commandCallbacks));\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
-
-    cFile.write ('                // delete all extension related vars\n')
-    cFile.write ('                ARCONTROLLER_Device_DeleteExtension(*deviceController);\n')
     cFile.write ('                \n')
 
     cFile.write ('                if ((*deviceController)->privatePart->stateChangedCallbacks != NULL)\n')
