@@ -263,6 +263,9 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
         {
             if ((*deviceController)->privatePart != NULL)
             {
+                // delete all extension related vars
+                ARCONTROLLER_Device_DeleteExtension(*deviceController);
+                
                 ARSAL_Mutex_Destroy (&((*deviceController)->privatePart->mutex));
                 
                 ARSAL_Sem_Destroy (&((*deviceController)->privatePart->initSem));
@@ -272,9 +275,6 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
                     // -- Delete all callback in array --
                     ARCONTROLLER_Dictionary_DeleteCallbackList(&((*deviceController)->privatePart->commandCallbacks));
                 }
-                
-                // delete all extension related vars
-                ARCONTROLLER_Device_DeleteExtension(*deviceController);
                 
                 if ((*deviceController)->privatePart->stateChangedCallbacks != NULL)
                 {
