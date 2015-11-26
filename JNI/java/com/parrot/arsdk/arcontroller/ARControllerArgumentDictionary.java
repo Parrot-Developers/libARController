@@ -150,12 +150,13 @@ public class ARControllerArgumentDictionary<V> implements Map<String, V> /*Parce
                         case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I16:
                         case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32:
                         case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I32:
-                        case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U64:
-                        case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I64:
                         case ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM:
                             ret = (V) new Integer(nativeGetArgValueInt (nativeArg));
                             break;
-                        
+                        case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U64:
+                        case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I64:
+                            ret = (V) new Long(nativeGetArgValueLong (nativeArg));
+                            break;
                         case ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT:
                         case ARCONTROLLER_DICTIONARY_VALUE_TYPE_DOUBLE:
                             ret = (V) new Double(nativeGetArgValueDouble (nativeArg));
