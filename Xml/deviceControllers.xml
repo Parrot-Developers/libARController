@@ -49,8 +49,48 @@
         
     </ARController_Device>
     
+    <ARController_Device name="JumpingSumoEvoLight" product="JS_EVO_LIGHT">
+        Jumping Sumo Evo light project
+        
+        <feature name="common"/>
+        <feature name="JumpingSumo"/>
+        
+    </ARController_Device>
+    
+    <ARController_Device name="JumpingSumoEvoRace" product="JS_EVO_RACE">
+        Jumping Sumo Evo race project
+        
+        <feature name="common"/>
+        <feature name="JumpingSumo"/>
+        
+    </ARController_Device>
+    
     <ARController_Device name="RollingSpider" product="MINIDRONE">
         Rolling Spider project
+        
+        <feature name="common"/>
+        <feature name="MiniDrone"/>
+        
+    </ARController_Device>
+    
+    <ARController_Device name="AirborneNight" product="MINIDRONE_EVO_LIGHT">
+        Airborne night project
+        
+        <feature name="common"/>
+        <feature name="MiniDrone"/>
+        
+    </ARController_Device>
+    
+    <ARController_Device name="AirborneCargo" product="MINIDRONE_EVO_BRICK">
+        Airborne brick project
+        
+        <feature name="common"/>
+        <feature name="MiniDrone"/>
+        
+    </ARController_Device>
+    
+    <ARController_Device name="RollingSpider" product="MINIDRONE_EVO_HYDROFOIL">
+        Hydrofoil project
         
         <feature name="common"/>
         <feature name="MiniDrone"/>
