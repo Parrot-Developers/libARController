@@ -190,7 +190,72 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
                 
                 break;
             
+            case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->jumpingSumo = ARCONTROLLER_FEATURE_JumpingSumo_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
+            case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->jumpingSumo = ARCONTROLLER_FEATURE_JumpingSumo_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
             case ARDISCOVERY_PRODUCT_MINIDRONE:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->miniDrone = ARCONTROLLER_FEATURE_MiniDrone_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
+            case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_LIGHT:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->miniDrone = ARCONTROLLER_FEATURE_MiniDrone_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
+            case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_BRICK:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->miniDrone = ARCONTROLLER_FEATURE_MiniDrone_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
+            case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_HYDROFOIL:
                 if (localError == ARCONTROLLER_OK)
                 {
                     deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
@@ -312,7 +377,42 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
                         
                         break;
                     
+                    case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_JumpingSumo_Delete (&((*deviceController)->jumpingSumo));
+                        
+                        break;
+                    
+                    case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_JumpingSumo_Delete (&((*deviceController)->jumpingSumo));
+                        
+                        break;
+                    
                     case ARDISCOVERY_PRODUCT_MINIDRONE:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_MiniDrone_Delete (&((*deviceController)->miniDrone));
+                        
+                        break;
+                    
+                    case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_LIGHT:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_MiniDrone_Delete (&((*deviceController)->miniDrone));
+                        
+                        break;
+                    
+                    case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_BRICK:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_MiniDrone_Delete (&((*deviceController)->miniDrone));
+                        
+                        break;
+                    
+                    case ARDISCOVERY_PRODUCT_MINIDRONE_EVO_HYDROFOIL:
                         ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
                         
                         ARCONTROLLER_FEATURE_MiniDrone_Delete (&((*deviceController)->miniDrone));
