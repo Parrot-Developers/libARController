@@ -448,9 +448,10 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Register callback for each command received.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @param[in] specificFeature The feature to register. If null, register callbacks of all features.\n')
     hPrivFile.write (' * @return executing error.\n')
     hPrivFile.write (' */\n')
-    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController);\n')
+    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController, void* specificFeature);\n')
     hPrivFile.write ('\n')
     
     hPrivFile.write ('/**\n')
@@ -1040,7 +1041,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController, void* specificFeature)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Register the Callbacks --\n')
     cFile.write ('    \n')
@@ -1057,7 +1058,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
     
     for feature in allFeatures:
-        cFile.write ('    if (deviceController->'+ARUncapitalize(feature.name)+' != NULL)\n')
+        cFile.write ('    if ((deviceController->'+ARUncapitalize(feature.name)+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(feature.name)+')))\n')
         cFile.write ('    {\n')
         for cl in feature.classes:
             
@@ -1761,7 +1762,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' (deviceController);\n')
+    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' (deviceController, NULL);\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
     
@@ -2561,8 +2562,11 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            // TODO: see how to automate this (product AND features)\n')
     cFile.write ('            ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('            deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &error);\n')
+    cFile.write ('            if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('            {\n')
+    cFile.write ('                error = ARCONTROLLER_Device_RegisterCallbacks (deviceController, deviceController->aRDrone3);\n')
+    cFile.write ('            }\n')
     cFile.write ('            ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('            ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);\n')
     cFile.write ('            break;\n')
     cFile.write ('        \n')
     cFile.write ('        default:\n')
@@ -2579,6 +2583,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ExtensionStartRun : %s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
+    cFile.write ('    ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);\n')
     cFile.write ('    \n')
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')
