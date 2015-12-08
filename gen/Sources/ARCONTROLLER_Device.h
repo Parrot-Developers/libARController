@@ -111,9 +111,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
 /**
  * @brief Register callback for each command received.
  * @param deviceController The device controller.
+ * @param[in] specificFeature The feature to register. If null, register callbacks of all features.
  * @return executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController, void* specificFeature);
 
 /**
  * @brief Unregister callback for each command received.

@@ -496,7 +496,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_DeleteExtension (ARCONTROLLER_Device_t *
     }
     return error;
 }
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController, void* specificFeature)
 {
     // -- Register the Callbacks --
     
@@ -509,7 +509,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
     }
     // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
-    if (deviceController->aRDrone3 != NULL)
+    if ((deviceController->aRDrone3 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -833,7 +833,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->aRDrone3Debug != NULL)
+    if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -847,7 +847,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->jumpingSumo != NULL)
+    if ((deviceController->jumpingSumo != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumo)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -996,7 +996,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->jumpingSumoDebug != NULL)
+    if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1005,7 +1005,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->miniDrone != NULL)
+    if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1094,11 +1094,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->miniDroneDebug != NULL)
+    if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
     {
     }
     
-    if (deviceController->skyController != NULL)
+    if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1282,11 +1282,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->skyControllerDebug != NULL)
+    if ((deviceController->skyControllerDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyControllerDebug)))
     {
     }
     
-    if (deviceController->common != NULL)
+    if ((deviceController->common != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->common)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1535,7 +1535,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->commonDebug != NULL)
+    if ((deviceController->commonDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->commonDebug)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1554,7 +1554,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->pro != NULL)
+    if ((deviceController->pro != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->pro)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -3456,7 +3456,7 @@ void *ARCONTROLLER_Device_StartRun (void *data)
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
     {
-        error = ARCONTROLLER_Device_RegisterCallbacks (deviceController);
+        error = ARCONTROLLER_Device_RegisterCallbacks (deviceController, NULL);
     }
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
@@ -4269,8 +4269,11 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
             // TODO: see how to automate this (product AND features)
             ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
             deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &error);
+            if (error == ARCONTROLLER_OK)
+            {
+                error = ARCONTROLLER_Device_RegisterCallbacks (deviceController, deviceController->aRDrone3);
+            }
             ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
-            ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);
             break;
         
         default:
@@ -4287,6 +4290,7 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
     {
         ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ExtensionStartRun : %s", ARCONTROLLER_Error_ToString (error));
     }
+    ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);
     
     return NULL;
 }
