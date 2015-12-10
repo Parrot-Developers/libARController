@@ -102,6 +102,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
             deviceController->privatePart->startCancelled = 0;
             // Video Part
             deviceController->privatePart->hasVideo = 0;
+            deviceController->privatePart->videoSpsPpsCallback = NULL;
             deviceController->privatePart->videoReceiveCallback = NULL;
             deviceController->privatePart->videoTimeoutCallback = NULL;
             deviceController->privatePart->videoReceiveCustomData = NULL;
@@ -2949,9 +2950,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set Video receive callback --
+    
+    return ARCONTROLLER_Device_SetVideoCallbacks (deviceController, NULL, receiveFrameCallback, timeoutFrameCallback, customData);
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+{
+    // -- Set Video callbacks --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int locked = 0;
@@ -2974,6 +2982,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_De
     {
         if (deviceController->privatePart->hasVideo)
         {
+            deviceController->privatePart->videoSpsPpsCallback = spsPpsCallback;
             deviceController->privatePart->videoReceiveCallback = receiveFrameCallback;
             deviceController->privatePart->videoTimeoutCallback = timeoutFrameCallback;
             deviceController->privatePart->videoReceiveCustomData = customData;
@@ -3628,7 +3637,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_StartNetwork (ARCONTROLLER_Device_t *dev
         // If device has video
         if (deviceController->privatePart->hasVideo)
         {
-            error = ARCONTROLLER_Network_SetVideoReceiveCallback (deviceController->privatePart->networkController, deviceController->privatePart->videoReceiveCallback, deviceController->privatePart->videoTimeoutCallback, deviceController->privatePart->videoReceiveCustomData);
+            error = ARCONTROLLER_Network_SetVideoReceiveCallback (deviceController->privatePart->networkController, deviceController->privatePart->videoSpsPpsCallback, deviceController->privatePart->videoReceiveCallback, deviceController->privatePart->videoTimeoutCallback, deviceController->privatePart->videoReceiveCustomData);
         }
     }
     // No else: skipped by an error
@@ -4059,6 +4068,14 @@ void ARCONTROLLER_Device_DictionaryChangedCallback (eARCONTROLLER_DICTIONARY_KEY
                 ARCONTROLLER_Device_OnSkyControllerConnectionChangedReceived (deviceController);
                 break;
             
+            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:
+                ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (deviceController, elementDictionary);
+                break;
+            
+            case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:
+                ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (deviceController, elementDictionary);
+                break;
+            
             default :
                 //Do Nothing
                 break;
@@ -4293,6 +4310,146 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
     ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);
     
     return NULL;
+}
+
+void ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
+{
+    // -- ARDrone3 video enable changed --
+
+    // Local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;
+    eARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL)||
+        (elementDictionary == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the command received in the device controller
+        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);
+        
+        if (element == NULL)
+        {
+            error = ARCONTROLLER_ERROR_NO_ELEMENT;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the value
+        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+        
+        if (arg != NULL)
+        {
+            videoState = arg->value.I32;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_ARGUMENTS;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "ergument is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (videoState)
+        {
+            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:
+                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:
+                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:
+                //Do nothing
+                break;
+                
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);
+                break;
+        }
+    }
+}
+
+void ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
+{
+    // -- Jumping Sumo video enable changed --
+
+    // Local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;
+    eARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL)||
+        (elementDictionary == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the command received in the device controller
+        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);
+        
+        if (element == NULL)
+        {
+            error = ARCONTROLLER_ERROR_NO_ELEMENT;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the value
+        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+        
+        if (arg != NULL)
+        {
+            videoState = arg->value.I32;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_ARGUMENTS;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "ergument is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (videoState)
+        {
+            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:
+                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:
+                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:
+                //Do nothing
+                break;
+                
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);
+                break;
+        }
+    }
 }
 
 eARDISCOVERY_ERROR ARCONTROLLER_Device_SendJsonCallback (json_object *jsonObj, void *customData)

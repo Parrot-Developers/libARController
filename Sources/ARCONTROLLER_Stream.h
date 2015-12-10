@@ -29,7 +29,7 @@
     SUCH DAMAGE.
 */
 /**
- * @file ARNETWORK_Stream.h
+ * @file ARCONTROLLER_Stream.h
  * @brief ARCONTROLLER_Stream allow to operate ARStream for receive a stream.
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
@@ -41,6 +41,10 @@
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARStream/ARStream.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
+
+#include <libARController/ARCONTROLLER_Stream1.h>
+#include <libARController/ARCONTROLLER_Stream2.h>
+
 #include <libARController/ARCONTROLLER_Stream.h>
 
 #define ARCONTROLLER_STREAM_TAG "ARCONTROLLER_Stream"
@@ -53,31 +57,15 @@
  */
 struct ARCONTROLLER_Stream_t
 {
-    ARDISCOVERY_NetworkConfiguration_t *networkConfiguration; /**< the networkConfiguration of the device*/
-    ARSTREAM_Reader_t *streamReader; /**< reader of the stream */
-    int fragmentSize; /**< Size maximum of the stream fragment */
-    int maxNumberOfFragement; /**< Number maximum of stream fragment */
-    int maxAckInterval; /**< Maximum of acknowledge interval on the stream */
-    ARSAL_Thread_t dataThread; /**< video receiver thread */
-    ARSAL_Thread_t ackThread; /**< acknowledge send thread */
-    ARSAL_Thread_t readerThread; /**< thread to read the ready frames */
     int isRunning; /**< 0 if the stream is stopped ; otherwide the stream is running */
-    ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
-    ARCONTROLLER_StreamQueue_t *readyQueue; /**< ready frames */
-    ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback; /**< callback when a frame is received */
-    ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback; /**< callback when timeout */
-    void *receiveFrameCustomData;  /**< custom data to send to callbacks */
+    
+    //stream 1
+    ARCONTROLLER_Stream1_t *stream1Controller;
+    
+    //stream 2
+    ARCONTROLLER_Stream2_t *stream2Controller;
+    
 };
-
-
-// TODO ADD !!!!!!!!!
-eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
-
-// TODO ADD !!!!!!!!!
-eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson(ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
-
-// TODO ADD !!!!!!!!!
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_InitStreamBuffers (ARCONTROLLER_Stream_t *streamController);
 
 uint8_t* ARCONTROLLER_Stream_FrameCompleteCallback (eARSTREAM_READER_CAUSE cause, uint8_t *framePointer, uint32_t frameSize, int numberOfSkippedFrames, int isFlushFrame, uint32_t *newBufferCapacity, void *custom);
 

@@ -10,6 +10,8 @@ HEADER_FILES                                                =   ../Includes/libA
                                                                 ../Includes/libARController/ARController.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Network.h \
                                                                 ../Includes/libARController/ARCONTROLLER_Stream.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Stream1.h \
+                                                                ../Includes/libARController/ARCONTROLLER_Stream2.h \
                                                                 ../Includes/libARController/ARCONTROLLER_StreamPool.h \
                                                                 ../Includes/libARController/ARCONTROLLER_StreamQueue.h \
                                                                 ../gen/Includes/libARController/ARCONTROLLER_Device.h \
@@ -29,6 +31,10 @@ SOURCE_FILES                                                =   $(HEADER_FILES) 
                                                                 ../Sources/ARCONTROLLER_StreamPool.h \
                                                                 ../Sources/ARCONTROLLER_StreamQueue.c \
                                                                 ../Sources/ARCONTROLLER_StreamQueue.h \
+                                                                ../Sources/ARCONTROLLER_Stream1.c \
+                                                                ../Sources/ARCONTROLLER_Stream1.h \
+                                                                ../Sources/ARCONTROLLER_Stream2.c \
+                                                                ../Sources/ARCONTROLLER_Stream2.h \
                                                                 ../gen/Includes/libARController/ARCONTROLLER_Device.h \
                                                                 ../gen/Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h \
                                                                 ../gen/Includes/libARController/ARCONTROLLER_Feature.h \
