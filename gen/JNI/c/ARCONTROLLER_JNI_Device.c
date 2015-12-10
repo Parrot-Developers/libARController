@@ -51,6 +51,7 @@ static JavaVM *ARCONTROLLER_JNIDEVICE_VM; /**< reference to the java virtual mac
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED;
+static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_SPS_PPS_CALLBACK;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK;
 
@@ -66,6 +67,7 @@ void ARCONTROLLER_JNI_Device_StateChanged (eARCONTROLLER_DEVICE_STATE newState, 
 void ARCONTROLLER_JNI_Device_ExtensionStateChanged (eARCONTROLLER_DEVICE_STATE newState, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error, void *customData);
 void ARCONTROLLER_JNI_Device_CommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
 
+int ARCONTROLLER_JNI_Device_SpsPpsCallback (uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *userPtr);
 void ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 void ARCONTROLLER_JNI_Device_TimeoutFrameCallback (void *customData);
 
@@ -107,6 +109,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStaticInit (JNIEnv *
     
     ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onStateChanged", "(II)V");
     ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onExtensionStateChanged", "(IILjava/lang/String;I)V");
+    ARCONTROLLER_JNIDEVICE_METHOD_SPS_PPS_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "spsPpsCallback", "(JIJI)V");
     ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVED_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "didReceiveFrameCallback", "(JIIII)V");
     ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "timeoutFrameCallback", "()V");    
     ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onCommandReceived", "(IJ)V");    
@@ -156,7 +159,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeNew (JNIEnv *env, jo
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Device_SetVideoReceiveCallback (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);
+        error = ARCONTROLLER_Device_SetVideoCallbacks (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_SpsPpsCallback, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);
         if(error == ARCONTROLLER_ERROR_NO_VIDEO)
         {
             ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_JNIDEVICE_TAG, "This device has no video stream");
@@ -641,6 +644,58 @@ void ARCONTROLLER_JNI_Device_CommandReceived (eARCONTROLLER_DICTIONARY_KEY comma
     {
         (*ARCONTROLLER_JNIDEVICE_VM)->DetachCurrentThread(ARCONTROLLER_JNIDEVICE_VM);
     }
+}
+
+int ARCONTROLLER_JNI_Device_SpsPpsCallback (uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *customData)
+{
+    
+    // local declarations
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    JNIEnv* env = NULL;
+    jint getEnvResult = JNI_OK;
+    jint attachResult = 1;
+    jlong jspsBuffer = (intptr_t) spsBuffer;
+    jlong jppsBuffer = (intptr_t) ppsBuffer;
+    
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;
+    
+    if ((jniDeviceController == NULL) ||
+        (jniDeviceController->jDeviceController == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        // get the environment
+        getEnvResult = (*ARCONTROLLER_JNIDEVICE_VM)->GetEnv(ARCONTROLLER_JNIDEVICE_VM, (void **) &env, JNI_VERSION_1_6);
+        
+        // if no environment then attach the thread to the virtual machine
+        if (getEnvResult == JNI_EDETACHED)
+        {
+            ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_JNIDEVICE_TAG, "attach the thread to the virtual machine ...");
+            attachResult = (*ARCONTROLLER_JNIDEVICE_VM)->AttachCurrentThread(ARCONTROLLER_JNIDEVICE_VM, &env, NULL);
+        }
+        
+        if (env == NULL)
+        {
+            localError = ARCONTROLLER_ERROR_JNI_ENV;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        // java spsPpsCallback callback
+        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_SPS_PPS_CALLBACK, jspsBuffer, spsSize, jppsBuffer, ppsSize);
+    }
+    
+    // if the thread has been attached then detach the thread from the virtual machine
+    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))
+    {
+        (*ARCONTROLLER_JNIDEVICE_VM)->DetachCurrentThread(ARCONTROLLER_JNIDEVICE_VM);
+    }
+    
+    return 0;
 }
 
 void ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData)
