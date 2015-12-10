@@ -47,19 +47,27 @@
 #include <libARController/ARCONTROLLER_Frame.h>
 #include <libARController/ARCONTROLLER_StreamQueue.h>
 
-
 /**
  * @brief Callback when a frame is received.
  * @param[in] customData Data given at the registering of the callback.
  */
-typedef void (*ARNETWORKAL_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
+typedef void (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
+
+/**
+ * @brief SPS/PPS callback function.
+ * @param[in] spsBuffer Sequence Parameter Set of the stream.
+ * @param[in] spsSize Size of spsBuffer.
+ * @param[in] ppsBuffer Picture parameter Set of the stream.
+ * @param[in] ppsSize Size of ppsBuffer.
+ * @param[in] customData Data given at the registering of the callback.
+ */
+typedef int (*ARCONTROLLER_Stream_SpsPpsCallback_t) (uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *customData);
 
 /**
  * @brief Callback when timeout in frame receiving
  * @param[in] customData Data given at the registering of the callback.
  */
-typedef void (*ARNETWORKAL_Stream_TimeoutFrameCallback_t) (void *customData);
-
+typedef void (*ARCONTROLLER_Stream_TimeoutFrameCallback_t) (void *customData);
 
 /**
  * @brief Stream controller allow to operate ARStream for receive a stream.
@@ -75,7 +83,7 @@ typedef struct ARCONTROLLER_Stream_t ARCONTROLLER_Stream_t;
  * @return The new Stream Controller.
  * @see ARCONTROLLER_Stream_Delete.
  */
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
 
 /**
  * @brief Delete the Stream Controller.
@@ -105,38 +113,28 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamContr
 /**
  * @brief Set the callbacks of the frames events.
  * @param streamController The stream controller.
+ * @param[in] spsPpsCallback SPS/PPS callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
-
- /**
- * @brief Pop a frame from the ready frame queue.
- * @warning This is a blocking function, waits a frame push if the queue is empty. 
- * @param streamController The stream controller.
- * @param[out] error Executing error.
- * @return The frame pop ; Can be null if an error occurs.
- */
-ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
- * @brief Try to pop a frame from the ready frame queue.
- * @note If the queue is empty, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @brief Callback to add a json part durring the connection.
  * @param streamController The stream controller.
- * @param[out] error Executing error.
- * @return The frame pop ; Can be null if an error occurs.
+ * @param jsonObj connection json.
+ * @return Executing error.
  */
-ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_TryGetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
 
 /**
- * @brief Pop a frame from the ready frame queue, with timeout.
- * @warning This is a blocking function; If the queue is empty yet after the timeout, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @brief Callback to read a json part durring the connection.
  * @param streamController The stream controller.
- * @param[out] error Executing error.
- * @return The frame pop ; Can be null if an error occurs.
+ * @param jsonObj connection json.
+ * @return Executing error.
  */
-ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stream_t *streamController, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
+eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson(ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
 
 #endif /* _ARCONTROLLER_STREAM_H_ */

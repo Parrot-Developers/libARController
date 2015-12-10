@@ -62,9 +62,7 @@
 ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Network Controller --
-    
-    ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_NETWORK_TAG, "ARCONTROLLER_Network_New ...");
-    
+
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Network_t *networkController =  NULL;
@@ -174,7 +172,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         if (networkController->networkConfig.deviceToControllerARStreamData != -1)
         {
             networkController->hasVideo = 1;
-            networkController->videoController = ARCONTROLLER_Stream_New (&(networkController->networkConfig), &localError);
+            networkController->videoController = ARCONTROLLER_Stream_New (&(networkController->networkConfig), networkController->discoveryDevice, &localError);
         }
         //NO else ; device has not video
     }
@@ -220,17 +218,6 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         // Create the reader Threads
         localError = ARCONTROLLER_Network_CreateReaderThreads (networkController);
     }
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        // Check if the device has video
-        if (networkController->hasVideo)
-        {
-            localError = ARCONTROLLER_Stream_Start (networkController->videoController, networkController->networkManager);
-        }
-        //NO else ; device has not video
-    }
-    // No else: skipped by an error
     
     // delete the Network Controller if an error occurred
     if (localError != ARCONTROLLER_OK)
@@ -378,7 +365,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set Video Receive Callback --
     
@@ -408,7 +395,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_N
     {
         if (networkController->videoController != NULL)
         {
-            error = ARCONTROLLER_Stream_SetReceiveFrameCallback (networkController->videoController, receiveFrameCallback, timeoutFrameCallback, customData);
+            error = ARCONTROLLER_Stream_SetReceiveFrameCallback (networkController->videoController, spsPpsCallback, receiveFrameCallback, timeoutFrameCallback, customData);
         }
         else
         {
@@ -416,6 +403,96 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_N
         }
     }
         
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StartVideoStream (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Start Video stream --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+    
+    // Check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+        else
+        {
+            locked = 1;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has video
+        if (networkController->hasVideo)
+        {
+            error = ARCONTROLLER_Stream_Start (networkController->videoController, networkController->networkManager);
+        }
+        //NO else ; device has not video
+    }
+    // No else: skipped by an error
+    
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopVideoStream (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Stop Video stream --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+    
+    // Check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+        else
+        {
+            locked = 1;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has video
+        if (networkController->hasVideo)
+        {
+            error = ARCONTROLLER_Stream_Stop (networkController->videoController);
+        }
+        //NO else ; device has not video
+    }
+    // No else: skipped by an error
+    
     if (locked)
     {
         ARSAL_Mutex_Unlock (&(networkController->mutex));

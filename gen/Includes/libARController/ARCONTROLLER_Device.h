@@ -127,7 +127,18 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
  * @param[in] customData custom data given as parameter to the callback.
  * @return executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+
+/**
+ * @brief Set callback to receive video.
+ * @param deviceController The device controller.
+ * @param spsPpsCallback SPS/PPS callback.
+ * @param receiveFrameCallback The callback when a frame is received.
+ * @param timeoutFrameCallback The callback when timeout on receive.
+ * @param[in] customData custom data given as parameter to the callback.
+ * @return executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Add callback to be informed when a commands is received.
