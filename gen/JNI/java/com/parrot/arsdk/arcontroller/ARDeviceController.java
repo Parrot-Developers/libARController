@@ -556,7 +556,23 @@ public class ARDeviceController
         }
     }
     
-    private void  didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed)
+    private void spsPpsCallback (long spsBuffer, int spsSize, long ppsBuffer, int ppsSize)
+    {
+        ARNativeData sps = new ARNativeData (spsBuffer, spsSize);
+        sps.setUsedSize(spsSize);
+        ARNativeData pps = new ARNativeData (ppsBuffer, ppsSize);
+        pps.setUsedSize(ppsSize);
+        
+        for (ARDeviceControllerStreamListener l : streamlisteners)
+        {
+            l.onSpsPpsReceived(this, sps, pps);
+        }
+        
+        sps.dispose();
+        pps.dispose();
+    }
+    
+    private void didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed)
     {
         boolean isIFrame = (nativeIsIFrame != 0);
         
