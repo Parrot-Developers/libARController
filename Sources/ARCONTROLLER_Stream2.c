@@ -104,7 +104,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->parmeterSets = NULL;
             
             stream2Controller->callbackData = NULL;
-            stream2Controller->spsPpsCallback = NULL;
+            stream2Controller->configDecoderCallback = NULL;
             stream2Controller->receiveFrameCallback = NULL;
         }
         else
@@ -213,7 +213,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *stream2Controller, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *stream2Controller, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, void *customData)
 {
     // -- Set Stream2 Callbacks --
 
@@ -228,7 +228,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *st
     if (error == ARCONTROLLER_OK)
     {
         stream2Controller->callbackData = customData;
-        stream2Controller->spsPpsCallback = spsPpsCallback;
+        stream2Controller->configDecoderCallback = configDecoderCallback;
         stream2Controller->receiveFrameCallback = receiveFrameCallback;
     }
     
@@ -564,9 +564,16 @@ int ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t
     ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)userPtr;
     
     
-    if(stream2Controller->spsPpsCallback != NULL)
+    if(stream2Controller->configDecoderCallback != NULL)
     {
-        stream2Controller->spsPpsCallback(spsBuffer, spsSize, ppsBuffer, ppsSize, stream2Controller->callbackData);
+        ARCONTROLLER_Stream_Codec_t codec;
+        codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
+        codec.parmeters.h264parmeters.spsBuffer = spsBuffer;
+        codec.parmeters.h264parmeters.spsSize = spsSize;
+        codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
+        codec.parmeters.h264parmeters.ppsSize = ppsSize;
+        
+        stream2Controller->configDecoderCallback(codec, stream2Controller->callbackData);
     }
     
     return 0;

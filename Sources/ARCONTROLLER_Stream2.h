@@ -87,7 +87,7 @@ struct ARCONTROLLER_Stream2_t
     ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
     
     void *callbackData;
-    ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback;
+    ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback;
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback;
 };
 

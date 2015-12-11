@@ -66,7 +66,7 @@ struct ARCONTROLLER_Device_Private_t
     int startCancelled; /**< 1 if the start is canceled*/
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
-    ARCONTROLLER_Stream_SpsPpsCallback_t videoSpsPpsCallback;
+    ARCONTROLLER_Stream_ConfigDecoderCallback_t videoConfigDecoderCallback;
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t videoReceiveCallback;
     ARCONTROLLER_Stream_TimeoutFrameCallback_t videoTimeoutCallback;
     void *videoReceiveCustomData;

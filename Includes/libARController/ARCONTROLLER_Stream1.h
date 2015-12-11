@@ -96,7 +96,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_Stop (ARCONTROLLER_Stream1_t *stream1Co
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Callback to read a json part durring the connection.
