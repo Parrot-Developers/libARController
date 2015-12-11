@@ -61,7 +61,7 @@ typedef struct ARCONTROLLER_Stream1_t ARCONTROLLER_Stream1_t;
  * @return The new Stream Controller.
  * @see ARCONTROLLER_Stream1_Delete.
  */
-ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_STREAM_CODEC_TYPE codecType, eARCONTROLLER_ERROR *error);
 
 /**
  * @brief Delete the Stream Controller.

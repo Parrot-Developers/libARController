@@ -70,7 +70,7 @@ int ARCONTROLLER_Stream1_useStream1V2 (ARCONTROLLER_Stream1_t *stream1Controller
  * Implementation
  *************************/
 
-ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_STREAM_CODEC_TYPE codecType, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Stream1 Controller --
 
@@ -105,6 +105,7 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->readyQueue = NULL;
             stream1Controller->receiveFrameCallback = NULL;
             stream1Controller->timeoutFrameCallback = NULL;
+            stream1Controller->codecType = codecType;
             stream1Controller->callbackCustomData = NULL;
             stream1Controller->spsPpsSent = 0;
         }
@@ -672,13 +673,33 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
             if (frame != NULL)
             {
                 
-                if ((frame->isIFrame) && (!stream1Controller->spsPpsSent) && (stream1Controller->spsPpsCallback != NULL))
+                switch (stream1Controller->codecType)
                 {
-                    ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
-                    stream1Controller->spsPpsCallback (spsBuffer, spsSize, ppsBuffer, ppsSize, stream1Controller->callbackCustomData);
-                    stream1Controller->spsPpsSent = 1;
+                    case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
+                        if ((frame->isIFrame) && (!stream1Controller->spsPpsSent) && (stream1Controller->spsPpsCallback != NULL))
+                        {
+                            ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
+                            
+                            //Remove sps/pps of the frame data
+                            frame->data = frame->data + spsSize + ppsSize;
+                            frame->used = frame->used - spsSize - ppsSize;
+                            
+                            stream1Controller->spsPpsCallback (spsBuffer, spsSize, ppsBuffer, ppsSize, stream1Controller->callbackCustomData);
+                            stream1Controller->spsPpsSent = 1;
+                        }
+                        // NO ELSE ; no callback registered
+                        break;
+                        
+                    case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:
+                    
+                        break;
+                    
+                    default:
+                        //ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM1_TAG, "codec %d not known", stream1Controller->codecType);
+                        //error = ARCONTROLLER_ERROR;
+                        //Do Nothing
+                        break;
                 }
-                // NO ELSE ; no callback registered
                 
                 if (stream1Controller->receiveFrameCallback != NULL)
                 {

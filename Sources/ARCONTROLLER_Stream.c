@@ -73,6 +73,7 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Stream_t *streamController =  NULL;
+    eARCONTROLLER_STREAM_CODEC_TYPE codecType = ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT;
     
     // Check parameters
     if (networkConfiguration == NULL)
@@ -83,6 +84,27 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration
     
     if (localError == ARCONTROLLER_OK)
     {
+        // Get video codec
+        switch (discoveryDevice->productID)
+        {
+            case ARDISCOVERY_PRODUCT_ARDRONE:
+            case ARDISCOVERY_PRODUCT_BEBOP_2:
+            case ARDISCOVERY_PRODUCT_SKYCONTROLLER:
+                codecType = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
+                break;
+    
+            
+            case ARDISCOVERY_PRODUCT_JS:
+            case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
+            case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
+                codecType =  ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
+                break;
+                
+            default:
+                codecType = ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT;
+                break;
+        }
+        
         // Create the Network Controller
         streamController = malloc (sizeof (ARCONTROLLER_Stream_t));
         if (streamController != NULL)
@@ -91,7 +113,7 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration
             streamController->isRunning = 0;
             
             //stream 1
-            streamController->stream1Controller = ARCONTROLLER_Stream1_New (networkConfiguration, &localError);
+            streamController->stream1Controller = ARCONTROLLER_Stream1_New (networkConfiguration, codecType, &localError);
             
             //stream 2
             streamController->stream2Controller = ARCONTROLLER_Stream2_New (discoveryDevice, &localError);
