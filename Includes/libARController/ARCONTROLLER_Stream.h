@@ -63,6 +63,13 @@ typedef void (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Fram
  */
 typedef int (*ARCONTROLLER_Stream_SpsPpsCallback_t) (uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *customData);
 
+typedef enum
+{
+    ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**<  */
+    ARCONTROLLER_STREAM_CODEC_TYPE_H264, /**< h264 codec */
+    ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG, /**< MJPEG codec */
+    ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**<  */
+} eARCONTROLLER_STREAM_CODEC_TYPE;
 /**
  * @brief Callback when timeout in frame receiving
  * @param[in] customData Data given at the registering of the callback.
