@@ -53,16 +53,6 @@
  */
 typedef void (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
 
-/**
- * @brief SPS/PPS callback function.
- * @param[in] spsBuffer Sequence Parameter Set of the stream.
- * @param[in] spsSize Size of spsBuffer.
- * @param[in] ppsBuffer Picture parameter Set of the stream.
- * @param[in] ppsSize Size of ppsBuffer.
- * @param[in] customData Data given at the registering of the callback.
- */
-typedef int (*ARCONTROLLER_Stream_SpsPpsCallback_t) (uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *customData);
-
 typedef enum
 {
     ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**<  */
@@ -70,6 +60,29 @@ typedef enum
     ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG, /**< MJPEG codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**<  */
 } eARCONTROLLER_STREAM_CODEC_TYPE;
+
+typedef struct 
+{
+    uint8_t *spsBuffer;
+    int spsSize;
+    uint8_t *ppsBuffer;
+    int ppsSize;
+}ARCONTROLLER_Stream_CodecH264_t;
+
+
+typedef union 
+{
+    ARCONTROLLER_Stream_CodecH264_t h264parmeters;
+}ARCONTROLLER_Stream_CodecParmeters_t;
+
+typedef struct 
+{
+    eARCONTROLLER_STREAM_CODEC_TYPE type; 
+    ARCONTROLLER_Stream_CodecParmeters_t parmeters;
+}ARCONTROLLER_Stream_Codec_t;
+
+typedef int (*ARCONTROLLER_Stream_ConfigDecoderCallback_t) (ARCONTROLLER_Stream_Codec_t codec, void *customData);
+
 /**
  * @brief Callback when timeout in frame receiving
  * @param[in] customData Data given at the registering of the callback.
@@ -120,13 +133,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamContr
 /**
  * @brief Set the callbacks of the frames events.
  * @param streamController The stream controller.
- * @param[in] spsPpsCallback SPS/PPS callback function.
+ * @param[in] configDecoderCallback decoder configuration callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Callback to add a json part durring the connection.

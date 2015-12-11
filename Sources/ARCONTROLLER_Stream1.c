@@ -280,7 +280,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_Stop (ARCONTROLLER_Stream1_t *stream1Co
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Stream_SpsPpsCallback_t spsPpsCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set Receive Frame Callbacks --
 
@@ -297,7 +297,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *s
     {
         stream1Controller->receiveFrameCallback = receiveFrameCallback;
         stream1Controller->timeoutFrameCallback = timeoutFrameCallback;
-        stream1Controller->spsPpsCallback = spsPpsCallback;
+        stream1Controller->configDecoderCallback = configDecoderCallback;
         stream1Controller->callbackCustomData = customData;
     }
     
@@ -657,6 +657,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
     ARCONTROLLER_Stream1_t *stream1Controller = data;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
+    ARCONTROLLER_Stream_Codec_t codec;
     
     uint8_t *spsBuffer;
     int spsSize;
@@ -676,7 +677,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                 switch (stream1Controller->codecType)
                 {
                     case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
-                        if ((frame->isIFrame) && (!stream1Controller->spsPpsSent) && (stream1Controller->spsPpsCallback != NULL))
+                        if ((frame->isIFrame) && (!stream1Controller->spsPpsSent) && (stream1Controller->configDecoderCallback != NULL))
                         {
                             ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
                             
@@ -684,7 +685,13 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             frame->data = frame->data + spsSize + ppsSize;
                             frame->used = frame->used - spsSize - ppsSize;
                             
-                            stream1Controller->spsPpsCallback (spsBuffer, spsSize, ppsBuffer, ppsSize, stream1Controller->callbackCustomData);
+                            codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
+                            codec.parmeters.h264parmeters.spsBuffer = spsBuffer;
+                            codec.parmeters.h264parmeters.spsSize = spsSize;
+                            codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
+                            codec.parmeters.h264parmeters.ppsSize = ppsSize;
+                            
+                            stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
                             stream1Controller->spsPpsSent = 1;
                         }
                         // NO ELSE ; no callback registered
