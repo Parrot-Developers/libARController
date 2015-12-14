@@ -4,7 +4,7 @@ import com.parrot.arsdk.arsal.ARNativeData;
 
 public interface ARDeviceControllerStreamListener
 {
-    public void onSpsPpsReceived (ARDeviceController deviceController, ARNativeData sps, ARNativeData pps);
+    public void onConfigDecoder (ARDeviceController deviceController, ARControllerCodec codec);
     
     public void onFrameReceived (ARDeviceController deviceController, ARFrame frame);
 

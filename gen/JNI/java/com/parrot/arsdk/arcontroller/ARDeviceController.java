@@ -556,20 +556,15 @@ public class ARDeviceController
         }
     }
     
-    private void spsPpsCallback (long spsBuffer, int spsSize, long ppsBuffer, int ppsSize)
+    private void configDecoderCallback (ARControllerCodec codec)
     {
-        ARNativeData sps = new ARNativeData (spsBuffer, spsSize);
-        sps.setUsedSize(spsSize);
-        ARNativeData pps = new ARNativeData (ppsBuffer, ppsSize);
-        pps.setUsedSize(ppsSize);
         
         for (ARDeviceControllerStreamListener l : streamlisteners)
         {
-            l.onSpsPpsReceived(this, sps, pps);
+            l.onConfigDecoder(this, codec);
         }
         
-        sps.dispose();
-        pps.dispose();
+        codec.dispose();
     }
     
     private void didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed)
