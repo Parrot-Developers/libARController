@@ -60,6 +60,8 @@
  * Private header
  *************************/
 
+#define ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE 4
+
 int ARCONTROLLER_Stream1_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int numberOfParameters, int id);
 void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize);
 
@@ -107,7 +109,7 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->timeoutFrameCallback = NULL;
             stream1Controller->codecType = codecType;
             stream1Controller->callbackCustomData = NULL;
-            stream1Controller->spsPpsSent = 0;
+            stream1Controller->configDecoderCalled = 0;
         }
         else
         {
@@ -677,7 +679,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                 switch (stream1Controller->codecType)
                 {
                     case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
-                        if ((frame->isIFrame) && (!stream1Controller->spsPpsSent) && (stream1Controller->configDecoderCallback != NULL))
+                        if (frame->isIFrame)
                         {
                             ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
                             
@@ -691,8 +693,12 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
                             codec.parmeters.h264parmeters.ppsSize = ppsSize;
                             
-                            stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
-                            stream1Controller->spsPpsSent = 1;
+                            //Callback 
+                            if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
+                            {
+                                stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
+                                stream1Controller->configDecoderCalled = 1;
+                            }
                         }
                         // NO ELSE ; no callback registered
                         break;
@@ -740,7 +746,7 @@ void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8
 
     // we'll need to search the "00 00 00 01" pattern to find each header size
     // Search start at index 4 to avoid finding the SPS "00 00 00 01" tag
-    for (searchIndex = 4; searchIndex <= frame->used - 4; searchIndex ++)
+    for (searchIndex = ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex <= frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex ++)
     {
         if (0 == frame->data[searchIndex] &&
                 0 == frame->data[searchIndex+1] &&
@@ -754,7 +760,7 @@ void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8
     }
 
     // Search start at index 4 to avoid finding the PSS "00 00 00 01" tag
-    for (searchIndex = (*spsSize)+4; searchIndex <= frame->used - 4; searchIndex ++)
+    for (searchIndex = (*spsSize) + ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex <= frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex ++)
     {
         if (0 == frame->data[searchIndex  ] &&
                 0 == frame->data[searchIndex+1] &&
