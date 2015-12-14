@@ -4,9 +4,9 @@ import com.parrot.arsdk.arsal.ARNativeData;
 
 public interface ARDeviceControllerStreamListener
 {
-    public void onConfigDecoder (ARDeviceController deviceController, ARControllerCodec codec);
+    public ARCONTROLLER_ERROR_ENUM onConfigDecoder (ARDeviceController deviceController, ARControllerCodec codec);
     
-    public void onFrameReceived (ARDeviceController deviceController, ARFrame frame);
+    public ARCONTROLLER_ERROR_ENUM onFrameReceived (ARDeviceController deviceController, ARFrame frame);
 
     public void onFrameTimeout (ARDeviceController deviceController);
 }
