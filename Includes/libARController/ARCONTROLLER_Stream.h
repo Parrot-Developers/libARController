@@ -50,8 +50,9 @@
 /**
  * @brief Callback when a frame is received.
  * @param[in] customData Data given at the registering of the callback.
+ * @return Executing error.
  */
-typedef void (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
 
 typedef enum
 {
@@ -81,7 +82,13 @@ typedef struct
     ARCONTROLLER_Stream_CodecParmeters_t parmeters;
 }ARCONTROLLER_Stream_Codec_t;
 
-typedef int (*ARCONTROLLER_Stream_ConfigDecoderCallback_t) (ARCONTROLLER_Stream_Codec_t codec, void *customData);
+/**
+ * @brief Callback to configure the decoder.
+ * @param[in] codec codec of the stream.
+ * @param[in] customData Data given at the registering of the callback.
+ * @return Executing error.
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_ConfigDecoderCallback_t) (ARCONTROLLER_Stream_Codec_t codec, void *customData);
 
 /**
  * @brief Callback when timeout in frame receiving
