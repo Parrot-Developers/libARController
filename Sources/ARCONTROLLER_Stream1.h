@@ -72,7 +72,7 @@ struct ARCONTROLLER_Stream1_t
     ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback; /**< callback when timeout */
     eARCONTROLLER_STREAM_CODEC_TYPE codecType;
     void *callbackCustomData;  /**< custom data to send to callbacks */
-    int spsPpsSent;  /**< different of 0 if the configDecoderCallback has been called; */
+    int configDecoderCalled;  /**< different of 0 if the configDecoderCallback has been called; */
 };
 
  /**
