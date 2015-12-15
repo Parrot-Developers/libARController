@@ -59,6 +59,9 @@ static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK;
 static jclass jARControllerCodecH264Cls;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_H264;
 
+static jclass jARControllerCodecMJPEGCls;
+static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_MJPEG;
+
 /*****************************************
  *
  *             private header:
@@ -71,6 +74,7 @@ void ARCONTROLLER_JNI_Device_StateChanged (eARCONTROLLER_DEVICE_STATE newState, 
 void ARCONTROLLER_JNI_Device_ExtensionStateChanged (eARCONTROLLER_DEVICE_STATE newState, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error, void *customData);
 void ARCONTROLLER_JNI_Device_CommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData);
 jobject ARCONTROLLER_JNI_Device_NewH264Codec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec);
+jobject ARCONTROLLER_JNI_Device_NewMJPEGCodec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec);
 
 eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_ConfigDecoderCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData);
 eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
@@ -128,6 +132,12 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStaticInit (JNIEnv *
     
     jARControllerCodecH264Cls = (*env)->NewGlobalRef (env, jARControllerCodecH264Cls);
     
+    //Get jARControllerCodecMJPEGCls
+    jARControllerCodecMJPEGCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerCodec$Mjpeg");
+    ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_MJPEG = (*env)->GetMethodID(env, jARControllerCodecMJPEGCls, "<init>", "()V");
+    
+    jARControllerCodecMJPEGCls = (*env)->NewGlobalRef (env, jARControllerCodecMJPEGCls);
+    
 }
 
 /**
@@ -171,7 +181,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeNew (JNIEnv *env, jo
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Device_SetVideoCallbacks (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_ConfigDecoderCallback, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);
+        error = ARCONTROLLER_Device_SetVideoStreamCallbacks (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_ConfigDecoderCallback, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);
         if(error == ARCONTROLLER_ERROR_NO_VIDEO)
         {
             ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_JNIDEVICE_TAG, "This device has no video stream");
@@ -705,6 +715,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_ConfigDecoderCallback (ARCONTROLLER_
                 break;
             
             case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:
+                jCodec = ARCONTROLLER_JNI_Device_NewMJPEGCodec(env, codec);
                 break;
             
             default:
@@ -738,6 +749,16 @@ jobject ARCONTROLLER_JNI_Device_NewH264Codec (JNIEnv *env, ARCONTROLLER_Stream_C
     jobject jCodecH264 = (*env)->NewObject(env, jARControllerCodecH264Cls, ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_H264, spsBuffer, spsSize, ppsBuffer, ppsSize);
     
     return jCodecH264;
+}
+
+jobject ARCONTROLLER_JNI_Device_NewMJPEGCodec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec)
+{
+    // local declarations
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    jobject jCodecMJPEG = (*env)->NewObject(env, jARControllerCodecMJPEGCls, ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_MJPEG);
+    
+    return jCodecMJPEG;
 }
 
 eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData)

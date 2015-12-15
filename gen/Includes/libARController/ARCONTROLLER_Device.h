@@ -120,25 +120,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Start (ARCONTROLLER_Device_t *deviceCont
 eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceController);
 
 /**
- * @brief Set callback to receive video.
+ * @brief Set callback to receive the video stream.
  * @param deviceController The device controller.
+ * @param configDecoderCallback callback to configure the stream decoder..
  * @param receiveFrameCallback The callback when a frame is received.
  * @param timeoutFrameCallback The callback when timeout on receive.
  * @param[in] customData custom data given as parameter to the callback.
  * @return executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
-
-/**
- * @brief Set callback to receive video.
- * @param deviceController The device controller.
- * @param configDecoderCallback SPS/PPS callback.
- * @param receiveFrameCallback The callback when a frame is received.
- * @param timeoutFrameCallback The callback when timeout on receive.
- * @param[in] customData custom data given as parameter to the callback.
- * @return executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Add callback to be informed when a commands is received.

@@ -442,9 +442,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson (ARCONTROLLER_Stream1_t *s
     {
         error = ARDISCOVERY_ERROR_BAD_PARAMETER;
     }
-    
-    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "ARCONTROLLER_Stream1_OnReceiveJson !!!!");
-    
+
     if (error == ARDISCOVERY_OK)
     {
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY
@@ -704,7 +702,16 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         break;
                         
                     case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:
-                    
+                        
+                        //Set Codec
+                        codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
+                        
+                        //Callback 
+                        if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
+                        {
+                            stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
+                            stream1Controller->configDecoderCalled = 1;
+                        }
                         break;
                     
                     default:
