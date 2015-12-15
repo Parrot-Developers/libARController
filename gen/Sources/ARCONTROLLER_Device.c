@@ -2950,16 +2950,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
-    // -- Set Video receive callback --
-    
-    return ARCONTROLLER_Device_SetVideoCallbacks (deviceController, NULL, receiveFrameCallback, timeoutFrameCallback, customData);
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
-{
-    // -- Set Video callbacks --
+    // -- Set video stream callbacks --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int locked = 0;
@@ -4355,7 +4348,7 @@ void ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (ARCONTROLLER_Device_t *de
         else
         {
             error = ARCONTROLLER_ERROR_NO_ARGUMENTS;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "ergument is NULL");
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");
         }
     }
     
@@ -4416,7 +4409,7 @@ void ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (ARCONTROLLER_Device_t 
     if (error == ARCONTROLLER_OK)
     {
         // get the value
-        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
         
         if (arg != NULL)
         {
@@ -4425,7 +4418,7 @@ void ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (ARCONTROLLER_Device_t 
         else
         {
             error = ARCONTROLLER_ERROR_NO_ARGUMENTS;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "ergument is NULL");
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");
         }
     }
     
