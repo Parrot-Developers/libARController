@@ -43,11 +43,10 @@
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Thread.h>
 #include <libARController/ARCONTROLLER_Error.h>
-#include <libBeaver/beaver_readerfilter.h>
+#include <libARStream2/arstream2_stream_receiver.h>
 #include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_Stream.h>
 #include <libARController/ARCONTROLLER_Stream2.h>
-
 
 #define ARCONTROLLER_STREAM2_TAG "ARCONTROLLER_Stream2"
 
@@ -58,8 +57,6 @@
 #define ARCONTROLLER_STREAM2_AU_ARRAY_SIZE 5
 #define ARCONTROLLER_STREAM2_IP_SIZE 20
 
-
-
 /**
  * @brief Stream controller allow to operate ARStream for receive a stream.
  */
@@ -67,11 +64,11 @@ struct ARCONTROLLER_Stream2_t
 {
     int isRunning; /**< 0 if the stream is stopped ; otherwide the stream is running */
     
-    BEAVER_ReaderFilter_Handle readerFilterHandle;
+    ARSTREAM2_StreamReceiver_Handle readerFilterHandle;
     
-    ARSAL_Thread_t runFilterThread; /**< Beaver ReaderFilter filter thread */
-    ARSAL_Thread_t runStreamThread; /**< Beaver ReaderFilter stream thread */
-    ARSAL_Thread_t runControllerThread; /**< Beaver ReaderFilter control thread */
+    ARSAL_Thread_t runFilterThread; /**< Stream2 ReaderFilter filter thread */
+    ARSAL_Thread_t runStreamThread; /**< Stream2 ReaderFilter stream thread */
+    ARSAL_Thread_t runControllerThread; /**< Stream2 ReaderFilter control thread */
     
     char serverAddress[ARCONTROLLER_STREAM2_IP_SIZE]; /**< Server address */
     int clientStreamPort; /**< Client stream port */
@@ -90,7 +87,5 @@ struct ARCONTROLLER_Stream2_t
     ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback;
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback;
 };
-
-
 
 #endif /* _ARCONTROLLER_STREAM2_PRIVATE_H_ */
