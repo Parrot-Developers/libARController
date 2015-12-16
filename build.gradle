@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    compile project(':libBeaver')
+    compile project(':libARStream2')
     compile project(':libARStream')
     compile project(':libARCommands')
     compile project(':libARDiscovery')

@@ -6,7 +6,7 @@ LOCAL_CATEGORY_PATH := dragon/libs
 LOCAL_MODULE := libARController
 LOCAL_DESCRIPTION := ARSDK Controller
 
-LOCAL_LIBRARIES := ARSDKBuildUtils libARSAL libARDiscovery libARCommands libARUtils libARStream libBeaver uthash
+LOCAL_LIBRARIES := ARSDKBuildUtils libARSAL libARDiscovery libARCommands libARUtils libARStream libARStream2 uthash
 
 # Copy in build dir so bootstrap files are generated in build dir
 LOCAL_AUTOTOOLS_COPY_TO_BUILD_DIR := 1
@@ -22,7 +22,7 @@ LOCAL_AUTOTOOLS_CONFIGURE_ARGS := \
 	--with-libARDiscoveryInstallDir="" \
 	--with-libARCommandsInstallDir="" \
 	--with-libARStreamInstallDir="" \
-	--with-libBeaverInstallDir="" \
+	--with-libARStream2InstallDir="" \
 	--with-uthashInstallDir="" \
 	--with-jsonInstallDir=""
 

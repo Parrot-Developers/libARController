@@ -252,7 +252,7 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
             // Check if the device has video
             if ((*networkController)->hasVideo)
             {
-                ARCONTROLLER_Stream_Stop ((*networkController)->videoController);
+                ARCONTROLLER_Stream_Delete (&((*networkController)->videoController));
             }
             //NO else ; device has not video
             

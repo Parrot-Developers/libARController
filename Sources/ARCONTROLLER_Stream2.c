@@ -44,8 +44,8 @@
 #include <libARSAL/ARSAL_Thread.h>
 #include <libARDiscovery/ARDISCOVERY_Error.h>
 #include <libARDiscovery/ARDISCOVERY_Device.h>
+#include <libARStream2/arstream2_stream_receiver.h>
 #include <libARController/ARCONTROLLER_Error.h>
-
 
 #include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_Stream.h>
@@ -57,11 +57,11 @@
  * Private header
  *************************/
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *stream2Controller);
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopBeaver (ARCONTROLLER_Stream2_t *stream2Controller);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream2_t *stream2Controller);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopStream (ARCONTROLLER_Stream2_t *stream2Controller);
 int ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *userPtr);
 int ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSize, void **auBufferUserPtr, void *userPtr);
-int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, BEAVER_Filter_AuSyncType_t auSyncType, void *auMetadata, void *auBufferUserPtr, void *userPtr);
+int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr);
 
 /*************************
  * Implementation
@@ -178,7 +178,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Start (ARCONTROLLER_Stream2_t *stream2C
         
         if (error == ARCONTROLLER_OK)
         {
-            error = ARCONTROLLER_Stream2_StartBeaver (stream2Controller);
+            error = ARCONTROLLER_Stream2_StartStream (stream2Controller);
         }
         
         if (error != ARCONTROLLER_OK)
@@ -194,6 +194,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
 {
     // -- Stop to read the stream --
 
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ...");
+
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     // Check parameters
@@ -207,8 +209,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
     {
         stream2Controller->isRunning = 0;
         
-        ARCONTROLLER_Stream2_StopBeaver (stream2Controller);
+        ARCONTROLLER_Stream2_StopStream (stream2Controller);
     }
+    
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ... fin error:%d", error);
     
     return error;
 }
@@ -402,11 +406,11 @@ int ARCONTROLLER_Stream2_IsInitilized (ARCONTROLLER_Stream2_t *stream2Controller
  *
  ****************************************/
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *stream2Controller)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream2_t *stream2Controller)
 {
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    BEAVER_ReaderFilter_Config_t config;
-    int beaverError = 0;
+    ARSTREAM2_StreamReceiver_Config_t config;
+    eARSTREAM2_ERROR stream2Error = ARSTREAM2_OK;
     
     // Check parameters
     if (stream2Controller == NULL)
@@ -417,7 +421,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *st
     
     if (error == ARCONTROLLER_OK)
     {
-        memset(&config, 0, sizeof(BEAVER_ReaderFilter_Config_t));
+        memset(&config, 0, sizeof(ARSTREAM2_StreamReceiver_Config_t));
         
         config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
         config.mcastAddr = NULL;
@@ -437,23 +441,21 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *st
         config.replaceStartCodesWithNaluSize = 0;
         config.generateSkippedPSlices = 1;
         config.generateFirstGrayIFrame = 1;
-        
-        
     }
-        
+
     if (error == ARCONTROLLER_OK)
     {
-        beaverError = BEAVER_ReaderFilter_Init(&(stream2Controller->readerFilterHandle), &config);
-        if (beaverError)
+        stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config);
+        if (stream2Error != ARSTREAM2_OK)
         {
             error = ARCONTROLLER_ERROR_INIT_STREAM;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Error BEAVER_ReaderFilter_Init : %d", beaverError);
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Error ARSTREAM2_StreamReceiver_Init : %d", stream2Error);
         }
     }
     
     if (error == ARCONTROLLER_OK)
     {
-        if (ARSAL_Thread_Create(&(stream2Controller->runStreamThread), BEAVER_ReaderFilter_RunStreamThread, stream2Controller->readerFilterHandle) != 0)
+        if (ARSAL_Thread_Create(&(stream2Controller->runStreamThread), ARSTREAM2_StreamReceiver_RunStreamThread, stream2Controller->readerFilterHandle) != 0)
         {
             ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Creation of Stream thread failed.");
             error = ARCONTROLLER_ERROR_INIT_THREAD;
@@ -462,7 +464,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *st
     
     if (error == ARCONTROLLER_OK)
     {
-        if (ARSAL_Thread_Create(&(stream2Controller->runControllerThread), BEAVER_ReaderFilter_RunControlThread, stream2Controller->readerFilterHandle) != 0)
+        if (ARSAL_Thread_Create(&(stream2Controller->runControllerThread), ARSTREAM2_StreamReceiver_RunControlThread, stream2Controller->readerFilterHandle) != 0)
         {
             ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Creation of Controller thread failed.");
             error = ARCONTROLLER_ERROR_INIT_THREAD;
@@ -471,7 +473,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *st
     
     if (error == ARCONTROLLER_OK)
     {
-        if (ARSAL_Thread_Create(&(stream2Controller->runFilterThread), BEAVER_ReaderFilter_RunFilterThread, stream2Controller->readerFilterHandle) != 0)
+        if (ARSAL_Thread_Create(&(stream2Controller->runFilterThread), ARSTREAM2_StreamReceiver_RunFilterThread, stream2Controller->readerFilterHandle) != 0)
         {
             ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Creation of Filter thread failed.");
             error = ARCONTROLLER_ERROR_INIT_THREAD;
@@ -480,12 +482,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *st
     
     if (error == ARCONTROLLER_OK)
     {
-        beaverError = BEAVER_ReaderFilter_StartFilter (stream2Controller->readerFilterHandle, ARCONTROLLER_Stream2_SpsPpsCallback, stream2Controller, ARCONTROLLER_Stream2_GetAuBufferCallback, stream2Controller, ARCONTROLLER_Stream2_AuReadyCallback, stream2Controller);
+        stream2Error = ARSTREAM2_StreamReceiver_StartFilter (stream2Controller->readerFilterHandle, ARCONTROLLER_Stream2_SpsPpsCallback, stream2Controller, ARCONTROLLER_Stream2_GetAuBufferCallback, stream2Controller, ARCONTROLLER_Stream2_AuReadyCallback, stream2Controller);
         
-        if (beaverError)
+        if (stream2Error != ARSTREAM2_OK)
         {
             error = ARCONTROLLER_ERROR_INIT_STREAM;
-            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Error BEAVER_ReaderFilter_StartFilter : %d", beaverError);
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Error ARSTREAM2_StreamReceiver_StartFilter : %d", stream2Error);
         }
     }
     
@@ -493,8 +495,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartBeaver (ARCONTROLLER_Stream2_t *st
 }
 
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopBeaver (ARCONTROLLER_Stream2_t *stream2Controller)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopStream (ARCONTROLLER_Stream2_t *stream2Controller)
 {
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ...");
+    
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     // Check parameters
@@ -506,36 +510,45 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopBeaver (ARCONTROLLER_Stream2_t *str
     
     if (error == ARCONTROLLER_OK)
     {
-        BEAVER_ReaderFilter_Stop(stream2Controller->readerFilterHandle);
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Stop ... stream2Controller->readerFilterHandle:%p", stream2Controller->readerFilterHandle);
+        eARSTREAM2_ERROR stream2Error = ARSTREAM2_StreamReceiver_Stop(stream2Controller->readerFilterHandle);
         
-        if (stream2Controller->runStreamThread!= NULL)
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Stop ... fin stream2Error:%d", stream2Error);
+        
+        if (stream2Controller->runStreamThread != NULL)
         {
             ARSAL_Thread_Join(stream2Controller->runStreamThread, NULL);
             ARSAL_Thread_Destroy(&(stream2Controller->runStreamThread));
             stream2Controller->runStreamThread = NULL;
         }
         
-        if (stream2Controller->runControllerThread!= NULL)
+        if (stream2Controller->runControllerThread != NULL)
         {
             ARSAL_Thread_Join(stream2Controller->runControllerThread, NULL);
             ARSAL_Thread_Destroy(&(stream2Controller->runControllerThread));
             stream2Controller->runControllerThread = NULL;
         }
         
-        if (stream2Controller->runFilterThread!= NULL)
+        if (stream2Controller->runFilterThread != NULL)
         {
             ARSAL_Thread_Join(stream2Controller->runFilterThread, NULL);
             ARSAL_Thread_Destroy(&(stream2Controller->runFilterThread));
             stream2Controller->runFilterThread = NULL;
         }
         
-        BEAVER_ReaderFilter_Free(&(stream2Controller->readerFilterHandle));
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Free ...");
+        
+        stream2Error = ARSTREAM2_StreamReceiver_Free(&(stream2Controller->readerFilterHandle));
+        
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Free ... fin stream2Error:%d", stream2Error);
     }
+    
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ... fin error: %d", error);
     
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_RestartBeaver (ARCONTROLLER_Stream2_t *stream2Controller)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_RestartStream (ARCONTROLLER_Stream2_t *stream2Controller)
 {
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
@@ -548,12 +561,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_RestartBeaver (ARCONTROLLER_Stream2_t *
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Stream2_StopBeaver (stream2Controller);
+        error = ARCONTROLLER_Stream2_StopStream (stream2Controller);
     }
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Stream2_StartBeaver (stream2Controller);
+        error = ARCONTROLLER_Stream2_StartStream (stream2Controller);
     }
     
     return error;
@@ -607,7 +620,7 @@ int ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSi
     return retVal;
 }
 
-int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, BEAVER_Filter_AuSyncType_t auSyncType, void *auMetadata, void *auBufferUserPtr, void *userPtr)
+int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr)
 {
     ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)userPtr;
     ARCONTROLLER_Frame_t *frame = (ARCONTROLLER_Frame_t *) auBufferUserPtr;
@@ -619,7 +632,7 @@ int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t
         frame->used = auSize;
 
         //set frame type
-        if (auSyncType == BEAVER_FILTER_AU_SYNC_TYPE_IFRAME)
+        if (auSyncType == ARSTREAM2_H264_FILTER_AU_SYNC_TYPE_IFRAME)
         {
             frame->isIFrame = 1;
         }
