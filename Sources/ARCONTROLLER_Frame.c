@@ -81,6 +81,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_NewWithCapacity (uint32_t defaultCapaci
             frame->height = 0;
             frame->isIFrame = 0;
             frame->available = 1;
+            frame->base = NULL;
         }
         else
         {
@@ -91,9 +92,10 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_NewWithCapacity (uint32_t defaultCapaci
     if ((localError == ARCONTROLLER_OK) && (defaultCapacity > 0))
     {
         //alloc data
-        frame->data = malloc (sizeof (uint8_t) * defaultCapacity);
-        if (frame->data != NULL)
+        frame->base = malloc (sizeof (uint8_t) * defaultCapacity);
+        if (frame->base != NULL)
         {
+            frame->data = frame->base;
             frame->capacity = defaultCapacity;
         }
         else
@@ -121,9 +123,10 @@ void ARCONTROLLER_Frame_Delete (ARCONTROLLER_Frame_t **frame)
         if ((*frame) != NULL)
         {
             // Free data
-            if ((*frame)->data != NULL)
+            if ((*frame)->base != NULL)
             {
-                free ((*frame)->data);
+                free ((*frame)->base);
+                (*frame)->base = NULL;
                 (*frame)->data = NULL;
             }
             
@@ -157,10 +160,11 @@ int ARCONTROLLER_Frame_ensureCapacityIsAtLeast (ARCONTROLLER_Frame_t *frame, uin
         else
         {
             // Realloc data
-            newData = realloc (frame->data, minimumCapacity);
+            newData = realloc (frame->base, minimumCapacity);
             if (newData != NULL)
             {
-                frame->data = newData;
+                frame->base = newData;
+                frame->data = frame->base;
                 frame->capacity = minimumCapacity;
                 res = 1;
             }
