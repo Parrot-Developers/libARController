@@ -56,21 +56,20 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (AR
 
 typedef enum
 {
-    ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**<  */
+    ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**< default value */
     ARCONTROLLER_STREAM_CODEC_TYPE_H264, /**< h264 codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG, /**< MJPEG codec */
-    ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**<  */
+    ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**< Max of the enumeration */
 } eARCONTROLLER_STREAM_CODEC_TYPE;
 
 typedef struct 
 {
-    uint8_t *spsBuffer;
-    int spsSize;
-    uint8_t *ppsBuffer;
-    int ppsSize;
+    uint8_t *spsBuffer; /**< Pointer to the SPS NAL unit buffer */
+    int spsSize; /**< Size in bytes of the SPS NAL unit */
+    uint8_t *ppsBuffer; /**< Pointer to the PPS NAL unit buffer */
+    int ppsSize; /**< Size in bytes of the PPS NAL unit */
     int isMP4Compliant; /**< 1 if the stream is compliant with the mpeg4 format; the NAL units start code are replaced by the NALU size */
 }ARCONTROLLER_Stream_CodecH264_t;
-
 
 typedef union 
 {
