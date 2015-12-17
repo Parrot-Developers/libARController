@@ -713,7 +713,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             codec.parmeters.h264parmeters.spsSize = spsSize;
                             codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
                             codec.parmeters.h264parmeters.ppsSize = ppsSize;
-                            
+                            codec.parmeters.h264parmeters.isMP4Compliant = stream1Controller->isIosHWDecoderCompliant;
                             
                             //Configuration decoder callback 
                             if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
