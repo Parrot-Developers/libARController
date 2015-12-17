@@ -84,7 +84,7 @@ struct ARCONTROLLER_Stream2_t
     char *parmeterSets; /**< */
     
     int errorCount;
-    int replaceStartCodesWithNaluSize;
+    int replaceStartCodesWithNaluSize; /**< if 1, replace the NAL units start code with the NALU size */
     
     ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
     

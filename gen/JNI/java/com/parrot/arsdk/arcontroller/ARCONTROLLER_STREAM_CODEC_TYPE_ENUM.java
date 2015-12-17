@@ -43,12 +43,14 @@ import java.util.HashMap;
 public enum ARCONTROLLER_STREAM_CODEC_TYPE_ENUM {
    /** Dummy value for all unknown cases */
     eARCONTROLLER_STREAM_CODEC_TYPE_UNKNOWN_ENUM_VALUE (Integer.MIN_VALUE, "Dummy value for all unknown cases"),
-   ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT (0),
+   /** default value */
+    ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT (0, "default value"),
    /** h264 codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_H264 (1, "h264 codec"),
    /** MJPEG codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG (2, "MJPEG codec"),
-   ARCONTROLLER_STREAM_CODEC_TYPE_MAX (3);
+   /** Max of the enumeration */
+    ARCONTROLLER_STREAM_CODEC_TYPE_MAX (3, "Max of the enumeration");
 
     private final int value;
     private final String comment;
