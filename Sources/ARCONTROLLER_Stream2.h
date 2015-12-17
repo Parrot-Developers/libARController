@@ -81,6 +81,8 @@ struct ARCONTROLLER_Stream2_t
     int maxBiterate; /**< Maximum streaming bitrate in bit/s */
     char *parmeterSets; /**< */
     
+    int replaceStartCodesWithNaluSize;
+    
     ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
     
     void *callbackData;

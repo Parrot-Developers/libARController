@@ -66,6 +66,7 @@ struct ARCONTROLLER_Device_Private_t
     int startCancelled; /**< 1 if the start is canceled*/
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
+    int videoIsIosHWDecoderCompliant; /**< 1 if the video is iOS hardware decoder compliant ; otherwide 0 */
     ARCONTROLLER_Stream_ConfigDecoderCallback_t videoConfigDecoderCallback;
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t videoReceiveCallback;
     ARCONTROLLER_Stream_TimeoutFrameCallback_t videoTimeoutCallback;

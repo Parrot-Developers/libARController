@@ -138,6 +138,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamController);
 
 /**
+ * @brief Set stream compliant with the iOS hardware decoder.
+ * @param streamController The stream controller.
+ * @param isIosHWDecoderCompliant 1 if the stream must be compliant with the iOS hardware decoder ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetIosHWDecoderCompliant (ARCONTROLLER_Stream_t *streamController, int isIosHWDecoderCompliant);
+
+/**
  * @brief Set the callbacks of the frames events.
  * @param streamController The stream controller.
  * @param[in] configDecoderCallback decoder configuration callback function.
@@ -146,8 +154,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamContr
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
