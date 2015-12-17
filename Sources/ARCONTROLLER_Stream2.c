@@ -59,10 +59,10 @@
 
 eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream2_t *stream2Controller);
 eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopStream (ARCONTROLLER_Stream2_t *stream2Controller);
-int ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *userPtr);
-int ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSize, void **auBufferUserPtr, void *userPtr);
-int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr);
-
+eARSTREAM2_ERROR ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *userPtr);
+eARSTREAM2_ERROR ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSize, void **auBufferUserPtr, void *userPtr);
+eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr);
+void *ARCONTROLLER_Stream2_RestartRun (void *data);
 /*************************
  * Implementation
  *************************/
@@ -103,6 +103,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->maxBiterate = 0;
             stream2Controller->parmeterSets = NULL;
             
+            stream2Controller->errorCount = 0;
             stream2Controller->replaceStartCodesWithNaluSize = 0;
             
             stream2Controller->callbackData = NULL;
@@ -135,7 +136,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
 void ARCONTROLLER_Stream2_Delete (ARCONTROLLER_Stream2_t **stream2Controller)
 {
     // -- Delete the Stream 2 Controller --
-
+    
     if (stream2Controller != NULL)
     {
         if ((*stream2Controller) != NULL)
@@ -196,8 +197,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
 {
     // -- Stop to read the stream --
 
-    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ...");
-
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     // Check parameters
@@ -213,8 +212,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
         
         ARCONTROLLER_Stream2_StopStream (stream2Controller);
     }
-    
-    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ... fin error:%d", error);
     
     return error;
 }
@@ -519,8 +516,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream2_t *st
 
 eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopStream (ARCONTROLLER_Stream2_t *stream2Controller)
 {
-    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ...");
-    
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     // Check parameters
@@ -532,10 +527,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopStream (ARCONTROLLER_Stream2_t *str
     
     if (error == ARCONTROLLER_OK)
     {
-        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Stop ... stream2Controller->readerFilterHandle:%p", stream2Controller->readerFilterHandle);
         eARSTREAM2_ERROR stream2Error = ARSTREAM2_StreamReceiver_Stop(stream2Controller->readerFilterHandle);
-        
-        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Stop ... fin stream2Error:%d", stream2Error);
         
         if (stream2Controller->runStreamThread != NULL)
         {
@@ -558,22 +550,17 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StopStream (ARCONTROLLER_Stream2_t *str
             stream2Controller->runFilterThread = NULL;
         }
         
-        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Free ...");
-        
         stream2Error = ARSTREAM2_StreamReceiver_Free(&(stream2Controller->readerFilterHandle));
         
-        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARSTREAM2_StreamReceiver_Free ... fin stream2Error:%d", stream2Error);
     }
-    
-    ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "toto ARCONTROLLER_Stream2_Stop ... fin error: %d", error);
-    
+
     return error;
 }
 
 eARCONTROLLER_ERROR ARCONTROLLER_Stream2_RestartStream (ARCONTROLLER_Stream2_t *stream2Controller)
 {
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
+        
     // Check parameters
     if (stream2Controller == NULL)
     {
@@ -594,7 +581,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_RestartStream (ARCONTROLLER_Stream2_t *
     return error;
 }
 
-int ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *userPtr)
+eARSTREAM2_ERROR ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t *ppsBuffer, int ppsSize, void *userPtr)
 {
     ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)userPtr;
     
@@ -611,17 +598,14 @@ int ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int spsSize, uint8_t
         stream2Controller->configDecoderCallback(codec, stream2Controller->callbackData);
     }
     
-    return 0;
+    return ARSTREAM2_OK;
 }
 
-int ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSize, void **auBufferUserPtr, void *userPtr)
+eARSTREAM2_ERROR ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSize, void **auBufferUserPtr, void *userPtr)
 {
     ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)userPtr;
-    
-    int retVal = -1;
-    
+    eARSTREAM2_ERROR retVal = ARSTREAM2_OK;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
     ARCONTROLLER_Frame_t *frame = ARCONTROLLER_StreamPool_GetNextFreeFrame (stream2Controller->framePool, &error);
     
     if (error == ARCONTROLLER_OK)
@@ -631,21 +615,23 @@ int ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuffer, int *auBufferSi
         *auBufferUserPtr = frame;
         
         frame->available = 0;
-        
-        retVal = 0;
     }
     else
     {
         ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "ARCONTROLLER_Stream2_GetAuBuffer ERROR NO BUFFER available");
+        retVal = ARSTREAM2_ERROR_RESOURCE_UNAVAILABLE;
     }
     
     return retVal;
 }
 
-int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr)
+eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr)
 {
     ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)userPtr;
     ARCONTROLLER_Frame_t *frame = (ARCONTROLLER_Frame_t *) auBufferUserPtr;
+    eARSTREAM2_ERROR retVal = ARSTREAM2_OK;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARSAL_Thread_t restartThread = NULL;
     
     //callback
     if ((frame != NULL) && (stream2Controller->receiveFrameCallback != NULL))
@@ -659,10 +645,51 @@ int ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t
             frame->isIFrame = 1;
         }
         
-        stream2Controller->receiveFrameCallback(frame, stream2Controller->callbackData);
+        error = stream2Controller->receiveFrameCallback(frame, stream2Controller->callbackData);
+        
+        //Manage Error
+        if (error != ARCONTROLLER_OK)
+        {
+            if ((error == ARCONTROLLER_ERROR_STREAM_RESYNC_REQUIRED) && (stream2Controller->errorCount < ARCONTROLLER_STREAM2_MAX_RESYNC_ERROR))
+            {
+                stream2Controller->errorCount++;
+                retVal = ARSTREAM2_ERROR_RESYNC_REQUIRED;
+            }
+            else
+            {
+                // Restart stream2
+                if (ARSAL_Thread_Create (&restartThread, ARCONTROLLER_Stream2_RestartRun, stream2Controller) != 0)
+                {
+                    ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Creation of restart thread failed.");
+                }
+                else
+                {
+                    ARSAL_Thread_Destroy (&restartThread);
+                    restartThread = NULL;
+                }
+            }
+        }
+        else
+        {
+            stream2Controller->errorCount = 0;
+        }
+        
         
         frame->available = 1;
     }
 
-    return 0;
+    return retVal;
 }
+
+void *ARCONTROLLER_Stream2_RestartRun (void *data)
+{
+    // -- Thread Run of re-start --
+    
+    // Local declarations
+    ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)data;
+    
+    ARCONTROLLER_Stream2_RestartStream (stream2Controller);
+    
+    return NULL;
+}
+
