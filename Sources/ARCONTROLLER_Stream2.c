@@ -594,6 +594,7 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int sps
         codec.parmeters.h264parmeters.spsSize = spsSize;
         codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
         codec.parmeters.h264parmeters.ppsSize = ppsSize;
+        codec.parmeters.h264parmeters.isMP4Compliant = stream2Controller->replaceStartCodesWithNaluSize;
         
         stream2Controller->configDecoderCallback(codec, stream2Controller->callbackData);
     }
@@ -673,7 +674,6 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auS
         {
             stream2Controller->errorCount = 0;
         }
-        
         
         frame->available = 1;
     }

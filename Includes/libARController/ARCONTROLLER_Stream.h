@@ -68,6 +68,7 @@ typedef struct
     int spsSize;
     uint8_t *ppsBuffer;
     int ppsSize;
+    int isMP4Compliant; /**< 1 if the stream is compliant with the mpeg4 format; the NAL units start code are replaced by the NALU size */
 }ARCONTROLLER_Stream_CodecH264_t;
 
 
