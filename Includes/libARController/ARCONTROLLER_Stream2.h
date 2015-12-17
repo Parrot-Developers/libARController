@@ -125,4 +125,12 @@ uint8_t ARCONTROLLER_Stream2_JsonContainsStream2Param(json_object *jsonObj);
  */
 int ARCONTROLLER_Stream2_IsInitilized (ARCONTROLLER_Stream2_t *stream2Controller);
 
+/**
+ * @brief Set stream compliant with the iOS hardware decoder.
+ * @param stream2Controller The stream controller.
+ * @param isIosHWDecoderCompliant 1 if the stream must be compliant with the iOS hardware decoder ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetIosHWDecoderCompliant (ARCONTROLLER_Stream2_t *stream2Controller, int isIosHWDecoderCompliant);
+
 #endif /* _ARCONTROLLER_STREAM2_H_ */

@@ -103,6 +103,8 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->maxBiterate = 0;
             stream2Controller->parmeterSets = NULL;
             
+            stream2Controller->replaceStartCodesWithNaluSize = 0;
+            
             stream2Controller->callbackData = NULL;
             stream2Controller->configDecoderCallback = NULL;
             stream2Controller->receiveFrameCallback = NULL;
@@ -265,6 +267,26 @@ int ARCONTROLLER_Stream2_IsRunning (ARCONTROLLER_Stream2_t *stream2Controller, e
     // No else: Error is not returned 
     
     return isRunning;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetIosHWDecoderCompliant (ARCONTROLLER_Stream2_t *stream2Controller, int isIosHWDecoderCompliant)
+{
+    // -- Set stream compliant with the iOS hardware decoder. --
+    
+    // local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    if (stream2Controller == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        stream2Controller->replaceStartCodesWithNaluSize = isIosHWDecoderCompliant;
+    }
+    
+    return error;
 }
 
 /*****************************************
@@ -438,7 +460,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream2_t *st
         config.outputIncompleteAu = 0;
         config.filterOutSpsPps = 1;
         config.filterOutSei = 1;
-        config.replaceStartCodesWithNaluSize = 0;
+        config.replaceStartCodesWithNaluSize = stream2Controller->replaceStartCodesWithNaluSize;
         config.generateSkippedPSlices = 1;
         config.generateFirstGrayIFrame = 1;
     }

@@ -138,6 +138,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
+ * @brief Set video stream compliant with the iOS hardware decoder.
+ * @param networkController The network Controller ; must be not NULL.
+ * @param isIosHWDecoderCompliant 1 if the video stream must be compliant with the iOS hardware decoder ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamIosHWDecoderCompliant (ARCONTROLLER_Network_t *networkController, int isIosHWDecoderCompliant);
+
+/**
  * @brief Start Video stream.
  * @param networkController The network Controller ; must be not NULL.
  * @return Executing error.

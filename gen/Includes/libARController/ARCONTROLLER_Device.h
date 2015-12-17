@@ -131,6 +131,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
 eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
+ * @brief Set video stream compliant with the iOS hardware decoder.
+ * @param deviceController The device controller.
+ * @param isIosHWDecoderCompliant 1 if the video stream must be compliant with the iOS hardware decoder ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamIosHWDecoderCompliant (ARCONTROLLER_Device_t *deviceController, int isIosHWDecoderCompliant);
+
+/**
  * @brief Add callback to be informed when a commands is received.
  * @param deviceController The device controller.
  * @param commandReceivedCallback The callback when a commands is received.

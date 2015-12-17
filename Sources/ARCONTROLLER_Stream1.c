@@ -108,6 +108,7 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->receiveFrameCallback = NULL;
             stream1Controller->timeoutFrameCallback = NULL;
             stream1Controller->codecType = codecType;
+            stream1Controller->isIosHWDecoderCompliant = 0;
             stream1Controller->callbackCustomData = NULL;
             stream1Controller->configDecoderCalled = 0;
         }
@@ -332,6 +333,26 @@ int ARCONTROLLER_Stream1_IsRunning (ARCONTROLLER_Stream1_t *stream1Controller, e
     // No else: Error is not returned 
     
     return isRunning;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetIosHWDecoderCompliant (ARCONTROLLER_Stream1_t *stream1Controller, int isIosHWDecoderCompliant)
+{
+    // -- Set stream compliant with the iOS hardware decoder. --
+    
+    // local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    if (stream1Controller == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        stream1Controller->isIosHWDecoderCompliant = isIosHWDecoderCompliant;
+    }
+    
+    return error;
 }
 
 /*****************************************
@@ -677,6 +698,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                 switch (stream1Controller->codecType)
                 {
                     case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
+                        
                         if (frame->isIFrame)
                         {
                             ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
@@ -685,13 +707,15 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             frame->data = frame->data + spsSize + ppsSize;
                             frame->used = frame->used - spsSize - ppsSize;
                             
+                            //Set Codec
                             codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
                             codec.parmeters.h264parmeters.spsBuffer = spsBuffer;
                             codec.parmeters.h264parmeters.spsSize = spsSize;
                             codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
                             codec.parmeters.h264parmeters.ppsSize = ppsSize;
                             
-                            //Callback 
+                            
+                            //Configuration decoder callback 
                             if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
                             {
                                 stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
@@ -699,6 +723,15 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             }
                         }
                         // NO ELSE ; no callback registered
+                        
+                        //reformat H264 for iOS HW Decoder
+                        if (stream1Controller->isIosHWDecoderCompliant)
+                        {
+                            // replace nalu header by nalu size
+                            uint32_t naluSize = htonl (frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE);
+                            memcpy (frame->data, &naluSize, sizeof (uint32_t));
+                        }
+                        
                         break;
                         
                     case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:

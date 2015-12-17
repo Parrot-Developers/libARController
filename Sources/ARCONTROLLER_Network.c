@@ -501,6 +501,51 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StopVideoStream (ARCONTROLLER_Network_t
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamIosHWDecoderCompliant (ARCONTROLLER_Network_t *networkController, int isIosHWDecoderCompliant)
+{
+    // -- Set video stream compliant with the iOS hardware decoder --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+    
+    // Check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARCONTROLLER_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+        else
+        {
+            locked = 1;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has video
+        if (networkController->hasVideo)
+        {
+            error = ARCONTROLLER_Stream_SetIosHWDecoderCompliant (networkController->videoController, isIosHWDecoderCompliant);
+        }
+        //NO else ; device has not video
+    }
+    // No else: skipped by an error
+    
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+    
+    return error;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError)
 {
     // -- Send data through the Network --

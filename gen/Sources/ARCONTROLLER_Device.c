@@ -102,6 +102,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
             deviceController->privatePart->startCancelled = 0;
             // Video Part
             deviceController->privatePart->hasVideo = 0;
+            deviceController->privatePart->videoIsIosHWDecoderCompliant = 0;
             deviceController->privatePart->videoConfigDecoderCallback = NULL;
             deviceController->privatePart->videoReceiveCallback = NULL;
             deviceController->privatePart->videoTimeoutCallback = NULL;
@@ -2996,6 +2997,48 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_De
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamIosHWDecoderCompliant (ARCONTROLLER_Device_t *deviceController, int isIosHWDecoderCompliant)
+{
+    // -- Set video stream compliant with the iOS hardware decoder. --
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARCONTROLLER_ERROR_BAD_PARAMETER and stop the processing
+
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+        locked = 1;
+    }
+
+    if (error == ARCONTROLLER_OK)
+    {
+        if (deviceController->privatePart->hasVideo)
+        {
+            deviceController->privatePart->videoIsIosHWDecoderCompliant = isIosHWDecoderCompliant;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_VIDEO;
+        }
+    }
+
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+        locked = 0;
+    }
+
+    return error;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCommandReceivedCallback (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)
 {
     // -- Add Command received callback --
@@ -3635,6 +3678,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_StartNetwork (ARCONTROLLER_Device_t *dev
     }
     // No else: skipped by an error
     
+    if ((error == ARCONTROLLER_OK) && (deviceController->privatePart->hasVideo))
+    {
+        error = ARCONTROLLER_Network_SetVideoStreamIosHWDecoderCompliant (deviceController->privatePart->networkController, deviceController->privatePart->videoIsIosHWDecoderCompliant);
+    }
+    // No else: skipped by an error
+
     return error;
 }
 

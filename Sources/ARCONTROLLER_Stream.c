@@ -163,6 +163,28 @@ void ARCONTROLLER_Stream_Delete (ARCONTROLLER_Stream_t **streamController)
     }
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetIosHWDecoderCompliant (ARCONTROLLER_Stream_t *streamController, int isIosHWDecoderCompliant)
+{
+    // -- Set stream compliant with the iOS hardware decoder. --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if (streamController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARCONTROLLER_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARCONTROLLER_Stream1_SetIosHWDecoderCompliant (streamController->stream1Controller, isIosHWDecoderCompliant);
+        ARCONTROLLER_Stream2_SetIosHWDecoderCompliant (streamController->stream2Controller, isIosHWDecoderCompliant);
+    }
+    
+    return error;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamController, ARNETWORK_Manager_t *networkManager)
 {
     // -- Start to read the stream --
