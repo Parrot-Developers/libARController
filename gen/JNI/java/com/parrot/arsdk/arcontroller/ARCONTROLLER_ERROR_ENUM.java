@@ -118,7 +118,11 @@ public enum ARCONTROLLER_ERROR_ENUM {
    /** Generic extension related error */
     ARCONTROLLER_ERROR_EXTENSION (-7000, "Generic extension related error"),
    /** Product not valid to be an extension */
-    ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID (-6999, "Product not valid to be an extension");
+    ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID (-6999, "Product not valid to be an extension"),
+   /** Generic stream error */
+    ARCONTROLLER_ERROR_STREAM (-8000, "Generic stream error"),
+   /** Stream re-synchronization required */
+    ARCONTROLLER_ERROR_STREAM_RESYNC_REQUIRED (-7999, "Stream re-synchronization required");
 
     private final int value;
     private final String comment;

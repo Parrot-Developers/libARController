@@ -57,6 +57,8 @@
 #define ARCONTROLLER_STREAM2_AU_ARRAY_SIZE 5
 #define ARCONTROLLER_STREAM2_IP_SIZE 20
 
+#define ARCONTROLLER_STREAM2_MAX_RESYNC_ERROR 10
+
 /**
  * @brief Stream controller allow to operate ARStream for receive a stream.
  */
@@ -81,6 +83,7 @@ struct ARCONTROLLER_Stream2_t
     int maxBiterate; /**< Maximum streaming bitrate in bit/s */
     char *parmeterSets; /**< */
     
+    int errorCount;
     int replaceStartCodesWithNaluSize;
     
     ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
