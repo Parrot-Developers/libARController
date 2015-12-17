@@ -679,6 +679,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     ARCONTROLLER_Stream_Codec_t codec;
+    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
     
     uint8_t *spsBuffer;
     int spsSize;
@@ -756,7 +757,12 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                 
                 if (stream1Controller->receiveFrameCallback != NULL)
                 {
-                    stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
+                    callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
+                    if (callbackError != ARCONTROLLER_OK)
+                    {
+                        //Recall configDecoderCallback
+                        stream1Controller->configDecoderCalled = 0;
+                    }
                 }
                 // NO ELSE ; no callback registered
                 
