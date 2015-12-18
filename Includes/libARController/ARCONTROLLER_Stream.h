@@ -138,12 +138,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamController);
 
 /**
- * @brief Set stream compliant with the iOS hardware decoder.
+ * @brief Set stream compliant with the mp4 format.
+ * @note Must be set for decoding H264 stream by the iOS hardware decoder.
  * @param streamController The stream controller.
- * @param isIosHWDecoderCompliant 1 if the stream must be compliant with the iOS hardware decoder ; otherwide 0.
+ * @param isMP4Compliant 1 if the stream must be compliant with the mp4 format ; otherwide 0.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetIosHWDecoderCompliant (ARCONTROLLER_Stream_t *streamController, int isIosHWDecoderCompliant);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetMP4Compliant (ARCONTROLLER_Stream_t *streamController, int isMP4Compliant);
 
 /**
  * @brief Set the callbacks of the frames events.

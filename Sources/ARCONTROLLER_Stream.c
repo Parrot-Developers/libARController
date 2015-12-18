@@ -163,9 +163,9 @@ void ARCONTROLLER_Stream_Delete (ARCONTROLLER_Stream_t **streamController)
     }
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetIosHWDecoderCompliant (ARCONTROLLER_Stream_t *streamController, int isIosHWDecoderCompliant)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetMP4Compliant (ARCONTROLLER_Stream_t *streamController, int isMP4Compliant)
 {
-    // -- Set stream compliant with the iOS hardware decoder. --
+    // -- Set stream compliant with the mp4 format. --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
@@ -178,8 +178,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetIosHWDecoderCompliant (ARCONTROLLER_S
     
     if (error == ARCONTROLLER_OK)
     {
-        ARCONTROLLER_Stream1_SetIosHWDecoderCompliant (streamController->stream1Controller, isIosHWDecoderCompliant);
-        ARCONTROLLER_Stream2_SetIosHWDecoderCompliant (streamController->stream2Controller, isIosHWDecoderCompliant);
+        ARCONTROLLER_Stream1_SetMP4Compliant (streamController->stream1Controller, isMP4Compliant);
+        ARCONTROLLER_Stream2_SetMP4Compliant (streamController->stream2Controller, isMP4Compliant);
     }
     
     return error;

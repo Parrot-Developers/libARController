@@ -115,11 +115,12 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson(ARCONTROLLER_Stream1_t *st
 int ARCONTROLLER_Stream1_IsRunning (ARCONTROLLER_Stream1_t *stream1Controller, eARCONTROLLER_ERROR *error);
 
 /**
- * @brief Set stream compliant with the iOS hardware decoder.
+ * @brief Set stream compliant with the mp4 format.
+ * @note Must be set for decoding H264 stream by the iOS hardware decoder.
  * @param stream1Controller The stream controller.
- * @param isIosHWDecoderCompliant 1 if the stream must be compliant with the iOS hardware decoder ; otherwide 0.
+ * @param isMP4Compliant 1 if the stream must be compliant with the mp4 format ; otherwide 0.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetIosHWDecoderCompliant (ARCONTROLLER_Stream1_t *stream1Controller, int isIosHWDecoderCompliant);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetMP4Compliant (ARCONTROLLER_Stream1_t *stream1Controller, int isMP4Compliant);
 
 #endif /* _ARCONTROLLER_STREAM1_H_ */

@@ -102,7 +102,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
             deviceController->privatePart->startCancelled = 0;
             // Video Part
             deviceController->privatePart->hasVideo = 0;
-            deviceController->privatePart->videoIsIosHWDecoderCompliant = 0;
+            deviceController->privatePart->videoIsMP4Compliant = 0;
             deviceController->privatePart->videoConfigDecoderCallback = NULL;
             deviceController->privatePart->videoReceiveCallback = NULL;
             deviceController->privatePart->videoTimeoutCallback = NULL;
@@ -2997,9 +2997,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_De
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamIosHWDecoderCompliant (ARCONTROLLER_Device_t *deviceController, int isIosHWDecoderCompliant)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamMP4Compliant (ARCONTROLLER_Device_t *deviceController, int isMP4Compliant)
 {
-    // -- Set video stream compliant with the iOS hardware decoder. --
+    // -- Set video stream compliant with the mp4 format. --
 
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int locked = 0;
@@ -3022,7 +3022,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamIosHWDecoderCompliant (ARC
     {
         if (deviceController->privatePart->hasVideo)
         {
-            deviceController->privatePart->videoIsIosHWDecoderCompliant = isIosHWDecoderCompliant;
+            deviceController->privatePart->videoIsMP4Compliant = isMP4Compliant;
         }
         else
         {
@@ -3680,7 +3680,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_StartNetwork (ARCONTROLLER_Device_t *dev
     
     if ((error == ARCONTROLLER_OK) && (deviceController->privatePart->hasVideo))
     {
-        error = ARCONTROLLER_Network_SetVideoStreamIosHWDecoderCompliant (deviceController->privatePart->networkController, deviceController->privatePart->videoIsIosHWDecoderCompliant);
+        error = ARCONTROLLER_Network_SetVideoStreamMP4Compliant (deviceController->privatePart->networkController, deviceController->privatePart->videoIsMP4Compliant);
     }
     // No else: skipped by an error
 
