@@ -266,9 +266,9 @@ int ARCONTROLLER_Stream2_IsRunning (ARCONTROLLER_Stream2_t *stream2Controller, e
     return isRunning;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetIosHWDecoderCompliant (ARCONTROLLER_Stream2_t *stream2Controller, int isIosHWDecoderCompliant)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetMP4Compliant (ARCONTROLLER_Stream2_t *stream2Controller, int isMP4Compliant)
 {
-    // -- Set stream compliant with the iOS hardware decoder. --
+    // -- Set stream compliant with the mp4 format. --
     
     // local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -280,7 +280,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetIosHWDecoderCompliant (ARCONTROLLER_
     
     if (error == ARCONTROLLER_OK)
     {
-        stream2Controller->replaceStartCodesWithNaluSize = isIosHWDecoderCompliant;
+        stream2Controller->replaceStartCodesWithNaluSize = isMP4Compliant;
     }
     
     return error;

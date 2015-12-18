@@ -501,9 +501,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StopVideoStream (ARCONTROLLER_Network_t
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamIosHWDecoderCompliant (ARCONTROLLER_Network_t *networkController, int isIosHWDecoderCompliant)
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamMP4Compliant (ARCONTROLLER_Network_t *networkController, int isMP4Compliant)
 {
-    // -- Set video stream compliant with the iOS hardware decoder --
+    // -- Set video stream compliant with the mp4 format --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int locked = 0;
@@ -532,7 +532,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamIosHWDecoderCompliant (AR
         // Check if the device has video
         if (networkController->hasVideo)
         {
-            error = ARCONTROLLER_Stream_SetIosHWDecoderCompliant (networkController->videoController, isIosHWDecoderCompliant);
+            error = ARCONTROLLER_Stream_SetMP4Compliant (networkController->videoController, isMP4Compliant);
         }
         //NO else ; device has not video
     }

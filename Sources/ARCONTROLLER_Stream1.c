@@ -108,7 +108,7 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->receiveFrameCallback = NULL;
             stream1Controller->timeoutFrameCallback = NULL;
             stream1Controller->codecType = codecType;
-            stream1Controller->isIosHWDecoderCompliant = 0;
+            stream1Controller->isMP4Compliant = 0;
             stream1Controller->callbackCustomData = NULL;
             stream1Controller->configDecoderCalled = 0;
         }
@@ -335,9 +335,9 @@ int ARCONTROLLER_Stream1_IsRunning (ARCONTROLLER_Stream1_t *stream1Controller, e
     return isRunning;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetIosHWDecoderCompliant (ARCONTROLLER_Stream1_t *stream1Controller, int isIosHWDecoderCompliant)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetMP4Compliant (ARCONTROLLER_Stream1_t *stream1Controller, int isMP4Compliant)
 {
-    // -- Set stream compliant with the iOS hardware decoder. --
+    // -- Set stream compliant with the mp4 format. --
     
     // local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
@@ -349,7 +349,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetIosHWDecoderCompliant (ARCONTROLLER_
     
     if (error == ARCONTROLLER_OK)
     {
-        stream1Controller->isIosHWDecoderCompliant = isIosHWDecoderCompliant;
+        stream1Controller->isMP4Compliant = isMP4Compliant;
     }
     
     return error;
@@ -714,7 +714,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             codec.parmeters.h264parmeters.spsSize = spsSize;
                             codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
                             codec.parmeters.h264parmeters.ppsSize = ppsSize;
-                            codec.parmeters.h264parmeters.isMP4Compliant = stream1Controller->isIosHWDecoderCompliant;
+                            codec.parmeters.h264parmeters.isMP4Compliant = stream1Controller->isMP4Compliant;
                             
                             //Configuration decoder callback 
                             if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
@@ -725,8 +725,8 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         }
                         // NO ELSE ; no callback registered
                         
-                        //reformat H264 for iOS HW Decoder
-                        if (stream1Controller->isIosHWDecoderCompliant)
+                        //reformat H264 for mp4 format
+                        if (stream1Controller->isMP4Compliant)
                         {
                             // replace nalu header by nalu size
                             uint32_t naluSize = htonl (frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE);
