@@ -562,7 +562,7 @@ public class ARDeviceController
         
         for (ARDeviceControllerStreamListener l : streamlisteners)
         {
-            ARCONTROLLER_ERROR_ENUM error = l.onDecoderConfig(this, codec);
+            ARCONTROLLER_ERROR_ENUM error = l.configureDecoder(this, codec);
             
             if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)
             {

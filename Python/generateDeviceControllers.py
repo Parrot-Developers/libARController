@@ -3598,7 +3598,7 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     jfile.write ('        \n')
     jfile.write ('        for (ARDeviceControllerStreamListener l : streamlisteners)\n')
     jfile.write ('        {\n')
-    jfile.write ('            ARCONTROLLER_ERROR_ENUM error = l.onDecoderConfig(this, codec);\n')
+    jfile.write ('            ARCONTROLLER_ERROR_ENUM error = l.configureDecoder(this, codec);\n')
     jfile.write ('            \n')
     jfile.write ('            if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)\n')
     jfile.write ('            {\n')
