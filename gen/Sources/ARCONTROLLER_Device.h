@@ -211,14 +211,14 @@ eARDISCOVERY_ERROR ARCONTROLLER_Device_SendJsonCallback (json_object *jsonObj, v
  * @param deviceController The device controller.
  * @param elementDictionary command element dictionary.
  */
-void ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
+void ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
 
 /**
  * @brief Function called when the Jumping sumo video stream state has changed.
  * @param deviceController The device controller.
  * @param elementDictionary command element dictionary.
  */
-void ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
+void ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
 
 /**
  * @brief Callback used to receive a json part during the device connection.

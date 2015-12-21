@@ -572,7 +572,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write (' * @param deviceController The device controller.\n')
     hPrivFile.write (' * @param elementDictionary command element dictionary.\n')
     hPrivFile.write (' */\n')
-    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDRONE3VideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);\n')
+    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDrone3VideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);\n')
     hPrivFile.write ('\n')
     
     hPrivFile.write ('/**\n')
@@ -580,7 +580,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write (' * @param deviceController The device controller.\n')
     hPrivFile.write (' * @param elementDictionary command element dictionary.\n')
     hPrivFile.write (' */\n')
-    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJUMPINGSUMOVideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);\n')
+    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJumpingSumoVideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);\n')
     hPrivFile.write ('\n')
     
     hPrivFile.write ('/**\n')
@@ -2423,12 +2423,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            \n')
     
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:\n')
-    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDRONE3VideoEnableChanged')+' (deviceController, elementDictionary);\n')
+    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDrone3VideoEnableChanged')+' (deviceController, elementDictionary);\n')
     cFile.write ('                break;\n')
     cFile.write ('            \n')
     
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:\n')
-    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJUMPINGSUMOVideoEnableChanged')+' (deviceController, elementDictionary);\n')
+    cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJumpingSumoVideoEnableChanged')+' (deviceController, elementDictionary);\n')
     cFile.write ('                break;\n')
     cFile.write ('            \n')
     
@@ -2681,7 +2681,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDRONE3VideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
+    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDrone3VideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- ARDrone3 video enable changed --\n')
     cFile.write ('\n')
@@ -2752,7 +2752,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJUMPINGSUMOVideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
+    cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJumpingSumoVideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Jumping Sumo video enable changed --\n')
     cFile.write ('\n')

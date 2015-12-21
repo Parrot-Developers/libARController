@@ -4111,11 +4111,11 @@ void ARCONTROLLER_Device_DictionaryChangedCallback (eARCONTROLLER_DICTIONARY_KEY
                 break;
             
             case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:
-                ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (deviceController, elementDictionary);
+                ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (deviceController, elementDictionary);
                 break;
             
             case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:
-                ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (deviceController, elementDictionary);
+                ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (deviceController, elementDictionary);
                 break;
             
             default :
@@ -4354,7 +4354,7 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
     return NULL;
 }
 
-void ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
+void ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
 {
     // -- ARDrone3 video enable changed --
 
@@ -4424,7 +4424,7 @@ void ARCONTROLLER_Device_OnARDRONE3VideoEnableChanged (ARCONTROLLER_Device_t *de
     }
 }
 
-void ARCONTROLLER_Device_OnJUMPINGSUMOVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
+void ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
 {
     // -- Jumping Sumo video enable changed --
 
