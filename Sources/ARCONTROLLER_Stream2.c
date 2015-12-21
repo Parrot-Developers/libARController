@@ -590,11 +590,11 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int sps
     {
         ARCONTROLLER_Stream_Codec_t codec;
         codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
-        codec.parmeters.h264parmeters.spsBuffer = spsBuffer;
-        codec.parmeters.h264parmeters.spsSize = spsSize;
-        codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
-        codec.parmeters.h264parmeters.ppsSize = ppsSize;
-        codec.parmeters.h264parmeters.isMP4Compliant = stream2Controller->replaceStartCodesWithNaluSize;
+        codec.parameters.h264parameters.spsBuffer = spsBuffer;
+        codec.parameters.h264parameters.spsSize = spsSize;
+        codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
+        codec.parameters.h264parameters.ppsSize = ppsSize;
+        codec.parameters.h264parameters.isMP4Compliant = stream2Controller->replaceStartCodesWithNaluSize;
         
         stream2Controller->decoderConfigCallback(codec, stream2Controller->callbackData);
     }

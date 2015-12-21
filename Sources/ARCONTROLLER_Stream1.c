@@ -710,11 +710,11 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             
                             //Set Codec
                             codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
-                            codec.parmeters.h264parmeters.spsBuffer = spsBuffer;
-                            codec.parmeters.h264parmeters.spsSize = spsSize;
-                            codec.parmeters.h264parmeters.ppsBuffer = ppsBuffer;
-                            codec.parmeters.h264parmeters.ppsSize = ppsSize;
-                            codec.parmeters.h264parmeters.isMP4Compliant = stream1Controller->isMP4Compliant;
+                            codec.parameters.h264parameters.spsBuffer = spsBuffer;
+                            codec.parameters.h264parameters.spsSize = spsSize;
+                            codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
+                            codec.parameters.h264parameters.ppsSize = ppsSize;
+                            codec.parameters.h264parameters.isMP4Compliant = stream1Controller->isMP4Compliant;
                             
                             //Configuration decoder callback 
                             if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))

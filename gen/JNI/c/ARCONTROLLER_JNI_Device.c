@@ -740,11 +740,11 @@ jobject ARCONTROLLER_JNI_Device_NewH264Codec (JNIEnv *env, ARCONTROLLER_Stream_C
 {
     // local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    jlong spsBuffer = (intptr_t) codec.parmeters.h264parmeters.spsBuffer;
-    jint spsSize =  codec.parmeters.h264parmeters.spsSize;
+    jlong spsBuffer = (intptr_t) codec.parameters.h264parameters.spsBuffer;
+    jint spsSize =  codec.parameters.h264parameters.spsSize;
     
-    jlong ppsBuffer = (intptr_t) codec.parmeters.h264parmeters.ppsBuffer;
-    jint ppsSize =  codec.parmeters.h264parmeters.ppsSize;
+    jlong ppsBuffer = (intptr_t) codec.parameters.h264parameters.ppsBuffer;
+    jint ppsSize =  codec.parameters.h264parameters.ppsSize;
     
     jobject jCodecH264 = (*env)->NewObject(env, jARControllerCodecH264Cls, ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_H264, spsBuffer, spsSize, ppsBuffer, ppsSize);
     

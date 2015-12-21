@@ -73,13 +73,13 @@ typedef struct
 
 typedef union 
 {
-    ARCONTROLLER_Stream_CodecH264_t h264parmeters;
-}ARCONTROLLER_Stream_CodecParmeters_t;
+    ARCONTROLLER_Stream_CodecH264_t h264parameters;
+}ARCONTROLLER_Stream_CodecParameters_t;
 
 typedef struct 
 {
     eARCONTROLLER_STREAM_CODEC_TYPE type; 
-    ARCONTROLLER_Stream_CodecParmeters_t parmeters;
+    ARCONTROLLER_Stream_CodecParameters_t parameters;
 }ARCONTROLLER_Stream_Codec_t;
 
 /**
