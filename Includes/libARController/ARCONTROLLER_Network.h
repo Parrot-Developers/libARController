@@ -129,13 +129,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
 /**
  * @brief Set the callbacks of the video stream events.
  * @param networkController The network Controller ; must be not NULL.
- * @param[in] configDecoderCallback decoder configuration callback function.
+ * @param[in] decoderConfigCallback decoder configuration callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Set video stream compliant with the mp4 format.

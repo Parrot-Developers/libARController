@@ -107,7 +107,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->replaceStartCodesWithNaluSize = 0;
             
             stream2Controller->callbackData = NULL;
-            stream2Controller->configDecoderCallback = NULL;
+            stream2Controller->decoderConfigCallback = NULL;
             stream2Controller->receiveFrameCallback = NULL;
         }
         else
@@ -216,7 +216,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *stream2Controller, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *stream2Controller, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, void *customData)
 {
     // -- Set Stream2 Callbacks --
 
@@ -231,7 +231,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *st
     if (error == ARCONTROLLER_OK)
     {
         stream2Controller->callbackData = customData;
-        stream2Controller->configDecoderCallback = configDecoderCallback;
+        stream2Controller->decoderConfigCallback = decoderConfigCallback;
         stream2Controller->receiveFrameCallback = receiveFrameCallback;
     }
     
@@ -586,7 +586,7 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int sps
     ARCONTROLLER_Stream2_t *stream2Controller = (ARCONTROLLER_Stream2_t *)userPtr;
     
     
-    if(stream2Controller->configDecoderCallback != NULL)
+    if(stream2Controller->decoderConfigCallback != NULL)
     {
         ARCONTROLLER_Stream_Codec_t codec;
         codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
@@ -596,7 +596,7 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_SpsPpsCallback(uint8_t *spsBuffer, int sps
         codec.parmeters.h264parmeters.ppsSize = ppsSize;
         codec.parmeters.h264parmeters.isMP4Compliant = stream2Controller->replaceStartCodesWithNaluSize;
         
-        stream2Controller->configDecoderCallback(codec, stream2Controller->callbackData);
+        stream2Controller->decoderConfigCallback(codec, stream2Controller->callbackData);
     }
     
     return ARSTREAM2_OK;

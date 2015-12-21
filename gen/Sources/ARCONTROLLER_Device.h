@@ -67,7 +67,7 @@ struct ARCONTROLLER_Device_Private_t
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
     int videoIsMP4Compliant; /**< 1 if the video is mp4 fomat compliant ; otherwide 0 */
-    ARCONTROLLER_Stream_ConfigDecoderCallback_t videoConfigDecoderCallback;
+    ARCONTROLLER_Stream_DecoderConfigCallback_t videoDecoderConfigCallback;
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t videoReceiveCallback;
     ARCONTROLLER_Stream_TimeoutFrameCallback_t videoTimeoutCallback;
     void *videoReceiveCustomData;

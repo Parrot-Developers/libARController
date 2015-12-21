@@ -52,7 +52,7 @@ static JavaVM *ARCONTROLLER_JNIDEVICE_VM; /**< reference to the java virtual mac
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED;
-static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_CONFIG_DECODER_CALLBACK;
+static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_DECODER_CONFIG_CALLBACK;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVE_FRAME_CALLBACK;
 static jmethodID ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK;
 
@@ -76,7 +76,7 @@ void ARCONTROLLER_JNI_Device_CommandReceived (eARCONTROLLER_DICTIONARY_KEY comma
 jobject ARCONTROLLER_JNI_Device_NewH264Codec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec);
 jobject ARCONTROLLER_JNI_Device_NewMJPEGCodec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec);
 
-eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_ConfigDecoderCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DecoderConfigCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData);
 eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DidReceiveFrameCallback (ARCONTROLLER_Frame_t *frame, void *customData);
 void ARCONTROLLER_JNI_Device_TimeoutFrameCallback (void *customData);
 
@@ -118,7 +118,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStaticInit (JNIEnv *
     
     ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onStateChanged", "(II)V");
     ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onExtensionStateChanged", "(IILjava/lang/String;I)V");
-    ARCONTROLLER_JNIDEVICE_METHOD_CONFIG_DECODER_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "configDecoderCallback", "(Lcom/parrot/arsdk/arcontroller/ARControllerCodec;)I");
+    ARCONTROLLER_JNIDEVICE_METHOD_DECODER_CONFIG_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "decoderConfigCallback", "(Lcom/parrot/arsdk/arcontroller/ARControllerCodec;)I");
     ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVE_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "didReceiveFrameCallback", "(JIIII)I");
     ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "timeoutFrameCallback", "()V");    
     ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onCommandReceived", "(IJ)V");    
@@ -181,7 +181,7 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeNew (JNIEnv *env, jo
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Device_SetVideoStreamCallbacks (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_ConfigDecoderCallback, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);
+        error = ARCONTROLLER_Device_SetVideoStreamCallbacks (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_DecoderConfigCallback, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);
         if(error == ARCONTROLLER_ERROR_NO_VIDEO)
         {
             ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_JNIDEVICE_TAG, "This device has no video stream");
@@ -668,7 +668,7 @@ void ARCONTROLLER_JNI_Device_CommandReceived (eARCONTROLLER_DICTIONARY_KEY comma
     }
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_ConfigDecoderCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DecoderConfigCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData)
 {
     
     // local declarations
@@ -723,8 +723,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_ConfigDecoderCallback (ARCONTROLLER_
                 break;
         }
         
-        // java configDecoderCallback callback
-        callbackError = (*env)->CallIntMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_CONFIG_DECODER_CALLBACK, jCodec);
+        // java decoderConfigCallback callback
+        callbackError = (*env)->CallIntMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_DECODER_CONFIG_CALLBACK, jCodec);
     }
     
     // if the thread has been attached then detach the thread from the virtual machine
