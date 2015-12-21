@@ -127,7 +127,7 @@ int ARCONTROLLER_Stream2_IsInitilized (ARCONTROLLER_Stream2_t *stream2Controller
 
 /**
  * @brief Set stream compliant with the mp4 format.
- * @note Must be set for decoding H264 stream by the iOS hardware decoder.
+ * @note Must be set to decode H264 stream with the iOS hardware decoder.
  * @param stream2Controller The stream controller.
  * @param isMP4Compliant 1 if the stream must be compliant with the mp4 format ; otherwide 0.
  * @return Executing error.
