@@ -749,9 +749,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         break;
                     
                     default:
-                        //ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM1_TAG, "codec %d not known", stream1Controller->codecType);
-                        //error = ARCONTROLLER_ERROR;
-                        //Do Nothing
+                        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "codec %d not known", stream1Controller->codecType);
                         break;
                 }
                 
