@@ -88,7 +88,7 @@ typedef struct
  * @param[in] customData Data given at the registering of the callback.
  * @return Executing error.
  */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_ConfigDecoderCallback_t) (ARCONTROLLER_Stream_Codec_t codec, void *customData);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_DecoderConfigCallback_t) (ARCONTROLLER_Stream_Codec_t codec, void *customData);
 
 /**
  * @brief Callback when timeout in frame receiving
@@ -149,13 +149,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetMP4Compliant (ARCONTROLLER_Stream_t *
 /**
  * @brief Set the callbacks of the frames events.
  * @param streamController The stream controller.
- * @param[in] configDecoderCallback decoder configuration callback function.
+ * @param[in] decoderConfigCallback decoder configuration callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Callback to add a json part durring the connection.

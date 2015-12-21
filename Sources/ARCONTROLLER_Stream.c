@@ -253,7 +253,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamContr
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set Receive Frame Callbacks --
     
@@ -268,12 +268,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_St
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Stream1_SetCallbacks(streamController->stream1Controller, configDecoderCallback, receiveFrameCallback, timeoutFrameCallback, customData);
+        error = ARCONTROLLER_Stream1_SetCallbacks(streamController->stream1Controller, decoderConfigCallback, receiveFrameCallback, timeoutFrameCallback, customData);
     }
     
     if (error == ARCONTROLLER_OK)
     {
-        error = ARCONTROLLER_Stream2_SetCallbacks(streamController->stream2Controller, configDecoderCallback,  receiveFrameCallback, customData);
+        error = ARCONTROLLER_Stream2_SetCallbacks(streamController->stream2Controller, decoderConfigCallback,  receiveFrameCallback, customData);
     }
     
     return error;

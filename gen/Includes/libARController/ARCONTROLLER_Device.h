@@ -122,13 +122,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
 /**
  * @brief Set callback to receive the video stream.
  * @param deviceController The device controller.
- * @param configDecoderCallback callback to configure the stream decoder..
+ * @param decoderConfigCallback callback to configure the stream decoder.
  * @param receiveFrameCallback The callback when a frame is received.
  * @param timeoutFrameCallback The callback when timeout on receive.
  * @param[in] customData custom data given as parameter to the callback.
  * @return executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
  * @brief Set video stream compliant with the mp4 format.

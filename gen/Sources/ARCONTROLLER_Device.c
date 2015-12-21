@@ -103,7 +103,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
             // Video Part
             deviceController->privatePart->hasVideo = 0;
             deviceController->privatePart->videoIsMP4Compliant = 0;
-            deviceController->privatePart->videoConfigDecoderCallback = NULL;
+            deviceController->privatePart->videoDecoderConfigCallback = NULL;
             deviceController->privatePart->videoReceiveCallback = NULL;
             deviceController->privatePart->videoTimeoutCallback = NULL;
             deviceController->privatePart->videoReceiveCustomData = NULL;
@@ -2951,7 +2951,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set video stream callbacks --
     
@@ -2976,7 +2976,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_De
     {
         if (deviceController->privatePart->hasVideo)
         {
-            deviceController->privatePart->videoConfigDecoderCallback = configDecoderCallback;
+            deviceController->privatePart->videoDecoderConfigCallback = decoderConfigCallback;
             deviceController->privatePart->videoReceiveCallback = receiveFrameCallback;
             deviceController->privatePart->videoTimeoutCallback = timeoutFrameCallback;
             deviceController->privatePart->videoReceiveCustomData = customData;
@@ -3673,7 +3673,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_StartNetwork (ARCONTROLLER_Device_t *dev
         // If device has video
         if (deviceController->privatePart->hasVideo)
         {
-            error = ARCONTROLLER_Network_SetVideoReceiveCallback (deviceController->privatePart->networkController, deviceController->privatePart->videoConfigDecoderCallback, deviceController->privatePart->videoReceiveCallback, deviceController->privatePart->videoTimeoutCallback, deviceController->privatePart->videoReceiveCustomData);
+            error = ARCONTROLLER_Network_SetVideoReceiveCallback (deviceController->privatePart->networkController, deviceController->privatePart->videoDecoderConfigCallback, deviceController->privatePart->videoReceiveCallback, deviceController->privatePart->videoTimeoutCallback, deviceController->privatePart->videoReceiveCustomData);
         }
     }
     // No else: skipped by an error

@@ -365,7 +365,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set Video Receive Callback --
     
@@ -395,7 +395,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_N
     {
         if (networkController->videoController != NULL)
         {
-            error = ARCONTROLLER_Stream_SetReceiveFrameCallback (networkController->videoController, configDecoderCallback, receiveFrameCallback, timeoutFrameCallback, customData);
+            error = ARCONTROLLER_Stream_SetReceiveFrameCallback (networkController->videoController, decoderConfigCallback, receiveFrameCallback, timeoutFrameCallback, customData);
         }
         else
         {

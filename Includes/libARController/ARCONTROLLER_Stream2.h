@@ -79,13 +79,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream2_Stop (ARCONTROLLER_Stream2_t *stream2Co
 /**
  * @brief Set the callbacks of the frames events.
  * @param stream2Controller The stream controller.
- * @param[in] configDecoderCallback decoder configuration callback function.
+ * @param[in] decoderConfigCallback decoder configuration callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *stream2Controller, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t didReceiveFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream2_SetCallbacks(ARCONTROLLER_Stream2_t *stream2Controller, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t didReceiveFrameCallback, void *customData);
 
 /**
  * @brief Checks if the stream2Controller is running.

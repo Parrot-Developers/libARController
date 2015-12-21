@@ -110,7 +110,7 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->codecType = codecType;
             stream1Controller->isMP4Compliant = 0;
             stream1Controller->callbackCustomData = NULL;
-            stream1Controller->configDecoderCalled = 0;
+            stream1Controller->decoderConfigCalled = 0;
         }
         else
         {
@@ -283,7 +283,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_Stop (ARCONTROLLER_Stream1_t *stream1Co
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
     // -- Set Receive Frame Callbacks --
 
@@ -300,7 +300,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetCallbacks (ARCONTROLLER_Stream1_t *s
     {
         stream1Controller->receiveFrameCallback = receiveFrameCallback;
         stream1Controller->timeoutFrameCallback = timeoutFrameCallback;
-        stream1Controller->configDecoderCallback = configDecoderCallback;
+        stream1Controller->decoderConfigCallback = decoderConfigCallback;
         stream1Controller->callbackCustomData = customData;
     }
     
@@ -717,10 +717,10 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                             codec.parmeters.h264parmeters.isMP4Compliant = stream1Controller->isMP4Compliant;
                             
                             //Configuration decoder callback 
-                            if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
+                            if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
                             {
-                                stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
-                                stream1Controller->configDecoderCalled = 1;
+                                stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
+                                stream1Controller->decoderConfigCalled = 1;
                             }
                         }
                         // NO ELSE ; no callback registered
@@ -741,10 +741,10 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
                         
                         //Callback 
-                        if ((!stream1Controller->configDecoderCalled) && (stream1Controller->configDecoderCallback != NULL))
+                        if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
                         {
-                            stream1Controller->configDecoderCallback (codec, stream1Controller->callbackCustomData);
-                            stream1Controller->configDecoderCalled = 1;
+                            stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
+                            stream1Controller->decoderConfigCalled = 1;
                         }
                         break;
                     
@@ -758,8 +758,8 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                     callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
                     if (callbackError != ARCONTROLLER_OK)
                     {
-                        //Recall configDecoderCallback
-                        stream1Controller->configDecoderCalled = 0;
+                        //Recall decoderConfigCallback
+                        stream1Controller->decoderConfigCalled = 0;
                     }
                 }
                 // NO ELSE ; no callback registered

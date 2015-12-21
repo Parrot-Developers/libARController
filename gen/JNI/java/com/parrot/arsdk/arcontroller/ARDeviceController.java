@@ -556,13 +556,13 @@ public class ARDeviceController
         }
     }
     
-    private int configDecoderCallback (ARControllerCodec codec)
+    private int decoderConfigCallback (ARControllerCodec codec)
     {
         boolean failed = false;
         
         for (ARDeviceControllerStreamListener l : streamlisteners)
         {
-            ARCONTROLLER_ERROR_ENUM error = l.onConfigDecoder(this, codec);
+            ARCONTROLLER_ERROR_ENUM error = l.onDecoderConfig(this, codec);
             
             if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)
             {

@@ -68,12 +68,12 @@ struct ARCONTROLLER_Stream1_t
     ARCONTROLLER_StreamPool_t *framePool; /**< pool of frame */
     ARCONTROLLER_StreamQueue_t *readyQueue; /**< ready frames */
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback; /**< callback when a frame is received */
-    ARCONTROLLER_Stream_ConfigDecoderCallback_t configDecoderCallback;
+    ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback;
     ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback; /**< callback when timeout */
     eARCONTROLLER_STREAM_CODEC_TYPE codecType;
     int isMP4Compliant;
     void *callbackCustomData;  /**< custom data to send to callbacks */
-    int configDecoderCalled;  /**< different of 0 if the configDecoderCallback has been called; */
+    int decoderConfigCalled;  /**< different of 0 if the decoderConfigCallback has been called; */
 };
 
  /**
