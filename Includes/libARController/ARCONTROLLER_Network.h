@@ -139,7 +139,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_N
 
 /**
  * @brief Set video stream compliant with the mp4 format.
- * @note Must be set for decoding H264 stream by the iOS hardware decoder.
+ * @note Must be set to decode H264 stream with the iOS hardware decoder.
  * @param networkController The network Controller ; must be not NULL.
  * @param isMP4Compliant 1 if the video stream must be compliant with mp4 format ; otherwide 0.
  * @return Executing error.

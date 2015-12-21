@@ -54,6 +54,9 @@
  */
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
 
+/**
+ * @brief Type of codec
+ */
 typedef enum
 {
     ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**< default value */
@@ -62,24 +65,33 @@ typedef enum
     ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**< Max of the enumeration */
 } eARCONTROLLER_STREAM_CODEC_TYPE;
 
+/**
+ * @brief H264 Parameters.
+ */
 typedef struct 
 {
     uint8_t *spsBuffer; /**< Pointer to the SPS NAL unit buffer */
     int spsSize; /**< Size in bytes of the SPS NAL unit */
     uint8_t *ppsBuffer; /**< Pointer to the PPS NAL unit buffer */
     int ppsSize; /**< Size in bytes of the PPS NAL unit */
-    int isMP4Compliant; /**< 1 if the stream is compliant with the mpeg4 format; the NAL units start code are replaced by the NALU size */
+    int isMP4Compliant; /**< 1 if the stream is compliant with the mp4 format; the NAL units start code are replaced by the NALU size */
 }ARCONTROLLER_Stream_CodecH264_t;
 
+/**
+ * @brief Codec parameters.
+ */
 typedef union 
 {
-    ARCONTROLLER_Stream_CodecH264_t h264parameters;
+    ARCONTROLLER_Stream_CodecH264_t h264parameters; /**< H264 Parameters. */
 }ARCONTROLLER_Stream_CodecParameters_t;
 
+/**
+ * @brief Codec description.
+ */
 typedef struct 
 {
-    eARCONTROLLER_STREAM_CODEC_TYPE type; 
-    ARCONTROLLER_Stream_CodecParameters_t parameters;
+    eARCONTROLLER_STREAM_CODEC_TYPE type; /**< Codec type. */
+    ARCONTROLLER_Stream_CodecParameters_t parameters; /**< Parameters of the codec. */
 }ARCONTROLLER_Stream_Codec_t;
 
 /**
@@ -139,7 +151,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamContr
 
 /**
  * @brief Set stream compliant with the mp4 format.
- * @note Must be set for decoding H264 stream by the iOS hardware decoder.
+ * @note Must be set to decode H264 stream with the iOS hardware decoder.
  * @param streamController The stream controller.
  * @param isMP4Compliant 1 if the stream must be compliant with the mp4 format ; otherwide 0.
  * @return Executing error.
