@@ -200,6 +200,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Frame_SetFree (ARCONTROLLER_Frame_t *frame)
     
     if (error == ARCONTROLLER_OK)
     {
+        frame->used = 0;
+        frame->missed = 0;
+        frame->width = 0;
+        frame->height = 0;
+        frame->isIFrame = 0;
         frame->available = 1;
     }
 

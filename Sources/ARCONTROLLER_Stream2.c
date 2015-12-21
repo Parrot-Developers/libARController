@@ -641,10 +641,7 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auS
         frame->used = auSize;
 
         //set frame type
-        if (auSyncType == ARSTREAM2_H264_FILTER_AU_SYNC_TYPE_IFRAME)
-        {
-            frame->isIFrame = 1;
-        }
+        frame->isIFrame = (auSyncType == ARSTREAM2_H264_FILTER_AU_SYNC_TYPE_IFRAME) ? 1 : 0;
         
         error = stream2Controller->receiveFrameCallback(frame, stream2Controller->callbackData);
         
@@ -675,7 +672,8 @@ eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auS
             stream2Controller->errorCount = 0;
         }
         
-        frame->available = 1;
+        //Free the current frame
+        ARCONTROLLER_Frame_SetFree(frame);
     }
 
     return retVal;
