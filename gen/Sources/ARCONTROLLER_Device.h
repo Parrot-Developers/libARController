@@ -66,8 +66,10 @@ struct ARCONTROLLER_Device_Private_t
     int startCancelled; /**< 1 if the start is canceled*/
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
-    ARNETWORKAL_Stream_DidReceiveFrameCallback_t videoReceiveCallback;
-    ARNETWORKAL_Stream_TimeoutFrameCallback_t videoTimeoutCallback;
+    int videoIsMP4Compliant; /**< 1 if the video is mp4 fomat compliant ; otherwide 0 */
+    ARCONTROLLER_Stream_DecoderConfigCallback_t videoDecoderConfigCallback;
+    ARCONTROLLER_Stream_DidReceiveFrameCallback_t videoReceiveCallback;
+    ARCONTROLLER_Stream_TimeoutFrameCallback_t videoTimeoutCallback;
     void *videoReceiveCustomData;
     //extension part
     eARCONTROLLER_DEVICE_STATE extensionState; /**< extension state of the deviceController*/
@@ -111,9 +113,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
 /**
  * @brief Register callback for each command received.
  * @param deviceController The device controller.
+ * @param[in] specificFeature The feature to register. If null, register callbacks of all features.
  * @return executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController, void* specificFeature);
 
 /**
  * @brief Unregister callback for each command received.
@@ -202,6 +205,20 @@ void ARCONTROLLER_Device_OnSkyControllerConnectionChangedReceived (ARCONTROLLER_
  * @param customData The device controller.
  */
 eARDISCOVERY_ERROR ARCONTROLLER_Device_SendJsonCallback (json_object *jsonObj, void *customData);
+
+/**
+ * @brief Function called when the ARDrone3 video stream state has changed.
+ * @param deviceController The device controller.
+ * @param elementDictionary command element dictionary.
+ */
+void ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
+
+/**
+ * @brief Function called when the Jumping sumo video stream state has changed.
+ * @param deviceController The device controller.
+ * @param elementDictionary command element dictionary.
+ */
+void ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
 
 /**
  * @brief Callback used to receive a json part during the device connection.

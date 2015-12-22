@@ -102,6 +102,8 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
             deviceController->privatePart->startCancelled = 0;
             // Video Part
             deviceController->privatePart->hasVideo = 0;
+            deviceController->privatePart->videoIsMP4Compliant = 0;
+            deviceController->privatePart->videoDecoderConfigCallback = NULL;
             deviceController->privatePart->videoReceiveCallback = NULL;
             deviceController->privatePart->videoTimeoutCallback = NULL;
             deviceController->privatePart->videoReceiveCustomData = NULL;
@@ -281,6 +283,19 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
                 
                 break;
             
+            case ARDISCOVERY_PRODUCT_UNKNOWN_PRODUCT_1:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->jumpingSumo = ARCONTROLLER_FEATURE_JumpingSumo_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
             case ARDISCOVERY_PRODUCT_BEBOP_2:
                 if (localError == ARCONTROLLER_OK)
                 {
@@ -413,6 +428,13 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
                         
                         break;
                     
+                    case ARDISCOVERY_PRODUCT_UNKNOWN_PRODUCT_1:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_JumpingSumo_Delete (&((*deviceController)->jumpingSumo));
+                        
+                        break;
+                    
                     case ARDISCOVERY_PRODUCT_BEBOP_2:
                         ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
                         
@@ -476,7 +498,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_DeleteExtension (ARCONTROLLER_Device_t *
     }
     return error;
 }
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t *deviceController, void* specificFeature)
 {
     // -- Register the Callbacks --
     
@@ -489,7 +511,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
     }
     // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
-    if (deviceController->aRDrone3 != NULL)
+    if ((deviceController->aRDrone3 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -668,6 +690,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
         if (error == ARCONTROLLER_OK)
         {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
@@ -808,7 +835,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->aRDrone3Debug != NULL)
+    if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -822,7 +849,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->jumpingSumo != NULL)
+    if ((deviceController->jumpingSumo != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumo)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -971,7 +998,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->jumpingSumoDebug != NULL)
+    if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -980,7 +1007,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->miniDrone != NULL)
+    if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1069,11 +1096,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->miniDroneDebug != NULL)
+    if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
     {
     }
     
-    if (deviceController->skyController != NULL)
+    if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1123,6 +1150,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
@@ -1245,13 +1277,18 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
             error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
     }
     
-    if (deviceController->skyControllerDebug != NULL)
+    if ((deviceController->skyControllerDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyControllerDebug)))
     {
     }
     
-    if (deviceController->common != NULL)
+    if ((deviceController->common != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->common)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1493,9 +1530,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
             error = ARCONTROLLER_FEATURE_Common_AddCallback (deviceController->common, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Common_AddCallback (deviceController->common, ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
     }
     
-    if (deviceController->commonDebug != NULL)
+    if ((deviceController->commonDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->commonDebug)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1514,7 +1556,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if (deviceController->pro != NULL)
+    if ((deviceController->pro != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->pro)))
     {
         if (error == ARCONTROLLER_OK)
         {
@@ -1762,6 +1804,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -2310,6 +2358,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
             removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
@@ -2452,6 +2506,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
         }
@@ -2750,6 +2810,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_Common_RemoveCallback (deviceController->common, ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
         }
         
         if ((deviceController->commonDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->commonDebug)))
@@ -2885,9 +2951,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceContr
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
 {
-    // -- Set Video receive callback --
+    // -- Set video stream callbacks --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int locked = 0;
@@ -2910,6 +2976,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_De
     {
         if (deviceController->privatePart->hasVideo)
         {
+            deviceController->privatePart->videoDecoderConfigCallback = decoderConfigCallback;
             deviceController->privatePart->videoReceiveCallback = receiveFrameCallback;
             deviceController->privatePart->videoTimeoutCallback = timeoutFrameCallback;
             deviceController->privatePart->videoReceiveCustomData = customData;
@@ -2927,6 +2994,48 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_De
         locked = 0;
     }
     
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamMP4Compliant (ARCONTROLLER_Device_t *deviceController, int isMP4Compliant)
+{
+    // -- Set video stream compliant with the mp4 format. --
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARCONTROLLER_ERROR_BAD_PARAMETER and stop the processing
+
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
+        locked = 1;
+    }
+
+    if (error == ARCONTROLLER_OK)
+    {
+        if (deviceController->privatePart->hasVideo)
+        {
+            deviceController->privatePart->videoIsMP4Compliant = isMP4Compliant;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_VIDEO;
+        }
+    }
+
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));
+        locked = 0;
+    }
+
     return error;
 }
 
@@ -3392,7 +3501,7 @@ void *ARCONTROLLER_Device_StartRun (void *data)
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
     {
-        error = ARCONTROLLER_Device_RegisterCallbacks (deviceController);
+        error = ARCONTROLLER_Device_RegisterCallbacks (deviceController, NULL);
     }
     
     if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))
@@ -3564,11 +3673,17 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_StartNetwork (ARCONTROLLER_Device_t *dev
         // If device has video
         if (deviceController->privatePart->hasVideo)
         {
-            error = ARCONTROLLER_Network_SetVideoReceiveCallback (deviceController->privatePart->networkController, deviceController->privatePart->videoReceiveCallback, deviceController->privatePart->videoTimeoutCallback, deviceController->privatePart->videoReceiveCustomData);
+            error = ARCONTROLLER_Network_SetVideoReceiveCallback (deviceController->privatePart->networkController, deviceController->privatePart->videoDecoderConfigCallback, deviceController->privatePart->videoReceiveCallback, deviceController->privatePart->videoTimeoutCallback, deviceController->privatePart->videoReceiveCustomData);
         }
     }
     // No else: skipped by an error
     
+    if ((error == ARCONTROLLER_OK) && (deviceController->privatePart->hasVideo))
+    {
+        error = ARCONTROLLER_Network_SetVideoStreamMP4Compliant (deviceController->privatePart->networkController, deviceController->privatePart->videoIsMP4Compliant);
+    }
+    // No else: skipped by an error
+
     return error;
 }
 
@@ -3995,6 +4110,14 @@ void ARCONTROLLER_Device_DictionaryChangedCallback (eARCONTROLLER_DICTIONARY_KEY
                 ARCONTROLLER_Device_OnSkyControllerConnectionChangedReceived (deviceController);
                 break;
             
+            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:
+                ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (deviceController, elementDictionary);
+                break;
+            
+            case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:
+                ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (deviceController, elementDictionary);
+                break;
+            
             default :
                 //Do Nothing
                 break;
@@ -4205,8 +4328,11 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
             // TODO: see how to automate this (product AND features)
             ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));
             deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &error);
+            if (error == ARCONTROLLER_OK)
+            {
+                error = ARCONTROLLER_Device_RegisterCallbacks (deviceController, deviceController->aRDrone3);
+            }
             ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));
-            ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);
             break;
         
         default:
@@ -4223,8 +4349,149 @@ void *ARCONTROLLER_Device_ExtensionStartRun (void *data)
     {
         ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ExtensionStartRun : %s", ARCONTROLLER_Error_ToString (error));
     }
+    ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);
     
     return NULL;
+}
+
+void ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
+{
+    // -- ARDrone3 video enable changed --
+
+    // Local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;
+    eARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL)||
+        (elementDictionary == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the command received in the device controller
+        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);
+        
+        if (element == NULL)
+        {
+            error = ARCONTROLLER_ERROR_NO_ELEMENT;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the value
+        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+        
+        if (arg != NULL)
+        {
+            videoState = arg->value.I32;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_ARGUMENTS;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (videoState)
+        {
+            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:
+                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:
+                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:
+                //Do nothing
+                break;
+                
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);
+                break;
+        }
+    }
+}
+
+void ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)
+{
+    // -- Jumping Sumo video enable changed --
+
+    // Local declarations
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;
+    eARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;
+    
+    // Check parameters
+    if ((deviceController == NULL) ||
+        (deviceController->privatePart == NULL)||
+        (elementDictionary == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the command received in the device controller
+        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);
+        
+        if (element == NULL)
+        {
+            error = ARCONTROLLER_ERROR_NO_ELEMENT;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // get the value
+        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
+        
+        if (arg != NULL)
+        {
+            videoState = arg->value.I32;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_ARGUMENTS;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        switch (videoState)
+        {
+            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:
+                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:
+                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);
+                break;
+                
+            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:
+                //Do nothing
+                break;
+                
+            default:
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);
+                break;
+        }
+    }
 }
 
 eARDISCOVERY_ERROR ARCONTROLLER_Device_SendJsonCallback (json_object *jsonObj, void *customData)

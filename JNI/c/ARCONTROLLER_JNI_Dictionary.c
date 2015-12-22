@@ -127,7 +127,7 @@ Java_com_parrot_arsdk_arcontroller_ARControllerDictionary_nativeGetAllElements (
     }
     
     // cleanup
-    (*env)->ReleaseLongArrayElements(env, jElements, elementsArr, NULL);
+    (*env)->ReleaseLongArrayElements(env, jElements, elementsArr, 0);
     
     return (long) jElements;
 }
@@ -238,7 +238,7 @@ Java_com_parrot_arsdk_arcontroller_ARControllerArgumentDictionary_nativeGetArgVa
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT:
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_DOUBLE:
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING:
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_JNIDICTIONARY_TAG, "Bad valueType:%d to return long", nativeArg->valueType);
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_JNIDICTIONARY_TAG, "Bad valueType:%d to return double", nativeArg->valueType);
                 break;
 
             default:

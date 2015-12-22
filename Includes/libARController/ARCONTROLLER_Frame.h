@@ -56,6 +56,7 @@ typedef struct
     uint32_t height;
     int isIFrame; /**< Flag to inform if the frame is an IFrame ; '1' is an IFrame ; '0' is not an IFrame */
     int available; /**< Flag to inform if the frame is available ; '1' the frame is free ; '0' the frame is not available */
+    uint8_t *base; /**< Data not modified */
 }ARCONTROLLER_Frame_t;
 
 /**

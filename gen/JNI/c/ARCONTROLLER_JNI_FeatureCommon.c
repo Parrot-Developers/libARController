@@ -474,6 +474,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonCharg
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME);
 }
 
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonRunStateRunIdChangedRunId (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID);
+}
+
 JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeSendNetworkDisconnect (JNIEnv *env, jobject thizz, jlong jFeature)
 {

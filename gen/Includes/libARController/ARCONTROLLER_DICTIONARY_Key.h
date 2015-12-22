@@ -57,6 +57,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED, /**< Key used to define the command <code>HullProtectionChanged</code> of class <code>SpeedSettingsState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED, /**< Key used to define the command <code>OutdoorChanged</code> of class <code>SpeedSettingsState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED, /**< Key used to define the command <code>WifiSelectionChanged</code> of class <code>NetworkSettingsState</code> in project <code>ARDrone3</code> */
+    ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED, /**< Key used to define the command <code>WifiSecurityChanged</code> of class <code>NetworkSettingsState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED, /**< Key used to define the command <code>ProductMotorVersionListChanged</code> of class <code>SettingsState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED, /**< Key used to define the command <code>ProductGPSVersionChanged</code> of class <code>SettingsState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORSTATECHANGED, /**< Key used to define the command <code>MotorErrorStateChanged</code> of class <code>SettingsState</code> in project <code>ARDrone3</code> */
@@ -150,6 +151,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_ALLSETTINGSCHANGED, /**< Key used to define the command <code>AllSettingsChanged</code> of class <code>SettingsState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_RESETCHANGED, /**< Key used to define the command <code>ResetChanged</code> of class <code>SettingsState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED, /**< Key used to define the command <code>ProductSerialChanged</code> of class <code>SettingsState</code> in project <code>SkyController</code> */
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED, /**< Key used to define the command <code>ProductVariantChanged</code> of class <code>SettingsState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED, /**< Key used to define the command <code>AllStatesChanged</code> of class <code>CommonState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED, /**< Key used to define the command <code>BatteryChanged</code> of class <code>SkyControllerState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED, /**< Key used to define the command <code>GpsFixChanged</code> of class <code>SkyControllerState</code> in project <code>SkyController</code> */
@@ -174,6 +176,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE, /**< Key used to define the command <code>PilotingSource</code> of class <code>CoPilotingState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE, /**< Key used to define the command <code>MagnetoCalibrationState</code> of class <code>CalibrationState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE, /**< Key used to define the command <code>MagnetoCalibrationQualityUpdatesState</code> of class <code>CalibrationState</code> in project <code>SkyController</code> */
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS, /**< Key used to define the command <code>Settings</code> of class <code>ButtonEvents</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLERDEBUG, /**< Key used to define the feature <code>SkyControllerDebug</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON, /**< Key used to define the feature <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_NETWORKEVENT_DISCONNECTION, /**< Key used to define the command <code>Disconnection</code> of class <code>NetworkEvent</code> in project <code>Common</code> */
@@ -224,6 +227,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED, /**< Key used to define the command <code>CurrentChargeStateChanged</code> of class <code>ChargerState</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED, /**< Key used to define the command <code>LastChargeRateChanged</code> of class <code>ChargerState</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO, /**< Key used to define the command <code>ChargingInfo</code> of class <code>ChargerState</code> in project <code>Common</code> */
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED, /**< Key used to define the command <code>RunIdChanged</code> of class <code>RunState</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG, /**< Key used to define the feature <code>CommonDebug</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET, /**< Key used to define the command <code>SendPacket</code> of class <code>StatsEvent</code> in project <code>CommonDebug</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO, /**< Key used to define the command <code>Info</code> of class <code>DebugSettingsState</code> in project <code>CommonDebug</code> */

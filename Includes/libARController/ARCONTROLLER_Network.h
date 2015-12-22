@@ -129,12 +129,36 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_Resume (ARCONTROLLER_Network_t *network
 /**
  * @brief Set the callbacks of the video stream events.
  * @param networkController The network Controller ; must be not NULL.
+ * @param[in] decoderConfigCallback decoder configuration callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+
+/**
+ * @brief Set video stream compliant with the mp4 format.
+ * @note Must be set to decode H264 stream with the iOS hardware decoder.
+ * @param networkController The network Controller ; must be not NULL.
+ * @param isMP4Compliant 1 if the video stream must be compliant with mp4 format ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamMP4Compliant (ARCONTROLLER_Network_t *networkController, int isMP4Compliant);
+
+/**
+ * @brief Start Video stream.
+ * @param networkController The network Controller ; must be not NULL.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StartVideoStream (ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Stop Video stream.
+ * @param networkController The network Controller ; must be not NULL.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopVideoStream (ARCONTROLLER_Network_t *networkController);
 
 /**
  * @brief Send data through the network.

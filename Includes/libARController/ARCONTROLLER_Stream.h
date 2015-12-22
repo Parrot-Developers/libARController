@@ -47,19 +47,66 @@
 #include <libARController/ARCONTROLLER_Frame.h>
 #include <libARController/ARCONTROLLER_StreamQueue.h>
 
-
 /**
  * @brief Callback when a frame is received.
  * @param[in] customData Data given at the registering of the callback.
+ * @return Executing error.
  */
-typedef void (*ARNETWORKAL_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_DidReceiveFrameCallback_t) (ARCONTROLLER_Frame_t *frame, void *customData);
+
+/**
+ * @brief Type of codec
+ */
+typedef enum
+{
+    ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**< default value */
+    ARCONTROLLER_STREAM_CODEC_TYPE_H264, /**< h264 codec */
+    ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG, /**< MJPEG codec */
+    ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**< Max of the enumeration */
+} eARCONTROLLER_STREAM_CODEC_TYPE;
+
+/**
+ * @brief H264 Parameters.
+ */
+typedef struct 
+{
+    uint8_t *spsBuffer; /**< Pointer to the SPS NAL unit buffer */
+    int spsSize; /**< Size in bytes of the SPS NAL unit */
+    uint8_t *ppsBuffer; /**< Pointer to the PPS NAL unit buffer */
+    int ppsSize; /**< Size in bytes of the PPS NAL unit */
+    int isMP4Compliant; /**< 1 if the stream is compliant with the mp4 format; the NAL units start code are replaced by the NALU size */
+}ARCONTROLLER_Stream_CodecH264_t;
+
+/**
+ * @brief Codec parameters.
+ */
+typedef union 
+{
+    ARCONTROLLER_Stream_CodecH264_t h264parameters; /**< H264 Parameters. */
+}ARCONTROLLER_Stream_CodecParameters_t;
+
+/**
+ * @brief Codec description.
+ */
+typedef struct 
+{
+    eARCONTROLLER_STREAM_CODEC_TYPE type; /**< Codec type. */
+    ARCONTROLLER_Stream_CodecParameters_t parameters; /**< Parameters of the codec. */
+}ARCONTROLLER_Stream_Codec_t;
+
+/**
+ * @brief Callback to configure the decoder.
+ * @param[in] codec codec of the stream.
+ * @param[in] customData Data given at the registering of the callback.
+ * @return Executing error.
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_Stream_DecoderConfigCallback_t) (ARCONTROLLER_Stream_Codec_t codec, void *customData);
 
 /**
  * @brief Callback when timeout in frame receiving
  * @param[in] customData Data given at the registering of the callback.
  */
-typedef void (*ARNETWORKAL_Stream_TimeoutFrameCallback_t) (void *customData);
-
+typedef void (*ARCONTROLLER_Stream_TimeoutFrameCallback_t) (void *customData);
 
 /**
  * @brief Stream controller allow to operate ARStream for receive a stream.
@@ -75,7 +122,7 @@ typedef struct ARCONTROLLER_Stream_t ARCONTROLLER_Stream_t;
  * @return The new Stream Controller.
  * @see ARCONTROLLER_Stream_Delete.
  */
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
 
 /**
  * @brief Delete the Stream Controller.
@@ -103,40 +150,39 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
 eARCONTROLLER_ERROR ARCONTROLLER_Stream_Stop (ARCONTROLLER_Stream_t *streamController);
 
 /**
+ * @brief Set stream compliant with the mp4 format.
+ * @note Must be set to decode H264 stream with the iOS hardware decoder.
+ * @param streamController The stream controller.
+ * @param isMP4Compliant 1 if the stream must be compliant with the mp4 format ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetMP4Compliant (ARCONTROLLER_Stream_t *streamController, int isMP4Compliant);
+
+/**
  * @brief Set the callbacks of the frames events.
  * @param streamController The stream controller.
+ * @param[in] decoderConfigCallback decoder configuration callback function.
  * @param[in] receiveFrameCallback Callback when a frame is received.
  * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
  * @param[in] customData Data to set as argument to the callbacks.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
-
- /**
- * @brief Pop a frame from the ready frame queue.
- * @warning This is a blocking function, waits a frame push if the queue is empty. 
- * @param streamController The stream controller.
- * @param[out] error Executing error.
- * @return The frame pop ; Can be null if an error occurs.
- */
-ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+eARCONTROLLER_ERROR ARCONTROLLER_Stream_SetReceiveFrameCallback (ARCONTROLLER_Stream_t *streamController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
 
 /**
- * @brief Try to pop a frame from the ready frame queue.
- * @note If the queue is empty, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @brief Callback to add a json part durring the connection.
  * @param streamController The stream controller.
- * @param[out] error Executing error.
- * @return The frame pop ; Can be null if an error occurs.
+ * @param jsonObj connection json.
+ * @return Executing error.
  */
-ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_TryGetFrame (ARCONTROLLER_Stream_t *streamController, eARCONTROLLER_ERROR *error);
+eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnSendJson (ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
 
 /**
- * @brief Pop a frame from the ready frame queue, with timeout.
- * @warning This is a blocking function; If the queue is empty yet after the timeout, returns null, and error is equals to ARCONTROLLER_ERROR_STREAMQUEUE_EMPTY.
+ * @brief Callback to read a json part durring the connection.
  * @param streamController The stream controller.
- * @param[out] error Executing error.
- * @return The frame pop ; Can be null if an error occurs.
+ * @param jsonObj connection json.
+ * @return Executing error.
  */
-ARCONTROLLER_Frame_t *ARCONTROLLER_Stream_GetFrameWithTimeout (ARCONTROLLER_Stream_t *streamController, uint32_t timeoutMs, eARCONTROLLER_ERROR *error);
+eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson(ARCONTROLLER_Stream_t *streamController, json_object *jsonObj);
 
 #endif /* _ARCONTROLLER_STREAM_H_ */

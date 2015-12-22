@@ -556,18 +556,44 @@ public class ARDeviceController
         }
     }
     
-    private void  didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed)
+    private int decoderConfigCallback (ARControllerCodec codec)
     {
-        boolean isIFrame = (nativeIsIFrame != 0);
+        boolean failed = false;
         
+        for (ARDeviceControllerStreamListener l : streamlisteners)
+        {
+            ARCONTROLLER_ERROR_ENUM error = l.configureDecoder(this, codec);
+            
+            if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)
+            {
+                failed = true;
+            }
+        }
+        
+        codec.dispose();
+        
+        return (failed) ? ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR.getValue() : ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK.getValue();
+    }
+    
+    private int didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed)
+    {
+        boolean failed = false;
+        boolean isIFrame = (nativeIsIFrame != 0);
         ARFrame frame = new ARFrame (data, dataCapacity, dataSize, isIFrame, missed);
         
         for (ARDeviceControllerStreamListener l : streamlisteners)
         {
-            l.onFrameReceived (this, frame);
+            ARCONTROLLER_ERROR_ENUM error = l.onFrameReceived (this, frame);
+            
+            if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)
+            {
+                failed = true;
+            }
         }
         
         frame.dispose();
+        
+        return (failed) ? ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR.getValue() : ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK.getValue();
     }
 
     private void  timeoutFrameCallback ()

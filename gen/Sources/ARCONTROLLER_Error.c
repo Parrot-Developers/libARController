@@ -158,6 +158,12 @@ char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
     case ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID:
         return "Product not valid to be an extension";
         break;
+    case ARCONTROLLER_ERROR_STREAM:
+        return "Generic stream error";
+        break;
+    case ARCONTROLLER_ERROR_STREAM_RESYNC_REQUIRED:
+        return "Stream re-synchronization required";
+        break;
     default:
         return "Unknown value";
         break;

@@ -88,6 +88,9 @@ typedef enum
     
     ARCONTROLLER_ERROR_EXTENSION = -7000, /**< Generic extension related error */
     ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID, /**< Product not valid to be an extension  */
+    
+    ARCONTROLLER_ERROR_STREAM = -8000, /**< Generic stream error */
+    ARCONTROLLER_ERROR_STREAM_RESYNC_REQUIRED, /**< Stream re-synchronization required  */
 
 } eARCONTROLLER_ERROR;
 

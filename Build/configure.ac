@@ -29,7 +29,7 @@ if test x"$debugit" = x"yes"; then
     LOCAL_CFLAGS+=" -g -Wall -Werror -Wno-uninitialized -O0"
 else
     AC_DEFINE([NDEBUG],[],[No-debug Mode])
-    LOCAL_CFLAGS+=" -O3"
+    LOCAL_CFLAGS+=" -O0"
 fi
 AM_CONDITIONAL([DEBUG_MODE], [test "$debugit" = "yes"])
 
@@ -41,14 +41,6 @@ AC_ARG_WITH([projects],
                             [generate commands for the specified projects (project1,project2,...). `all` means use every available xml file @<:@default=all@:>@])],
             [],
             [with_projects=all])
-
-AC_MSG_CHECKING([whether we need to generate debug commands])
-AC_ARG_ENABLE([debug-commands],
-            [AS_HELP_STRING([--enable-debug-commands],
-                            [enable generation of debug commands @<:@default=disabled@:>@])],
-            [dbgcmds="$enableval"],
-            [dbgcmds=no])
-AC_MSG_RESULT([$dbgcmds])
 
 ##########################################################################
 # Non versionned .so compilation support (for Android)
@@ -80,6 +72,7 @@ AR_DEPENDS([libARNetwork], [Y], [libARNetwork/ARNetwork.h])
 AR_DEPENDS([libARDiscovery], [Y], [libARDiscovery/ARDiscovery.h])
 AR_DEPENDS([libARCommands], [Y], [libARCommands/ARCommands.h])
 AR_DEPENDS([libARStream], [Y], [libARStream/ARStream.h])
+AR_DEPENDS([libARStream2], [Y], [libARStream2/arstream2_stream_receiver.h])
 AR_DEPENDS([uthash], [Y], [uthash/uthash.h], [N], [Y])
 AR_DEPENDS([json], [N], [json/json.h], [N])
 

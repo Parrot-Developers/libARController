@@ -105,6 +105,14 @@
         
     </ARController_Device>
     
+    <ARController_Device name="Unknown_PRODUCT_1" product="UNKNOWN_PRODUCT_1">
+        Unknown Product 1 project
+        
+        <feature name="common"/>
+        <feature name="JumpingSumo"/>
+        
+    </ARController_Device>
+    
     <ARController_Device name="Bebop2" product="BEBOP_2">
         Bebop 2 project
         

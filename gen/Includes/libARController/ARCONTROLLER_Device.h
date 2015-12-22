@@ -120,14 +120,24 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_Start (ARCONTROLLER_Device_t *deviceCont
 eARCONTROLLER_ERROR ARCONTROLLER_Device_Stop (ARCONTROLLER_Device_t *deviceController);
 
 /**
- * @brief Set callback to receive video.
+ * @brief Set callback to receive the video stream.
  * @param deviceController The device controller.
+ * @param decoderConfigCallback callback to configure the stream decoder.
  * @param receiveFrameCallback The callback when a frame is received.
  * @param timeoutFrameCallback The callback when timeout on receive.
  * @param[in] customData custom data given as parameter to the callback.
  * @return executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoReceiveCallback (ARCONTROLLER_Device_t *deviceController, ARNETWORKAL_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARNETWORKAL_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamCallbacks (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+
+/**
+ * @brief Set video stream compliant with the mp4 format.
+ * @note Must be set for decoding H264 stream by the iOS hardware decoder.
+ * @param deviceController The device controller.
+ * @param isMP4Compliant 1 if the video stream must be compliant with mp4 format ; otherwide 0.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Device_SetVideoStreamMP4Compliant (ARCONTROLLER_Device_t *deviceController, int isMP4Compliant);
 
 /**
  * @brief Add callback to be informed when a commands is received.

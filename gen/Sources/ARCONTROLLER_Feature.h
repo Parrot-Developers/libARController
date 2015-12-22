@@ -36,7 +36,7 @@ typedef struct
     int8_t pitch; /**< */
     int8_t yaw; /**< */
     int8_t gaz; /**< */
-    float psi; /**< */
+    uint32_t timestampAndSeqNum; /**< */
 }ARCONTROLLER_ARDrone3_PilotingPCMDParameters_t;
 
 /**
@@ -95,10 +95,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingTakeOff (ARCONTROL
  * @param pitch Pitch consign for the drone [-100;100]
  * @param yaw Yaw consign for the drone [-100;100]
  * @param gaz Gaz consign for the drone [-100;100]
- * @param psi [NOT USED] - Magnetic north heading of the controlling device (deg) [-180;180]
+ * @param timestampAndSeqNum Command timestamp in milliseconds (low 24 bits) + command sequence number [0;255] (high 8 bits).
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingPCMD (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, float psi);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingPCMD (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t flag, int8_t roll, int8_t pitch, int8_t yaw, int8_t gaz, uint32_t timestampAndSeqNum);
 
 /**
  * @brief Set the parameters to send through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
@@ -109,10 +109,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingPCMD (ARCONTROLLER
  * @param pitch Pitch consign for the drone [-100;100]
  * @param yaw Yaw consign for the drone [-100;100]
  * @param gaz Gaz consign for the drone [-100;100]
- * @param psi [NOT USED] - Magnetic north heading of the controlling device (deg) [-180;180]
+ * @param timestampAndSeqNum Command timestamp in milliseconds (low 24 bits) + command sequence number [0;255] (high 8 bits).
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SetPilotingPCMD (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _flag, int8_t _roll, int8_t _pitch, int8_t _yaw, int8_t _gaz, float _psi);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SetPilotingPCMD (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _flag, int8_t _roll, int8_t _pitch, int8_t _yaw, int8_t _gaz, uint32_t _timestampAndSeqNum);
 
 /**
  * @brief Set flag sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
@@ -160,13 +160,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SetPilotingPCMDYaw (ARCONTROLL
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SetPilotingPCMDGaz (ARCONTROLLER_FEATURE_ARDrone3_t *feature, int8_t gaz);
 
 /**
- * @brief Set psi sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
+ * @brief Set timestampAndSeqNum sent through the command <code>PCMD</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
  * Ask the drone to move around.
  * @param feature feature owning the commands
- * @param psi [NOT USED] - Magnetic north heading of the controlling device (deg) [-180;180]
+ * @param timestampAndSeqNum Command timestamp in milliseconds (low 24 bits) + command sequence number [0;255] (high 8 bits).
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SetPilotingPCMDPsi (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float psi);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SetPilotingPCMDTimestampAndSeqNum (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint32_t timestampAndSeqNum);
 
 /**
  * @brief Send a command <code>Landing</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
@@ -812,6 +812,17 @@ void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateOutdoorChangedCallback (uin
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSelection (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_TYPE type, eARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_BAND band, uint8_t channel);
 
 /**
+ * @brief Send a command <code>WifiSecurity</code> of class <code>NetworkSettings</code> in project <code>ARDrone3</code>
+ * Sent by the controller to set the wifi security
+ * @param feature feature owning the commands
+ * @param type The type of wifi security (open, wpa2)
+ * @param key The key to secure the network (empty if type is open)
+ * @param keyType Type of the key
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSecurity (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_TYPE type, char * key, eARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_KEYTYPE keyType);
+
+/**
  * class: NetworkSettingsState 
  * Network settings state from product
  */
@@ -825,6 +836,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSelecti
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSelectionChangedCallback (eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE _type, eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND _band, uint8_t _channel, void *customData);
+
+/**
+ * @brief callback used when the command <code>WifiSecurityChanged</code> of class <code>NetworkSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param type The type of wifi security (open, wpa2)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityChangedCallback (eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE _type, void *customData);
 
 /**
  * class: Settings 
@@ -1269,6 +1288,7 @@ void ARCONTROLLER_FEATURE_ARDrone3_GPSStateHomeTypeChosenChangedCallback (eARCOM
 
 /**
  * class: PROState 
+ * @deprecated
  * Pro features enabled on the Bebop
  */
 
@@ -1276,9 +1296,6 @@ void ARCONTROLLER_FEATURE_ARDrone3_GPSStateHomeTypeChosenChangedCallback (eARCOM
  * @brief callback used when the command <code>Features</code> of class <code>PROState is decoded
  * @param feature The feature controller registred
  * @param features Bitfield representing enabled features.
- * @param features Currently supported bits are:
- * @param features - 0 : 720p streaming
- * @param features - 1 : No interface on SkyController HDMI
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_PROStateFeaturesCallback (uint64_t _features, void *customData);
@@ -2993,6 +3010,14 @@ void ARCONTROLLER_FEATURE_SkyController_SettingsStateResetChangedCallback (void 
 void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductSerialChangedCallback (char * _serialNumber, void *customData);
 
 /**
+ * @brief callback used when the command <code>ProductVariantChanged</code> of class <code>SettingsState is decoded
+ * @param feature The feature controller registred
+ * @param variant Variant of the product
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductVariantChangedCallback (eARCOMMANDS_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT _variant, void *customData);
+
+/**
  * class: Common 
  * Common commands
  */
@@ -3469,6 +3494,19 @@ void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationStateC
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationQualityUpdatesStateCallback (uint8_t _enabled, void *customData);
+
+/**
+ * class: ButtonEvents 
+ * Events sent on SkyController button presses.
+ * These events are sent under certain conditions only.
+ */
+
+/**
+ * @brief callback used when the command <code>Settings</code> of class <code>ButtonEvents is decoded
+ * @param feature The feature controller registred
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_ButtonEventsSettingsCallback (void *customData);
 
 
 /*******************************
@@ -4328,6 +4366,19 @@ void ARCONTROLLER_FEATURE_Common_ChargerStateLastChargeRateChangedCallback (eARC
  */
 void ARCONTROLLER_FEATURE_Common_ChargerStateChargingInfoCallback (eARCOMMANDS_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE _phase, eARCOMMANDS_COMMON_CHARGERSTATE_CHARGINGINFO_RATE _rate, uint8_t _intensity, uint8_t _fullChargingTime, void *customData);
 
+/**
+ * class: RunState 
+ * Commands sent by the drone to inform about the run or flight state
+ */
+
+/**
+ * @brief callback used when the command <code>RunIdChanged</code> of class <code>RunState is decoded
+ * @param feature The feature controller registred
+ * @param runId Id of the run
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_RunStateRunIdChangedCallback (char * _runId, void *customData);
+
 
 /*******************************
  * --- FEATURE commonDebug --- 
@@ -4508,11 +4559,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProBoughtFeatures (ARCONTROLLER
  * @brief Send a command <code>Response</code> of class <code>Pro</code> in project <code>Pro</code>
  * Response to the challenge string sent by the controller
  * @param feature feature owning the commands
- * @param status Status of the response
+ * @param listFlags List entry attribute Bitfield.
+ * @param listFlags 0x01: First: indicate it's the first element of the list.
+ * @param listFlags 0x02: Last:  indicate it's the last element of the list.
+ * @param listFlags 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
  * @param signedChallenge the signed challenge
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, eARCOMMANDS_PRO_PRO_RESPONSE_STATUS status, char * signedChallenge);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Pro_SendProResponse (ARCONTROLLER_FEATURE_Pro_t *feature, uint8_t listFlags, char * signedChallenge);
 
 /**
  * @brief Send a command <code>ActivateFeatures</code> of class <code>Pro</code> in project <code>Pro</code>

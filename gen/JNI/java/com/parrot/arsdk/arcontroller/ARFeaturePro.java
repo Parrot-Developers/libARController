@@ -37,7 +37,7 @@ public class ARFeaturePro
     private static native String nativeStaticGetKeyProProEventChallengeEventChallenge ();
 
     private native int nativeSendProBoughtFeatures (long jFeature, long features);
-    private native int nativeSendProResponse (long jFeature, int status, String signedChallenge);
+    private native int nativeSendProResponse (long jFeature, byte listFlags, String signedChallenge);
     private native int nativeSendProActivateFeatures (long jFeature, long features);
 
     private long jniFeature;
@@ -110,14 +110,14 @@ public class ARFeaturePro
         return error;
     }
     
-    public ARCONTROLLER_ERROR_ENUM sendProResponse (ARCOMMANDS_PRO_PRO_RESPONSE_STATUS_ENUM _status, String _signedChallenge)
+    public ARCONTROLLER_ERROR_ENUM sendProResponse (byte _listFlags, String _signedChallenge)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendProResponse (jniFeature, _status.getValue(), _signedChallenge);
+                int nativeError = nativeSendProResponse (jniFeature, _listFlags, _signedChallenge);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

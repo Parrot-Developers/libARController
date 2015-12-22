@@ -45,5 +45,6 @@
 #include <libARController/ARCONTROLLER_Dictionary.h>
 #include <libARController/ARCONTROLLER_Feature.h>
 #include <libARController/ARCONTROLLER_Device.h>
+#include <libARController/ARCONTROLLER_Stream.h>
 
 #endif /* _ARCONTROLLER_H_ */
