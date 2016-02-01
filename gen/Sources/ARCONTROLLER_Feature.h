@@ -723,9 +723,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxVerticalSp
 
 /**
  * @brief Send a command <code>MaxRotationSpeed</code> of class <code>SpeedSettings</code> in project <code>ARDrone3</code>
- * Set Max Rotation speed
+ * Set Max Yaw Rotation speed
  * @param feature feature owning the commands
- * @param current Current max rotation speed in degree/s
+ * @param current Current max yaw rotation speed in degree/s
  * return executing error
  */
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current);
@@ -749,6 +749,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtectio
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsOutdoor (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t outdoor);
 
 /**
+ * @brief Send a command <code>MaxPitchRollRotationSpeed</code> of class <code>SpeedSettings</code> in project <code>ARDrone3</code>
+ * Set Max Pitch/Rool Rotation speed
+ * @param feature feature owning the commands
+ * @param current Current max pitch/roll rotation speed in degree/s
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxPitchRollRotationSpeed (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current);
+
+/**
  * class: SpeedSettingsState 
  * Speed Settings state from product
  */
@@ -766,9 +775,9 @@ void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxVerticalSpeedChangedCall
 /**
  * @brief callback used when the command <code>MaxRotationSpeedChanged</code> of class <code>SpeedSettingsState is decoded
  * @param feature The feature controller registred
- * @param current Current max rotation speed in degree/s
- * @param min Range min of rotation speed
- * @param max Range max of rotation speed
+ * @param current Current max yaw rotation speed in degree/s
+ * @param min Range min of yaw rotation speed
+ * @param max Range max of yaw rotation speed
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData);
@@ -788,6 +797,16 @@ void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateHullProtectionChangedCallba
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateOutdoorChangedCallback (uint8_t _outdoor, void *customData);
+
+/**
+ * @brief callback used when the command <code>MaxPitchRollRotationSpeedChanged</code> of class <code>SpeedSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param current Current max pitch/roll rotation speed in degree/s
+ * @param min Range min of pitch/roll rotation speed
+ * @param max Range max of pitch/roll rotation speed
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxPitchRollRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData);
 
 /**
  * class: NetworkSettings 
@@ -840,9 +859,14 @@ void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSelectionChangedCallb
 void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityChangedCallback (eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE _type, void *customData);
 
 /**
- * class: Settings 
- * Settings commands
+ * @brief callback used when the command <code>WifiSecurity</code> of class <code>NetworkSettingsState is decoded
+ * @param feature The feature controller registred
+ * @param type The type of wifi security (open, wpa2)
+ * @param key The key used to secure the network (empty if type is open)
+ * @param keyType Type of the key
+ * @param customData customData set by the register
  */
+void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityCallback (eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE _type, char * _key, eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE _keyType, void *customData);
 
 /**
  * class: SettingsState 
@@ -911,16 +935,6 @@ void ARCONTROLLER_FEATURE_ARDrone3_SettingsStateMotorErrorLastErrorChangedCallba
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_SettingsStateP7IDCallback (char * _serialID, void *customData);
-
-/**
- * class: DirectorMode 
- * Director mode commands
- */
-
-/**
- * class: DirectorModeState 
- * Director mode state from product
- */
 
 /**
  * class: PictureSettings 
@@ -1612,11 +1626,6 @@ void ARCONTROLLER_FEATURE_JumpingSumo_AnimationsStateJumpTypeChangedCallback (eA
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_JumpingSumo_AnimationsStateJumpMotorProblemChangedCallback (eARCOMMANDS_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR _error, void *customData);
-
-/**
- * class: Settings 
- * Settings commands
- */
 
 /**
  * class: SettingsState 
@@ -3501,49 +3510,6 @@ void ARCONTROLLER_FEATURE_SkyController_CalibrationStateMagnetoCalibrationQualit
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_SkyController_ButtonEventsSettingsCallback (void *customData);
-
-
-/*******************************
- * --- FEATURE SkyControllerDebug --- 
- ******************************/
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t.
- */
-struct ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t
-{
-    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
-    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
-    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
-};
-
-/**
- * @brief Register the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to register
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RegisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature);
-
-/**
- * @brief Unegister the feature controller to be called when the commands are decoded.
- * @param feature The feature controller to unregister
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature);
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-/**
- * @brief Send a command <code>Test1</code> of class <code>Debug</code> in project <code>SkyControllerDebug</code>
- * Test 1 command
- * @param feature feature owning the commands
- * @param t1Args Test 1 argument
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1 (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args);
 
 
 /*******************************

@@ -76,7 +76,6 @@ typedef struct
     ARCONTROLLER_FEATURE_MiniDrone_t *miniDrone; /**< */
     ARCONTROLLER_FEATURE_MiniDroneDebug_t *miniDroneDebug; /**< */
     ARCONTROLLER_FEATURE_SkyController_t *skyController; /**< */
-    ARCONTROLLER_FEATURE_SkyControllerDebug_t *skyControllerDebug; /**< */
     ARCONTROLLER_FEATURE_Common_t *common; /**< */
     ARCONTROLLER_FEATURE_CommonDebug_t *commonDebug; /**< */
     ARCONTROLLER_FEATURE_Pro_t *pro; /**< */

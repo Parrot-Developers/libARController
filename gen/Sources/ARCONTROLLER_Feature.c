@@ -193,13 +193,18 @@ const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONS
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_maxrotationspeedchanged_max";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_hullprotectionchanged_present";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_outdoorchanged_outdoor";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_maxpitchrollrotationspeedchanged_current";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_maxpitchrollrotationspeedchanged_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_maxpitchrollrotationspeedchanged_max";
 
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifiselectionchanged_type";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifiselectionchanged_band";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifiselectionchanged_channel";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifisecuritychanged_type";
-
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifisecurity_type";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifisecurity_key";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE = "arcontroller_dictionary_key_ardrone3_networksettingsstate_wifisecurity_keytype";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = "arcontroller_dictionary_key_ardrone3_settingsstate_productmotorversionlistchanged_motor_number";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = "arcontroller_dictionary_key_ardrone3_settingsstate_productmotorversionlistchanged_type";
@@ -215,8 +220,6 @@ const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATU
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_TOTALFLIGHTDURATION = "arcontroller_dictionary_key_ardrone3_settingsstate_motorflightsstatuschanged_totalflightduration";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORLASTERRORCHANGED_MOTORERROR = "arcontroller_dictionary_key_ardrone3_settingsstate_motorerrorlasterrorchanged_motorerror";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_P7ID_SERIALID = "arcontroller_dictionary_key_ardrone3_settingsstate_p7id_serialid";
-
-
 
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_PICTUREFORMATCHANGED_TYPE = "arcontroller_dictionary_key_ardrone3_picturesettingsstate_pictureformatchanged_type";
@@ -316,6 +319,7 @@ ARCONTROLLER_FEATURE_ARDrone3_t *ARCONTROLLER_FEATURE_ARDrone3_New (ARCONTROLLER
             featureController->sendSpeedSettingsMaxRotationSpeed = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed;
             featureController->sendSpeedSettingsHullProtection = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtection;
             featureController->sendSpeedSettingsOutdoor = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsOutdoor;
+            featureController->sendSpeedSettingsMaxPitchRollRotationSpeed = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxPitchRollRotationSpeed;
             featureController->sendNetworkSettingsWifiSelection = ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSelection;
             featureController->sendNetworkSettingsWifiSecurity = ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSecurity;
             featureController->sendPictureSettingsPictureFormatSelection = ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsPictureFormatSelection;
@@ -565,9 +569,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_RegisterARCommands (ARCONTROLL
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxRotationSpeedChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxRotationSpeedChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateHullProtectionChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateHullProtectionChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateOutdoorChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateOutdoorChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxPitchRollRotationSpeedChangedCallback, feature);
         // Commands of class : NetworkSettingsState:
         ARCOMMANDS_Decoder_SetARDrone3NetworkSettingsStateWifiSelectionChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSelectionChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3NetworkSettingsStateWifiSecurityChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3NetworkSettingsStateWifiSecurityCallback (&ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityCallback, feature);
         // Commands of class : SettingsState:
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateProductMotorVersionListChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SettingsStateProductMotorVersionListChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateProductGPSVersionChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SettingsStateProductGPSVersionChangedCallback, feature);
@@ -576,7 +582,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_RegisterARCommands (ARCONTROLL
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateMotorFlightsStatusChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SettingsStateMotorFlightsStatusChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateMotorErrorLastErrorChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SettingsStateMotorErrorLastErrorChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateP7IDCallback (&ARCONTROLLER_FEATURE_ARDrone3_SettingsStateP7IDCallback, feature);
-        // Commands of class : DirectorModeState:
         // Commands of class : PictureSettingsState:
         ARCOMMANDS_Decoder_SetARDrone3PictureSettingsStatePictureFormatChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStatePictureFormatChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3PictureSettingsStateAutoWhiteBalanceChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateAutoWhiteBalanceChangedCallback, feature);
@@ -666,9 +671,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_UnregisterARCommands (ARCONTRO
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxRotationSpeedChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateHullProtectionChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateOutdoorChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedCallback (NULL, NULL);
         // Commands of class : NetworkSettingsState:
         ARCOMMANDS_Decoder_SetARDrone3NetworkSettingsStateWifiSelectionChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3NetworkSettingsStateWifiSecurityChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3NetworkSettingsStateWifiSecurityCallback (NULL, NULL);
         // Commands of class : SettingsState:
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateProductMotorVersionListChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateProductGPSVersionChangedCallback (NULL, NULL);
@@ -677,7 +684,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_UnregisterARCommands (ARCONTRO
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateMotorFlightsStatusChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateMotorErrorLastErrorChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SettingsStateP7IDCallback (NULL, NULL);
-        // Commands of class : DirectorModeState:
         // Commands of class : PictureSettingsState:
         ARCOMMANDS_Decoder_SetARDrone3PictureSettingsStatePictureFormatChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3PictureSettingsStateAutoWhiteBalanceChangedCallback (NULL, NULL);
@@ -7600,6 +7606,41 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsOutdoor (ARCO
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxPitchRollRotationSpeed (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current)
+{
+    // -- Send a command <code>MaxPitchRollRotationSpeed</code> of class <code>SpeedSettings</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send MaxPitchRollRotationSpeed command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3SpeedSettingsMaxPitchRollRotationSpeed(cmdBuffer, sizeof(cmdBuffer), &cmdSize, current);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
 /**
  * class: SpeedSettingsState 
  * Speed Settings state from product
@@ -8357,6 +8398,213 @@ void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateOutdoorChangedCallback (uin
     }
 }
 
+void ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxPitchRollRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData)
+{
+    // -- callback used when the command <code>MaxPitchRollRotationSpeedChanged</code> of class <code>SpeedSettingsState is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED;
+    int elementAdded = 0;
+    int isANewCommandElement = 0;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *oldElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find command elements
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_COMMANDS_t));
+            if (dictCmdElement != NULL)
+            {
+                dictCmdElement->command = commandKey;
+                dictCmdElement->elements = NULL;
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+        }
+        // No Else ; commandElement already exists.
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    //Create Element Dictionary
+    if (error == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT;
+            argDictNewElement->value.Float = _current;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN;
+            argDictNewElement->value.Float = _min;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX;
+            argDictNewElement->value.Float = _max;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find if the element already exist
+        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);
+        if (oldElement != NULL)
+        {
+            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);
+            
+            ARCONTROLLER_Feature_DeleteArgumentsDictionary (&(oldElement->arguments));
+            free (oldElement);
+            oldElement = NULL;
+        }
+        else
+        {
+            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);
+        }
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Callback notification
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (!elementAdded ))
+        {
+            if (newElement != NULL)
+            {
+                if (newElement->arguments != NULL)
+                {
+                    free (newElement->arguments);
+                    newElement->arguments = NULL;
+                }
+                
+                if (newElement->key != NULL)
+                {
+                    free (newElement->key);
+                    newElement->key = NULL;
+                }
+                
+                free (newElement);
+                newElement = NULL;
+            }
+            if (isANewCommandElement)
+            {
+                free (dictCmdElement);
+                dictCmdElement = NULL;
+            }
+        }
+    }
+}
+
 /**
  * class: NetworkSettings 
  * Network settings commands
@@ -8813,10 +9061,232 @@ void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityChangedCallba
     }
 }
 
-/**
- * class: Settings 
- * Settings commands
- */
+void ARCONTROLLER_FEATURE_ARDrone3_NetworkSettingsStateWifiSecurityCallback (eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE _type, char * _key, eARCOMMANDS_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE _keyType, void *customData)
+{
+    // -- callback used when the command <code>WifiSecurity</code> of class <code>NetworkSettingsState is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY;
+    int elementAdded = 0;
+    int isANewCommandElement = 0;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *oldElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    int strLength = 0;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find command elements
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_COMMANDS_t));
+            if (dictCmdElement != NULL)
+            {
+                dictCmdElement->command = commandKey;
+                dictCmdElement->elements = NULL;
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+        }
+        // No Else ; commandElement already exists.
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    //Create Element Dictionary
+    if (error == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE;
+            argDictNewElement->value.I32 = _type;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY;
+            strLength = strlen (_key);
+            argDictNewElement->value.String = malloc (strLength + 1);
+            if (argDictNewElement->value.String != NULL)
+            {
+                strncpy (argDictNewElement->value.String, _key, strLength);
+                argDictNewElement->value.String[strLength] = '\0';
+            }
+            else
+            {
+                error = ARCONTROLLER_ERROR_ALLOC;
+            }
+            
+            if (error == ARCONTROLLER_OK)
+            {
+                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+            }
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (error == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE;
+            argDictNewElement->value.I32 = _keyType;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find if the element already exist
+        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);
+        if (oldElement != NULL)
+        {
+            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);
+            
+            ARCONTROLLER_Feature_DeleteArgumentsDictionary (&(oldElement->arguments));
+            free (oldElement);
+            oldElement = NULL;
+        }
+        else
+        {
+            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);
+        }
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Callback notification
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (!elementAdded ))
+        {
+            if (newElement != NULL)
+            {
+                if (newElement->arguments != NULL)
+                {
+                    if (newElement->arguments->value.String != NULL)
+                    {
+                        free(newElement->arguments->value.String);
+                        newElement->arguments->value.String = NULL;
+                    }
+                    
+                    free (newElement->arguments);
+                    newElement->arguments = NULL;
+                }
+                
+                if (newElement->key != NULL)
+                {
+                    free (newElement->key);
+                    newElement->key = NULL;
+                }
+                
+                free (newElement);
+                newElement = NULL;
+            }
+            if (isANewCommandElement)
+            {
+                free (dictCmdElement);
+                dictCmdElement = NULL;
+            }
+        }
+    }
+}
 
 /**
  * class: SettingsState 
@@ -10275,16 +10745,6 @@ void ARCONTROLLER_FEATURE_ARDrone3_SettingsStateP7IDCallback (char * _serialID, 
         }
     }
 }
-
-/**
- * class: DirectorMode 
- * Director mode commands
- */
-
-/**
- * class: DirectorModeState 
- * Director mode state from product
- */
 
 /**
  * class: PictureSettings 
@@ -15572,7 +16032,6 @@ const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHAN
 const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = "arcontroller_dictionary_key_jumpingsumo_animationsstate_jumptypechanged_state";
 const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = "arcontroller_dictionary_key_jumpingsumo_animationsstate_jumpmotorproblemchanged_error";
 
-
 const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_SOFTWARE = "arcontroller_dictionary_key_jumpingsumo_settingsstate_productgpsversionchanged_software";
 const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_HARDWARE = "arcontroller_dictionary_key_jumpingsumo_settingsstate_productgpsversionchanged_hardware";
 
@@ -17438,11 +17897,6 @@ void ARCONTROLLER_FEATURE_JumpingSumo_AnimationsStateJumpMotorProblemChangedCall
         }
     }
 }
-
-/**
- * class: Settings 
- * Settings commands
- */
 
 /**
  * class: SettingsState 
@@ -36706,345 +37160,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SetNetworkController (ARC
 }
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_GetCommandElements (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
-{
-    // -- Get Command Arguments --
-    
-    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *commandDic = NULL;
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;
-    
-    // Check parameters
-    if ((feature == NULL) ||
-        (feature->privatePart == NULL))
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        
-        // Find elements
-        HASH_FIND_INT (feature->privatePart->dictionary, &(commandKey), commandDic);
-        if (commandDic != NULL)
-        {
-            elements = commandDic->elements;
-        }
-        // NO Else ; Command not found 
-        
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-        
-        if (elements == NULL)
-        {
-            localError = ARCONTROLLER_ERROR_NO_ELEMENT;
-        }
-    }
-    
-    // Return the error
-    if (error != NULL)
-    {
-        *error = localError;
-    }
-    // No else: error is not returned 
-    
-    return elements;
-}
-
-/************************
- * Private Implementation
- *************************/
-/*******************************
- * --- FEATURE SkyControllerDebug --- 
- ******************************/
-
-/*************************
- * Private header
- *************************/
-
-/*************************
- * Implementation
- *************************/
-
-
-ARCONTROLLER_FEATURE_SkyControllerDebug_t *ARCONTROLLER_FEATURE_SkyControllerDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
-{
-    // -- Create a new Feature Controller --
-    
-    //local declarations
-    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-   ARCONTROLLER_FEATURE_SkyControllerDebug_t *featureController =  NULL;
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        // Create the Feature Controller
-        featureController = malloc (sizeof (ARCONTROLLER_FEATURE_SkyControllerDebug_t));
-        if (featureController != NULL)
-        {
-            featureController->sendDebugTest1 = ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1;
-            
-            featureController->privatePart = NULL;
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    // No else: skipped by an error 
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        // Create the Feature Controller private part
-        featureController->privatePart = malloc (sizeof (ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t));
-        if (featureController->privatePart != NULL)
-        {
-            featureController->privatePart->networkController = networkController;
-            featureController->privatePart->dictionary = NULL;
-            featureController->privatePart->commandCallbacks = NULL;
-            // Create the mutex 
-            if (ARSAL_Mutex_Init (&(featureController->privatePart->mutex)) != 0)
-            {
-                localError = ARCONTROLLER_ERROR_INIT_MUTEX;
-            }
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    // No else: skipped by an error 
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        localError = ARCONTROLLER_FEATURE_SkyControllerDebug_RegisterARCommands (featureController);
-    }
-    // No else: skipped by an error 
-    
-    // delete the feature Controller if an error occurred
-    if (localError != ARCONTROLLER_OK)
-    {
-        ARCONTROLLER_FEATURE_SkyControllerDebug_Delete (&featureController);
-    }
-    // No else: skipped no error 
-    
-    // Return the error
-    if (error != NULL)
-    {
-        *error = localError;
-    }
-    // No else: error is not returned 
-    
-    return featureController;
-}
-
-void ARCONTROLLER_FEATURE_SkyControllerDebug_Delete (ARCONTROLLER_FEATURE_SkyControllerDebug_t **feature)
-{
-    // -- Delete the SkyControllerDebug feature Controller --
-    
-    if (feature != NULL)
-    {
-        if ((*feature) != NULL)
-        {
-            ARCONTROLLER_FEATURE_SkyControllerDebug_UnregisterARCommands ((*feature));
-            
-            if ((*feature)->privatePart != NULL)
-            {
-                ARSAL_Mutex_Destroy (&((*feature)->privatePart->mutex));
-                
-                if ((*feature)->privatePart->dictionary != NULL)
-                {
-                    ARCONTROLLER_Feature_DeleteCommandsDictionary (&((*feature)->privatePart->dictionary));
-                }
-                
-                if ((*feature)->privatePart->commandCallbacks != NULL)
-                {
-                    // Free the hash table contents the command callback
-                    ARCONTROLLER_Dictionary_DeleteDictionary (&((*feature)->privatePart->commandCallbacks));
-                }
-                
-                free ((*feature)->privatePart);
-                (*feature)->privatePart = NULL;
-            }
-            
-            free (*feature);
-            (*feature) = NULL;
-        }
-    }
-}
-
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_SkyControllerDebug_GetDictionary (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_ERROR *error)
-{
-    // -- Get the dictionary of the SkyControllerDebug Feature Controller --
-    
-    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary = NULL;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        dictionary = feature->privatePart->dictionary;
-    }
-    
-    // Return the error
-    if (error != NULL)
-    {
-        *error = localError;
-    }
-    // No else: error is not returned 
-    
-    return dictionary;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_AddCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
-{
-    // -- Add a callback to use when a command in project <code>SkyControllerDebug</code> is received --
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        error = ARCONTROLLER_Dictionary_AddDictionaryElement (&(feature->privatePart->commandCallbacks), commandKey, callback, customData);
-    }
-    
-    return error;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
-{
-    // -- Remove a callback to use when a command in project <code>SkyControllerDebug</code> is received --
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        error = ARCONTROLLER_Dictionary_RemoveDictionaryElement (feature->privatePart->commandCallbacks, commandKey, callback, customData);
-    }
-    
-    return error;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RegisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature)
-{
-    // -- Register the feature controller to be called when the commands are decoded. -- 
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-    }
-    
-    return error;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature)
-{
-    // -- Unregister the feature controller to be called when the commands are decoded. -- 
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-    }
-    
-    return error;
-}
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1 (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args)
-{
-    // -- Send a command <code>Test1</code> of class <code>Debug</code> in project <code>SkyControllerDebug</code> --
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    u_int8_t cmdBuffer[128];
-    int32_t cmdSize = 0;
-    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
-    eARNETWORK_ERROR netError = ARNETWORK_OK;
-    
-    // Check parameters
-    if (feature == NULL)
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Send Test1 command
-        cmdError = ARCOMMANDS_Generator_GenerateSkyControllerDebugDebugTest1(cmdBuffer, sizeof(cmdBuffer), &cmdSize, t1Args);
-        if (cmdError != ARCOMMANDS_GENERATOR_OK)
-        {
-            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
-        }
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
-    }
-    
-    return error;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, ARCONTROLLER_Network_t *networkController)
-{
-    // -- Set a NetworkController to use to send commands. --
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        feature->privatePart->networkController = networkController;
-    }
-    
-    return error;
-}
-
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyControllerDebug_GetCommandElements (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
 {
     // -- Get Command Arguments --
     

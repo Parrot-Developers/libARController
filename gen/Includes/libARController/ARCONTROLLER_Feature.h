@@ -561,9 +561,9 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMax
 
 /**
  * @brief Send a command <code>MaxRotationSpeed</code> of class <code>SpeedSettings</code> in feature <code>ARDrone3</code>
- * Set Max Rotation speed
+ * Set Max Yaw Rotation speed
  * @param feature feature owning the commands
- * @param current Current max rotation speed in degree/s
+ * @param current Current max yaw rotation speed in degree/s
  * return executing error
  */
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current);
@@ -587,6 +587,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHul
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsOutdoor_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t outdoor);
 
 /**
+ * @brief Send a command <code>MaxPitchRollRotationSpeed</code> of class <code>SpeedSettings</code> in feature <code>ARDrone3</code>
+ * Set Max Pitch/Rool Rotation speed
+ * @param feature feature owning the commands
+ * @param current Current max pitch/roll rotation speed in degree/s
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxPitchRollRotationSpeed_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current);
+
+/**
  * class: SpeedSettingsState 
  * Speed Settings state from product
  */
@@ -599,6 +608,9 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXRO
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR; /**< Key of the argument </code>outdoor</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
 
 /**
  * class: NetworkSettings 
@@ -637,12 +649,9 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIF
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND; /**< Key of the argument </code>band</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
-
-/**
- * class: Settings 
- * Settings commands
- */
-
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY; /**< Key of the argument </code>key</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE; /**< Key of the argument </code>keyType</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
 
 /**
  * class: SettingsState 
@@ -663,18 +672,6 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGH
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_TOTALFLIGHTDURATION; /**< Key of the argument </code>totalFlightDuration</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORLASTERRORCHANGED_MOTORERROR; /**< Key of the argument </code>motorError</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_P7ID_SERIALID; /**< Key of the argument </code>serialID</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-
-/**
- * class: DirectorMode 
- * Director mode commands
- */
-
-
-/**
- * class: DirectorModeState 
- * Director mode state from product
- */
-
 
 /**
  * class: PictureSettings 
@@ -955,6 +952,7 @@ struct ARCONTROLLER_FEATURE_ARDrone3_t
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtection_t sendSpeedSettingsHullProtection;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsOutdoor_t sendSpeedSettingsOutdoor;
+    ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxPitchRollRotationSpeed_t sendSpeedSettingsMaxPitchRollRotationSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSelection_t sendNetworkSettingsWifiSelection;
     ARCONTROLLER_FEATURE_ARDrone3_SendNetworkSettingsWifiSecurity_t sendNetworkSettingsWifiSecurity;
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsPictureFormatSelection_t sendPictureSettingsPictureFormatSelection;
@@ -1358,12 +1356,6 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_JumpingSumo_SendAnimationsSim
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>JumpingSumo</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>JumpingSumo</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR; /**< Key of the argument </code>error</code> of class <code>AnimationsState</code> in feature <code>JumpingSumo</code> */
-
-/**
- * class: Settings 
- * Settings commands
- */
-
 
 /**
  * class: SettingsState 
@@ -3126,111 +3118,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyController_SetNetworkController (ARC
  * @return Element dictionary of the command ; Can be null if an error is occurred.
  */
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_GetCommandElements (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
-
-/*******************************
- * --- FEATURE SkyControllerDebug --- 
- ******************************/
-
-/**
- * @brief Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t.
- */
-typedef struct ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t;
-
-/**
- * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
- * All debug SkyController-only commands
- */
-typedef struct ARCONTROLLER_FEATURE_SkyControllerDebug_t ARCONTROLLER_FEATURE_SkyControllerDebug_t;
-
-/**
- * @brief Create a new SkyControllerDebug Feature Controller
- * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_SkyControllerDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController().
- * @param[out] error executing error.
- * @return the new SkyControllerDebug Feature Controller
- * @see ARCONTROLLER_FEATURE_SkyControllerDebug_Delete
- */
-ARCONTROLLER_FEATURE_SkyControllerDebug_t *ARCONTROLLER_FEATURE_SkyControllerDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Delete the SkyControllerDebug Feature Controller
- * @warning This function free memory
- * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_SkyControllerDebug_New
- */
-void ARCONTROLLER_FEATURE_SkyControllerDebug_Delete (ARCONTROLLER_FEATURE_SkyControllerDebug_t **feature);
-
-/**
- * @brief Get the dictionay of the SkyControllerDebug Feature Controller
- * @param feature The feature controller owning the dictionary to get
- * @param[out] error executing error.
- */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_SkyControllerDebug_GetDictionary (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_ERROR *error);
-
-/**
- * @brief Add a callback to use when a command in project <code>SkyControllerDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] callback the callback to add.
- * @param[in] commandKey Key of the command which the callback must be associated.
- * @param[out] error executing error.
- * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_AddCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * @brief Remove a callback used when a command in project <code>SkyControllerDebug</code> is received
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] callback the callback to remove.
- * @param[int] customData The custom data given to the register.
- * @param[out] error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_RemoveCallback (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
-
-/**
- * class: Debug 
- * Temporary, debug commands
- */
-
-
-/**
- * @brief Send a command <code>Test1</code> of class <code>Debug</code> in feature <code>SkyControllerDebug</code>
- * Test 1 command
- * @param feature feature owning the commands
- * @param t1Args Test 1 argument
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1_t) (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, int8_t t1Args);
-
-/**
- * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
- * All debug SkyController-only commands
- */
-struct ARCONTROLLER_FEATURE_SkyControllerDebug_t
-{
-    ARCONTROLLER_FEATURE_SkyControllerDebug_SendDebugTest1_t sendDebugTest1;
-    ARCONTROLLER_FEATURE_SkyControllerDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_SkyControllerDebug_t */
-};
-
-/**
- * @brief Set a NetworkController to use to send commands.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command which the callback must be unassociated.
- * @param[in] networkController The networkController used to send commands ; must be not NULL.
- * @return error executing error.
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, ARCONTROLLER_Network_t *networkController);
-
-/**
- * @brief Get the elements of a command received.
- * @param feature The feature controller receiving the command.
- * @param[in] commandKey Key of the command.
- * @param[out] error executing error.
- * @return Element dictionary of the command ; Can be null if an error is occurred.
- */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyControllerDebug_GetCommandElements (ARCONTROLLER_FEATURE_SkyControllerDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /*******************************
  * --- FEATURE common --- 

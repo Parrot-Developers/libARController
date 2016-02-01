@@ -89,10 +89,16 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT = ""; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY = ""; /**< Key of the argument </code>key</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE = ""; /**< Key of the argument </code>keyType</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = ""; /**< Key of the argument </code>motor_number</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
@@ -207,10 +213,16 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxRotationSpeedChangedMax ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateHullProtectionChangedPresent ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateOutdoorChangedOutdoor ();
+    private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMax ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedType ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedBand ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedChannel ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityType ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKey ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKeyType ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedType ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedSoftware ();
@@ -299,6 +311,7 @@ public class ARFeatureARDrone3
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
     private native int nativeSendSpeedSettingsOutdoor (long jFeature, byte outdoor);
+    private native int nativeSendSpeedSettingsMaxPitchRollRotationSpeed (long jFeature, float current);
     private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
     private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, int type, String key, int keyType);
     private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, int type);
@@ -384,10 +397,16 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxRotationSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT = nativeStaticGetKeyARDrone3SpeedSettingsStateHullProtectionChangedPresent ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = nativeStaticGetKeyARDrone3SpeedSettingsStateOutdoorChangedOutdoor ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedBand ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedChannel ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityType ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKey ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKeyType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedSoftware ();
@@ -997,6 +1016,20 @@ public class ARFeatureARDrone3
             if(initOk == true)
             {
                 int nativeError = nativeSendSpeedSettingsOutdoor (jniFeature, _outdoor);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxPitchRollRotationSpeed (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendSpeedSettingsMaxPitchRollRotationSpeed (jniFeature, _current);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
