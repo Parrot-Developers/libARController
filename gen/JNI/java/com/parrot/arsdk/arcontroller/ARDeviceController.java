@@ -44,7 +44,6 @@ public class ARDeviceController
     private native long nativeGetFeatureMiniDrone (long jDeviceController);
     private native long nativeGetFeatureMiniDroneDebug (long jDeviceController);
     private native long nativeGetFeatureSkyController (long jDeviceController);
-    private native long nativeGetFeatureSkyControllerDebug (long jDeviceController);
     private native long nativeGetFeatureCommon (long jDeviceController);
     private native long nativeGetFeatureCommonDebug (long jDeviceController);
     private native long nativeGetFeaturePro (long jDeviceController);
@@ -66,7 +65,6 @@ public class ARDeviceController
     ARFeatureMiniDrone featureMiniDrone;
     ARFeatureMiniDroneDebug featureMiniDroneDebug;
     ARFeatureSkyController featureSkyController;
-    ARFeatureSkyControllerDebug featureSkyControllerDebug;
     ARFeatureCommon featureCommon;
     ARFeatureCommonDebug featureCommonDebug;
     ARFeaturePro featurePro;
@@ -162,12 +160,6 @@ public class ARDeviceController
                 {
                     featureSkyController.dispose();
                     featureSkyController = null;
-                }
-                
-                if (featureSkyControllerDebug != null)
-                {
-                    featureSkyControllerDebug.dispose();
-                    featureSkyControllerDebug = null;
                 }
                 
                 if (featureCommon != null)
@@ -282,11 +274,6 @@ public class ARDeviceController
     public ARFeatureSkyController getFeatureSkyController ()
     {
         return featureSkyController;
-    }
-    
-    public ARFeatureSkyControllerDebug getFeatureSkyControllerDebug ()
-    {
-        return featureSkyControllerDebug;
     }
     
     public ARFeatureCommon getFeatureCommon ()
@@ -482,16 +469,6 @@ public class ARDeviceController
         else
         {
             featureSkyController = null;
-        }
-        
-        long nativeFeatureSkyControllerDebug = nativeGetFeatureSkyControllerDebug (jniDeviceController);
-        if ((featureSkyControllerDebug == null) && (nativeFeatureSkyControllerDebug != 0))
-        {
-            featureSkyControllerDebug = new ARFeatureSkyControllerDebug(nativeFeatureSkyControllerDebug);
-        }
-        else
-        {
-            featureSkyControllerDebug = null;
         }
         
         long nativeFeatureCommon = nativeGetFeatureCommon (jniDeviceController);
