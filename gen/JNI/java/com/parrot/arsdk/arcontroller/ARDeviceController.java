@@ -38,11 +38,8 @@ public class ARDeviceController
     private native int nativeStop (long jDeviceController);
     
     private native long nativeGetFeatureARDrone3 (long jDeviceController);
-    private native long nativeGetFeatureARDrone3Debug (long jDeviceController);
     private native long nativeGetFeatureJumpingSumo (long jDeviceController);
-    private native long nativeGetFeatureJumpingSumoDebug (long jDeviceController);
     private native long nativeGetFeatureMiniDrone (long jDeviceController);
-    private native long nativeGetFeatureMiniDroneDebug (long jDeviceController);
     private native long nativeGetFeatureSkyController (long jDeviceController);
     private native long nativeGetFeatureCommon (long jDeviceController);
     private native long nativeGetFeatureCommonDebug (long jDeviceController);
@@ -59,11 +56,8 @@ public class ARDeviceController
     private List<ARDeviceControllerListener> listeners;
     private List<ARDeviceControllerStreamListener> streamlisteners;
     ARFeatureARDrone3 featureARDrone3;
-    ARFeatureARDrone3Debug featureARDrone3Debug;
     ARFeatureJumpingSumo featureJumpingSumo;
-    ARFeatureJumpingSumoDebug featureJumpingSumoDebug;
     ARFeatureMiniDrone featureMiniDrone;
-    ARFeatureMiniDroneDebug featureMiniDroneDebug;
     ARFeatureSkyController featureSkyController;
     ARFeatureCommon featureCommon;
     ARFeatureCommonDebug featureCommonDebug;
@@ -126,34 +120,16 @@ public class ARDeviceController
                     featureARDrone3 = null;
                 }
                 
-                if (featureARDrone3Debug != null)
-                {
-                    featureARDrone3Debug.dispose();
-                    featureARDrone3Debug = null;
-                }
-                
                 if (featureJumpingSumo != null)
                 {
                     featureJumpingSumo.dispose();
                     featureJumpingSumo = null;
                 }
                 
-                if (featureJumpingSumoDebug != null)
-                {
-                    featureJumpingSumoDebug.dispose();
-                    featureJumpingSumoDebug = null;
-                }
-                
                 if (featureMiniDrone != null)
                 {
                     featureMiniDrone.dispose();
                     featureMiniDrone = null;
-                }
-                
-                if (featureMiniDroneDebug != null)
-                {
-                    featureMiniDroneDebug.dispose();
-                    featureMiniDroneDebug = null;
                 }
                 
                 if (featureSkyController != null)
@@ -246,29 +222,14 @@ public class ARDeviceController
         return featureARDrone3;
     }
     
-    public ARFeatureARDrone3Debug getFeatureARDrone3Debug ()
-    {
-        return featureARDrone3Debug;
-    }
-    
     public ARFeatureJumpingSumo getFeatureJumpingSumo ()
     {
         return featureJumpingSumo;
     }
     
-    public ARFeatureJumpingSumoDebug getFeatureJumpingSumoDebug ()
-    {
-        return featureJumpingSumoDebug;
-    }
-    
     public ARFeatureMiniDrone getFeatureMiniDrone ()
     {
         return featureMiniDrone;
-    }
-    
-    public ARFeatureMiniDroneDebug getFeatureMiniDroneDebug ()
-    {
-        return featureMiniDroneDebug;
     }
     
     public ARFeatureSkyController getFeatureSkyController ()
@@ -411,16 +372,6 @@ public class ARDeviceController
             featureARDrone3 = null;
         }
         
-        long nativeFeatureARDrone3Debug = nativeGetFeatureARDrone3Debug (jniDeviceController);
-        if ((featureARDrone3Debug == null) && (nativeFeatureARDrone3Debug != 0))
-        {
-            featureARDrone3Debug = new ARFeatureARDrone3Debug(nativeFeatureARDrone3Debug);
-        }
-        else
-        {
-            featureARDrone3Debug = null;
-        }
-        
         long nativeFeatureJumpingSumo = nativeGetFeatureJumpingSumo (jniDeviceController);
         if ((featureJumpingSumo == null) && (nativeFeatureJumpingSumo != 0))
         {
@@ -431,16 +382,6 @@ public class ARDeviceController
             featureJumpingSumo = null;
         }
         
-        long nativeFeatureJumpingSumoDebug = nativeGetFeatureJumpingSumoDebug (jniDeviceController);
-        if ((featureJumpingSumoDebug == null) && (nativeFeatureJumpingSumoDebug != 0))
-        {
-            featureJumpingSumoDebug = new ARFeatureJumpingSumoDebug(nativeFeatureJumpingSumoDebug);
-        }
-        else
-        {
-            featureJumpingSumoDebug = null;
-        }
-        
         long nativeFeatureMiniDrone = nativeGetFeatureMiniDrone (jniDeviceController);
         if ((featureMiniDrone == null) && (nativeFeatureMiniDrone != 0))
         {
@@ -449,16 +390,6 @@ public class ARDeviceController
         else
         {
             featureMiniDrone = null;
-        }
-        
-        long nativeFeatureMiniDroneDebug = nativeGetFeatureMiniDroneDebug (jniDeviceController);
-        if ((featureMiniDroneDebug == null) && (nativeFeatureMiniDroneDebug != 0))
-        {
-            featureMiniDroneDebug = new ARFeatureMiniDroneDebug(nativeFeatureMiniDroneDebug);
-        }
-        else
-        {
-            featureMiniDroneDebug = null;
         }
         
         long nativeFeatureSkyController = nativeGetFeatureSkyController (jniDeviceController);

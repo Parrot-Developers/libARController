@@ -70,11 +70,8 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
     {
         //initialization of the device controller
         deviceController->aRDrone3 = NULL;
-        deviceController->aRDrone3Debug = NULL;
         deviceController->jumpingSumo = NULL;
-        deviceController->jumpingSumoDebug = NULL;
         deviceController->miniDrone = NULL;
-        deviceController->miniDroneDebug = NULL;
         deviceController->skyController = NULL;
         deviceController->common = NULL;
         deviceController->commonDebug = NULL;
@@ -844,20 +841,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
-    {
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_ARDrone3Debug_AddCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_ARDrone3Debug_AddCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-    }
-    
     if ((deviceController->jumpingSumo != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumo)))
     {
         if (error == ARCONTROLLER_OK)
@@ -1007,15 +990,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
-    {
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_JumpingSumoDebug_AddCallback (deviceController->jumpingSumoDebug, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-    }
-    
     if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
     {
         if (error == ARCONTROLLER_OK)
@@ -1103,10 +1077,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
             error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
-    }
-    
-    if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
-    {
     }
     
     if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
@@ -1999,22 +1969,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
-        {
-            removingError = ARCONTROLLER_FEATURE_ARDrone3Debug_RemoveCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-            removingError = ARCONTROLLER_FEATURE_ARDrone3Debug_RemoveCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-        }
-        
         if ((deviceController->jumpingSumo != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumo)))
         {
             removingError = ARCONTROLLER_FEATURE_JumpingSumo_RemoveCallback (deviceController->jumpingSumo, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -2193,16 +2147,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
-        {
-            removingError = ARCONTROLLER_FEATURE_JumpingSumoDebug_RemoveCallback (deviceController->jumpingSumoDebug, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-        }
-        
         if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
         {
             removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -2307,10 +2251,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
-        }
-        
-        if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
-        {
         }
         
         if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
@@ -3154,28 +3094,13 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
                 
                 break;
             
-            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG:
-                elements = ARCONTROLLER_ARDrone3Debug_GetCommandElements (deviceController->aRDrone3Debug, commandKey, &localError);
-                
-                break;
-            
             case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO:
                 elements = ARCONTROLLER_JumpingSumo_GetCommandElements (deviceController->jumpingSumo, commandKey, &localError);
                 
                 break;
             
-            case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG:
-                elements = ARCONTROLLER_JumpingSumoDebug_GetCommandElements (deviceController->jumpingSumoDebug, commandKey, &localError);
-                
-                break;
-            
             case ARCONTROLLER_DICTIONARY_KEY_MINIDRONE:
                 elements = ARCONTROLLER_MiniDrone_GetCommandElements (deviceController->miniDrone, commandKey, &localError);
-                
-                break;
-            
-            case ARCONTROLLER_DICTIONARY_KEY_MINIDRONEDEBUG:
-                elements = ARCONTROLLER_MiniDroneDebug_GetCommandElements (deviceController->miniDroneDebug, commandKey, &localError);
                 
                 break;
             
@@ -3745,16 +3670,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             
         }
         
-        if (deviceController->aRDrone3Debug != NULL)
-        {
-            settingError = ARCONTROLLER_FEATURE_ARDrone3Debug_SetNetworkController (deviceController->aRDrone3Debug, deviceController->privatePart->networkController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
-            }
-            
-        }
-        
         if (deviceController->jumpingSumo != NULL)
         {
             settingError = ARCONTROLLER_FEATURE_JumpingSumo_SetNetworkController (deviceController->jumpingSumo, deviceController->privatePart->networkController);
@@ -3765,32 +3680,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             
         }
         
-        if (deviceController->jumpingSumoDebug != NULL)
-        {
-            settingError = ARCONTROLLER_FEATURE_JumpingSumoDebug_SetNetworkController (deviceController->jumpingSumoDebug, deviceController->privatePart->networkController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
-            }
-            
-        }
-        
         if (deviceController->miniDrone != NULL)
         {
             settingError = ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController (deviceController->miniDrone, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
-            }
-            
-        }
-        
-        if (deviceController->miniDroneDebug != NULL)
-        {
-            settingError = ARCONTROLLER_FEATURE_MiniDroneDebug_SetNetworkController (deviceController->miniDroneDebug, deviceController->privatePart->networkController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONEDEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
