@@ -26,10 +26,10 @@ public class ARFeaturePro
 {
     private static String TAG = "ARFeaturePro";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_STATUS = ""; /**< Key of the argument </code>status</code> of class <code>ProState</code> in feature <code>Pro</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_FEATURES = ""; /**< Key of the argument </code>features</code> of class <code>ProState</code> in feature <code>Pro</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED_FEATURES = ""; /**< Key of the argument </code>features</code> of class <code>ProState</code> in feature <code>Pro</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT_CHALLENGE = ""; /**< Key of the argument </code>challenge</code> of class <code>ProEvent</code> in feature <code>Pro</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_STATUS = ""; /**< Key of the argument </code>status</code> of event <code>ProStateSupportedFeatures</code> in feature <code>Pro</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES_FEATURES = ""; /**< Key of the argument </code>features</code> of event <code>ProStateSupportedFeatures</code> in feature <code>Pro</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED_FEATURES = ""; /**< Key of the argument </code>features</code> of event <code>ProStateFeaturesActivated</code> in feature <code>Pro</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT_CHALLENGE = ""; /**< Key of the argument </code>challenge</code> of event <code>ProEventChallengeEvent</code> in feature <code>Pro</code> */
 
     private static native String nativeStaticGetKeyProProStateSupportedFeaturesStatus ();
     private static native String nativeStaticGetKeyProProStateSupportedFeaturesFeatures ();

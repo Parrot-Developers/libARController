@@ -106,11 +106,9 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
         else:
             hFile.write ('    '+defineNotification(feature)+', /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
         
-        for cl in feature.classes:
-            
-            if isEvent(cl) or isState(cl):
-                for cmd in cl.cmds:
-                    hFile.write ('    '+defineNotification(feature, cl, cmd)+', /**< Key used to define the command <code>' + ARCapitalize (cmd.name) + '</code> of class <code>' + ARCapitalize (cl.name) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+        
+        for evt in feature.evts:
+            hFile.write ('    '+defineNotification(feature, evt)+', /**< Key used to define the event <code>' + ARCapitalize (evt.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
     hFile.write ('    '+AREnumValue(MODULE_DICTIONARY, 'DICTIONARY', 'KEY','MAX')+', /**< Unused, iterator maximum value */\n')
     hFile.write ('}'+defineNotificationDef()+';\n')
     hFile.write ('\n')
