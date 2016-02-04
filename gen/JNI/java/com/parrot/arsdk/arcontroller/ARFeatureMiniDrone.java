@@ -26,39 +26,39 @@ public class ARFeatureMiniDrone
 {
     private static String TAG = "ARFeatureMiniDrone";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT = ""; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = ""; /**< Key of the argument </code>motor</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED_ENABLE = ""; /**< Key of the argument </code>enable</code> of class <code>SettingsState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY = ""; /**< Key of the argument </code>delay</code> of class <code>FloodControlState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAutoTakeOffModeChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMaxAltitudeChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxAltitudeChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxAltitudeChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED_PRESENT = ""; /**< Key of the argument </code>present</code> of event <code>SpeedSettingsStateWheelsChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = ""; /**< Key of the argument </code>motor</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductInertialVersionChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductInertialVersionChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED_ENABLE = ""; /**< Key of the argument </code>enable</code> of event <code>SettingsStateCutOutModeChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY = ""; /**< Key of the argument </code>delay</code> of event <code>FloodControlStateFloodControlChanged</code> in feature <code>MiniDrone</code> */
 
     private static native String nativeStaticGetKeyMiniDronePilotingStateFlyingStateChangedState ();
     private static native String nativeStaticGetKeyMiniDronePilotingStateAlertStateChangedState ();
@@ -107,7 +107,7 @@ public class ARFeatureMiniDrone
     private native int nativeSendPilotingLanding (long jFeature);
     private native int nativeSendPilotingEmergency (long jFeature);
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
-    private native int nativeSendAnimationsFlip (long jFeature, int direction);
+    private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
     private native int nativeSendAnimationsCap (long jFeature, short offset);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
@@ -397,7 +397,7 @@ public class ARFeatureMiniDrone
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction.getValue());
+                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

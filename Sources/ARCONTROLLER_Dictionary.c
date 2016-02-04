@@ -338,7 +338,7 @@ void ARCONTROLLER_Dictionary_DeleteDictionary (ARCONTROLLER_Dictionary_t **dicti
             HASH_ITER(hh, (*dictionary), dictElement, dictTmp)
             {
                 // For each element of the commands dictionary 
-                
+                                
                 HASH_DEL((*dictionary), dictElement);
                 ARCONTROLLER_Dictionary_Delete (&dictElement);
             }

@@ -1091,15 +1091,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     for feature in allFeatures:
         cFile.write ('    if ((deviceController->'+ARUncapitalize(feature.name)+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(feature.name)+')))\n')
         cFile.write ('    {\n')
-        for cl in feature.classes:
-            
-            if isState(cl) or isEvent(cl):
-                for cmd in cl.cmds:
-                    cFile.write ('        if (error == ARCONTROLLER_OK)\n')
-                    cFile.write ('        {\n')
-                    cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, feature.name, 'addCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
-                    cFile.write ('        }\n')
-                    cFile.write ('        \n')
+        for evt in feature.evts:
+            cFile.write ('        if (error == ARCONTROLLER_OK)\n')
+            cFile.write ('        {\n')
+            cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, feature.name, 'addCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
+            cFile.write ('        }\n')
+            cFile.write ('        \n')
         cFile.write ('    }\n')
         cFile.write ('    \n')
         
@@ -1130,15 +1127,13 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('        if ((deviceController->'+ARUncapitalize(feature.name)+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(feature.name)+')))\n')
         cFile.write ('        {\n')
         
-        for cl in feature.classes:
-            if isState(cl) or isEvent(cl):
-                for cmd in cl.cmds:
-                    cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, cl, cmd)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
-                    cFile.write ('            if (error != ARCONTROLLER_OK)\n')
-                    cFile.write ('            {\n')
-                    cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring removing of the callback for '+defineNotification(feature, cl, cmd)+'; error :%s", ARCONTROLLER_Error_ToString (removingError));\n')
-                    cFile.write ('            }\n')
-                    cFile.write ('            \n')
+        for evt in feature.evts:
+            cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
+            cFile.write ('            if (error != ARCONTROLLER_OK)\n')
+            cFile.write ('            {\n')
+            cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring removing of the callback for '+defineNotification(feature, evt)+'; error :%s", ARCONTROLLER_Error_ToString (removingError));\n')
+            cFile.write ('            }\n')
+            cFile.write ('            \n')
         cFile.write ('        }\n')
         cFile.write ('        \n')
     cFile.write ('    }\n')
@@ -2100,7 +2095,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('            settingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' (deviceController->'+ARUncapitalize(feature.name)+', deviceController->privatePart->networkController);\n')
         cFile.write ('            if (error != ARCONTROLLER_OK)\n')
         cFile.write ('            {\n')
-        cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring setting the network Controller to the feature of the callback for '+defineNotification(feature, cl, cmd)+'; error :%s", ARCONTROLLER_Error_ToString (settingError));\n')
+        cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring setting the network Controller to the feature of the callback for '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (settingError));\n')
         cFile.write ('            }\n')
         cFile.write ('            \n')
         cFile.write ('        }\n')
@@ -2962,17 +2957,16 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
 
     for feature in allFeatures:
         #if there are NON_ACK cmd
-        if [cmd for cl in feature.classes for cmd in cl.cmds if cmd.buf == ARCommandBuffer.NON_ACK]:
+        if [cmd for cmd in feature.cmds if cmd.buf == ARCommandBuffer.NON_ACK]:
             cFile.write ('            if (deviceController->'+ARUncapitalize(feature.name)+' != NULL)\n')
             cFile.write ('            {\n')
-            for cl in feature.classes:
-                for cmd in cl.cmds:
-                    if cmd.buf == ARCommandBuffer.NON_ACK:
-                        cFile.write ('                error = '+ sendNAckFunctionName (feature, cl, cmd)+' (deviceController->'+ARUncapitalize(feature.name)+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
-                        cFile.write ('                if (error != ARCONTROLLER_OK)\n')
-                        cFile.write ('                {\n')
-                        cFile.write ('                    ARSAL_PRINT (ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured while send '+cmd.name+' : %s", ARCONTROLLER_Error_ToString (error));\n')
-                        cFile.write ('                }\n')
+            for cmd in feature.cmds:
+                if cmd.buf == ARCommandBuffer.NON_ACK:
+                    cFile.write ('                error = '+ sendNAckFunctionName (feature, cmd)+' (deviceController->'+ARUncapitalize(feature.name)+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
+                    cFile.write ('                if (error != ARCONTROLLER_OK)\n')
+                    cFile.write ('                {\n')
+                    cFile.write ('                    ARSAL_PRINT (ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured while send '+cmd.name+' : %s", ARCONTROLLER_Error_ToString (error));\n')
+                    cFile.write ('                }\n')
             cFile.write ('            }\n')
             cFile.write ('            \n')
     cFile.write ('            ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));\n')

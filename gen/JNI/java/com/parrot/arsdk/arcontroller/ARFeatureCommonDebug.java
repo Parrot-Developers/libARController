@@ -26,18 +26,18 @@ public class ARFeatureCommonDebug
 {
     private static String TAG = "ARFeatureCommonDebug";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET = ""; /**< Key of the argument </code>packet</code> of class <code>StatsEvent</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID = ""; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL = ""; /**< Key of the argument </code>label</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE = ""; /**< Key of the argument </code>mode</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN = ""; /**< Key of the argument </code>range_min</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX = ""; /**< Key of the argument </code>range_max</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP = ""; /**< Key of the argument </code>range_step</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID = ""; /**< Key of the argument </code>id</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>DebugSettingsState</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET = ""; /**< Key of the argument </code>packet</code> of event <code>StatsEventSendPacket</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID = ""; /**< Key of the argument </code>id</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL = ""; /**< Key of the argument </code>label</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN = ""; /**< Key of the argument </code>range_min</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX = ""; /**< Key of the argument </code>range_max</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP = ""; /**< Key of the argument </code>range_step</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID = ""; /**< Key of the argument </code>id</code> of event <code>DebugSettingsStateListChanged</code> in feature <code>CommonDebug</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>DebugSettingsStateListChanged</code> in feature <code>CommonDebug</code> */
 
     private static native String nativeStaticGetKeyCommonDebugStatsEventSendPacketPacket ();
     private static native String nativeStaticGetKeyCommonDebugDebugSettingsStateInfoListFlags ();

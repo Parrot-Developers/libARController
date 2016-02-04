@@ -26,56 +26,56 @@ public class ARFeatureSkyController
 {
     private static String TAG = "ARFeatureSkyController";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_BSSID = ""; /**< Key of the argument </code>bssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SSID = ""; /**< Key of the argument </code>ssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SECURED = ""; /**< Key of the argument </code>secured</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SAVED = ""; /**< Key of the argument </code>saved</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_RSSI = ""; /**< Key of the argument </code>rssi</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_FREQUENCY = ""; /**< Key of the argument </code>frequency</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_STATUS = ""; /**< Key of the argument </code>status</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT = ""; /**< Key of the argument </code>in_or_out</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFISIGNALCHANGED_LEVEL = ""; /**< Key of the argument </code>level</code> of class <code>WifiState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_DEVICELIST_NAME = ""; /**< Key of the argument </code>name</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS = ""; /**< Key of the argument </code>status</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME = ""; /**< Key of the argument </code>deviceName</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID = ""; /**< Key of the argument </code>deviceProductID</code> of class <code>DeviceState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER = ""; /**< Key of the argument </code>serialNumber</code> of class <code>SettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT = ""; /**< Key of the argument </code>variant</code> of class <code>SettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT = ""; /**< Key of the argument </code>percent</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED = ""; /**< Key of the argument </code>fixed</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_HEADING = ""; /**< Key of the argument </code>heading</code> of class <code>SkyControllerState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTSSIDCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTCHANNELCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>AccessPointSettingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_ID = ""; /**< Key of the argument </code>id</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_NAME = ""; /**< Key of the argument </code>name</code> of class <code>GamepadInfosState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_KEY_ID = ""; /**< Key of the argument </code>key_id</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_NAME = ""; /**< Key of the argument </code>name</code> of class <code>ButtonMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_AXIS_ID = ""; /**< Key of the argument </code>axis_id</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_NAME = ""; /**< Key of the argument </code>name</code> of class <code>AxisMappingsState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_AXIS_ID = ""; /**< Key of the argument </code>axis_id</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_FILTER_UID_OR_BUILDER = ""; /**< Key of the argument </code>filter_uid_or_builder</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_FILTER_UID = ""; /**< Key of the argument </code>filter_uid</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_NAME = ""; /**< Key of the argument </code>name</code> of class <code>AxisFiltersState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE_SOURCE = ""; /**< Key of the argument </code>source</code> of class <code>CoPilotingState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_STATUS = ""; /**< Key of the argument </code>status</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_X_QUALITY = ""; /**< Key of the argument </code>X_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Y_QUALITY = ""; /**< Key of the argument </code>Y_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Z_QUALITY = ""; /**< Key of the argument </code>Z_Quality</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>CalibrationState</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_BSSID = ""; /**< Key of the argument </code>bssid</code> of event <code>WifiStateWifiList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SSID = ""; /**< Key of the argument </code>ssid</code> of event <code>WifiStateWifiList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SECURED = ""; /**< Key of the argument </code>secured</code> of event <code>WifiStateWifiList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_SAVED = ""; /**< Key of the argument </code>saved</code> of event <code>WifiStateWifiList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>WifiStateWifiList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST_FREQUENCY = ""; /**< Key of the argument </code>frequency</code> of event <code>WifiStateWifiList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of event <code>WifiStateConnexionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED_STATUS = ""; /**< Key of the argument </code>status</code> of event <code>WifiStateConnexionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>WifiStateWifiAuthChannelListChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>WifiStateWifiAuthChannelListChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT = ""; /**< Key of the argument </code>in_or_out</code> of event <code>WifiStateWifiAuthChannelListChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFISIGNALCHANGED_LEVEL = ""; /**< Key of the argument </code>level</code> of event <code>WifiStateWifiSignalChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_DEVICELIST_NAME = ""; /**< Key of the argument </code>name</code> of event <code>DeviceStateDeviceList</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS = ""; /**< Key of the argument </code>status</code> of event <code>DeviceStateConnexionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICENAME = ""; /**< Key of the argument </code>deviceName</code> of event <code>DeviceStateConnexionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID = ""; /**< Key of the argument </code>deviceProductID</code> of event <code>DeviceStateConnexionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER = ""; /**< Key of the argument </code>serialNumber</code> of event <code>SettingsStateProductSerialChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT = ""; /**< Key of the argument </code>variant</code> of event <code>SettingsStateProductVariantChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT = ""; /**< Key of the argument </code>percent</code> of event <code>SkyControllerStateBatteryChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED = ""; /**< Key of the argument </code>fixed</code> of event <code>SkyControllerStateGpsFixChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>SkyControllerStateGpsPositionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of event <code>SkyControllerStateGpsPositionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of event <code>SkyControllerStateGpsPositionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_HEADING = ""; /**< Key of the argument </code>heading</code> of event <code>SkyControllerStateGpsPositionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTSSIDCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of event <code>AccessPointSettingsStateAccessPointSSIDChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTCHANNELCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>AccessPointSettingsStateAccessPointChannelChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>AccessPointSettingsStateWifiSelectionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>AccessPointSettingsStateWifiSelectionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>AccessPointSettingsStateWifiSelectionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>GamepadInfosStateGamepadControl</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_ID = ""; /**< Key of the argument </code>id</code> of event <code>GamepadInfosStateGamepadControl</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL_NAME = ""; /**< Key of the argument </code>name</code> of event <code>GamepadInfosStateGamepadControl</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_KEY_ID = ""; /**< Key of the argument </code>key_id</code> of event <code>ButtonMappingsStateCurrentButtonMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of event <code>ButtonMappingsStateCurrentButtonMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of event <code>ButtonMappingsStateAvailableButtonMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS_NAME = ""; /**< Key of the argument </code>name</code> of event <code>ButtonMappingsStateAvailableButtonMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_AXIS_ID = ""; /**< Key of the argument </code>axis_id</code> of event <code>AxisMappingsStateCurrentAxisMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of event <code>AxisMappingsStateCurrentAxisMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_MAPPING_UID = ""; /**< Key of the argument </code>mapping_uid</code> of event <code>AxisMappingsStateAvailableAxisMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS_NAME = ""; /**< Key of the argument </code>name</code> of event <code>AxisMappingsStateAvailableAxisMappings</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_AXIS_ID = ""; /**< Key of the argument </code>axis_id</code> of event <code>AxisFiltersStateCurrentAxisFilters</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS_FILTER_UID_OR_BUILDER = ""; /**< Key of the argument </code>filter_uid_or_builder</code> of event <code>AxisFiltersStateCurrentAxisFilters</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_FILTER_UID = ""; /**< Key of the argument </code>filter_uid</code> of event <code>AxisFiltersStatePresetAxisFilters</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS_NAME = ""; /**< Key of the argument </code>name</code> of event <code>AxisFiltersStatePresetAxisFilters</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE_SOURCE = ""; /**< Key of the argument </code>source</code> of event <code>CoPilotingStatePilotingSource</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_STATUS = ""; /**< Key of the argument </code>status</code> of event <code>CalibrationStateMagnetoCalibrationState</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_X_QUALITY = ""; /**< Key of the argument </code>X_Quality</code> of event <code>CalibrationStateMagnetoCalibrationState</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Y_QUALITY = ""; /**< Key of the argument </code>Y_Quality</code> of event <code>CalibrationStateMagnetoCalibrationState</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE_Z_QUALITY = ""; /**< Key of the argument </code>Z_Quality</code> of event <code>CalibrationStateMagnetoCalibrationState</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>CalibrationStateMagnetoCalibrationQualityUpdatesState</code> in feature <code>SkyController</code> */
 
     private static native String nativeStaticGetKeySkyControllerWifiStateWifiListBssid ();
     private static native String nativeStaticGetKeySkyControllerWifiStateWifiListSsid ();
@@ -141,7 +141,7 @@ public class ARFeatureSkyController
     private native int nativeSendCommonAllStates (long jFeature);
     private native int nativeSendAccessPointSettingsAccessPointSSID (long jFeature, String ssid);
     private native int nativeSendAccessPointSettingsAccessPointChannel (long jFeature, byte channel);
-    private native int nativeSendAccessPointSettingsWifiSelection (long jFeature, int type, int band, byte channel);
+    private native int nativeSendAccessPointSettingsWifiSelection (long jFeature, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
     private native int nativeSendCameraResetOrientation (long jFeature);
     private native int nativeSendGamepadInfosGetGamepadControls (long jFeature);
     private native int nativeSendButtonMappingsGetCurrentButtonMappings (long jFeature);
@@ -156,7 +156,7 @@ public class ARFeatureSkyController
     private native int nativeSendAxisFiltersGetPresetAxisFilters (long jFeature);
     private native int nativeSendAxisFiltersSetAxisFilter (long jFeature, int axis_id, String filter_uid_or_builder);
     private native int nativeSendAxisFiltersDefaultAxisFilters (long jFeature);
-    private native int nativeSendCoPilotingSetPilotingSource (long jFeature, int source);
+    private native int nativeSendCoPilotingSetPilotingSource (long jFeature, ARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE_ENUM source);
     private native int nativeSendCalibrationEnableMagnetoCalibrationQualityUpdates (long jFeature, byte enable);
 
     private long jniFeature;
@@ -450,7 +450,7 @@ public class ARFeatureSkyController
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAccessPointSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
+                int nativeError = nativeSendAccessPointSettingsWifiSelection (jniFeature, _type, _band, _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -660,7 +660,7 @@ public class ARFeatureSkyController
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendCoPilotingSetPilotingSource (jniFeature, _source.getValue());
+                int nativeError = nativeSendCoPilotingSetPilotingSource (jniFeature, _source);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
