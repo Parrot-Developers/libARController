@@ -88,9 +88,6 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED, /**< Key used to define the command <code>HomeTypeAvailabilityChanged</code> of class <code>GPSState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED, /**< Key used to define the command <code>HomeTypeChosenChanged</code> of class <code>GPSState</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES, /**< Key used to define the command <code>Features</code> of class <code>PROState</code> in project <code>ARDrone3</code> */
-    ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG, /**< Key used to define the feature <code>ARDrone3Debug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED, /**< Key used to define the command <code>UseDrone2BatteryChanged</code> of class <code>BatteryDebugSettingsState</code> in project <code>ARDrone3Debug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED, /**< Key used to define the command <code>NbSatelliteChanged</code> of class <code>GPSDebugState</code> in project <code>ARDrone3Debug</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO, /**< Key used to define the feature <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED, /**< Key used to define the command <code>PostureChanged</code> of class <code>PilotingState</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED, /**< Key used to define the command <code>AlertStateChanged</code> of class <code>PilotingState</code> in project <code>JumpingSumo</code> */
@@ -121,8 +118,6 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SPEEDSETTINGSSTATE_OUTDOORCHANGED, /**< Key used to define the command <code>OutdoorChanged</code> of class <code>SpeedSettingsState</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, /**< Key used to define the command <code>VideoEnableChanged</code> of class <code>MediaStreamingState</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED, /**< Key used to define the command <code>AutorecordChanged</code> of class <code>VideoSettingsState</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG, /**< Key used to define the feature <code>JumpingSumoDebug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED, /**< Key used to define the command <code>UserScriptParsed</code> of class <code>UserScriptState</code> in project <code>JumpingSumoDebug</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE, /**< Key used to define the feature <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED, /**< Key used to define the command <code>FlatTrimChanged</code> of class <code>PilotingState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED, /**< Key used to define the command <code>FlyingStateChanged</code> of class <code>PilotingState</code> in project <code>MiniDrone</code> */
@@ -141,7 +136,6 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED, /**< Key used to define the command <code>ProductInertialVersionChanged</code> of class <code>SettingsState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED, /**< Key used to define the command <code>CutOutModeChanged</code> of class <code>SettingsState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED, /**< Key used to define the command <code>FloodControlChanged</code> of class <code>FloodControlState</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONEDEBUG, /**< Key used to define the feature <code>MiniDroneDebug</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER, /**< Key used to define the feature <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST, /**< Key used to define the command <code>WifiList</code> of class <code>WifiState</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED, /**< Key used to define the command <code>ConnexionChanged</code> of class <code>WifiState</code> in project <code>SkyController</code> */

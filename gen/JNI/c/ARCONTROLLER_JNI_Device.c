@@ -249,15 +249,6 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureARDrone3 (
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureARDrone3Debug (JNIEnv *env, jobject thizz, jlong jDeviceController)
-{
-    // local declarations
-    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
-
-    return (long) jniDeviceController->nativeDeviceController->aRDrone3Debug;
-}
-
-JNIEXPORT jlong JNICALL
 Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureJumpingSumo (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
@@ -267,30 +258,12 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureJumpingSum
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureJumpingSumoDebug (JNIEnv *env, jobject thizz, jlong jDeviceController)
-{
-    // local declarations
-    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
-
-    return (long) jniDeviceController->nativeDeviceController->jumpingSumoDebug;
-}
-
-JNIEXPORT jlong JNICALL
 Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureMiniDrone (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
     ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
 
     return (long) jniDeviceController->nativeDeviceController->miniDrone;
-}
-
-JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureMiniDroneDebug (JNIEnv *env, jobject thizz, jlong jDeviceController)
-{
-    // local declarations
-    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
-
-    return (long) jniDeviceController->nativeDeviceController->miniDroneDebug;
 }
 
 JNIEXPORT jlong JNICALL
