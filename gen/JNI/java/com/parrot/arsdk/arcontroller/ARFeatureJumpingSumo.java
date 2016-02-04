@@ -26,51 +26,51 @@ public class ARFeatureJumpingSumo
 {
     private static String TAG = "ARFeatureJumpingSumo";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED = ""; /**< Key of the argument </code>speed</code> of class <code>PilotingState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED = ""; /**< Key of the argument </code>realSpeed</code> of class <code>PilotingState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>AnimationsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_VIDEOEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_VIDEOEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkSettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkSettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT = ""; /**< Key of the argument </code>in_or_out</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_LINKQUALITYCHANGED_QUALITY = ""; /**< Key of the argument </code>quality</code> of class <code>NetworkState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_MASTERVOLUMECHANGED_VOLUME = ""; /**< Key of the argument </code>volume</code> of class <code>AudioSettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_THEMECHANGED_THEME = ""; /**< Key of the argument </code>theme</code> of class <code>AudioSettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_UUID = ""; /**< Key of the argument </code>uuid</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_VERSION = ""; /**< Key of the argument </code>version</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_PRODUCT = ""; /**< Key of the argument </code>product</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_NAME = ""; /**< Key of the argument </code>name</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_LASTMODIFIED = ""; /**< Key of the argument </code>lastModified</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTUPLOADCHANGED_RESULTCODE = ""; /**< Key of the argument </code>resultCode</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTDELETECHANGED_RESULTCODE = ""; /**< Key of the argument </code>resultCode</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_PLAYSCRIPTCHANGED_RESULTCODE = ""; /**< Key of the argument </code>resultCode</code> of class <code>RoadPlanState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of class <code>SpeedSettingsState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>MediaStreamingState</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>VideoSettingsState</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStatePostureChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED = ""; /**< Key of the argument </code>speed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED = ""; /**< Key of the argument </code>realSpeed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpLoadChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpTypeChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>AnimationsStateJumpMotorProblemChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductGPSVersionChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductGPSVersionChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStateVideoStateChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>MediaRecordStateVideoStateChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStateVideoStateChangedV2</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordStateVideoStateChangedV2</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_VIDEOEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventVideoEventChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_VIDEOEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventVideoEventChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT = ""; /**< Key of the argument </code>in_or_out</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_LINKQUALITYCHANGED_QUALITY = ""; /**< Key of the argument </code>quality</code> of event <code>NetworkStateLinkQualityChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_MASTERVOLUMECHANGED_VOLUME = ""; /**< Key of the argument </code>volume</code> of event <code>AudioSettingsStateMasterVolumeChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_THEMECHANGED_THEME = ""; /**< Key of the argument </code>theme</code> of event <code>AudioSettingsStateThemeChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_UUID = ""; /**< Key of the argument </code>uuid</code> of event <code>RoadPlanStateScriptMetadataListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_VERSION = ""; /**< Key of the argument </code>version</code> of event <code>RoadPlanStateScriptMetadataListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_PRODUCT = ""; /**< Key of the argument </code>product</code> of event <code>RoadPlanStateScriptMetadataListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_NAME = ""; /**< Key of the argument </code>name</code> of event <code>RoadPlanStateScriptMetadataListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED_LASTMODIFIED = ""; /**< Key of the argument </code>lastModified</code> of event <code>RoadPlanStateScriptMetadataListChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTUPLOADCHANGED_RESULTCODE = ""; /**< Key of the argument </code>resultCode</code> of event <code>RoadPlanStateScriptUploadChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTDELETECHANGED_RESULTCODE = ""; /**< Key of the argument </code>resultCode</code> of event <code>RoadPlanStateScriptDeleteChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_PLAYSCRIPTCHANGED_RESULTCODE = ""; /**< Key of the argument </code>resultCode</code> of event <code>RoadPlanStatePlayScriptChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of event <code>SpeedSettingsStateOutdoorChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>VideoSettingsStateAutorecordChanged</code> in feature <code>JumpingSumo</code> */
 
     private static native String nativeStaticGetKeyJumpingSumoPilotingStatePostureChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateAlertStateChangedState ();
@@ -123,22 +123,22 @@ public class ARFeatureJumpingSumo
     private native int nativeSetPilotingPCMDFlag (long jFeature, byte flag);
     private native int nativeSetPilotingPCMDSpeed (long jFeature, byte speed);
     private native int nativeSetPilotingPCMDTurn (long jFeature, byte turn);
-    private native int nativeSendPilotingPosture (long jFeature, int type);
+    private native int nativeSendPilotingPosture (long jFeature, ARCOMMANDS_JUMPINGSUMO_PILOTING_POSTURE_TYPE_ENUM type);
     private native int nativeSendPilotingAddCapOffset (long jFeature, float offset);
     private native int nativeSendAnimationsJumpStop (long jFeature);
     private native int nativeSendAnimationsJumpCancel (long jFeature);
     private native int nativeSendAnimationsJumpLoad (long jFeature);
-    private native int nativeSendAnimationsJump (long jFeature, int type);
-    private native int nativeSendAnimationsSimpleAnimation (long jFeature, int id);
+    private native int nativeSendAnimationsJump (long jFeature, ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM type);
+    private native int nativeSendAnimationsSimpleAnimation (long jFeature, ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_SIMPLEANIMATION_ID_ENUM id);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
-    private native int nativeSendMediaRecordVideo (long jFeature, int record, byte mass_storage_id);
+    private native int nativeSendMediaRecordVideo (long jFeature, ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEO_RECORD_ENUM record, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
-    private native int nativeSendMediaRecordVideoV2 (long jFeature, int record);
-    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
-    private native int nativeSendNetworkWifiScan (long jFeature, int band);
+    private native int nativeSendMediaRecordVideoV2 (long jFeature, ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEOV2_RECORD_ENUM record);
+    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
+    private native int nativeSendNetworkWifiScan (long jFeature, ARCOMMANDS_JUMPINGSUMO_NETWORK_WIFISCAN_BAND_ENUM band);
     private native int nativeSendNetworkWifiAuthChannel (long jFeature);
     private native int nativeSendAudioSettingsMasterVolume (long jFeature, byte volume);
-    private native int nativeSendAudioSettingsTheme (long jFeature, int theme);
+    private native int nativeSendAudioSettingsTheme (long jFeature, ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM theme);
     private native int nativeSendRoadPlanAllScriptsMetadata (long jFeature);
     private native int nativeSendRoadPlanScriptUploaded (long jFeature, String uuid, String md5Hash);
     private native int nativeSendRoadPlanScriptDelete (long jFeature, String uuid);
@@ -321,7 +321,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingPosture (jniFeature, _type.getValue());
+                int nativeError = nativeSendPilotingPosture (jniFeature, _type);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -391,7 +391,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsJump (jniFeature, _type.getValue());
+                int nativeError = nativeSendAnimationsJump (jniFeature, _type);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -405,7 +405,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsSimpleAnimation (jniFeature, _id.getValue());
+                int nativeError = nativeSendAnimationsSimpleAnimation (jniFeature, _id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -433,7 +433,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record.getValue(), _mass_storage_id);
+                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record, _mass_storage_id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -461,7 +461,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record.getValue());
+                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -475,7 +475,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
+                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type, _band, _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -489,7 +489,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band.getValue());
+                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -531,7 +531,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAudioSettingsTheme (jniFeature, _theme.getValue());
+                int nativeError = nativeSendAudioSettingsTheme (jniFeature, _theme);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

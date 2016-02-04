@@ -74,83 +74,71 @@ def isState(cl):
             found = True
     return found
 
-def sendingFunctionType(module, feature, cl, cmd):
-    return ARTypeName (module, feature.name, 'Send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name))
+def sendingFunctionType(module, feature, cmd):
+    return ARTypeName (module, feature.name, 'Send' + ARCapitalize(cmd.formattedName()))
     
-def sendingFunctionName(module, feature, cl, cmd):
-    return ARFunctionName (module, feature.name, 'Send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name))
+def sendingFunctionName(module, feature, cmd):
+    return ARFunctionName (module, feature.name, 'Send' + ARCapitalize(cmd.formattedName()))
     
-def sendingFunction (cl, cmd):
-    return 'send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
+def sendingFunction (cmd):
+    return 'send'+ ARCapitalize(cmd.formattedName())
 
-def nativeSendingFunction (cl, cmd):
-    return 'nativeSend' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)
+def nativeSendingFunction (cmd):
+    return 'nativeSend' + ARCapitalize(cmd.formattedName())
     
-def setNAckFunctionType( feature, cl, cmd, arg=None):
+def setNAckFunctionType( feature, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return ARTypeName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
+    return ARTypeName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cmd.formattedName()) + argPart)
     
-def setNAckFunctionName( feature, cl, cmd, arg=None):
+def setNAckFunctionName( feature, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return ARFunctionName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart)
+    return ARFunctionName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cmd.formattedName()) + argPart)
 
-def setNAckFunction (cl, cmd, arg=None):
+def setNAckFunction (cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return 'set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart
+    return 'set' + ARCapitalize(cmd.formattedName()) + argPart
     
-def sendNAckFunctionName (feature, cl, cmd):
-    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Send' + ARCapitalize(cl.name) + ARCapitalize(cmd.name)+'Struct')
+def sendNAckFunctionName (feature, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Send' + ARCapitalize(cmd.formattedName()) +'Struct')
     
-def structNAckName(cl, cmd):
-    return ARUncapitalize(cl.name) + ARCapitalize(cmd.name) + 'Parameters'
+def structNAckName(cmd):
+    return ARCapitalize(cmd.formattedName()) + 'Parameters'
     
-def structNAckType(feature, cl, cmd):
-    return ARTypeName (MODULE_ARCONTROLLER, feature.name, ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Parameters')
+def structNAckType(feature, cmd):
+    return ARTypeName (MODULE_ARCONTROLLER, feature.name, ARCapitalize(cmd.formattedName()) + 'Parameters')
     
 def defineNotificationDef():
     return AREnumName(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY');
 
-def defineNotification(feature, cl=None, cmd=None, arg=None):
-    clPart = ''
-    clPrjExt = ''
-    if cl :
-        clPart = '_'+cl.name
-        clPrjExt = cl.projExt
+def defineNotification(feature, cmd=None, arg=None):
     cmdPart = ''
     if cmd :
-        cmdPart = '_' + cmd.name
+        cmdPart = '_' + cmd.formattedName(underscore=True)
     argPart = ''
     if arg :
         argPart = '_' + arg.name
-    return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', feature.name + clPrjExt + clPart + cmdPart + argPart);
+    return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', feature.name + cmdPart + argPart);
     
-def nativeGetNotificationVal(feature, cl=None, cmd=None, arg=None):
-    clPart = ''
-    clPrjExt = ''
-    if cl :
-        clPart = cl.name
-        clPrjExt = cl.projExt
+def nativeGetNotificationVal(feature, cmd=None, arg=None):
     cmdPart = ''
     if cmd :
-        cmdPart = cmd.name
+        cmdPart = cmd.formattedName()
     argPart = ''
     if arg :
         argPart = '' + arg.name.replace("_", "");
-    return 'nativeStaticGetKey'+ARCapitalize(feature.name) + ARCapitalize(clPrjExt) + ARCapitalize(clPart) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
+    return 'nativeStaticGetKey'+ARCapitalize(feature.name) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
 
+def arcommandsSetDecode(feature, cmd):
+    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(feature.name) + ARCapitalize(cmd.formattedName()) + 'Callback'
 
-def arcommandsSetDecode(feature, cl, cmd):
-    #return ARFunctionName (MODULE_ARCOMMANDS, 'Decoder', 'Set'+ARCapitalize(feature.name) + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Callback')
-    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(feature.name) + ARCapitalize(cl.projExt) + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Callback'
-
-def decodeCallback(feature, cl, cmd):
-    return ARFunctionName (MODULE_FEATURE, feature.name, ARCapitalize(cl.name) + ARCapitalize(cmd.name) + 'Callback')
+def decodeCallback(feature, cmd):
+    return ARFunctionName (MODULE_FEATURE, feature.name, ARCapitalize(cmd.formattedName()) + 'Callback')
     
 def discoveryProduct (productName):
     return 'ARDISCOVERY_PRODUCT_' + productName.upper ();
@@ -167,17 +155,17 @@ def nativeFeatureName (feature):
 def nativeGetFeature (feature):
     return 'nativeGetFeature'+ ARCapitalize(feature.name)
     
-def javaSetNAckFunction(cl, cmd, arg=None):
+def javaSetNAckFunction(cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return 'set' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart
+    return 'set' + ARCapitalize(cmd.formattedName()) + argPart
     
-def nativeSetNAckFunction (cl, cmd, arg=None):
+def nativeSetNAckFunction (cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return 'nativeSet' + ARCapitalize(cl.name) + ARCapitalize(cmd.name) + argPart
+    return 'nativeSet' + ARCapitalize(cmd.formattedName()) + argPart
 
 XMLTYPES = ['u8',       'i8',
             'u16',      'i16',
@@ -231,37 +219,52 @@ FORMATTYPES  = ['"%"PRIu8',    '"%"PRIi8',
              '"%f"',   '"%f"',
              '"%s"']
 
-def xmlToC (module, proj, cl, cmd, arg):
-    if 'enum' == arg.type:
-        return AREnumName(module, proj.name + cl.projExt+'_'+ cl.name, cmd.name + '_' + arg.name);
-    xmlIndex = XMLTYPES.index (arg.type)
+def xmlToC (module, proj, cmd, arg):
+    if isinstance(arg.type, AREnum):
+        return AREnumName(module, proj.name, arg.type.name)
+    if isinstance(arg.type, ARBitfield):
+        xmlIndex = XMLTYPES.index (arg.type.type)
+    else:
+        xmlIndex = XMLTYPES.index (arg.type)
     return CTYPES [xmlIndex]
 
-def xmlToObjC (proj, cl, cmd, arg):
-    if 'enum' == arg.type:
-        return '[NSNumber numberWithInt:' + arg.name + ']';
-    elif 'string' == arg.type:
+def xmlToObjC (proj, cmd, arg):
+    if isinstance(arg.type, AREnum):
+        return '[NSNumber numberWithInt:' + arg.name + ']'
+    if 'string' == arg.type:
         return '[NSString stringWithCString:' + arg.name + ' encoding:NSUTF8StringEncoding]'
 
-    xmlIndex = XMLTYPES.index (arg.type)
-    return '[NSNumber numberWith' + OBJCTYPES [xmlIndex] + ':' + arg.name + ']';
+    if isinstance(arg.type, ARBitfield):
+        xmlIndex = XMLTYPES.index (arg.type.type)
+    else:
+        xmlIndex = XMLTYPES.index (arg.type)
+    return '[NSNumber numberWith' + OBJCTYPES [xmlIndex] + ':' + arg.name + ']'
 
-def xmlToJava (module, proj, cl, cmd, arg):
-    if 'enum' == arg.type:
-        return ARJavaEnumType(module, proj.name + cl.projExt + '_' + cl.name, cmd.name + '_' + arg.name);
-    xmlIndex = XMLTYPES.index (arg.type)
+def xmlToJava (module, proj, cmd, arg):
+    if isinstance(arg.type, AREnum):
+        return ARJavaEnumType(module, proj.name, arg.type.name)
+    if isinstance(arg.type, ARBitfield):
+        xmlIndex = XMLTYPES.index (arg.type.type)
+    else:
+        xmlIndex = XMLTYPES.index (arg.type)
     return JAVATYPES [xmlIndex]
     
 def xmlToFormat (arg):
-    if 'enum' == arg.type:
+    if isinstance(arg.type, AREnum):
         return '"%d"';
-    xmlIndex = XMLTYPES.index (arg.type)
+    if isinstance(arg.type, ARBitfield):
+        xmlIndex = XMLTYPES.index (arg.type.type)
+    else:
+        xmlIndex = XMLTYPES.index (arg.type)
     return FORMATTYPES [xmlIndex]
     
 def xmlToJNI (arg):
-    if 'enum' == arg.type:
+    if isinstance(arg.type, AREnum):
         return 'jint';
-    xmlIndex = XMLTYPES.index (arg.type)
+    if isinstance(arg.type, ARBitfield):
+        xmlIndex = XMLTYPES.index (arg.type.type)
+    else:
+        xmlIndex = XMLTYPES.index (arg.type)
     return JNITYPES [xmlIndex]
 
 

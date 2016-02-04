@@ -186,7 +186,7 @@ ARPrint ('libARCommandsDir = ' + libARCommandsDir)
 # of commands / classes         #
 #################################
 
-allFeatures = parseAllProjects(features, '%(libARCommandsDir)s' % locals(), genDebug, mergeDebugProjectInReleaseProjects=False)
+allFeatures = parseAllFeatures(features, '%(libARCommandsDir)s' % locals(), genDebug)
 
 # Check all
 err = ''
@@ -196,39 +196,63 @@ if len (err) > 0:
     ARPrint ('Your XML Files contain errors:', True)
     ARPrint (err)
     EXIT (1)
-    
+
 if noGen: # called with "-nogen"
     ARPrint ('Commands parsed:')
-    for feature in allFeatures:
-        ARPrint ('Feature ' + feature.name)
+    for ftr in allFeatures:
+        ARPrint ('Feature ' + ftr.name)
         ARPrint ('/*')
-        for comment in feature.comments:
+        for comment in ftr.comments:
             ARPrint (' * ' + comment)
         ARPrint (' */')
-        for cl in feature.classes:
-            ARPrint ('-> ' + cl.name)
-            ARPrint ('   /* ')
-            for comment in cl.comments:
-                ARPrint ('    * ' + comment)
-            ARPrint ('    */')
-            for cmd in cl.cmds:
-                ARPrint (' --> ' + cmd.name)
+        for enum in ftr.enums:
+            ARPrint (' --> enum:' + enum.name)
+            ARPrint ('     /* ')
+            for comment in enum.comments:
+                ARPrint ('      * ' + comment)
+            ARPrint ('      */')
+            for val in enum.values:
+                ARPrint ('     --> ' + val.name)
                 ARPrint ('     /* ')
-                for comment in cmd.comments:
+                for comment in val.comments:
+                    ARPrint ('      * ' + comment)
+                ARPrint ('      */ ')
+        for cmd in ftr.cmds:
+            ARPrint (' --> cmd:' + cmd.name)
+            ARPrint ('     buffer:  ' + ARCommandBuffer.toString(cmd.buf))
+            ARPrint ('     timeout: ' + ARCommandTimeoutPolicy.toString(cmd.timeout))
+            ARPrint ('     list:    ' + ARCommandListType.toString(cmd.listtype))
+            ARPrint ('     /* ')
+            for comment in cmd.comments:
+                ARPrint ('      * ' + comment)
+            ARPrint ('      */')
+            for arg in cmd.args:
+                if isinstance (arg.type, AREnum):
+                    ARPrint ('     (' + arg.type.name + ' ' + arg.name + ')')
+                else:
+                    ARPrint ('     (' + arg.type + ' ' + arg.name + ')')
+                ARPrint ('     /* ')
+                for comment in arg.comments:
                     ARPrint ('      * ' + comment)
                 ARPrint ('      */')
-                for arg in cmd.args:
-                    ARPrint ('   (' + arg.type + ' ' + arg.name + ')')
-                    ARPrint ('    /* ')
-                    for comment in arg.comments:
-                        ARPrint ('     * ' + comment)
-                    ARPrint ('     */')
-                    for enum in arg.enums:
-                        ARPrint ('   (typedef enum ' + enum.name + ')')
-                        ARPrint ('    /* ')
-                        for comment in enum.comments:
-                            ARPrint ('     * ' + comment)
-                        ARPrint ('     */')
+        for evt in ftr.evts:
+            ARPrint (' --> evt:' + evt.name)
+            ARPrint ('     buffer:  ' + ARCommandBuffer.toString(evt.buf))
+            ARPrint ('     timeout: ' + ARCommandTimeoutPolicy.toString(evt.timeout))
+            ARPrint ('     list:    ' + ARCommandListType.toString(evt.listtype))
+            ARPrint ('     /* ')
+            for comment in evt.comments:
+                ARPrint ('      * ' + comment)
+            ARPrint ('      */')
+            for arg in evt.args:
+                if isinstance (arg.type, AREnum):
+                    ARPrint ('     (' + arg.type.name + ' ' + arg.name + ')')
+                else:
+                    ARPrint ('     (' + arg.type + ' ' + arg.name + ')')
+                ARPrint ('     /* ')
+                for comment in arg.comments:
+                    ARPrint ('      * ' + comment)
+                ARPrint ('      */')
 
     EXIT (0)
 

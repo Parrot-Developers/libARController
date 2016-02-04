@@ -26,26 +26,26 @@
 /**
  * @brief 
  */
-typedef struct ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t;
+typedef struct ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t;
 
-struct ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t
+struct ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t
 {
     ARCONTROLLER_Device_StateChangedCallback_t callback; /**< callback used when the state is changed. */
     void *customData;  /**< custom data given as parameter to the callback. */
     
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *next;
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *prev;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *next;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *prev;
 };
 
-typedef struct ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t;
+typedef struct ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t;
 
-struct ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t
+struct ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t
 {
     ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback; /**< callback used when the extension state is changed. */
     void *customData;  /**< custom data given as parameter to the callback. */
     
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *next;
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *prev;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *next;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *prev;
 };
 
 /**
@@ -61,8 +61,8 @@ struct ARCONTROLLER_Device_Private_t
     eARCONTROLLER_DEVICE_STATE state; /**< state of the deviceController*/
     ARSAL_Thread_t controllerLooperThread; /**< looper threads used to send data in loop */
     ARCONTROLLER_DICTIONARY_CALLBAK_LIST_ELEMENT_t *commandCallbacks; /**< Array storing callbacks to use when a command is received. */
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *stateChangedCallbacks; /**< Array storing callbacks to use when a state is changed. */
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *extensionStateChangedCallbacks; /**< Array storing callbacks to use when a state of the extension is changed. */
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *stateChangedCallbacks; /**< Array storing callbacks to use when a state is changed. */
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *extensionStateChangedCallbacks; /**< Array storing callbacks to use when a state of the extension is changed. */
     int startCancelled; /**< 1 if the start is canceled*/
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
@@ -268,7 +268,7 @@ void *ARCONTROLLER_Device_ExtensionStopRun (void *data);
  * @param[in] customData Data given as parameter to the callback.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData);
 
 /**
  * @brief Remove a callback from a list.
@@ -277,13 +277,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_S
  * @param[in] customData Data given at the adding of the callback.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCallbackFromList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCallbackFromList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData);
 
  /**
   * @brief Delete all callback of a list.
   * @param callbackList The list of callbacks.
   */
-void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList);
+void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList);
 
 /**
  * @brief Notify all callback of a list.
@@ -291,7 +291,7 @@ void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATE_CHANGED_C
  * @param[in] state The state of the device Controller ; given as parameter to the callback.
  * @param[in] error Error causing this new state.
  */
-void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARCONTROLLER_ERROR error);
+void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARCONTROLLER_ERROR error);
 
 /**
  * @brief Add an extension callback in a list.
@@ -300,7 +300,7 @@ void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATE_CHAN
  * @param[in] customData Data given as parameter to the callback.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData);
 
 /**
  * @brief Remove an extension callback from a list.
@@ -309,13 +309,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER
  * @param[in] customData Data given at the adding of the callback.
  * @return Executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveExtensionCallbackFromList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveExtensionCallbackFromList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData);
 
  /**
   * @brief Delete all extension callbacks of a list.
   * @param callbackList The list of callbacks.
   */
-void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList);
+void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList);
 
 /**
  * @brief Notify all extension callback of a list.
@@ -325,7 +325,7 @@ void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENS
  * @param[in] name The name of the extension ; given as parameter to the callback.
  * @param[in] error Error causing this new state.
  */
-void ARCONTROLLER_Device_NotifyAllExtensionCallbackInList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error);
+void ARCONTROLLER_Device_NotifyAllExtensionCallbackInList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error);
 
 /**
  * @brief Set the Device Controller state and notify all listeners.
