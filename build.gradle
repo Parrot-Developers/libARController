@@ -18,8 +18,6 @@ android {
 }
 
 dependencies {
-    compile project(':libARStream2')
-    compile project(':libARStream')
     compile project(':libARCommands')
     compile project(':libARDiscovery')
     compile project(':libARSAL')
