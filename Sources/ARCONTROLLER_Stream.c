@@ -190,8 +190,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream_Start (ARCONTROLLER_Stream_t *streamCont
     // -- Start to read the stream --
 
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    eARSTREAM_ERROR streamError = ARSTREAM_OK;
-    ARCONTROLLER_Frame_t *firstFrame = NULL;
     
     // Check parameters
     if (streamController == NULL)
@@ -316,9 +314,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream_OnReceiveJson (ARCONTROLLER_Stream_t *str
     
     // local declarations
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
-    eARCONTROLLER_ERROR controllerError = ARCONTROLLER_OK;
-    
-    json_object *valueJsonObj = NULL;
     
     if ((jsonObj == NULL) ||
         (streamController == NULL))
