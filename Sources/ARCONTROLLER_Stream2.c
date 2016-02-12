@@ -330,8 +330,6 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnReceiveJson (ARCONTROLLER_Stream2_t *s
     
     // local declarations
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
-    eARCONTROLLER_ERROR controllerError = ARCONTROLLER_OK;
-    
     json_object *valueJsonObj = NULL;
     
     if ((jsonObj == NULL) ||
@@ -412,7 +410,7 @@ uint8_t ARCONTROLLER_Stream2_JsonContainsStream2Param(json_object *jsonObj)
     // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY
     json_object *serverControlPortJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY);
     
-    return ((serverStreamPortJsonObj != NULL) && (serverStreamPortJsonObj != NULL));
+    return ((serverStreamPortJsonObj != NULL) && (serverControlPortJsonObj != NULL));
 }
 
 int ARCONTROLLER_Stream2_IsInitilized (ARCONTROLLER_Stream2_t *stream2Controller)
