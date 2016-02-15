@@ -25,6 +25,9 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/gen/Includes \
 	$(LOCAL_PATH)/Sources
 
+LOCAL_CFLAGS := \
+	-DHAVE_CONFIG_H
+
 LOCAL_SRC_FILES := \
 	Sources/ARCONTROLLER_Dictionary.c \
 	Sources/ARCONTROLLER_Frame.c \
