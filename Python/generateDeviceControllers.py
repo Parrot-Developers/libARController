@@ -763,6 +763,11 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('*/\n')
     cFile.write ('\n')
 
+    cFile.write ('#ifndef _GNU_SOURCE\n')
+    cFile.write ('#define _GNU_SOURCE\n')
+    cFile.write ('#endif\n')
+    cFile.write ('\n')
+
     cFile.write ('#include <stdio.h>\n')
     cFile.write ('#include <time.h>\n')
     cFile.write ('#include <json/json.h>\n')
