@@ -60,7 +60,7 @@ ARCONTROLLER_StreamPool_t *ARCONTROLLER_StreamPool_New (uint32_t capacity, eARCO
     // Local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_StreamPool_t *streamPool =  NULL;
-    int index = 0;
+    size_t index = 0;
     
     if (localError == ARCONTROLLER_OK)
     {
@@ -117,7 +117,7 @@ ARCONTROLLER_StreamPool_t *ARCONTROLLER_StreamPool_New (uint32_t capacity, eARCO
 void ARCONTROLLER_StreamPool_Delete (ARCONTROLLER_StreamPool_t **streamPool)
 {
     // -- Delete a streamPool --
-    int index = 0;
+    size_t index = 0;
 
     if (streamPool != NULL)
     {
@@ -147,7 +147,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetNextFreeFrame (ARCONTROLLER_Str
 
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *freeFrame = NULL;
-    int index = 0;
+    size_t index = 0;
     
     // Check parameters
     if (streamPool == NULL)
@@ -190,7 +190,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_StreamPool_GetFrameFromData (ARCONTROLLER_Str
 
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
-    int index = 0;
+    size_t index = 0;
     
     // Check parameters
     if (streamPool == NULL)
