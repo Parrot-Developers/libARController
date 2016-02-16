@@ -786,7 +786,7 @@ void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8
 {
     // -- Get sps and pps from Iframe --
     
-    int searchIndex = 0;
+    size_t searchIndex = 0;
 
     // we'll need to search the "00 00 00 01" pattern to find each header size
     // Search start at index 4 to avoid finding the SPS "00 00 00 01" tag
