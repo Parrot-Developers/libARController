@@ -13,6 +13,10 @@
 * @brief Device controller allow to drive a device.
 */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <stdio.h>
 #include <time.h>
 #include <json/json.h>
