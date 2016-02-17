@@ -54168,7 +54168,7 @@ const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = "arcontr
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY = "arcontroller_dictionary_key_wifi_securitychanged_key";
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE = "arcontroller_dictionary_key_wifi_securitychanged_key_type";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_AUTOMATIC = "arcontroller_dictionary_key_wifi_countrychanged_automatic";
+const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE = "arcontroller_dictionary_key_wifi_countrychanged_selection_mode";
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE = "arcontroller_dictionary_key_wifi_countrychanged_code";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT = "arcontroller_dictionary_key_wifi_environementchanged_environement";
@@ -54550,7 +54550,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetSecurity (ARCONTROLLER_FEAT
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATURE_Wifi_t *feature, uint8_t automatic, char * code)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION selection_mode, char * code)
 {
     // -- Send a command <code>SetCountry</code> in project <code>Wifi</code> --
     
@@ -54570,7 +54570,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATU
     if (error == ARCONTROLLER_OK)
     {
         // Send SetCountry command
-        cmdError = ARCOMMANDS_Generator_GenerateWifiSetCountry(cmdBuffer, sizeof(cmdBuffer), &cmdSize, automatic, code);
+        cmdError = ARCOMMANDS_Generator_GenerateWifiSetCountry(cmdBuffer, sizeof(cmdBuffer), &cmdSize, selection_mode, code);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -54991,7 +54991,7 @@ void ARCONTROLLER_FEATURE_Wifi_SecurityChangedCallback (char * _key, eARCOMMANDS
     
 }
 
-void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (uint8_t _automatic, char * _code, void *customData)
+void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (eARCOMMANDS_WIFI_COUNTRY_SELECTION _selection_mode, char * _code, void *customData)
 {
     // -- callback used when the command <code>CountryChanged</code> is decoded -- 
     
@@ -55029,7 +55029,7 @@ void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (uint8_t _automatic, char 
     if (error == ARCONTROLLER_OK)
     {
         //Create new element
-        newElement = ARCONTROLLER_Wifi_NewCmdElementCountryChanged (feature,  _automatic,  _code, &error);
+        newElement = ARCONTROLLER_Wifi_NewCmdElementCountryChanged (feature,  _selection_mode,  _code, &error);
     }
     
     //Set new element in CommandElements 
@@ -55875,7 +55875,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementSecurityChange
     return newElement;
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, uint8_t _automatic, char * _code, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION _selection_mode, char * _code, eARCONTROLLER_ERROR *error)
 {
     // -- Create element of an event CountryChanged -- 
     
@@ -55932,9 +55932,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged
         argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
         if (argDictNewElement != NULL)
         {
-            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_AUTOMATIC;
-            argDictNewElement->value.U8 = _automatic;
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE;
+            argDictNewElement->value.I32 = _selection_mode;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }

@@ -3585,7 +3585,7 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL; /*
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY; /**< Key of the argument </code>key</code> of event <code>SecurityChanged</code> in feature <code>Wifi</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE; /**< Key of the argument </code>key_type</code> of event <code>SecurityChanged</code> in feature <code>Wifi</code> */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_AUTOMATIC; /**< Key of the argument </code>automatic</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE; /**< Key of the argument </code>selection_mode</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE; /**< Key of the argument </code>code</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT; /**< Key of the argument </code>environement</code> of event <code>EnvironementChanged</code> in feature <code>Wifi</code> */
@@ -3637,19 +3637,17 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetSecurity_t) (ARCO
  * @brief Send a command <code>SetCountry</code> in feature <code>Wifi</code>
  * Set the wifi country.
  * @param feature feature owning the commands
- * @param automatic Boolean : 0 : Manual / 1 : Auto
- * @param automatic Set the wifi country.
+ * @param selection_mode Set the wifi country.
  * @param code Country code with ISO 3166 format. Not used if automatic is 1.
  * @param code Set the wifi country.
  * return executing error
  */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetCountry_t) (ARCONTROLLER_FEATURE_Wifi_t *feature, uint8_t automatic, char * code);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetCountry_t) (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION selection_mode, char * code);
 
 /**
  * @brief Send a command <code>SetEnvironement</code> in feature <code>Wifi</code>
  * Set indoor or outdoor wifi settings.
  * @param feature feature owning the commands
- * @param environement 1 if it should use outdoor wifi settings, 0 otherwise
  * @param environement Set indoor or outdoor wifi settings.
  * return executing error
  */
