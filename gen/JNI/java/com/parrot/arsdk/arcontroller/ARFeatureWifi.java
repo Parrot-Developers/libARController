@@ -40,7 +40,7 @@ public class ARFeatureWifi
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY = ""; /**< Key of the argument </code>key</code> of event <code>SecurityChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE = ""; /**< Key of the argument </code>key_type</code> of event <code>SecurityChanged</code> in feature <code>Wifi</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_AUTOMATIC = ""; /**< Key of the argument </code>automatic</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE = ""; /**< Key of the argument </code>selection_mode</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE = ""; /**< Key of the argument </code>code</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT = ""; /**< Key of the argument </code>environement</code> of event <code>EnvironementChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>RssiChanged</code> in feature <code>Wifi</code> */
@@ -59,7 +59,7 @@ public class ARFeatureWifi
     private static native String nativeStaticGetKeyWifiApChannelChangedChannel ();
     private static native String nativeStaticGetKeyWifiSecurityChangedKey ();
     private static native String nativeStaticGetKeyWifiSecurityChangedKeytype ();
-    private static native String nativeStaticGetKeyWifiCountryChangedAutomatic ();
+    private static native String nativeStaticGetKeyWifiCountryChangedSelectionmode ();
     private static native String nativeStaticGetKeyWifiCountryChangedCode ();
     private static native String nativeStaticGetKeyWifiEnvironementChangedEnvironement ();
     private static native String nativeStaticGetKeyWifiRssiChangedRssi ();
@@ -68,7 +68,7 @@ public class ARFeatureWifi
     private native int nativeSendUpdateAuthorizedChannels (long jFeature);
     private native int nativeSendSetApChannel (long jFeature, ARCOMMANDS_WIFI_SELECTION_TYPE_ENUM type, ARCOMMANDS_WIFI_BAND_ENUM band, byte channel);
     private native int nativeSendSetSecurity (long jFeature, ARCOMMANDS_WIFI_SECURITY_TYPE_ENUM type, String key, ARCOMMANDS_WIFI_SECURITY_KEY_TYPE_ENUM key_type);
-    private native int nativeSendSetCountry (long jFeature, byte automatic, String code);
+    private native int nativeSendSetCountry (long jFeature, ARCOMMANDS_WIFI_COUNTRY_SELECTION_ENUM selection_mode, String code);
     private native int nativeSendSetEnvironement (long jFeature, ARCOMMANDS_WIFI_ENVIRONEMENT_ENUM environement);
 
     private long jniFeature;
@@ -90,7 +90,7 @@ public class ARFeatureWifi
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = nativeStaticGetKeyWifiApChannelChangedChannel ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY = nativeStaticGetKeyWifiSecurityChangedKey ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE = nativeStaticGetKeyWifiSecurityChangedKeytype ();
-        ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_AUTOMATIC = nativeStaticGetKeyWifiCountryChangedAutomatic ();
+        ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE = nativeStaticGetKeyWifiCountryChangedSelectionmode ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE = nativeStaticGetKeyWifiCountryChangedCode ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT = nativeStaticGetKeyWifiEnvironementChangedEnvironement ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED_RSSI = nativeStaticGetKeyWifiRssiChangedRssi ();
@@ -197,14 +197,14 @@ public class ARFeatureWifi
         return error;
     }
     
-    public ARCONTROLLER_ERROR_ENUM sendSetCountry (byte _automatic, String _code)
+    public ARCONTROLLER_ERROR_ENUM sendSetCountry (ARCOMMANDS_WIFI_COUNTRY_SELECTION_ENUM _selection_mode, String _code)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetCountry (jniFeature, _automatic, _code);
+                int nativeError = nativeSendSetCountry (jniFeature, _selection_mode, _code);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

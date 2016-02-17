@@ -133,9 +133,9 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiSecurityC
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiCountryChangedAutomatic (JNIEnv *env , jclass class)
+Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiCountryChangedSelectionmode (JNIEnv *env , jclass class)
 {
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_AUTOMATIC);
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE);
 }
 
 JNIEXPORT jstring JNICALL
@@ -209,14 +209,14 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeSendSetSecurity (JNIEnv *
 }
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeSendSetCountry (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _automatic, jstring _code)
+Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeSendSetCountry (JNIEnv *env, jobject thizz, jlong jFeature, jint _selection_mode, jstring _code)
 {
     // local declarations
     ARCONTROLLER_FEATURE_Wifi_t *nativeFeature = (ARCONTROLLER_FEATURE_Wifi_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     const char *nativeCode = (*env)->GetStringUTFChars(env, _code, 0);
     
-    error = nativeFeature->sendSetCountry (nativeFeature, _automatic, (char *)nativeCode);
+    error = nativeFeature->sendSetCountry (nativeFeature, _selection_mode, (char *)nativeCode);
 
     // cleanup
     (*env)->ReleaseStringUTFChars(env, _code, nativeCode);

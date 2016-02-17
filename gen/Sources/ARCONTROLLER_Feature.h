@@ -4635,19 +4635,17 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetSecurity (ARCONTROLLER_FEAT
  * @brief Send a command <code>SetCountry</code> in project <code>Wifi</code>
  * Set the wifi country.
  * @param feature feature owning the commands
- * @param automatic Boolean : 0 : Manual / 1 : Auto
- * @param automatic Set the wifi country.
+ * @param selection_mode Set the wifi country.
  * @param code Country code with ISO 3166 format. Not used if automatic is 1.
  * @param code Set the wifi country.
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATURE_Wifi_t *feature, uint8_t automatic, char * code);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION selection_mode, char * code);
 
 /**
  * @brief Send a command <code>SetEnvironement</code> in project <code>Wifi</code>
  * Set indoor or outdoor wifi settings.
  * @param feature feature owning the commands
- * @param environement 1 if it should use outdoor wifi settings, 0 otherwise
  * @param environement Set indoor or outdoor wifi settings.
  * return executing error
  */
@@ -4674,7 +4672,6 @@ void ARCONTROLLER_FEATURE_Wifi_ScannedItemCallback (char * _ssid, int16_t _rssi,
  * @param band Available channel results.
  * @param channel The channel number
  * @param channel Available channel results.
- * @param environement Bit 0 is 1 if channel is authorized outside (0 otherwise) ; Bit 1 is 1 if channel is authorized inside (0 otherwise)
  * @param environement Available channel results.
  * @param list_flags Available channel results.
  * @param customData customData set by the register
@@ -4703,13 +4700,12 @@ void ARCONTROLLER_FEATURE_Wifi_SecurityChangedCallback (char * _key, eARCOMMANDS
 /**
  * @brief callback used when the command <code>CountryChanged</code> is decoded
  * @param feature The feature controller registred
- * @param automatic Boolean : 0 : Manually chosen / 1 : Automatically chosen
- * @param automatic Wifi country changed.
+ * @param selection_mode Wifi country changed.
  * @param code Country code with ISO 3166 format, empty string means unknown country.
  * @param code Wifi country changed.
  * @param customData customData set by the register
  */
-void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (uint8_t _automatic, char * _code, void *customData);
+void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (eARCOMMANDS_WIFI_COUNTRY_SELECTION _selection_mode, char * _code, void *customData);
 
 /**
  * @brief callback used when the command <code>EnvironementChanged</code> is decoded
@@ -4738,7 +4734,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementApChannelChang
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementSecurityChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, char * _key, eARCOMMANDS_WIFI_SECURITY_TYPE _key_type, eARCONTROLLER_ERROR *error);
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, uint8_t _automatic, char * _code, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION _selection_mode, char * _code, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironementChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONEMENT _environement, eARCONTROLLER_ERROR *error);
 
