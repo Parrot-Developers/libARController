@@ -512,6 +512,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingNavigate
 
 /**
  * @brief Send a command <code>PilotingAutoTakeOffMode</code> in feature <code>ARDrone3</code>
+ * @deprecated
  * [NOT USED] Set Drone3 in automatic take off mode
  * @param feature feature owning the commands
  * @param state State of automatic take off mode (1 for autotake off enabled)
@@ -521,7 +522,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTake
 
 /**
  * @brief Send a command <code>PilotingMoveBy</code> in feature <code>ARDrone3</code>
- * Move the drone to a relative position and rotate heading by a given angle
+ * [DRAFT] Move the drone to a relative position and rotate heading by a given angle
  * The frame is horizontal and relative to the current drone orientation:
  * - X is front
  * - Y is right
@@ -634,7 +635,8 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsAbsolutControl</code> in feature <code>ARDrone3</code>
- * [NOT USED] Enable/Disable absolut control
+ * @deprecated
+ * Enable/Disable absolut control
  * @param feature feature owning the commands
  * @param on 1 to enable, 0 to disable
  * return executing error
@@ -661,7 +663,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxHorizontalSpeed</code> in feature <code>ARDrone3</code>
- * Set the maximum horizontal speed used by the autonomous flight
+ * [NOT USED] Set the maximum horizontal speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal speed [m/s]
  * return executing error
@@ -670,7 +672,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxVerticalSpeed</code> in feature <code>ARDrone3</code>
- * Set the maximum vertical speed used by the autonomous flight
+ * [NOT USED] Set the maximum vertical speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical speed [m/s]
  * return executing error
@@ -679,7 +681,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration</code> in feature <code>ARDrone3</code>
- * Set the maximum horizontal acceleration used by the autonomous flight
+ * [NOT USED] Set the maximum horizontal acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal acceleration [m/s2]
  * return executing error
@@ -688,7 +690,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxVerticalAcceleration</code> in feature <code>ARDrone3</code>
- * Set the maximum vertical acceleration used by the autonomous flight
+ * [NOT USED] Set the maximum vertical acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical acceleration [m/s2]
  * return executing error
@@ -697,7 +699,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code>
- * Set the maximum yaw rotation speed used by the autonomous flight
+ * [NOT USED] Set the maximum yaw rotation speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum yaw rotation speed [rad/s]
  * return executing error
@@ -733,6 +735,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHul
 
 /**
  * @brief Send a command <code>SpeedSettingsOutdoor</code> in feature <code>ARDrone3</code>
+ * @deprecated
  * Outdoor property
  * @param feature feature owning the commands
  * @param outdoor 1 if outdoor flight, 0 if indoor flight
@@ -838,6 +841,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendMediaStreamingVi
 
 /**
  * @brief Send a command <code>GPSSettingsSetHome</code> in feature <code>ARDrone3</code>
+ * @deprecated
  * Set home location
  * @param feature feature owning the commands
  * @param latitude Home latitude in decimal degrees
@@ -1149,7 +1153,7 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_UnknownFeature_1_SendRelative
  * @brief Send a command <code>LookAtRun</code> in feature <code>UnknownFeature_1</code>
  * Begin or stop look at type followMe (stare at the leader while hovering).\n\                      Sending this command will stop other running followMe.
  * @param feature feature owning the commands
- * @param start 1 to hover vector unknown feature_1 process, 0 to stop it
+ * @param start 1 to start look at process, 0 to stop it
  * @param start Begin or stop look at type followMe (stare at the leader while hovering).\n\                      Sending this command will stop other running followMe.
  * return executing error
  */
@@ -1766,7 +1770,8 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_JumpingSumo_SendRoadPlanPlayS
 
 /**
  * @brief Send a command <code>SpeedSettingsOutdoor</code> in feature <code>JumpingSumo</code>
- * Outdoor property => CAUTION : USED FOR WIFI, to know authorized wifi channels.
+ * @deprecated
+ * Outdoor property
  * @param feature feature owning the commands
  * @param outdoor 1 if outdoor, 0 if indoor
  * return executing error
@@ -2937,6 +2942,7 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNI
 
 /**
  * @brief Send a command <code>NetworkDisconnect</code> in feature <code>Common</code>
+ * @deprecated
  * Signals the remote that the host will disconnect and close its
  * libARNetwork instance (and all threads that use libARNetwork)
  * @param feature feature owning the commands
