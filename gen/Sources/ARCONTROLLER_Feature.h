@@ -195,6 +195,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingNavigateHome (ARCO
 
 /**
  * @brief Send a command <code>AutoTakeOffMode</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
+ * @deprecated
  * [NOT USED] Set Drone3 in automatic take off mode
  * @param feature feature owning the commands
  * @param state State of automatic take off mode (1 for autotake off enabled)
@@ -204,8 +205,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTakeOffMode (A
 
 /**
  * @brief Send a command <code>MoveBy</code> of class <code>Piloting</code> in project <code>ARDrone3</code>
- * Draft: this command is not implemented yet by the firmware
- * Move the drone to a relative position and rotate heading by a given angle
+ * [DRAFT] Move the drone to a relative position and rotate heading by a given angle
  * The frame is horizontal and relative to the current drone orientation:
  * - X is front
  * - Y is right
@@ -547,7 +547,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsMaxTilt (A
 
 /**
  * @brief Send a command <code>AbsolutControl</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
- * [NOT USED] Enable/Disable absolut control
+ * @deprecated
+ * Enable/Disable absolut control
  * @param feature feature owning the commands
  * @param on 1 to enable, 0 to disable
  * return executing error
@@ -574,8 +575,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsNoFlyOverM
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxHorizontalSpeed</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
- * Draft: this command is not implemented yet by the firmware
- * Set the maximum horizontal speed used by the autonomous flight
+ * [NOT USED] Set the maximum horizontal speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal speed [m/s]
  * return executing error
@@ -584,8 +584,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxVerticalSpeed</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
- * Draft: this command is not implemented yet by the firmware
- * Set the maximum vertical speed used by the autonomous flight
+ * [NOT USED] Set the maximum vertical speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical speed [m/s]
  * return executing error
@@ -594,8 +593,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxHorizontalAcceleration</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
- * Draft: this command is not implemented yet by the firmware
- * Set the maximum horizontal acceleration used by the autonomous flight
+ * [NOT USED] Set the maximum horizontal acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum horizontal acceleration [m/s2]
  * return executing error
@@ -604,8 +602,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxVerticalAcceleration</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
- * Draft: this command is not implemented yet by the firmware
- * Set the maximum vertical acceleration used by the autonomous flight
+ * [NOT USED] Set the maximum vertical acceleration used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum vertical acceleration [m/s2]
  * return executing error
@@ -614,8 +611,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>SetAutonomousFlightMaxRotationSpeed</code> of class <code>PilotingSettings</code> in project <code>ARDrone3</code>
- * Draft: this command is not implemented yet by the firmware
- * Set the maximum yaw rotation speed used by the autonomous flight
+ * [NOT USED] Set the maximum yaw rotation speed used by the autonomous flight
  * @param feature feature owning the commands
  * @param value maximum yaw rotation speed [rad/s]
  * return executing error
@@ -747,6 +743,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtectio
 
 /**
  * @brief Send a command <code>Outdoor</code> of class <code>SpeedSettings</code> in project <code>ARDrone3</code>
+ * @deprecated
  * Outdoor property
  * @param feature feature owning the commands
  * @param outdoor 1 if outdoor flight, 0 if indoor flight
@@ -1084,6 +1081,7 @@ void ARCONTROLLER_FEATURE_ARDrone3_MediaStreamingStateVideoEnableChangedCallback
 
 /**
  * @brief Send a command <code>SetHome</code> of class <code>GPSSettings</code> in project <code>ARDrone3</code>
+ * @deprecated
  * Set home location
  * @param feature feature owning the commands
  * @param latitude Home latitude in decimal degrees
@@ -1986,7 +1984,8 @@ void ARCONTROLLER_FEATURE_JumpingSumo_RoadPlanStatePlayScriptChangedCallback (eA
 
 /**
  * @brief Send a command <code>Outdoor</code> of class <code>SpeedSettings</code> in project <code>JumpingSumo</code>
- * Outdoor property => CAUTION : USED FOR WIFI, to know authorized wifi channels.
+ * @deprecated
+ * Outdoor property
  * @param feature feature owning the commands
  * @param outdoor 1 if outdoor, 0 if indoor
  * return executing error
@@ -3587,6 +3586,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_UnregisterARCommands (ARCONTROLL
 
 /**
  * @brief Send a command <code>Disconnect</code> of class <code>Network</code> in project <code>Common</code>
+ * @deprecated
  * Signals the remote that the host will disconnect and close its
  * libARNetwork instance (and all threads that use libARNetwork)
  * @param feature feature owning the commands
