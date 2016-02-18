@@ -273,6 +273,8 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AU
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code> */
 
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurn</code> in feature <code>ARDrone3</code> */
+
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
@@ -339,6 +341,8 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIM
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED; /**< Key of the argument </code>enabled</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoStabilizationModeChanged</code> in feature <code>ARDrone3</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>ARDrone3</code> */
 
@@ -707,6 +711,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float value);
 
 /**
+ * @brief Send a command <code>PilotingSettingsBankedTurn</code> in feature <code>ARDrone3</code>
+ * Enable / Disable Banked Turn mode.
+ * @param feature feature owning the commands
+ * @param value 1 to enable, 0 to disable
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t value);
+
+/**
  * @brief Send a command <code>SpeedSettingsMaxVerticalSpeed</code> in feature <code>ARDrone3</code>
  * Set Max Vertical speed
  * @param feature feature owning the commands
@@ -831,6 +844,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsT
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoAutorecordSelection_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t enabled, uint8_t mass_storage_id);
 
 /**
+ * @brief Send a command <code>PictureSettingsVideoStabilizationMode</code> in feature <code>ARDrone3</code>
+ * Set Video stabilization mode
+ * @param feature feature owning the commands
+ * @param mode Video stabilization mode
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoStabilizationMode_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE mode);
+
+/**
  * @brief Send a command <code>MediaStreamingVideoEnable</code> in feature <code>ARDrone3</code>
  * Enable/disable video streaming.
  * @param feature feature owning the commands
@@ -947,6 +969,7 @@ struct ARCONTROLLER_FEATURE_ARDrone3_t
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration_t sendPilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration;
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration_t sendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration;
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed_t sendPilotingSettingsSetAutonomousFlightMaxRotationSpeed;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn_t sendPilotingSettingsBankedTurn;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxVerticalSpeed_t sendSpeedSettingsMaxVerticalSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtection_t sendSpeedSettingsHullProtection;
@@ -960,6 +983,7 @@ struct ARCONTROLLER_FEATURE_ARDrone3_t
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsSaturationSelection_t sendPictureSettingsSaturationSelection;
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsTimelapseSelection_t sendPictureSettingsTimelapseSelection;
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoAutorecordSelection_t sendPictureSettingsVideoAutorecordSelection;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoStabilizationMode_t sendPictureSettingsVideoStabilizationMode;
     ARCONTROLLER_FEATURE_ARDrone3_SendMediaStreamingVideoEnable_t sendMediaStreamingVideoEnable;
     ARCONTROLLER_FEATURE_ARDrone3_SendGPSSettingsSetHome_t sendGPSSettingsSetHome;
     ARCONTROLLER_FEATURE_ARDrone3_SendGPSSettingsResetHome_t sendGPSSettingsResetHome;
