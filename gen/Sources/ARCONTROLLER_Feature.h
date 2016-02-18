@@ -430,6 +430,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float value);
 
 /**
+ * @brief Send a command <code>PilotingSettingsBankedTurn</code> in project <code>ARDrone3</code>
+ * Enable / Disable Banked Turn mode.
+ * @param feature feature owning the commands
+ * @param value 1 to enable, 0 to disable
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t value);
+
+/**
  * @brief Send a command <code>SpeedSettingsMaxVerticalSpeed</code> in project <code>ARDrone3</code>
  * Set Max Vertical speed
  * @param feature feature owning the commands
@@ -552,6 +561,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsTimelapseSe
  * return executing error
  */
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoAutorecordSelection (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t enabled, uint8_t mass_storage_id);
+
+/**
+ * @brief Send a command <code>PictureSettingsVideoStabilizationMode</code> in project <code>ARDrone3</code>
+ * Set Video stabilization mode
+ * @param feature feature owning the commands
+ * @param mode Video stabilization mode
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoStabilizationMode (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE mode);
 
 /**
  * @brief Send a command <code>MediaStreamingVideoEnable</code> in project <code>ARDrone3</code>
@@ -897,6 +915,14 @@ void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxVerti
 void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxRotationSpeedCallback (float _value, void *customData);
 
 /**
+ * @brief callback used when the command <code>PilotingSettingsStateBankedTurn</code> is decoded
+ * @param feature The feature controller registred
+ * @param state 1 if enabled, 0 if disabled
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateBankedTurnCallback (uint8_t _state, void *customData);
+
+/**
  * @brief callback used when the command <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> is decoded
  * @param feature The feature controller registred
  * @param current Current max vertical speed in m/s
@@ -1090,6 +1116,14 @@ void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateTimelapseChangedCallback 
 void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateVideoAutorecordChangedCallback (uint8_t _enabled, uint8_t _mass_storage_id, void *customData);
 
 /**
+ * @brief callback used when the command <code>PictureSettingsStateVideoStabilizationModeChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param mode Video stabilization mode
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateVideoStabilizationModeChangedCallback (eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE _mode, void *customData);
+
+/**
  * @brief callback used when the command <code>MediaStreamingStateVideoEnableChanged</code> is decoded
  * @param feature The feature controller registred
  * @param enabled Current video streaming status.
@@ -1277,6 +1311,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateAutonomousFlightMaxRotationSpeed (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float _value, eARCONTROLLER_ERROR *error);
 
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateBankedTurn (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _state, eARCONTROLLER_ERROR *error);
+
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSettingsStateMaxVerticalSpeedChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSettingsStateMaxRotationSpeedChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
@@ -1318,6 +1354,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateTimelapseChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _enabled, float _interval, float _minInterval, float _maxInterval, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateVideoAutorecordChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _enabled, uint8_t _mass_storage_id, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateVideoStabilizationModeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE _mode, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaStreamingStateVideoEnableChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED _enabled, eARCONTROLLER_ERROR *error);
 

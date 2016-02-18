@@ -81,6 +81,7 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxHorizontalAcceleration</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxVerticalAcceleration</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurn</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
@@ -127,6 +128,7 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MAXINTERVAL = ""; /**< Key of the argument </code>maxInterval</code> of event <code>PictureSettingsStateTimelapseChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoStabilizationModeChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
@@ -205,6 +207,7 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationValue ();
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationValue ();
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedValue ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnState ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMin ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -251,6 +254,7 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateTimelapseChangedMaxInterval ();
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedEnabled ();
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid ();
+    private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode ();
     private static native String nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled ();
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLatitude ();
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLongitude ();
@@ -307,6 +311,7 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration (long jFeature, float value);
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration (long jFeature, float value);
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (long jFeature, float value);
+    private native int nativeSendPilotingSettingsBankedTurn (long jFeature, byte value);
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
@@ -320,6 +325,7 @@ public class ARFeatureARDrone3
     private native int nativeSendPictureSettingsSaturationSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsTimelapseSelection (long jFeature, byte enabled, float interval);
     private native int nativeSendPictureSettingsVideoAutorecordSelection (long jFeature, byte enabled, byte mass_storage_id);
+    private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM mode);
     private native int nativeSendMediaStreamingVideoEnable (long jFeature, byte enable);
     private native int nativeSendGPSSettingsSetHome (long jFeature, double latitude, double longitude, double altitude);
     private native int nativeSendGPSSettingsResetHome (long jFeature);
@@ -389,6 +395,7 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedValue ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE = nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnState ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -435,6 +442,7 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MAXINTERVAL = nativeStaticGetKeyARDrone3PictureSettingsStateTimelapseChangedMaxInterval ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedEnabled ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE = nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLatitude ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLongitude ();
@@ -966,6 +974,20 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsBankedTurn (byte _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsBankedTurn (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxVerticalSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1142,6 +1164,20 @@ public class ARFeatureARDrone3
             if(initOk == true)
             {
                 int nativeError = nativeSendPictureSettingsVideoAutorecordSelection (jniFeature, _enabled, _mass_storage_id);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPictureSettingsVideoStabilizationMode (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM _mode)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
