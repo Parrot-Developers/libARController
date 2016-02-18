@@ -3482,11 +3482,19 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE; /**< Key of the argument </code>regulationType</code> of class <code>OverHeatState</code> in feature <code>Common</code> */
 
 /**
- * class: ControllerState 
+ * class: Controller 
  * Notify the device about the state of the controller application.
  */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING; /**< Key of the argument </code>piloting</code> of class <code>ControllerState</code> in feature <code>Common</code> */
+
+/**
+ * @brief Send a command <code>IsPiloting</code> of class <code>Controller</code> in feature <code>Common</code>
+ * Tell the device when the controller application enters/leaves the piloting HUD.
+ * @param feature feature owning the commands
+ * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t piloting);
 
 /**
  * class: WifiSettings 
@@ -3800,6 +3808,7 @@ struct ARCONTROLLER_FEATURE_Common_t
     ARCONTROLLER_FEATURE_Common_SendCommonReboot_t sendCommonReboot;
     ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_t sendOverHeatSwitchOff;
     ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t sendOverHeatVentilate;
+    ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting_t sendControllerIsPiloting;
     ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting_t sendWifiSettingsOutdoorSetting;
     ARCONTROLLER_FEATURE_Common_SendMavlinkStart_t sendMavlinkStart;
     ARCONTROLLER_FEATURE_Common_SendMavlinkPause_t sendMavlinkPause;

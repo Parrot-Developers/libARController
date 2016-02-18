@@ -3911,17 +3911,18 @@ void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatChangedCallback (void *cus
 void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback (uint8_t _regulationType, void *customData);
 
 /**
- * class: ControllerState 
+ * class: Controller 
  * Notify the device about the state of the controller application.
  */
 
 /**
- * @brief callback used when the command <code>IsPilotingChanged</code> of class <code>ControllerState is decoded
- * @param feature The feature controller registred
+ * @brief Send a command <code>IsPiloting</code> of class <code>Controller</code> in project <code>Common</code>
+ * Tell the device when the controller application enters/leaves the piloting HUD.
+ * @param feature feature owning the commands
  * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
- * @param customData customData set by the register
+ * return executing error
  */
-void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8_t _piloting, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t piloting);
 
 /**
  * class: WifiSettings 

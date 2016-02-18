@@ -37142,7 +37142,6 @@ const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUN
 
 const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = "arcontroller_dictionary_key_common_overheatstate_overheatregulationchanged_regulationtype";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING = "arcontroller_dictionary_key_common_controllerstate_ispilotingchanged_piloting";
 
 
 const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = "arcontroller_dictionary_key_common_wifisettingsstate_outdoorsettingschanged_outdoor";
@@ -37234,6 +37233,7 @@ ARCONTROLLER_FEATURE_Common_t *ARCONTROLLER_FEATURE_Common_New (ARCONTROLLER_Net
             featureController->sendCommonReboot = ARCONTROLLER_FEATURE_Common_SendCommonReboot;
             featureController->sendOverHeatSwitchOff = ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff;
             featureController->sendOverHeatVentilate = ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate;
+            featureController->sendControllerIsPiloting = ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting;
             featureController->sendWifiSettingsOutdoorSetting = ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting;
             featureController->sendMavlinkStart = ARCONTROLLER_FEATURE_Common_SendMavlinkStart;
             featureController->sendMavlinkPause = ARCONTROLLER_FEATURE_Common_SendMavlinkPause;
@@ -37449,8 +37449,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_RegisterARCommands (ARCONTROLLER
         // Commands of class : OverHeatState:
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatChangedCallback (&ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatChangedCallback, feature);
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatRegulationChangedCallback (&ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback, feature);
-        // Commands of class : ControllerState:
-        ARCOMMANDS_Decoder_SetCommonControllerStateIsPilotingChangedCallback (&ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback, feature);
         // Commands of class : WifiSettingsState:
         ARCOMMANDS_Decoder_SetCommonWifiSettingsStateOutdoorSettingsChangedCallback (&ARCONTROLLER_FEATURE_Common_WifiSettingsStateOutdoorSettingsChangedCallback, feature);
         // Commands of class : MavlinkState:
@@ -37536,8 +37534,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_UnregisterARCommands (ARCONTROLL
         // Commands of class : OverHeatState:
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatRegulationChangedCallback (NULL, NULL);
-        // Commands of class : ControllerState:
-        ARCOMMANDS_Decoder_SetCommonControllerStateIsPilotingChangedCallback (NULL, NULL);
         // Commands of class : WifiSettingsState:
         ARCOMMANDS_Decoder_SetCommonWifiSettingsStateOutdoorSettingsChangedCallback (NULL, NULL);
         // Commands of class : MavlinkState:
@@ -42097,27 +42093,22 @@ void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback 
 }
 
 /**
- * class: ControllerState 
+ * class: Controller 
  * Notify the device about the state of the controller application.
  */
 
-void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8_t _piloting, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t piloting)
 {
-    // -- callback used when the command <code>IsPilotingChanged</code> of class <code>ControllerState is decoded -- 
+    // -- Send a command <code>IsPiloting</code> of class <code>Controller</code> in project <code>Common</code> --
     
-    ARCONTROLLER_FEATURE_Common_t *feature = (ARCONTROLLER_FEATURE_Common_t *)customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED;
-    int elementAdded = 0;
-    int isANewCommandElement = 0;
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *oldElement = NULL;
-    int elementKeyLength = 0;
-    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
     
     // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
+    if (feature == NULL)
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
@@ -42125,149 +42116,20 @@ void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8
     
     if (error == ARCONTROLLER_OK)
     {
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        
-        // Find command elements
-        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
-        if (dictCmdElement == NULL)
+        // Send IsPiloting command
+        cmdError = ARCOMMANDS_Generator_GenerateCommonControllerIsPiloting(cmdBuffer, sizeof(cmdBuffer), &cmdSize, piloting);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
-            // New command element
-            isANewCommandElement = 1;
-            dictCmdElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_COMMANDS_t));
-            if (dictCmdElement != NULL)
-            {
-                dictCmdElement->command = commandKey;
-                dictCmdElement->elements = NULL;
-            }
-            else
-            {
-                error = ARCONTROLLER_ERROR_ALLOC;
-            }
-        }
-        // No Else ; commandElement already exists.
-        
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-    }
-    
-    //Create Element Dictionary
-    if (error == ARCONTROLLER_OK)
-    {
-        // New element
-        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
-        if (newElement != NULL)
-        {
-            newElement->key = NULL;
-            newElement->arguments = NULL;
-        }
-        else
-        {
-            error = ARCONTROLLER_ERROR_ALLOC;
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
         }
     }
     
     if (error == ARCONTROLLER_OK)
     {
-        //Alloc Element Key
-        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
-        newElement->key = malloc (elementKeyLength + 1);
-        if (newElement->key != NULL)
-        {
-            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
-            newElement->key[elementKeyLength] = '\0';
-        }
-        else
-        {
-            error = ARCONTROLLER_ERROR_ALLOC;
-        }
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
     }
     
-    //Create argument Dictionary
-    //Add argument To the element
-    if (error == ARCONTROLLER_OK)
-    {
-        // New argument element
-        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
-        if (argDictNewElement != NULL)
-        {
-            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING;
-            argDictNewElement->value.U8 = _piloting;
-            
-            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
-        }
-        else
-        {
-            error = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    //Set new element in CommandElements 
-    if (error == ARCONTROLLER_OK)
-    {
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        
-        // Find if the element already exist
-        HASH_FIND_STR (dictCmdElement->elements, newElement->key, oldElement);
-        if (oldElement != NULL)
-        {
-            HASH_REPLACE_STR (dictCmdElement->elements, key, newElement, oldElement);
-            
-            ARCONTROLLER_Feature_DeleteArgumentsDictionary (&(oldElement->arguments));
-            free (oldElement);
-            oldElement = NULL;
-        }
-        else
-        {
-            HASH_ADD_KEYPTR (hh, dictCmdElement->elements, newElement->key, strlen(newElement->key), newElement);
-        }
-        
-        //Add new commandElement if necessary
-        if (isANewCommandElement)
-        {
-            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
-        }
-        
-        elementAdded = 1;
-        
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Callback notification
-        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
-    }
-    
-    // if an error occurred 
-    if (error != ARCONTROLLER_OK)
-    {
-        // cleanup
-        if ((dictCmdElement != NULL) && (!elementAdded ))
-        {
-            if (newElement != NULL)
-            {
-                if (newElement->arguments != NULL)
-                {
-                    free (newElement->arguments);
-                    newElement->arguments = NULL;
-                }
-                
-                if (newElement->key != NULL)
-                {
-                    free (newElement->key);
-                    newElement->key = NULL;
-                }
-                
-                free (newElement);
-                newElement = NULL;
-            }
-            if (isANewCommandElement)
-            {
-                free (dictCmdElement);
-                dictCmdElement = NULL;
-            }
-        }
-    }
+    return error;
 }
 
 /**
