@@ -672,6 +672,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
         if (error == ARCONTROLLER_OK)
         {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
@@ -773,6 +778,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
@@ -1864,6 +1874,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
@@ -1988,6 +2004,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);

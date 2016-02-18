@@ -379,6 +379,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3P
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnState (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT);
@@ -652,6 +658,12 @@ JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE);
 }
 
 JNIEXPORT jstring JNICALL
@@ -1183,6 +1195,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsS
 }
 
 JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsBankedTurn (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsBankedTurn (nativeFeature, _value);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendSpeedSettingsMaxVerticalSpeed (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _current)
 {
     // local declarations
@@ -1338,6 +1362,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPictureSettingsVi
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendPictureSettingsVideoAutorecordSelection (nativeFeature, _enabled, _mass_storage_id);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPictureSettingsVideoStabilizationMode (JNIEnv *env, jobject thizz, jlong jFeature, jint _mode)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPictureSettingsVideoStabilizationMode (nativeFeature, _mode);
 
     return error;
 }
