@@ -55,7 +55,6 @@ public class ARFeatureCommon
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = ""; /**< Key of the argument </code>countryCodes</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = ""; /**< Key of the argument </code>regulationType</code> of event <code>OverHeatStateOverHeatRegulationChanged</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING = ""; /**< Key of the argument </code>piloting</code> of event <code>ControllerStateIsPilotingChanged</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of event <code>WifiSettingsStateOutdoorSettingsChanged</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_FILEPATH = ""; /**< Key of the argument </code>filepath</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
@@ -128,7 +127,6 @@ public class ARFeatureCommon
     private static native String nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags ();
     private static native String nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes ();
     private static native String nativeStaticGetKeyCommonOverHeatStateOverHeatRegulationChangedRegulationType ();
-    private static native String nativeStaticGetKeyCommonControllerStateIsPilotingChangedPiloting ();
     private static native String nativeStaticGetKeyCommonWifiSettingsStateOutdoorSettingsChangedOutdoor ();
     private static native String nativeStaticGetKeyCommonMavlinkStateMavlinkFilePlayingStateChangedState ();
     private static native String nativeStaticGetKeyCommonMavlinkStateMavlinkFilePlayingStateChangedFilepath ();
@@ -184,6 +182,7 @@ public class ARFeatureCommon
     private native int nativeSendCommonReboot (long jFeature);
     private native int nativeSendOverHeatSwitchOff (long jFeature);
     private native int nativeSendOverHeatVentilate (long jFeature);
+    private native int nativeSendControllerIsPiloting (long jFeature, byte piloting);
     private native int nativeSendWifiSettingsOutdoorSetting (long jFeature, byte outdoor);
     private native int nativeSendMavlinkStart (long jFeature, String filepath, ARCOMMANDS_COMMON_MAVLINK_START_TYPE_ENUM type);
     private native int nativeSendMavlinkPause (long jFeature);
@@ -232,7 +231,6 @@ public class ARFeatureCommon
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = nativeStaticGetKeyCommonOverHeatStateOverHeatRegulationChangedRegulationType ();
-        ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING = nativeStaticGetKeyCommonControllerStateIsPilotingChangedPiloting ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = nativeStaticGetKeyCommonWifiSettingsStateOutdoorSettingsChangedOutdoor ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = nativeStaticGetKeyCommonMavlinkStateMavlinkFilePlayingStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_FILEPATH = nativeStaticGetKeyCommonMavlinkStateMavlinkFilePlayingStateChangedFilepath ();
@@ -484,6 +482,20 @@ public class ARFeatureCommon
             if(initOk == true)
             {
                 int nativeError = nativeSendOverHeatVentilate (jniFeature);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendControllerIsPiloting (byte _piloting)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendControllerIsPiloting (jniFeature, _piloting);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
