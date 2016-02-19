@@ -1668,9 +1668,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('            free (newElement);\n')
             cFile.write ('            newElement = NULL;\n')
             cFile.write ('        }\n')
-            cFile.write ('\n')
-            cFile.write ('        free (argDictNewElement);\n')
-            cFile.write ('        argDictNewElement = NULL;\n')
+            
+            if evt.args:
+                cFile.write ('\n')
+                cFile.write ('        free (argDictNewElement);\n')
+                cFile.write ('        argDictNewElement = NULL;\n')
             
             cFile.write ('    }\n')
             
