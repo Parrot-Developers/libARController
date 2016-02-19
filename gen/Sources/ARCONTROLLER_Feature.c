@@ -878,7 +878,7 @@ ARCONTROLLER_FEATURE_ARDrone3_t *ARCONTROLLER_FEATURE_ARDrone3_New (ARCONTROLLER
     if (localError == ARCONTROLLER_OK)
     {
         featureController->privatePart->PilotingPCMDParameters = calloc (1, sizeof (ARCONTROLLER_ARDrone3_PilotingPCMDParameters_t));
-        if (featureController->privatePart == NULL)
+        if (featureController->privatePart->PilotingPCMDParameters == NULL)
         {
             localError = ARCONTROLLER_ERROR_ALLOC;
         }
@@ -22210,7 +22210,7 @@ ARCONTROLLER_FEATURE_JumpingSumo_t *ARCONTROLLER_FEATURE_JumpingSumo_New (ARCONT
     if (localError == ARCONTROLLER_OK)
     {
         featureController->privatePart->PilotingPCMDParameters = calloc (1, sizeof (ARCONTROLLER_JumpingSumo_PilotingPCMDParameters_t));
-        if (featureController->privatePart == NULL)
+        if (featureController->privatePart->PilotingPCMDParameters == NULL)
         {
             localError = ARCONTROLLER_ERROR_ALLOC;
         }
@@ -29459,7 +29459,7 @@ ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLL
     if (localError == ARCONTROLLER_OK)
     {
         featureController->privatePart->PilotingPCMDParameters = calloc (1, sizeof (ARCONTROLLER_MiniDrone_PilotingPCMDParameters_t));
-        if (featureController->privatePart == NULL)
+        if (featureController->privatePart->PilotingPCMDParameters == NULL)
         {
             localError = ARCONTROLLER_ERROR_ALLOC;
         }

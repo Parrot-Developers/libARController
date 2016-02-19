@@ -857,7 +857,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 cFile.write ('        featureController->privatePart->'+structNAckName (cmd)+' = calloc (1, sizeof ('+structNAckType (feature, cmd)+'));\n')
-                cFile.write ('        if (featureController->privatePart == NULL)\n')
+                cFile.write ('        if (featureController->privatePart->'+structNAckName (cmd)+' == NULL)\n')
                 cFile.write ('        {\n')
                 cFile.write ('            localError = ARCONTROLLER_ERROR_ALLOC;\n')
                 cFile.write ('        }\n')
