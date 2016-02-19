@@ -81,7 +81,19 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxHorizontalAcceleration</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxVerticalAcceleration</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurn</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurnChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateCirclingDirectionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStatePitchModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateLandingModeChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
@@ -207,7 +219,19 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationValue ();
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationValue ();
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedValue ();
-    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnState ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnChangedState ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMax ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingDirectionChangedValue ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMax ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMax ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStatePitchModeChangedValue ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateLandingModeChangedValue ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMin ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -293,6 +317,8 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingNavigateHome (long jFeature, byte start);
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
     private native int nativeSendPilotingMoveBy (long jFeature, float dX, float dY, float dZ, float dPsi);
+    private native int nativeSendPilotingUserTakeOff (long jFeature, byte state);
+    private native int nativeSendPilotingCircle (long jFeature, ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM direction);
     private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
     private native int nativeSendCameraOrientation (long jFeature, byte tilt, byte pan);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
@@ -312,6 +338,12 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration (long jFeature, float value);
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (long jFeature, float value);
     private native int nativeSendPilotingSettingsBankedTurn (long jFeature, byte value);
+    private native int nativeSendPilotingSettingsMinAltitude (long jFeature, float current);
+    private native int nativeSendPilotingSettingsCirclingDirection (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsCirclingRadius (long jFeature, short value);
+    private native int nativeSendPilotingSettingsCirclingAltitude (long jFeature, short value);
+    private native int nativeSendPilotingSettingsPitchMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsLandingMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM value);
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
@@ -395,7 +427,19 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedValue ();
-        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE = nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnState ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE = nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnChangedState ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT = nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN = nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX = nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingDirectionChangedValue ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStatePitchModeChangedValue ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateLandingModeChangedValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -722,6 +766,34 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    public ARCONTROLLER_ERROR_ENUM sendPilotingUserTakeOff (byte _state)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingUserTakeOff (jniFeature, _state);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingCircle (ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM _direction)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingCircle (jniFeature, _direction);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
     public ARCONTROLLER_ERROR_ENUM sendAnimationsFlip (ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM _direction)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -982,6 +1054,90 @@ public class ARFeatureARDrone3
             if(initOk == true)
             {
                 int nativeError = nativeSendPilotingSettingsBankedTurn (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMinAltitude (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsMinAltitude (jniFeature, _current);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingDirection (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsCirclingDirection (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingRadius (short _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsCirclingRadius (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingAltitude (short _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsCirclingAltitude (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsPitchMode (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsPitchMode (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsLandingMode (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsLandingMode (jniFeature, _value);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
