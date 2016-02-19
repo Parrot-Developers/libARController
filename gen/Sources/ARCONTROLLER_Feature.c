@@ -42668,8 +42668,6 @@ const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUN
 
 const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = "arcontroller_dictionary_key_common_overheatstate_overheatregulationchanged_regulationtype";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING = "arcontroller_dictionary_key_common_controllerstate_ispilotingchanged_piloting";
-
 const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = "arcontroller_dictionary_key_common_wifisettingsstate_outdoorsettingschanged_outdoor";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = "arcontroller_dictionary_key_common_mavlinkstate_mavlinkfileplayingstatechanged_state";
@@ -42764,6 +42762,7 @@ ARCONTROLLER_FEATURE_Common_t *ARCONTROLLER_FEATURE_Common_New (ARCONTROLLER_Net
             featureController->sendCommonReboot = ARCONTROLLER_FEATURE_Common_SendCommonReboot;
             featureController->sendOverHeatSwitchOff = ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff;
             featureController->sendOverHeatVentilate = ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate;
+            featureController->sendControllerIsPiloting = ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting;
             featureController->sendWifiSettingsOutdoorSetting = ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting;
             featureController->sendMavlinkStart = ARCONTROLLER_FEATURE_Common_SendMavlinkStart;
             featureController->sendMavlinkPause = ARCONTROLLER_FEATURE_Common_SendMavlinkPause;
@@ -42975,7 +42974,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_RegisterARCommands (ARCONTROLLER
         ARCOMMANDS_Decoder_SetCommonCommonStateCountryListKnownCallback (&ARCONTROLLER_FEATURE_Common_CommonStateCountryListKnownCallback, feature);
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatChangedCallback (&ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatChangedCallback, feature);
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatRegulationChangedCallback (&ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback, feature);
-        ARCOMMANDS_Decoder_SetCommonControllerStateIsPilotingChangedCallback (&ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback, feature);
         ARCOMMANDS_Decoder_SetCommonWifiSettingsStateOutdoorSettingsChangedCallback (&ARCONTROLLER_FEATURE_Common_WifiSettingsStateOutdoorSettingsChangedCallback, feature);
         ARCOMMANDS_Decoder_SetCommonMavlinkStateMavlinkFilePlayingStateChangedCallback (&ARCONTROLLER_FEATURE_Common_MavlinkStateMavlinkFilePlayingStateChangedCallback, feature);
         ARCOMMANDS_Decoder_SetCommonMavlinkStateMavlinkPlayErrorStateChangedCallback (&ARCONTROLLER_FEATURE_Common_MavlinkStateMavlinkPlayErrorStateChangedCallback, feature);
@@ -43044,7 +43042,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_UnregisterARCommands (ARCONTROLL
         ARCOMMANDS_Decoder_SetCommonCommonStateCountryListKnownCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetCommonOverHeatStateOverHeatRegulationChangedCallback (NULL, NULL);
-        ARCOMMANDS_Decoder_SetCommonControllerStateIsPilotingChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetCommonWifiSettingsStateOutdoorSettingsChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetCommonMavlinkStateMavlinkFilePlayingStateChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetCommonMavlinkStateMavlinkPlayErrorStateChangedCallback (NULL, NULL);
@@ -43482,6 +43479,41 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate (ARCONTROL
     {
         // Send Ventilate command
         cmdError = ARCOMMANDS_Generator_GenerateCommonOverHeatVentilate(cmdBuffer, sizeof(cmdBuffer), &cmdSize);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t piloting)
+{
+    // -- Send a command <code>ControllerIsPiloting</code> in project <code>Common</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send IsPiloting command
+        cmdError = ARCOMMANDS_Generator_GenerateCommonControllerIsPiloting(cmdBuffer, sizeof(cmdBuffer), &cmdSize, piloting);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -45747,89 +45779,6 @@ void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback 
     {
         //Create new element
         newElement = ARCONTROLLER_Common_NewCmdElementOverHeatStateOverHeatRegulationChanged (feature,  _regulationType, &error);
-    }
-    
-    //Set new element in CommandElements 
-    if (error == ARCONTROLLER_OK)
-    {
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        
-        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
-        
-        //Add new commandElement if necessary
-        if (isANewCommandElement)
-        {
-            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
-        }
-        
-        elementAdded = 1;
-        
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Notification Callback
-        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
-    }
-    
-    // if an error occurred 
-    if (error != ARCONTROLLER_OK)
-    {
-        // cleanup
-        if ((dictCmdElement != NULL) && (isANewCommandElement))
-        {
-            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
-        }
-        
-        if ((newElement != NULL) && (!elementAdded ))
-        {
-            ARCONTROLLER_Feature_DeleteElement (&newElement);
-        }
-        
-    }
-    
-}
-
-void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8_t _piloting, void *customData)
-{
-    // -- callback used when the command <code>ControllerStateIsPilotingChanged</code> is decoded -- 
-    
-    ARCONTROLLER_FEATURE_Common_t *feature = (ARCONTROLLER_FEATURE_Common_t *)customData;
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED;
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
-    int isANewCommandElement = 0;
-    int elementAdded = 0;
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Find command elements
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-        
-        if (dictCmdElement == NULL)
-        {
-            // New command element
-            isANewCommandElement = 1;
-            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
-        }
-        // No Else ; commandElement already exists.
-        
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        //Create new element
-        newElement = ARCONTROLLER_Common_NewCmdElementControllerStateIsPilotingChanged (feature,  _piloting, &error);
     }
     
     //Set new element in CommandElements 
@@ -50529,106 +50478,6 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementOverHeatStat
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
             argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE;
             argDictNewElement->value.U8 = _regulationType;
-            
-            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    // If an error occurred 
-    if (localError != ARCONTROLLER_OK)
-    {
-        // cleanup
-        if (newElement != NULL)
-        {
-            if (newElement->arguments != NULL)
-            {
-                free (newElement->arguments);
-                newElement->arguments = NULL;
-            }
-            
-            if (newElement->key != NULL)
-            {
-                free (newElement->key);
-                newElement->key = NULL;
-            }
-            
-            free (newElement);
-            newElement = NULL;
-        }
-    }
-    // Return the error
-    if (error != NULL)
-    {
-        *error = localError;
-    }
-    // No else: error is not returned 
-    
-    return newElement;
-}
-
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementControllerStateIsPilotingChanged (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t _piloting, eARCONTROLLER_ERROR *error)
-{
-    // -- Create element of an event ControllerStateIsPilotingChanged -- 
-    
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
-    int elementKeyLength = 0;
-    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
-    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    //Create Element Dictionary
-    if (localError == ARCONTROLLER_OK)
-    {
-        // New element
-        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
-        if (newElement != NULL)
-        {
-            newElement->key = NULL;
-            newElement->arguments = NULL;
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        //Alloc Element Key
-        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
-        newElement->key = malloc (elementKeyLength + 1);
-        if (newElement->key != NULL)
-        {
-            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
-            newElement->key[elementKeyLength] = '\0';
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    //Create argument Dictionary
-    //Add argument To the element
-    if (localError == ARCONTROLLER_OK)
-    {
-        // New argument element
-        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
-        if (argDictNewElement != NULL)
-        {
-            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING;
-            argDictNewElement->value.U8 = _piloting;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }

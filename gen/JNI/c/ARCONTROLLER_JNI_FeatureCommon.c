@@ -223,12 +223,6 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonOverH
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonControllerStateIsPilotingChangedPiloting (JNIEnv *env , jclass class)
-{
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING);
-}
-
-JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeStaticGetKeyCommonWifiSettingsStateOutdoorSettingsChangedOutdoor (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR);
@@ -636,6 +630,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeSendOverHeatVentilate (
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendOverHeatVentilate (nativeFeature);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureCommon_nativeSendControllerIsPiloting (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _piloting)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_Common_t *nativeFeature = (ARCONTROLLER_FEATURE_Common_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendControllerIsPiloting (nativeFeature, _piloting);
 
     return error;
 }
