@@ -2994,8 +2994,6 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNO
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE; /**< Key of the argument </code>regulationType</code> of event <code>OverHeatStateOverHeatRegulationChanged</code> in feature <code>Common</code> */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING; /**< Key of the argument </code>piloting</code> of event <code>ControllerStateIsPilotingChanged</code> in feature <code>Common</code> */
-
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR; /**< Key of the argument </code>outdoor</code> of event <code>WifiSettingsStateOutdoorSettingsChanged</code> in feature <code>Common</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
@@ -3170,6 +3168,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t) (ARCONTROLLER_FEATURE_Common_t *feature);
 
 /**
+ * @brief Send a command <code>ControllerIsPiloting</code> in feature <code>Common</code>
+ * Tell the device when the controller application enters/leaves the piloting HUD.
+ * @param feature feature owning the commands
+ * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting_t) (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t piloting);
+
+/**
  * @brief Send a command <code>WifiSettingsOutdoorSetting</code> in feature <code>Common</code>
  * Send to product if it should use its outdoor wifi config, or indoor
  * @param feature feature owning the commands
@@ -3307,6 +3314,7 @@ struct ARCONTROLLER_FEATURE_Common_t
     ARCONTROLLER_FEATURE_Common_SendCommonReboot_t sendCommonReboot;
     ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff_t sendOverHeatSwitchOff;
     ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate_t sendOverHeatVentilate;
+    ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting_t sendControllerIsPiloting;
     ARCONTROLLER_FEATURE_Common_SendWifiSettingsOutdoorSetting_t sendWifiSettingsOutdoorSetting;
     ARCONTROLLER_FEATURE_Common_SendMavlinkStart_t sendMavlinkStart;
     ARCONTROLLER_FEATURE_Common_SendMavlinkPause_t sendMavlinkPause;

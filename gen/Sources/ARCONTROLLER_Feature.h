@@ -3888,6 +3888,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatSwitchOff (ARCONTROL
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendOverHeatVentilate (ARCONTROLLER_FEATURE_Common_t *feature);
 
 /**
+ * @brief Send a command <code>ControllerIsPiloting</code> in project <code>Common</code>
+ * Tell the device when the controller application enters/leaves the piloting HUD.
+ * @param feature feature owning the commands
+ * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SendControllerIsPiloting (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t piloting);
+
+/**
  * @brief Send a command <code>WifiSettingsOutdoorSetting</code> in project <code>Common</code>
  * Send to product if it should use its outdoor wifi config, or indoor
  * @param feature feature owning the commands
@@ -4194,14 +4203,6 @@ void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatChangedCallback (void *cus
 void ARCONTROLLER_FEATURE_Common_OverHeatStateOverHeatRegulationChangedCallback (uint8_t _regulationType, void *customData);
 
 /**
- * @brief callback used when the command <code>ControllerStateIsPilotingChanged</code> is decoded
- * @param feature The feature controller registred
- * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_Common_ControllerStateIsPilotingChangedCallback (uint8_t _piloting, void *customData);
-
-/**
  * @brief callback used when the command <code>WifiSettingsStateOutdoorSettingsChanged</code> is decoded
  * @param feature The feature controller registred
  * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
@@ -4472,8 +4473,6 @@ eARCONTROLLER_ERROR *error);
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementOverHeatStateOverHeatChanged (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementOverHeatStateOverHeatRegulationChanged (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t _regulationType, eARCONTROLLER_ERROR *error);
-
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementControllerStateIsPilotingChanged (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t _piloting, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementWifiSettingsStateOutdoorSettingsChanged (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t _outdoor, eARCONTROLLER_ERROR *error);
 
