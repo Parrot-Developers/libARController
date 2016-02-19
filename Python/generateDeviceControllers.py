@@ -849,7 +849,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        // Allocate the private part of the Device Controller\n')
     cFile.write ('        deviceController->privatePart = malloc (sizeof('+classPrivateName+'));\n')
-    cFile.write ('        if (deviceController != NULL)\n')
+    cFile.write ('        if (deviceController->privatePart != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            //initialization of the private part of the device controller\n')
     cFile.write ('            deviceController->privatePart->networkController = NULL;\n')
