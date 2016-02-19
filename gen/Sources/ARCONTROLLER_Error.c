@@ -165,7 +165,6 @@ const char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
         return "Stream re-synchronization required";
         break;
     default:
-        return "Unknown value";
         break;
     }
     return "Unknown value";
