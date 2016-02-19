@@ -9667,6 +9667,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaRecor
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -9786,6 +9789,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaRecor
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -9905,6 +9911,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaRecor
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10024,6 +10033,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaRecor
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10143,6 +10155,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaRecor
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10262,6 +10277,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaRecor
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10342,6 +10360,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10442,6 +10463,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10542,6 +10566,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10661,6 +10688,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10799,6 +10829,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -10937,6 +10970,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11075,6 +11111,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11175,6 +11214,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11275,6 +11317,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11451,6 +11496,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingEv
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11628,6 +11676,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementNetworkSta
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11708,6 +11759,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementNetworkSta
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11851,6 +11905,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -11931,6 +11988,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementNetworkSta
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12069,6 +12129,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12207,6 +12270,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12307,6 +12373,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12445,6 +12514,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12545,6 +12617,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12645,6 +12720,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12745,6 +12823,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12845,6 +12926,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -12945,6 +13029,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13045,6 +13132,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13145,6 +13235,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13283,6 +13376,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13383,6 +13479,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13521,6 +13620,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13659,6 +13761,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13759,6 +13864,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13859,6 +13967,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -13997,6 +14108,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14135,6 +14249,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14235,6 +14352,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14335,6 +14455,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14473,6 +14596,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSpeedSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14611,6 +14737,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementNetworkSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14711,6 +14840,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementNetworkSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -14869,6 +15001,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementNetworkSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15084,6 +15219,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15242,6 +15380,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15361,6 +15502,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15481,6 +15625,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15619,6 +15766,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15719,6 +15869,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15839,6 +15992,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementSettingsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -15939,6 +16095,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16039,6 +16198,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16177,6 +16339,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16315,6 +16480,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16472,6 +16640,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16591,6 +16762,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16691,6 +16865,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16791,6 +16968,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaStrea
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -16929,6 +17109,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17067,6 +17250,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17167,6 +17353,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17267,6 +17456,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17367,6 +17559,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17467,6 +17662,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17586,6 +17784,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementCameraStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17705,6 +17906,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementCameraStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17805,6 +18009,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementAntiflicke
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -17905,6 +18112,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementAntiflicke
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -18005,6 +18215,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSStateNu
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -18124,6 +18337,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSStateHo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -18224,6 +18440,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementGPSStateHo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -18324,6 +18543,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPROStateFe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -20140,6 +20362,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementAvailabili
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -20240,6 +20465,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementRun (ARCON
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -20435,6 +20663,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementGeographic
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -20630,6 +20861,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementRelativeCo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -20730,6 +20964,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementAnimRun (A
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -20925,6 +21162,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementSpiralAnim
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -21082,6 +21322,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementSwingAnimC
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -21239,6 +21482,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementBoomerangA
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -21396,6 +21642,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementCandleAnim
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -21591,6 +21840,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementDollySlide
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -21710,6 +21962,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_FollowMe_NewCmdElementUserFramin
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -25673,6 +25928,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementPilotin
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -25773,6 +26031,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementPilotin
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -25892,6 +26153,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementPilotin
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -25992,6 +26256,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementAnimati
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26092,6 +26359,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementAnimati
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26192,6 +26462,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementAnimati
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26350,6 +26623,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementSetting
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26469,6 +26745,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaRe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26588,6 +26867,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaRe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26707,6 +26989,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaRe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26826,6 +27111,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaRe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -26945,6 +27233,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaRe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27064,6 +27355,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaRe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27202,6 +27496,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementNetwork
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27379,6 +27676,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementNetwork
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27459,6 +27759,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementNetwork
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27602,6 +27905,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27682,6 +27988,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementNetwork
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27782,6 +28091,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementNetwork
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27882,6 +28194,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementAudioSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -27982,6 +28297,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementAudioSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28216,6 +28534,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementRoadPla
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28296,6 +28617,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementRoadPla
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28396,6 +28720,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementRoadPla
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28496,6 +28823,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementRoadPla
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28596,6 +28926,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementRoadPla
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28696,6 +29029,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementSpeedSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28796,6 +29132,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementMediaSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -28896,6 +29235,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementVideoSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -31755,6 +32097,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -31855,6 +32200,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -31955,6 +32303,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32055,6 +32406,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32174,6 +32528,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementMediaReco
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32293,6 +32650,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementMediaReco
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32412,6 +32772,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementMediaReco
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32550,6 +32913,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32688,6 +33054,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32826,6 +33195,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSett
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -32964,6 +33336,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSett
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -33064,6 +33439,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSett
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -33202,6 +33580,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSett
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -33417,6 +33798,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSettingsS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -33575,6 +33959,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSettingsS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -33675,6 +34062,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSettingsS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -33775,6 +34165,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementFloodCont
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -38553,6 +38946,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementWifiS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -38692,6 +39088,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementWifiS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -38835,6 +39234,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -38915,6 +39317,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementWifiS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39015,6 +39420,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementWifiS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39140,6 +39548,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39298,6 +39709,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementDevic
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39378,6 +39792,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39458,6 +39875,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39578,6 +39998,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39678,6 +40101,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSetti
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39758,6 +40184,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementCommo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39858,6 +40287,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSkyCo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -39958,6 +40390,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSkyCo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40115,6 +40550,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSkyCo
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40235,6 +40673,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAcces
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40335,6 +40776,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAcces
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40473,6 +40917,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAcces
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40636,6 +41083,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40716,6 +41166,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementGamep
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40855,6 +41308,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementButto
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -40935,6 +41391,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementButto
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41093,6 +41552,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementButto
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41173,6 +41635,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementButto
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41312,6 +41777,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisM
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41392,6 +41860,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisM
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41550,6 +42021,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisM
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41630,6 +42104,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisM
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41769,6 +42246,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisF
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -41849,6 +42329,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisF
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -42007,6 +42490,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisF
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -42087,6 +42573,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementAxisF
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -42187,6 +42676,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementCoPil
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -42344,6 +42836,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementCalib
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -42444,6 +42939,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementCalib
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -42524,6 +43022,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementButto
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48070,6 +48571,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementNetworkEvent
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48150,6 +48654,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48230,6 +48737,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48350,6 +48860,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48508,6 +49021,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48628,6 +49144,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48748,6 +49267,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48868,6 +49390,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -48968,6 +49493,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementSettingsStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49048,6 +49576,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateA
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49148,6 +49679,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateB
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49287,6 +49821,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateM
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49482,6 +50019,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateM
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49602,6 +50142,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateC
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49722,6 +50265,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateC
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49865,6 +50411,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -49965,6 +50514,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateW
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50084,6 +50636,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50184,6 +50739,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateP
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50328,6 +50886,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50408,6 +50969,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementOverHeatStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50508,6 +51072,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementOverHeatStat
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50608,6 +51175,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementWifiSettings
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50766,6 +51336,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementMavlinkState
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -50866,6 +51439,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementMavlinkState
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51023,6 +51599,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCalibrationS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51123,6 +51702,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCalibrationS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51223,6 +51805,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCalibrationS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51323,6 +51908,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCalibrationS
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51499,6 +52087,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCameraSettin
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51599,6 +52190,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementFlightPlanSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51718,6 +52312,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementFlightPlanSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51798,6 +52395,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementFlightPlanEv
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51878,6 +52478,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementFlightPlanEv
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -51998,6 +52601,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementARLibsVersio
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52118,6 +52724,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementARLibsVersio
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52238,6 +52847,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementARLibsVersio
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52338,6 +52950,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementAudioStateAu
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52457,6 +53072,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementHeadlightsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52595,6 +53213,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementAnimationsSt
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52695,6 +53316,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementAccessorySta
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52814,6 +53438,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementAccessorySta
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -52914,6 +53541,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementAccessorySta
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -53014,6 +53644,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementChargerState
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -53133,6 +53766,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementChargerState
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -53233,6 +53869,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementChargerState
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -53390,6 +54029,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementChargerState
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -53510,6 +54152,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementRunStateRunI
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -54384,6 +55029,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementStatsEv
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -54737,6 +55385,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -54876,6 +55527,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -55662,6 +56316,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Pro_NewCmdElementProStateSupport
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -55762,6 +56419,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Pro_NewCmdElementProStateFeature
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -55882,6 +56542,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Pro_NewCmdElementProEventChallen
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -57250,6 +57913,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementScannedItem (A
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -57412,6 +58078,9 @@ eARCONTROLLER_ERROR *error)
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -57550,6 +58219,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementApChannelChang
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -57689,6 +58361,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementSecurityChange
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -57828,6 +58503,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -57928,6 +58606,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironementCh
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
@@ -58028,6 +58709,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementRssiChanged (A
             free (newElement);
             newElement = NULL;
         }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
     }
     // Return the error
     if (error != NULL)
