@@ -379,9 +379,81 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3P
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnState (JNIEnv *env , jclass class)
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnChangedState (JNIEnv *env , jclass class)
 {
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE);
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedCurrent (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingDirectionChangedValue (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedCurrent (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedCurrent (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStatePitchModeChangedValue (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PilotingSettingsStateLandingModeChangedValue (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE);
 }
 
 JNIEXPORT jstring JNICALL
@@ -979,6 +1051,30 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingMoveBy (J
 }
 
 JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingUserTakeOff (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _state)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingUserTakeOff (nativeFeature, _state);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingCircle (JNIEnv *env, jobject thizz, jlong jFeature, jint _direction)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingCircle (nativeFeature, _direction);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendAnimationsFlip (JNIEnv *env, jobject thizz, jlong jFeature, jint _direction)
 {
     // local declarations
@@ -1202,6 +1298,78 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsB
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendPilotingSettingsBankedTurn (nativeFeature, _value);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsMinAltitude (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _current)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsMinAltitude (nativeFeature, _current);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsCirclingDirection (JNIEnv *env, jobject thizz, jlong jFeature, jint _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsCirclingDirection (nativeFeature, _value);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsCirclingRadius (JNIEnv *env, jobject thizz, jlong jFeature, jshort _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsCirclingRadius (nativeFeature, _value);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsCirclingAltitude (JNIEnv *env, jobject thizz, jlong jFeature, jshort _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsCirclingAltitude (nativeFeature, _value);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsPitchMode (JNIEnv *env, jobject thizz, jlong jFeature, jint _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsPitchMode (nativeFeature, _value);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPilotingSettingsLandingMode (JNIEnv *env, jobject thizz, jlong jFeature, jint _value)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsLandingMode (nativeFeature, _value);
 
     return error;
 }

@@ -273,7 +273,25 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AU
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code> */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurn</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurnChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateCirclingDirectionChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStatePitchModeChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateLandingModeChanged</code> in feature <code>ARDrone3</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
@@ -542,6 +560,26 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTake
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingMoveBy_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float dX, float dY, float dZ, float dPsi);
 
 /**
+ * @brief Send a command <code>PilotingUserTakeOff</code> in feature <code>ARDrone3</code>
+ * Set drone in user take off state
+ * @param feature feature owning the commands
+ * @param state State of user take off mode
+ * @param state - 1 to enter in user take off.
+ * @param state - 0 to exit from user take off.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingUserTakeOff_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t state);
+
+/**
+ * @brief Send a command <code>PilotingCircle</code> in feature <code>ARDrone3</code>
+ * Ask Fixed wings to circle
+ * @param feature feature owning the commands
+ * @param direction The circling direction
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingCircle_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION direction);
+
+/**
  * @brief Send a command <code>AnimationsFlip</code> in feature <code>ARDrone3</code>
  * Make a flip
  * @param feature feature owning the commands
@@ -718,6 +756,60 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
  * return executing error
  */
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t value);
+
+/**
+ * @brief Send a command <code>PilotingSettingsMinAltitude</code> in feature <code>ARDrone3</code>
+ * Set Min Altitude
+ * @param feature feature owning the commands
+ * @param current Current altitude min in m
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsMinAltitude_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current);
+
+/**
+ * @brief Send a command <code>PilotingSettingsCirclingDirection</code> in feature <code>ARDrone3</code>
+ * Set Fixed wings circling default direction
+ * @param feature feature owning the commands
+ * @param value The circling direction
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingDirection_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE value);
+
+/**
+ * @brief Send a command <code>PilotingSettingsCirclingRadius</code> in feature <code>ARDrone3</code>
+ * Set Fixed wings circling radius
+ * @param feature feature owning the commands
+ * @param value The circling radius in meter
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingRadius_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint16_t value);
+
+/**
+ * @brief Send a command <code>PilotingSettingsCirclingAltitude</code> in feature <code>ARDrone3</code>
+ * Set Fixed wings circling altitude
+ * @param feature feature owning the commands
+ * @param value The circling altitude in meter
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingAltitude_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint16_t value);
+
+/**
+ * @brief Send a command <code>PilotingSettingsPitchMode</code> in feature <code>ARDrone3</code>
+ * Set pitch mode
+ * @param feature feature owning the commands
+ * @param value The Pitch mode
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsPitchMode_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE value);
+
+/**
+ * @brief Send a command <code>PilotingSettingsLandingMode</code> in feature <code>ARDrone3</code>
+ * Set fixed wings Landing Mode
+ * @param feature feature owning the commands
+ * @param value The Landing mode
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsLandingMode_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE value);
 
 /**
  * @brief Send a command <code>SpeedSettingsMaxVerticalSpeed</code> in feature <code>ARDrone3</code>
@@ -951,6 +1043,8 @@ struct ARCONTROLLER_FEATURE_ARDrone3_t
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingNavigateHome_t sendPilotingNavigateHome;
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTakeOffMode_t sendPilotingAutoTakeOffMode;
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingMoveBy_t sendPilotingMoveBy;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingUserTakeOff_t sendPilotingUserTakeOff;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingCircle_t sendPilotingCircle;
     ARCONTROLLER_FEATURE_ARDrone3_SendAnimationsFlip_t sendAnimationsFlip;
     ARCONTROLLER_FEATURE_ARDrone3_SendCameraOrientation_t sendCameraOrientation;
     ARCONTROLLER_FEATURE_ARDrone3_SendMediaRecordPicture_t sendMediaRecordPicture;
@@ -970,6 +1064,12 @@ struct ARCONTROLLER_FEATURE_ARDrone3_t
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration_t sendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration;
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed_t sendPilotingSettingsSetAutonomousFlightMaxRotationSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn_t sendPilotingSettingsBankedTurn;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsMinAltitude_t sendPilotingSettingsMinAltitude;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingDirection_t sendPilotingSettingsCirclingDirection;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingRadius_t sendPilotingSettingsCirclingRadius;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingAltitude_t sendPilotingSettingsCirclingAltitude;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsPitchMode_t sendPilotingSettingsPitchMode;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsLandingMode_t sendPilotingSettingsLandingMode;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxVerticalSpeed_t sendSpeedSettingsMaxVerticalSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
     ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtection_t sendSpeedSettingsHullProtection;
