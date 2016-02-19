@@ -638,7 +638,25 @@ const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOU
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_autonomousflightmaxrotationspeed_value";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_bankedturn_state";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_bankedturnchanged_state";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_minaltitudechanged_current";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_minaltitudechanged_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_minaltitudechanged_max";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingdirectionchanged_value";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingradiuschanged_current";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingradiuschanged_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingradiuschanged_max";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingaltitudechanged_current";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingaltitudechanged_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_circlingaltitudechanged_max";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_pitchmodechanged_value";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE = "arcontroller_dictionary_key_ardrone3_pilotingsettingsstate_landingmodechanged_value";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_maxverticalspeedchanged_current";
 const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = "arcontroller_dictionary_key_ardrone3_speedsettingsstate_maxverticalspeedchanged_min";
@@ -775,6 +793,8 @@ ARCONTROLLER_FEATURE_ARDrone3_t *ARCONTROLLER_FEATURE_ARDrone3_New (ARCONTROLLER
             featureController->sendPilotingNavigateHome = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingNavigateHome;
             featureController->sendPilotingAutoTakeOffMode = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingAutoTakeOffMode;
             featureController->sendPilotingMoveBy = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingMoveBy;
+            featureController->sendPilotingUserTakeOff = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingUserTakeOff;
+            featureController->sendPilotingCircle = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingCircle;
             featureController->sendAnimationsFlip = ARCONTROLLER_FEATURE_ARDrone3_SendAnimationsFlip;
             featureController->sendCameraOrientation = ARCONTROLLER_FEATURE_ARDrone3_SendCameraOrientation;
             featureController->sendMediaRecordPicture = ARCONTROLLER_FEATURE_ARDrone3_SendMediaRecordPicture;
@@ -794,6 +814,12 @@ ARCONTROLLER_FEATURE_ARDrone3_t *ARCONTROLLER_FEATURE_ARDrone3_New (ARCONTROLLER
             featureController->sendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration;
             featureController->sendPilotingSettingsSetAutonomousFlightMaxRotationSpeed = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed;
             featureController->sendPilotingSettingsBankedTurn = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn;
+            featureController->sendPilotingSettingsMinAltitude = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsMinAltitude;
+            featureController->sendPilotingSettingsCirclingDirection = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingDirection;
+            featureController->sendPilotingSettingsCirclingRadius = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingRadius;
+            featureController->sendPilotingSettingsCirclingAltitude = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingAltitude;
+            featureController->sendPilotingSettingsPitchMode = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsPitchMode;
+            featureController->sendPilotingSettingsLandingMode = ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsLandingMode;
             featureController->sendSpeedSettingsMaxVerticalSpeed = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxVerticalSpeed;
             featureController->sendSpeedSettingsMaxRotationSpeed = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsMaxRotationSpeed;
             featureController->sendSpeedSettingsHullProtection = ARCONTROLLER_FEATURE_ARDrone3_SendSpeedSettingsHullProtection;
@@ -1038,7 +1064,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_RegisterARCommands (ARCONTROLL
         ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxRotationSpeedCallback, feature);
-        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateBankedTurnCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateBankedTurnCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateBankedTurnChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateBankedTurnChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateMinAltitudeChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateMinAltitudeChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateCirclingDirectionChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateCirclingDirectionChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateCirclingRadiusChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateCirclingRadiusChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateCirclingAltitudeChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateCirclingAltitudeChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStatePitchModeChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStatePitchModeChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateLandingModeChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateLandingModeChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxVerticalSpeedChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxRotationSpeedChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateMaxRotationSpeedChangedCallback, feature);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateHullProtectionChangedCallback (&ARCONTROLLER_FEATURE_ARDrone3_SpeedSettingsStateHullProtectionChangedCallback, feature);
@@ -1126,7 +1158,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_UnregisterARCommands (ARCONTRO
         ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedCallback (NULL, NULL);
-        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateBankedTurnCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateBankedTurnChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateMinAltitudeChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateCirclingDirectionChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateCirclingRadiusChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateCirclingAltitudeChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStatePitchModeChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetARDrone3PilotingSettingsStateLandingModeChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateMaxRotationSpeedChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetARDrone3SpeedSettingsStateHullProtectionChangedCallback (NULL, NULL);
@@ -1643,6 +1681,76 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingMoveBy (ARCONTROLL
     {
         // Send MoveBy command
         cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingMoveBy(cmdBuffer, sizeof(cmdBuffer), &cmdSize, dX, dY, dZ, dPsi);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingUserTakeOff (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t state)
+{
+    // -- Send a command <code>PilotingUserTakeOff</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send UserTakeOff command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingUserTakeOff(cmdBuffer, sizeof(cmdBuffer), &cmdSize, state);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingCircle (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION direction)
+{
+    // -- Send a command <code>PilotingCircle</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send Circle command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingCircle(cmdBuffer, sizeof(cmdBuffer), &cmdSize, direction);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -2308,6 +2416,216 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsBankedTurn
     {
         // Send BankedTurn command
         cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsBankedTurn(cmdBuffer, sizeof(cmdBuffer), &cmdSize, value);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsMinAltitude (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float current)
+{
+    // -- Send a command <code>PilotingSettingsMinAltitude</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send MinAltitude command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsMinAltitude(cmdBuffer, sizeof(cmdBuffer), &cmdSize, current);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingDirection (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE value)
+{
+    // -- Send a command <code>PilotingSettingsCirclingDirection</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send CirclingDirection command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsCirclingDirection(cmdBuffer, sizeof(cmdBuffer), &cmdSize, value);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingRadius (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint16_t value)
+{
+    // -- Send a command <code>PilotingSettingsCirclingRadius</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send CirclingRadius command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsCirclingRadius(cmdBuffer, sizeof(cmdBuffer), &cmdSize, value);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsCirclingAltitude (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint16_t value)
+{
+    // -- Send a command <code>PilotingSettingsCirclingAltitude</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send CirclingAltitude command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsCirclingAltitude(cmdBuffer, sizeof(cmdBuffer), &cmdSize, value);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsPitchMode (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE value)
+{
+    // -- Send a command <code>PilotingSettingsPitchMode</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send PitchMode command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsPitchMode(cmdBuffer, sizeof(cmdBuffer), &cmdSize, value);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsLandingMode (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE value)
+{
+    // -- Send a command <code>PilotingSettingsLandingMode</code> in project <code>ARDrone3</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send LandingMode command
+        cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingSettingsLandingMode(cmdBuffer, sizeof(cmdBuffer), &cmdSize, value);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -5589,13 +5907,13 @@ void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxRotat
     
 }
 
-void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateBankedTurnCallback (uint8_t _state, void *customData)
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateBankedTurnChangedCallback (uint8_t _state, void *customData)
 {
-    // -- callback used when the command <code>PilotingSettingsStateBankedTurn</code> is decoded -- 
+    // -- callback used when the command <code>PilotingSettingsStateBankedTurnChanged</code> is decoded -- 
     
     ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED;
     ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
     int isANewCommandElement = 0;
     int elementAdded = 0;
@@ -5627,7 +5945,505 @@ void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateBankedTurnCallback (uint
     if (error == ARCONTROLLER_OK)
     {
         //Create new element
-        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateBankedTurn (feature,  _state, &error);
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateBankedTurnChanged (feature,  _state, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateMinAltitudeChangedCallback (float _current, float _min, float _max, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStateMinAltitudeChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateMinAltitudeChanged (feature,  _current,  _min,  _max, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateCirclingDirectionChangedCallback (eARCOMMANDS_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE _value, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStateCirclingDirectionChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateCirclingDirectionChanged (feature,  _value, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateCirclingRadiusChangedCallback (uint16_t _current, uint16_t _min, uint16_t _max, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStateCirclingRadiusChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateCirclingRadiusChanged (feature,  _current,  _min,  _max, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateCirclingAltitudeChangedCallback (uint16_t _current, uint16_t _min, uint16_t _max, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStateCirclingAltitudeChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateCirclingAltitudeChanged (feature,  _current,  _min,  _max, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStatePitchModeChangedCallback (eARCOMMANDS_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE _value, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStatePitchModeChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStatePitchModeChanged (feature,  _value, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateLandingModeChangedCallback (eARCOMMANDS_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE _value, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStateLandingModeChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_ARDrone3_t *feature = (ARCONTROLLER_FEATURE_ARDrone3_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateLandingModeChanged (feature,  _value, &error);
     }
     
     //Set new element in CommandElements 
@@ -12240,9 +13056,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
     return newElement;
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateBankedTurn (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _state, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateBankedTurnChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _state, eARCONTROLLER_ERROR *error)
 {
-    // -- Create element of an event PilotingSettingsStateBankedTurn -- 
+    // -- Create element of an event PilotingSettingsStateBankedTurnChanged -- 
     
     ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
     int elementKeyLength = 0;
@@ -12297,8 +13113,722 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURN_STATE;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE;
             argDictNewElement->value.U8 = _state;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateMinAltitudeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStateMinAltitudeChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT;
+            argDictNewElement->value.Float = _current;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN;
+            argDictNewElement->value.Float = _min;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX;
+            argDictNewElement->value.Float = _max;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateCirclingDirectionChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE _value, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStateCirclingDirectionChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE;
+            argDictNewElement->value.I32 = _value;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateCirclingRadiusChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint16_t _current, uint16_t _min, uint16_t _max, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStateCirclingRadiusChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT;
+            argDictNewElement->value.U16 = _current;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN;
+            argDictNewElement->value.U16 = _min;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX;
+            argDictNewElement->value.U16 = _max;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateCirclingAltitudeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint16_t _current, uint16_t _min, uint16_t _max, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStateCirclingAltitudeChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT;
+            argDictNewElement->value.U16 = _current;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN;
+            argDictNewElement->value.U16 = _min;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX;
+            argDictNewElement->value.U16 = _max;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStatePitchModeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE _value, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStatePitchModeChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE;
+            argDictNewElement->value.I32 = _value;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPilotingSettingsStateLandingModeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE _value, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStateLandingModeChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE;
+            argDictNewElement->value.I32 = _value;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }
