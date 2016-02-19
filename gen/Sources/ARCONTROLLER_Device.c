@@ -94,7 +94,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
     {
         // Allocate the private part of the Device Controller
         deviceController->privatePart = malloc (sizeof(ARCONTROLLER_Device_Private_t));
-        if (deviceController != NULL)
+        if (deviceController->privatePart != NULL)
         {
             //initialization of the private part of the device controller
             deviceController->privatePart->networkController = NULL;
