@@ -681,10 +681,10 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
     ARCONTROLLER_Stream_Codec_t codec;
     eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
     
-    uint8_t *spsBuffer;
-    int spsSize;
-    uint8_t *ppsBuffer;
-    int ppsSize;
+    uint8_t *spsBuffer = NULL;
+    int spsSize = 0;
+    uint8_t *ppsBuffer = NULL;
+    int ppsSize = 0;
     
     // Check parameters
     if (stream1Controller != NULL)
