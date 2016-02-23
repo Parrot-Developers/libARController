@@ -345,9 +345,6 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetCommandElements (
 
     if (error != ARCONTROLLER_OK)
     {
-        // Delete the JNI device controller
-        ARCONTROLLER_JNI_Device_DeleteJNIDeviceController (env, &jniDeviceController);
-        
         // throw the exception
         exceptionCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerException");
         exceptionMethodInit = (*env)->GetMethodID(env, exceptionCls, "<init>", "(I)V");
