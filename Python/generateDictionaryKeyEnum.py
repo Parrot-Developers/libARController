@@ -40,6 +40,7 @@ if '' == MYDIR:
     MYDIR=os.getcwd()
 
 sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
+sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
 
 DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
 DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
@@ -47,10 +48,11 @@ DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
 from ARFuncs import *
 from ARCommandsParser import *
 from ARControllerUtils import *
+from arsdkparser import *
 
-def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
+def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     
-    deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, allFeatures)
+    deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, ctx)
     
     #check deviceController list
     if not deviceControllers:
@@ -99,16 +101,16 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     hFile.write ('typedef enum \n')
     hFile.write ('{\n')
     first = True
-    for feature in allFeatures:
+    for feature in ctx.features:
         if first:
-            hFile.write ('    '+defineNotification(feature)+' = 0, /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature)+' = 0, /**< Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
             first = False
         else:
-            hFile.write ('    '+defineNotification(feature)+', /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature)+', /**< Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
         
         
         for evt in feature.evts:
-            hFile.write ('    '+defineNotification(feature, evt)+', /**< Key used to define the event <code>' + ARCapitalize (evt.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature, evt)+', /**< Key used to define the event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
     hFile.write ('    '+AREnumValue(MODULE_DICTIONARY, 'DICTIONARY', 'KEY','MAX')+', /**< Unused, iterator maximum value */\n')
     hFile.write ('}'+defineNotificationDef()+';\n')
     hFile.write ('\n')
@@ -164,10 +166,10 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    // find feature parameters\n')
     first = True
-    for index in range(len(allFeatures)-1):
+    for index in range(len(ctx.features)-1):
     
-        feature = allFeatures[index]
-        featureNext = allFeatures[index+1]
+        feature = ctx.features[index]
+        featureNext = ctx.features[index+1]
         
         ifOrElse = 'if'
         if first:
@@ -177,7 +179,7 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
             ifOrElse = 'else if'
         
         nextKey = ''
-        if index != (len(allFeatures)-1):
+        if index != (len(ctx.features)-1):
             nextKey = defineNotification(featureNext)
         else:
             nextKey = AREnumValue(MODULE_DICTIONARY, 'DICTIONARY', 'KEY','MAX')

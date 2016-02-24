@@ -40,13 +40,17 @@ if '' == MYDIR:
     MYDIR=os.getcwd()
 
 sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
+sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
 
 from ARFuncs import *
 from ARCommandsParser import *
 from ARControllerUtils import *
+from arsdkparser import *
 
-def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
+_LIST_FLAG = 'list_flags'
 
+def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
+    allFeatures = ctx.features
     ARPrint ('generateFeatureControllers ...')
 
     #########################################
@@ -55,10 +59,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
 
     #for feature in allFeatures: # see automake all source of folder !!!!
         
-    #ARPrint ('feature.name = ' + feature.name) # see automake all source of folder !!!!
+    #ARPrint ('get_ftr_old_name(feature) = ' + get_ftr_old_name(feature)) # see automake all source of folder !!!!
 
-    #className = ARTypeName (MODULE_FEATURE, feature.name, '')  # see automake all source of folder !!!!
-    includeDefine = '_' + MODULE_FEATURE + '_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, feature.name, 'H') + '_'  # see automake all source of folder !!!!
+    #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
+    includeDefine = '_' + MODULE_FEATURE + '_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), 'H') + '_'  # see automake all source of folder !!!!
 
     headerFileName = 'ARCONTROLLER_Feature.h' #headerFileName = className + '.h'!!!!
     filepath = INC_DIR + headerFileName
@@ -77,7 +81,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
 
     hfile.write ('/**\n')
     hfile.write ('* @file '+headerFileName+'\n')
-    hfile.write ('* @brief Feature controller allow to send command related of a Feature.\n') #hfile.write ('* @brief Feature controller allow to send command related of '+feature.name+' Feature.\n')
+    hfile.write ('* @brief Feature controller allow to send command related of a Feature.\n') #hfile.write ('* @brief Feature controller allow to send command related of '+get_ftr_old_name(feature)+' Feature.\n')
     hfile.write ('*/\n')
     hfile.write ('\n')
 
@@ -98,14 +102,14 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write ('#include <libARController/ARCONTROLLER_Dictionary.h>\n')
     hfile.write ('\n')
 
-    for feature in allFeatures: # see automake all source of folder !!!!!!!!!!!!!!
+    for feature in ctx.features: # see automake all source of folder !!!!!!!!!!!!!!
         
-        ARPrint ('feature.name = ' + feature.name) # see automake all source of folder !!!!
-        className = ARTypeName (MODULE_FEATURE, feature.name, '')  # see automake all source of folder !!!!
-        classPrivName = ARTypeName (MODULE_FEATURE, feature.name, 'Private')  # see automake all source of folder !!!!
+        ARPrint ('feature name = ' + get_ftr_old_name(feature)) # see automake all source of folder !!!!
+        className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
+        classPrivName = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), 'Private')  # see automake all source of folder !!!!
         
         hfile.write ('/*******************************\n') # see automake all source of folder !!!!!!!!
-        hfile.write (' * --- FEATURE '+feature.name+' --- \n') # see automake all source of folder !!!!!!!!
+        hfile.write (' * --- FEATURE '+get_ftr_old_name(feature)+' --- \n') # see automake all source of folder !!!!!!!!
         hfile.write (' ******************************/\n') # see automake all source of folder !!!!!!!!
         hfile.write ('\n')
         
@@ -116,80 +120,76 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write ('\n')
         
         hfile.write ('/**\n')
-        hfile.write (' * @brief Feature controller allow to send command related of '+feature.name+' Feature.\n')
-        for comment in feature.comments:
-            hfile.write (' * ' + comment+'\n')
+        hfile.write (' * @brief Feature controller allow to send command related of '+get_ftr_old_name(feature)+' Feature.\n')
+        hfile.write (' * ' + feature.doc.replace('\n', '\n * ')+'\n')
         hfile.write (' */\n')
         hfile.write ('typedef struct '+className+' '+className+';\n')
         hfile.write ('\n')
         
         hfile.write ('/**\n')
-        hfile.write (' * @brief Create a new '+feature.name+' Feature Controller\n')
+        hfile.write (' * @brief Create a new '+get_ftr_old_name(feature)+' Feature Controller\n')
         hfile.write (' * @warning This function allocate memory\n')
-        hfile.write (' * @post ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+'() must be called to delete the Feature Controller and free the memory allocated.\n')
-        hfile.write (' * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+'().\n')
+        hfile.write (' * @post ' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'Delete')+'() must be called to delete the Feature Controller and free the memory allocated.\n')
+        hfile.write (' * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'SetNetworkController')+'().\n')
         hfile.write (' * @param[out] error executing error.\n')
-        hfile.write (' * @return the new '+feature.name+' Feature Controller\n')
-        hfile.write (' * @see ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+'\n')
+        hfile.write (' * @return the new '+get_ftr_old_name(feature)+' Feature Controller\n')
+        hfile.write (' * @see ' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'Delete')+'\n')
         hfile.write (' */\n')
-        hfile.write (''+className+' *' + ARFunctionName (MODULE_FEATURE, feature.name, 'New')+' (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);\n')
+        hfile.write (''+className+' *' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'New')+' (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);\n')
         hfile.write ('\n')
         
         hfile.write ('/**\n')
-        hfile.write (' * @brief Delete the '+feature.name+' Feature Controller\n')
+        hfile.write (' * @brief Delete the '+get_ftr_old_name(feature)+' Feature Controller\n')
         hfile.write (' * @warning This function free memory\n')
         hfile.write (' * @param feature The feature controller to delete\n')
-        hfile.write (' * @see ' + ARFunctionName (MODULE_FEATURE, feature.name, 'New')+'\n')
+        hfile.write (' * @see ' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'New')+'\n')
         hfile.write (' */\n')
-        hfile.write ('void ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+' ('+className+' **feature);\n')
+        hfile.write ('void ' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'Delete')+' ('+className+' **feature);\n')
         hfile.write ('\n')
         
         hfile.write ('/**\n')
-        hfile.write (' * @brief Get the dictionay of the '+feature.name+' Feature Controller\n')
+        hfile.write (' * @brief Get the dictionay of the '+get_ftr_old_name(feature)+' Feature Controller\n')
         hfile.write (' * @param feature The feature controller owning the dictionary to get\n')
         hfile.write (' * @param[out] error executing error.\n')
         hfile.write (' */\n')
-        hfile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *' + ARFunctionName (MODULE_FEATURE, feature.name, 'GetDictionary')+' ('+className+' *feature, eARCONTROLLER_ERROR *error);\n')
+        hfile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'GetDictionary')+' ('+className+' *feature, eARCONTROLLER_ERROR *error);\n')
         hfile.write ('\n')
             
         hfile.write ('/**\n')
-        hfile.write (' * @brief Add a callback to use when a command in project <code>' + ARCapitalize (feature.name) + '</code> is received\n')
+        hfile.write (' * @brief Add a callback to use when a command in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> is received\n')
         hfile.write (' * @param feature The feature controller receiving the command.\n')
         hfile.write (' * @param[in] callback the callback to add.\n')
         hfile.write (' * @param[in] commandKey Key of the command which the callback must be associated.\n')
         hfile.write (' * @param[out] error executing error.\n')
         hfile.write (' * @param[int] customData custom data given as parameter to the callback.\n')
-        hfile.write (' * @see '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+'.\n')
+        hfile.write (' * @see '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'removeCallback')+'.\n')
         hfile.write (' */\n')
-        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'addCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData);\n')
+        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'addCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData);\n')
         hfile.write ('\n')
         
         hfile.write ('/**\n')
-        hfile.write (' * @brief Remove a callback used when a command in project <code>' + ARCapitalize (feature.name) + '</code> is received\n')
+        hfile.write (' * @brief Remove a callback used when a command in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> is received\n')
         hfile.write (' * @param feature The feature controller receiving the command.\n')
         hfile.write (' * @param[in] commandKey Key of the command which the callback must be unassociated.\n')
         hfile.write (' * @param[in] callback the callback to remove.\n')
         hfile.write (' * @param[int] customData The custom data given to the register.\n')
         hfile.write (' * @param[out] error executing error.\n')
         hfile.write (' */\n')
-        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData);\n')
+        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'removeCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData);\n')
         hfile.write ('\n')
         
-        
         for evt in feature.evts:
-            for arg in evt.args:
-                hfile.write ('extern const char *' + defineNotification(feature, evt, arg) + '; /**< Key of the argument </code>'+ arg.name+'</code> of event <code>' + ARCapitalize (evt.formattedName()) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            for arg in [arg1 for arg1 in evt.args if arg1.name != _LIST_FLAG]:
+                hfile.write ('extern const char *' + defineNotification(feature, evt, arg) + '; /**< Key of the argument </code>'+ arg.name+'</code> of event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
             hfile.write('\n');
             
         for cmd in feature.cmds:
             hfile.write ('/**\n')
-            hfile.write (' * @brief Send a command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code>\n')
-            for comment in cmd.comments:
-                hfile.write (' * ' + comment+'\n')
+            hfile.write (' * @brief Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
+            hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
             hfile.write (' * @param feature feature owning the commands\n')
             for arg in cmd.args:
-                for comm in arg.comments:
-                    hfile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
             hfile.write (' * return executing error\n')
             hfile.write (' */\n')
             hfile.write ('typedef eARCONTROLLER_ERROR (*'+ sendingFunctionType (MODULE_FEATURE, feature, cmd)+') ('+className+' *feature')
@@ -198,15 +198,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             hfile.write (');\n')
             hfile.write ('\n')
             
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hfile.write ('/**\n')
-                hfile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
-                for comment in cmd.comments:
-                    hfile.write (' * ' + comment+'\n')
+                hfile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
+                hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
                 hfile.write (' * @param feature feature owning the commands\n')
                 for arg in cmd.args:
-                    for comm in arg.comments:
-                        hfile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                    hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                 hfile.write (' * return executing error\n')
                 hfile.write (' */\n')
                 hfile.write ('typedef eARCONTROLLER_ERROR (*' + setNAckFunctionType (feature, cmd)+') ('+className+' *feature')
@@ -216,9 +214,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 hfile.write ('\n')
                 
                 hfile.write ('/**\n')
-                hfile.write (' * @brief Send the a command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> with the parame set beforehand \n')
-                for comment in cmd.comments:
-                    hfile.write (' * ' + comment+'\n')
+                hfile.write (' * @brief Send the a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> with the parame set beforehand \n')
+                hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
                 hfile.write (' * @param feature feature owning the commands\n')
                 hfile.write (' * @param cmdBuffer buffer to store the command\n')
                 hfile.write (' * @param cmdBufferSize size of the buffer\n')
@@ -229,31 +226,27 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 
                 for arg in cmd.args:
                     hfile.write ('/**\n')
-                    hfile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
-                    for comment in cmd.comments:
-                        hfile.write (' * ' + comment+'\n')
+                    hfile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
+                    hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
                     hfile.write (' * @param feature feature owning the commands\n')
-                    for comm in arg.comments:
-                        hfile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                    hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                     hfile.write (' * return executing error\n')
                     hfile.write (' */\n')
-                    hfile.write ('typedef eARCONTROLLER_ERROR (*' + setNAckFunctionType (feature, cmd, arg)+') ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name+');\n') #toto
+                    hfile.write ('typedef eARCONTROLLER_ERROR (*' + setNAckFunctionType (feature, cmd, arg)+') ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name+');\n')
                     hfile.write ('\n')
-                    
-            
+
         hfile.write ('/**\n')
-        hfile.write (' * @brief Feature controller allow to send command related of '+feature.name+' Feature.\n')
-        for comment in feature.comments:
-            hfile.write (' * ' + comment+'\n')
+        hfile.write (' * @brief Feature controller allow to send command related of '+get_ftr_old_name(feature)+' Feature.\n')
+        hfile.write (' * ' + feature.doc.replace('\n', '\n * ')+'\n')
         hfile.write (' */\n')
         hfile.write ('struct '+className+'\n')
         hfile.write ('{\n')
         for cmd in feature.cmds:
             hfile.write ('    '+sendingFunctionType (MODULE_FEATURE, feature, cmd)+' '+sendingFunction(cmd)+';\n')
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hfile.write ('    '+setNAckFunctionType (feature, cmd)+' '+setNAckFunction(cmd)+';\n')
                 for arg in cmd.args:
-                    hfile.write ('    ' + setNAckFunctionType (feature, cmd, arg)+' '+setNAckFunction(cmd, arg)+'; /**< Send a command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code>. */\n')
+                    hfile.write ('    ' + setNAckFunctionType (feature, cmd, arg)+' '+setNAckFunction(cmd, arg)+'; /**< Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>. */\n')
                         
         hfile.write ('    '+classPrivName+' *privatePart; /**< Private part of '+className+' */\n')
         hfile.write ('};\n')
@@ -266,7 +259,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write (' * @param[in] networkController The networkController used to send commands ; must be not NULL.\n')
         hfile.write (' * @return error executing error.\n')
         hfile.write (' */\n')
-        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController);\n')
+        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController);\n')
         hfile.write ('\n')
         
         hfile.write ('/**\n')
@@ -276,7 +269,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hfile.write (' * @param[out] error executing error.\n')
         hfile.write (' * @return Element dictionary of the command ; Can be null if an error is occurred.\n')
         hfile.write (' */\n')
-        hfile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
+        hfile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
         hfile.write ('\n')
         
         
@@ -291,10 +284,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
     #for feature in allFeatures: # see automake all source of folder !!!!!!!
 
-    ARPrint ('feature.name = ' + feature.name)
+    ARPrint ('get_ftr_old_name(feature) = ' + get_ftr_old_name(feature))
 
-    #className = ARTypeName (MODULE_FEATURE, feature.name, '')  # see automake all source of folder !!!!
-    includeDefine = '_' + MODULE_FEATURE + '_PRIVATE_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, feature.name, 'PRIVATE_H') + '_'  # see automake all source of folder !!!!
+    #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
+    includeDefine = '_' + MODULE_FEATURE + '_PRIVATE_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), 'PRIVATE_H') + '_'  # see automake all source of folder !!!!
 
     headerPrivateFileName = 'ARCONTROLLER_Feature' + '.h'  #headerPrivateFileName = className + '.h' # see automake all source of folder !!!!
     filepath = SRC_DIR + headerPrivateFileName
@@ -313,7 +306,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
 
     hPrivFile.write ('/**\n')
     hPrivFile.write ('* @file '+headerPrivateFileName+'\n')
-    hPrivFile.write ('* @brief Feature controller allow to send command related of '+feature.name+' Feature.\n')
+    hPrivFile.write ('* @brief Feature controller allow to send command related of '+get_ftr_old_name(feature)+' Feature.\n')
     hPrivFile.write ('*/\n')
     hPrivFile.write ('\n')
 
@@ -347,19 +340,19 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'AddElement')+' ('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' **elementDict, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *newElement);\n')
     hPrivFile.write ('\n')
         
-    for feature in allFeatures: # see automake all source of folder !!!!!!!!
+    for feature in ctx.features: # see automake all source of folder !!!!!!!!
         
-        className = ARTypeName (MODULE_FEATURE, feature.name, '')  # see automake all source of folder !!!!
-        classPrivName = ARTypeName (MODULE_FEATURE, feature.name, 'Private')  # see automake all source of folder !!!!
+        className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
+        classPrivName = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), 'Private')  # see automake all source of folder !!!!
         
         hPrivFile.write ('/*******************************\n') # see automake all source of folder !!!!!!!!
-        hPrivFile.write (' * --- FEATURE '+feature.name+' --- \n') # see automake all source of folder !!!!!!!!
+        hPrivFile.write (' * --- FEATURE '+get_ftr_old_name(feature)+' --- \n') # see automake all source of folder !!!!!!!!
         hPrivFile.write (' ******************************/\n') # see automake all source of folder !!!!!!!!
         
         for cmd in feature.cmds:
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hPrivFile.write ('/**\n')
-                hPrivFile.write (' * @brief Parameters to send through the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
+                hPrivFile.write (' * @brief Parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
                 hPrivFile.write (' */\n')
                 hPrivFile.write ('typedef struct\n')
                 hPrivFile.write ('{\n')
@@ -380,7 +373,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hPrivFile.write ('    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */\n')
 
         for cmd in feature.cmds:
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hPrivFile.write ('    '+structNAckType (feature, cmd)+' *'+structNAckName (cmd)+'; /**< */\n')
                     
         hPrivFile.write ('};\n')
@@ -391,7 +384,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hPrivFile.write (' * @param feature The feature controller to register\n')
         hPrivFile.write (' * return executing error\n')
         hPrivFile.write (' */\n')
-        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, feature.name, 'RegisterARCommands')+' ('+className+' *feature);\n')
+        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' ('+className+' *feature);\n')
         hPrivFile.write ('\n')
         
         hPrivFile.write ('/**\n')
@@ -399,18 +392,16 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         hPrivFile.write (' * @param feature The feature controller to unregister\n')
         hPrivFile.write (' * return executing error\n')
         hPrivFile.write (' */\n')
-        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, feature.name, 'UnregisterARCommands')+' ('+className+' *feature);\n')
+        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' ('+className+' *feature);\n')
         hPrivFile.write ('\n')
         
         for cmd in feature.cmds:
             hPrivFile.write ('/**\n')
-            hPrivFile.write (' * @brief Send a command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
-            for comment in cmd.comments:
-                hPrivFile.write (' * ' + comment+'\n')
+            hPrivFile.write (' * @brief Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
+            hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
             hPrivFile.write (' * @param feature feature owning the commands\n')
             for arg in cmd.args:
-                for comm in arg.comments:
-                    hPrivFile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
             hPrivFile.write (' * return executing error\n')
             hPrivFile.write (' */\n')
             hPrivFile.write ('eARCONTROLLER_ERROR ' + sendingFunctionName (MODULE_FEATURE, feature, cmd)+' ('+className+' *feature')
@@ -419,15 +410,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             hPrivFile.write (');\n')
             hPrivFile.write ('\n')
             
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hPrivFile.write ('/**\n')
-                hPrivFile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
-                for comment in cmd.comments:
-                    hPrivFile.write (' * ' + comment+'\n')
+                hPrivFile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
+                hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
                 hPrivFile.write (' * @param feature feature owning the commands\n')
                 for arg in cmd.args:
-                    for comm in arg.comments:
-                        hPrivFile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                    hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                 hPrivFile.write (' * return executing error\n')
                 hPrivFile.write (' */\n')
                 hPrivFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cmd)+' ('+className+' *feature')
@@ -438,12 +427,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 
                 for arg in cmd.args:
                     hPrivFile.write ('/**\n')
-                    hPrivFile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code>\n')
-                    for comment in cmd.comments:
-                        hPrivFile.write (' * ' + comment+'\n')
+                    hPrivFile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
+                    hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
                     hPrivFile.write (' * @param feature feature owning the commands\n')
-                    for comm in arg.comments:
-                        hPrivFile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                    hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                     hPrivFile.write (' * return executing error\n')
                     hPrivFile.write (' */\n')
                     hPrivFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cmd, arg)+' ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name +');\n')
@@ -451,11 +438,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     
         for evt in feature.evts:
             hPrivFile.write ('/**\n')
-            hPrivFile.write (' * @brief callback used when the command <code>' + ARCapitalize (evt.formattedName()) + '</code> is decoded\n')
+            hPrivFile.write (' * @brief callback used when the command <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> is decoded\n')
             hPrivFile.write (' * @param feature The feature controller registred\n')
             for arg in evt.args:
-                for comm in arg.comments:
-                    hPrivFile.write (' * @param ' + arg.name + ' ' + comm + '\n')
+                hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
             hPrivFile.write (' * @param customData customData set by the register\n')
             hPrivFile.write (' */\n')
             hPrivFile.write ('void '+decodeCallback (feature, evt)+' (')
@@ -465,11 +451,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             hPrivFile.write ('\n')
         
         for evt in feature.evts:
-            hPrivFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *'+ ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'newCmdElement'+ARCapitalize(evt.formattedName()))+' ('+className+' *feature, ')
+            hPrivFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *'+ ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'newCmdElement'+ARCapitalize(format_cmd_name(evt)))+' ('+className+' *feature, ')
             for arg in evt.args:
                 hPrivFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg) + ' _' + arg.name + ', ')
-            if evt.listtype == ARCommandListType.LIST:
-                hPrivFile.write ('int listIndex, \n')
+            if evt.listType == ArCmdListType.LIST:
+                hPrivFile.write ('int listIndex, ')
             hPrivFile.write ('eARCONTROLLER_ERROR *error);\n')
             hPrivFile.write ('\n')
         
@@ -487,8 +473,8 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
     #for feature in allFeatures: # see automake all source of folder !!!!!!!!!!!
         
-    #className = ARTypeName (MODULE_FEATURE, feature.name, '') # see automake all source of folder !!!!!!!!!!
-    classTag = 'ARCONTROLLER_Feature' #classTag = ARMacroName (MODULE_FEATURE, feature.name, '') # see automake all source of folder !!!!!!!!!!
+    #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '') # see automake all source of folder !!!!!!!!!!
+    classTag = 'ARCONTROLLER_Feature' #classTag = ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), '') # see automake all source of folder !!!!!!!!!!
 
     cFileName = 'ARCONTROLLER_Feature.c' #cFileName = className + '.c' # see automake all source of folder !!!!!!!!!!
     filepath = SRC_DIR + cFileName
@@ -507,7 +493,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
 
     cFile.write ('/**\n')
     cFile.write ('* @file '+cFileName+'\n')
-    cFile.write ('* @brief Feature controller allow to send command related of a Feature.\n') #cFile.write ('* @brief Feature controller allow to send command related of '+feature.name+' Feature.\n') # see automake all source of folder !!!!!!!!!!
+    cFile.write ('* @brief Feature controller allow to send command related of a Feature.\n') #cFile.write ('* @brief Feature controller allow to send command related of '+get_ftr_old_name(feature)+' Feature.\n') # see automake all source of folder !!!!!!!!!!
     cFile.write ('*/\n')
     cFile.write ('\n')
 
@@ -766,13 +752,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('\n')
     
 
-    for feature in allFeatures: # see automake all source of folder !!!!!!!!
+    for feature in ctx.features: # see automake all source of folder !!!!!!!!
         
-        className = ARTypeName (MODULE_FEATURE, feature.name, '')  # see automake all source of folder !!!!
-        classPrivName = ARTypeName (MODULE_FEATURE, feature.name, 'Private')  # see automake all source of folder !!!!
+        className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
+        classPrivName = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), 'Private')  # see automake all source of folder !!!!
         
         cFile.write ('/*******************************\n') # see automake all source of folder !!!!!!!!
-        cFile.write (' * --- FEATURE '+feature.name+' --- \n') # see automake all source of folder !!!!!!!!
+        cFile.write (' * --- FEATURE '+get_ftr_old_name(feature)+' --- \n') # see automake all source of folder !!!!!!!!
         cFile.write (' ******************************/\n') # see automake all source of folder !!!!!!!!
         cFile.write ('\n')
         
@@ -787,11 +773,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('\n')
         
         for evt in feature.evts:
-            for arg in evt.args:
+            for arg in [arg1 for arg1 in evt.args if arg1.name != _LIST_FLAG]:
                 cFile.write ('const char *' + defineNotification(feature, evt, arg) + ' = "' + defineNotification(feature, evt, arg).lower() + '";\n')
             cFile.write('\n');
         
-        cFile.write (''+className+' *' + ARFunctionName (MODULE_FEATURE, feature.name, 'New')+' (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)\n')
+        cFile.write (''+className+' *' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'New')+' (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)\n')
         cFile.write ('{\n')
         cFile.write ('    // -- Create a new Feature Controller --\n')
         cFile.write ('    \n')
@@ -810,7 +796,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
 
         for cmd in feature.cmds:
             cFile.write ('            featureController->'+sendingFunction(cmd)+' = '+sendingFunctionName (MODULE_FEATURE, feature, cmd)+';\n')
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('            featureController->'+setNAckFunction(cmd)+' = '+setNAckFunctionName (feature, cmd)+';\n')
                 for arg in cmd.args:
                     cFile.write ('            featureController->'+setNAckFunction (cmd, arg)+' = '+setNAckFunctionName(feature, cmd, arg)+';\n')
@@ -835,7 +821,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('            featureController->privatePart->dictionary = NULL;\n')
         cFile.write ('            featureController->privatePart->commandCallbacks = NULL;\n')
         for cmd in feature.cmds:
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('            featureController->privatePart->'+structNAckName (cmd)+' = NULL;\n')
                     
         cFile.write ('            // Create the mutex \n')
@@ -853,7 +839,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    \n')
         
         for cmd in feature.cmds:
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 cFile.write ('        featureController->privatePart->'+structNAckName (cmd)+' = calloc (1, sizeof ('+structNAckType (feature, cmd)+'));\n')
@@ -868,7 +854,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         
         cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
         cFile.write ('    {\n')
-        cFile.write ('        localError = '+ARFunctionName (MODULE_FEATURE, feature.name, 'RegisterARCommands')+' (featureController);\n')
+        cFile.write ('        localError = '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' (featureController);\n')
         cFile.write ('    }\n')
         cFile.write ('    // No else: skipped by an error \n')
         cFile.write ('    \n')
@@ -876,7 +862,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('    // delete the feature Controller if an error occurred\n')
         cFile.write ('    if (localError != ARCONTROLLER_OK)\n')
         cFile.write ('    {\n')
-        cFile.write ('        ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+' (&featureController);\n')
+        cFile.write ('        ' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'Delete')+' (&featureController);\n')
         cFile.write ('    }\n')
         cFile.write ('    // No else: skipped no error \n')
         cFile.write ('    \n')
@@ -893,10 +879,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('void ' + ARFunctionName (MODULE_FEATURE, feature.name, 'Delete')+' ('+className+' **feature)\n')
+        cFile.write ('void ' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'Delete')+' ('+className+' **feature)\n')
         cFile.write ('{\n')
         
-        cFile.write ('    // -- Delete the '+feature.name+' feature Controller --\n')
+        cFile.write ('    // -- Delete the '+get_ftr_old_name(feature)+' feature Controller --\n')
         cFile.write ('    \n')
         
         cFile.write ('    if (feature != NULL)\n')
@@ -904,7 +890,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('        if ((*feature) != NULL)\n')
         cFile.write ('        {\n')
         
-        cFile.write ('            '+ARFunctionName (MODULE_FEATURE, feature.name, 'UnregisterARCommands')+' ((*feature));\n')
+        cFile.write ('            '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' ((*feature));\n')
         cFile.write ('            \n')
         
         cFile.write ('            if ((*feature)->privatePart != NULL)\n')
@@ -926,7 +912,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('                \n')
         
         for cmd in feature.cmds:
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('                if ((*feature)->privatePart->'+structNAckName (cmd)+' != NULL)\n')
                 cFile.write ('                {\n')
                 cFile.write ('                    free ((*feature)->privatePart->'+structNAckName (cmd)+');\n')
@@ -945,9 +931,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *' + ARFunctionName (MODULE_FEATURE, feature.name, 'GetDictionary')+' ('+className+' *feature, eARCONTROLLER_ERROR *error)\n')
+        cFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *' + ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'GetDictionary')+' ('+className+' *feature, eARCONTROLLER_ERROR *error)\n')
         cFile.write ('{\n')
-        cFile.write ('    // -- Get the dictionary of the '+feature.name+' Feature Controller --\n')
+        cFile.write ('    // -- Get the dictionary of the '+get_ftr_old_name(feature)+' Feature Controller --\n')
         cFile.write ('    \n')
         cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
         cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'COMMANDS')+' *dictionary = NULL;\n')
@@ -979,10 +965,10 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'AddCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData)\n')
+        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'AddCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData)\n')
         cFile.write ('{\n')
         
-        cFile.write ('    // -- Add a callback to use when a command in project <code>' + ARCapitalize (feature.name) + '</code> is received --\n')
+        cFile.write ('    // -- Add a callback to use when a command in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> is received --\n')
         cFile.write ('    \n')
         
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
@@ -1006,9 +992,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'RemoveCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData)\n')
+        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'RemoveCallback')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'CALLBACK')+' callback, void *customData)\n')
         cFile.write ('{\n')
-        cFile.write ('    // -- Remove a callback to use when a command in project <code>' + ARCapitalize (feature.name) + '</code> is received --\n')
+        cFile.write ('    // -- Remove a callback to use when a command in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> is received --\n')
         cFile.write ('    \n')
         
         cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
@@ -1034,7 +1020,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, feature.name, 'RegisterARCommands')+' ('+className+' *feature)\n')
+        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' ('+className+' *feature)\n')
         cFile.write ('{\n')
         cFile.write ('    // -- Register the feature controller to be called when the commands are decoded. -- \n')
         cFile.write ('    \n')
@@ -1061,7 +1047,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, feature.name, 'UnregisterARCommands')+' ('+className+' *feature)\n')
+        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' ('+className+' *feature)\n')
         cFile.write ('{\n')
         cFile.write ('    // -- Unregister the feature controller to be called when the commands are decoded. -- \n')
         cFile.write ('    \n')
@@ -1094,7 +1080,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name)
             cFile.write (')\n')
             cFile.write ('{\n')
-            cFile.write ('    // -- Send a command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> --\n')
+            cFile.write ('    // -- Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> --\n')
             cFile.write ('    \n')
             cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
             cFile.write ('    u_int8_t cmdBuffer[128];\n')
@@ -1114,7 +1100,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('    if (error == ARCONTROLLER_OK)\n')
             cFile.write ('    {\n')
             cFile.write ('        // Send ' + ARCapitalize(cmd.name) + ' command\n')
-            cFile.write ('        cmdError = ARCOMMANDS_Generator_Generate' + ARCapitalize(feature.name) + ARCapitalize(cmd.formattedName()) + '(cmdBuffer, sizeof(cmdBuffer), &cmdSize')
+            cFile.write ('        cmdError = ARCOMMANDS_Generator_Generate' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + '(cmdBuffer, sizeof(cmdBuffer), &cmdSize')
             for arg in cmd.args:
                 cFile.write (', ' + arg.name)
             cFile.write(');\n')
@@ -1129,19 +1115,19 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('    {\n')
             
             bufferType = 'ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK'
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 bufferType = 'ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_NOT_ACK'
-            elif cmd.buf == ARCommandBuffer.ACK:
+            elif cmd.bufferType == ArCmdBufferType.ACK:
                 bufferType = 'ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK'
-            elif cmd.buf == ARCommandBuffer.HIGH_PRIO:
+            elif cmd.bufferType == ArCmdBufferType.HIGH_PRIO:
                 bufferType = 'ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGH_PRIORITY'
                 
             timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP'
-            if cmd.timeout == ARCommandTimeoutPolicy.POP:
+            if cmd.timeoutPolicy == ARCommandTimeoutPolicy.POP:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP'
-            elif cmd.timeout == ARCommandTimeoutPolicy.RETRY:
+            elif cmd.timeoutPolicy == ARCommandTimeoutPolicy.RETRY:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_RETRY'
-            elif cmd.timeout == ARCommandTimeoutPolicy.FLUSH:
+            elif cmd.timeoutPolicy == ARCommandTimeoutPolicy.FLUSH:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_FLUSH'
 
             cFile.write ('        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, '+bufferType+', '+timeoutPolicy+', &netError);\n')
@@ -1161,14 +1147,14 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('}\n')
             cFile.write ('\n')
             
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cmd)+' ('+className+' *feature')
                 for arg in cmd.args:
                     cFile.write (', ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' _' + arg.name)
                 cFile.write (')\n')
                 cFile.write ('{\n')
                 
-                cFile.write ('    // -- Set the parameter for the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> --\n')
+                cFile.write ('    // -- Set the parameter for the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> --\n')
                 cFile.write ('    \n')
                 cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                 cFile.write ('    \n')
@@ -1196,7 +1182,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 
                 cFile.write ('eARCONTROLLER_ERROR '+ sendNAckFunctionName (feature, cmd)+' ('+className+' *feature, u_int8_t *cmdBuffer, int32_t cmdBufferSize)\n')
                 cFile.write ('{\n')
-                cFile.write ('    // -- Send the a command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> with the parame set beforehand  --\n')
+                cFile.write ('    // -- Send the a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> with the parame set beforehand  --\n')
                 cFile.write ('    \n')
                 cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                 cFile.write ('    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;\n')
@@ -1219,7 +1205,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('    {\n')
                 
                 cFile.write ('        // Send ' + ARCapitalize(cmd.name) + ' command\n')
-                cFile.write ('        cmdError = ARCOMMANDS_Generator_Generate' + ARCapitalize(feature.name) + ARCapitalize(cmd.formattedName()) + '(cmdBuffer, cmdBufferSize, &cmdSize')
+                cFile.write ('        cmdError = ARCOMMANDS_Generator_Generate' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + '(cmdBuffer, cmdBufferSize, &cmdSize')
                 for arg in cmd.args:
                         cFile.write (', feature->privatePart->'+structNAckName (cmd)+'->' + arg.name)
                 cFile.write(');\n')
@@ -1250,7 +1236,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cmd, arg)+' ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' _'+ arg.name +')\n')
                     cFile.write ('{\n')
                     
-                    cFile.write ('    // -- Set the '+arg.name+' for the command <code>' + ARCapitalize (cmd.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> --\n')
+                    cFile.write ('    // -- Set the '+arg.name+' for the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> --\n')
                     cFile.write ('    \n')
                     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                     cFile.write ('    \n')
@@ -1282,7 +1268,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg) + ' _' + arg.name + ', ')
             cFile.write ('void *customData)\n')
             cFile.write ('{\n')
-            cFile.write ('    // -- callback used when the command <code>' + ARCapitalize (evt.formattedName()) + '</code> is decoded -- \n')
+            cFile.write ('    // -- callback used when the command <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> is decoded -- \n')
             cFile.write ('    \n')
             
             cFile.write ('    '+className+' *feature = ('+className+' *)customData;\n')
@@ -1294,12 +1280,13 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('    int elementAdded = 0;\n')
             
             cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *newElement = NULL;\n')
-            if evt.listtype == ARCommandListType.LIST:
+            if evt.listType == ArCmdListType.LIST:
                 cFile.write ('    int listIndex = 0;\n')
-            if evt.getListFlagsArg():
-                cFile.write ('    int remove = (_'+evt.getListFlagsArg().name+' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.getListFlagsArg().type.enum.name, 'remove')+');\n')
-                cFile.write ('    int clear = (_'+evt.getListFlagsArg().name+' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.getListFlagsArg().type.enum.name, 'first') +' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.getListFlagsArg().type.enum.name, 'empty')+');\n')
-                cFile.write ('    int notify = (_'+evt.getListFlagsArg().name+' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.getListFlagsArg().type.enum.name, 'last') +' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.getListFlagsArg().type.enum.name, 'empty')+');\n')
+            if _LIST_FLAG in evt.argsByName:
+                cFile.write ('    int remove = (_'+evt.argsByName[_LIST_FLAG].name+' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'remove')+');\n')
+                cFile.write ('    int clear = (_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'first') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'empty')+'));\n')
+                cFile.write ('    int notify = (_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'last') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'empty')+'));\n')
+                cFile.write ('    int add = !(_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'remove') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'empty')+'));\n')
                 
             cFile.write ('    // Check parameters\n')
             cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
@@ -1309,7 +1296,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
             cFile.write ('    \n')
             
-            if evt.getListFlagsArg():
+            if _LIST_FLAG in evt.argsByName:
                 cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 cFile.write ('        // Find command elements\n')
@@ -1332,7 +1319,9 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('        {\n')
                 cFile.write ('            //remove\n')
                 cFile.write ('        }\n')
-                cFile.write ('        else \n')
+                cFile.write ('\n')
+                
+                cFile.write ('        if (add)\n')
                 cFile.write ('        {\n')
                 
                 #if not evt.isNotif: #TODO add
@@ -1346,7 +1335,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('            \n')
                 
                 #if not evt.isNotif: #TODO add
-                if evt.listtype == ARCommandListType.LIST:
+                if evt.listType == ArCmdListType.LIST:
                     cFile.write ('            if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('            {\n')
                     cFile.write ('                listIndex = HASH_COUNT (dictCmdElement->elements);\n')
@@ -1354,11 +1343,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                     cFile.write ('            \n')
                 
                 cFile.write ('            //Create new element\n')
-                cFile.write ('            newElement = '+ ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'newCmdElement'+ARCapitalize(evt.formattedName()))+' (feature,')
+                cFile.write ('            newElement = '+ ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'newCmdElement'+ARCapitalize(format_cmd_name(evt)))+' (feature,')
                 for arg in evt.args:
                     cFile.write (' _' + arg.name + ', ')
-                if evt.listtype == ARCommandListType.LIST:
-                    cFile.write ('listIndex, \n')
+                if evt.listType == ArCmdListType.LIST:
+                    cFile.write ('listIndex, ')
                 cFile.write ('&error);\n')
                 cFile.write ('            \n')
                 
@@ -1416,7 +1405,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('    \n')
                 
                 #if not evt.isNotif: #TODO add
-                if evt.listtype == ARCommandListType.LIST:
+                if evt.listType == ArCmdListType.LIST:
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
                     cFile.write ('        listIndex = HASH_COUNT (dictCmdElement->elements);\n')
@@ -1426,11 +1415,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 cFile.write ('        //Create new element\n')
-                cFile.write ('        newElement = '+ ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'newCmdElement'+ARCapitalize(evt.formattedName()))+' (feature, ')
+                cFile.write ('        newElement = '+ ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'newCmdElement'+ARCapitalize(format_cmd_name(evt)))+' (feature, ')
                 for arg in evt.args:
                     cFile.write (' _' + arg.name + ', ')
-                if evt.listtype == ARCommandListType.LIST:
-                    cFile.write ('listIndex, \n')
+                if evt.listType == ArCmdListType.LIST:
+                    cFile.write ('listIndex, ')
                 cFile.write ('&error);\n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
@@ -1493,20 +1482,20 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('\n')
             
         for evt in feature.evts:
-            cFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *'+ ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'newCmdElement'+ARCapitalize(evt.formattedName()))+' ('+className+' *feature, ')
+            cFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *'+ ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'newCmdElement'+ARCapitalize(format_cmd_name(evt)))+' ('+className+' *feature, ')
             for arg in evt.args:
                 cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg) + ' _' + arg.name + ', ')
-            if evt.listtype == ARCommandListType.LIST:
-                cFile.write ('int listIndex, \n')
+            if evt.listType == ArCmdListType.LIST:
+                cFile.write ('int listIndex, ')
             cFile.write ('eARCONTROLLER_ERROR *error)\n')
             cFile.write ('{\n')
-            cFile.write ('    // -- Create element of an event '+ARCapitalize(evt.formattedName())+' -- \n')
+            cFile.write ('    // -- Create element of an event '+ARCapitalize(format_cmd_name(evt))+' -- \n')
             cFile.write ('    \n')
             cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *newElement = NULL;\n')
             cFile.write ('    int elementKeyLength = 0;\n')
             if evt.args:
                 cFile.write ('    '+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+' *argDictNewElement = NULL;\n')
-            if [ a for a in evt.args if a.type == 'string' ]:
+            if [ a for a in evt.args if a.argType == ArArgType.STRING ]:
                 cFile.write ('    int strLength = 0;\n')
  
             cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
@@ -1539,33 +1528,33 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             
             cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
             cFile.write ('    {\n')
-            if evt.listtype == ARCommandListType.LIST:
+            if evt.listType == ArCmdListType.LIST:
                 cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
                 cFile.write ('        \n')
                 
             cFile.write ('        //Alloc Element Key\n')
-            if evt.listtype == ARCommandListType.MAP:
-                if evt.mapKey.type == 'string':
+            if evt.listType == ArCmdListType.MAP:
+                if evt.mapKey.argType == ArArgType.STRING:
                     cFile.write ('        elementKeyLength = strlen (_'+evt.mapKey.name+');\n')
                 else:
                     cFile.write ('        elementKeyLength = snprintf (NULL, 0, '+xmlToFormat(evt.mapKey)+', _'+evt.mapKey.name+');\n')
-            elif evt.listtype == ARCommandListType.LIST:
+            elif evt.listType == ArCmdListType.LIST:
                 cFile.write ('        elementKeyLength = snprintf (NULL, 0, "%d", listIndex);\n')
-            elif evt.listtype == ARCommandListType.NONE:
+            elif evt.listType == ArCmdListType.NONE:
                 cFile.write ('        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);\n')
             
             cFile.write ('        newElement->key = malloc (elementKeyLength + 1);\n')
             cFile.write ('        if (newElement->key != NULL)\n')
             cFile.write ('        {\n')
-            if evt.listtype == ARCommandListType.MAP:
-                if evt.mapKey.type == 'string':
+            if evt.listType == ArCmdListType.MAP:
+                if evt.mapKey.argType == ArArgType.STRING:
                     cFile.write ('            strncpy (newElement->key, _'+evt.mapKey.name+', (elementKeyLength + 1));\n')
                 else:
                     cFile.write ('            snprintf (newElement->key, (elementKeyLength + 1), '+xmlToFormat(evt.mapKey)+', _'+evt.mapKey.name+');\n')
             
-            elif evt.listtype == ARCommandListType.LIST:
+            elif evt.listType == ArCmdListType.LIST:
                 cFile.write ('            snprintf (newElement->key, (elementKeyLength + 1), "%d", listIndex);\n')
-            elif evt.listtype == ARCommandListType.NONE:
+            elif evt.listType == ArCmdListType.NONE:
                 cFile.write ('            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));\n')
             
             cFile.write ('            newElement->key[elementKeyLength] = \'\\0\';\n')
@@ -1574,14 +1563,14 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('        {\n')
             cFile.write ('            localError = ARCONTROLLER_ERROR_ALLOC;\n')
             cFile.write ('        }\n')
-            if evt.listtype == ARCommandListType.LIST:
+            if evt.listType == ArCmdListType.LIST:
                 cFile.write ('        \n')
                 cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
             cFile.write ('    }\n')
             cFile.write ('    \n')
             
             cFile.write ('    //Create argument Dictionary\n')
-            for arg in evt.args:
+            for arg in [arg1 for arg1 in evt.args if arg1.name != _LIST_FLAG]:
                 cFile.write ('    //Add argument To the element\n')
                 cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
@@ -1590,36 +1579,36 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                 cFile.write ('        argDictNewElement = malloc (sizeof('+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ARG')+'));\n')
                 cFile.write ('        if (argDictNewElement != NULL)\n')
                 cFile.write ('        {\n')
-                if isinstance(arg.type, AREnum):
+                if isinstance(arg.argType, ArEnum):
                     cFile.write ('            argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', 'ENUM')+';\n')
-                elif isinstance(arg.type, ARBitfield):
-                    cFile.write ('            argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', arg.type.type)+';\n')
+                elif isinstance(arg.argType, ArBitfield):
+                    cFile.write ('            argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', ArArgType.TO_STRING[arg.argType.btfType])+';\n')
                 else:
-                    cFile.write ('            argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', arg.type)+';\n')
+                    cFile.write ('            argDictNewElement->valueType = '+AREnumValue(MODULE_ARCONTROLLER, 'DICTIONARY', 'VALUE_TYPE', ArArgType.TO_STRING[arg.argType])+';\n')
                 
                 cFile.write ('            argDictNewElement->argument = '+defineNotification(feature, evt, arg)+';\n')
                 
-                if arg.type == 'string':
+                if arg.argType == ArArgType.STRING:
                     cFile.write ('            strLength = strlen (_'+arg.name+');\n')
-                    cFile.write ('            argDictNewElement->value.'+ARCapitalize(arg.type)+' = malloc (strLength + 1);\n')
-                    cFile.write ('            if (argDictNewElement->value.'+ARCapitalize(arg.type)+' != NULL)\n')
+                    cFile.write ('            argDictNewElement->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+' = malloc (strLength + 1);\n')
+                    cFile.write ('            if (argDictNewElement->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+' != NULL)\n')
                     cFile.write ('            {\n')
-                    cFile.write ('                strncpy (argDictNewElement->value.'+ARCapitalize(arg.type)+', _'+arg.name+', strLength);\n')
-                    cFile.write ('                argDictNewElement->value.'+ARCapitalize(arg.type)+'[strLength] = \'\\0\';\n')
+                    cFile.write ('                strncpy (argDictNewElement->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+', _'+arg.name+', strLength);\n')
+                    cFile.write ('                argDictNewElement->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+'[strLength] = \'\\0\';\n')
                     cFile.write ('            }\n')
                     cFile.write ('            else\n')
                     cFile.write ('            {\n')
                     cFile.write ('                localError = ARCONTROLLER_ERROR_ALLOC;\n')
                     cFile.write ('            }\n')
-                elif isinstance(arg.type, AREnum):
+                elif isinstance(arg.argType, ArEnum):
                     cFile.write ('            argDictNewElement->value.'+ARCapitalize('i32')+' = _'+arg.name+';\n')
-                elif isinstance(arg.type, ARBitfield):
-                    cFile.write ('            argDictNewElement->value.'+ARCapitalize(arg.type.type)+' = _'+arg.name+';\n')
+                elif isinstance(arg.argType, ArBitfield):
+                    cFile.write ('            argDictNewElement->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType.btfType])+' = _'+arg.name+';\n')
                 else:
-                    cFile.write ('            argDictNewElement->value.'+ARCapitalize(arg.type)+' = _'+arg.name+';\n')                    
+                    cFile.write ('            argDictNewElement->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+' = _'+arg.name+';\n')                    
                 cFile.write ('            \n')
                 
-                if arg.type == 'string':
+                if arg.argType == ArArgType.STRING:
                     cFile.write ('            if (localError == ARCONTROLLER_OK)\n')
                     cFile.write ('            {\n')
                     cFile.write ('                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);\n')
@@ -1645,11 +1634,11 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('            {\n')
             
             for arg in evt.args:
-                if arg.type == 'string':
-                    cFile.write ('                if (newElement->arguments->value.'+ARCapitalize(arg.type)+' != NULL)\n')
+                if arg.argType == ArArgType.STRING:
+                    cFile.write ('                if (newElement->arguments->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+' != NULL)\n')
                     cFile.write ('                {\n')
-                    cFile.write ('                    free(newElement->arguments->value.'+ARCapitalize(arg.type)+');\n')
-                    cFile.write ('                    newElement->arguments->value.'+ARCapitalize(arg.type)+' = NULL;\n')
+                    cFile.write ('                    free(newElement->arguments->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+');\n')
+                    cFile.write ('                    newElement->arguments->value.'+ARCapitalize(ArArgType.TO_STRING[arg.argType])+' = NULL;\n')
                     cFile.write ('                }\n')
                     cFile.write ('                \n')
             
@@ -1688,7 +1677,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
             cFile.write ('}\n')
             cFile.write ('\n')
             
-        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController)\n')
+        cFile.write ('eARCONTROLLER_ERROR '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'SetNetworkController')+' ('+className+' *feature, ARCONTROLLER_Network_t *networkController)\n')
         cFile.write ('{\n')
         cFile.write ('    // -- Set a NetworkController to use to send commands. --\n')
         cFile.write ('    \n')
@@ -1714,7 +1703,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
         cFile.write ('}\n')
         cFile.write ('\n')
         
-        cFile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
+        cFile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'GetCommandElements')+' ('+className+' *feature, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
         cFile.write ('{\n')
         cFile.write ('    // -- Get Command Arguments --\n')
         cFile.write ('    \n')
@@ -1777,15 +1766,15 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
 
     cFile.close () # see automake all source of folder !!!!!!!!
     
-def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
+def generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     
     #########################################
     # Write Device controller JNI java file #
     #########################################
     
-    for feature in allFeatures:
+    for feature in ctx.features:
     
-        className = 'ARFeature'+ ARCapitalize(feature.name)
+        className = 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature))
         classPrivateName = ARTypeName (MODULE_ARCONTROLLER, 'device', 'private')
 
         fileName = className+'.java'
@@ -1805,9 +1794,8 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
 
         jfile.write ('/**\n')
         jfile.write (' * @file '+fileName+'\n')
-        jfile.write (' * @brief Feature controller allow to send command related of '+feature.name+' Feature.\n')
-        for comment in feature.comments:
-            jfile.write (' * ' + comment+'\n')
+        jfile.write (' * @brief Feature controller allow to send command related of '+get_ftr_old_name(feature)+' Feature.\n')
+        jfile.write (' * ' + feature.doc.replace('\n', '\n * ')+'\n')
         jfile.write (' */\n')
         
         jfile.write ('package com.parrot.arsdk.arcontroller;\n')
@@ -1825,8 +1813,8 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         jfile.write ('    \n')
         
         for evt in feature.evts:
-            for arg in evt.args:
-                jfile.write ('    public static String ' + defineNotification(feature, evt, arg) + ' = ""; /**< Key of the argument </code>'+arg.name+'</code> of event <code>' + ARCapitalize (evt.formattedName()) + '</code> in feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            for arg in [arg1 for arg1 in evt.args if arg1.name != _LIST_FLAG]:
+                jfile.write ('    public static String ' + defineNotification(feature, evt, arg) + ' = ""; /**< Key of the argument </code>'+arg.name+'</code> of event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
         jfile.write ('\n')
         for evt in feature.evts:
             for arg in evt.args:
@@ -1836,23 +1824,23 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         for cmd in feature.cmds:
             jfile.write ('    private native int '+nativeSendingFunction(cmd)+' (long jFeature')
             for arg in cmd.args:
-                if 'enum' == arg.type:
+                if isinstance(arg.argType, ArEnum):
                     jfile.write (', int ' + arg.name + '')
                 else:
                     jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + '')
             jfile.write (');\n')
         
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 jfile.write ('    private native int '+nativeSetNAckFunction(cmd)+' (long jFeature')
                 for arg in cmd.args:
-                    if 'enum' == arg.type:
+                    if isinstance(arg.argType, ArEnum):
                         jfile.write (', int ' + arg.name + '')
                     else:
                         jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + '')
                 jfile.write (');\n')
             
                 for arg in cmd.args:
-                    if 'enum' == arg.type:
+                    if isinstance(arg.argType, ArEnum):
                         jfile.write ('    private native int '+nativeSetNAckFunction(cmd, arg)+' (long jFeature, int ' + arg.name + ');\n')
                     else:
                         jfile.write ('    private native int '+nativeSetNAckFunction(cmd, arg)+' (long jFeature, ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + ');\n')
@@ -1864,7 +1852,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         jfile.write ('    static\n')
         jfile.write ('    {\n')
         for evt in feature.evts:
-            for arg in evt.args:
+            for arg in [arg1 for arg1 in evt.args if arg1.name != _LIST_FLAG]:
                 jfile.write ('        ' + defineNotification(feature, evt, arg) + ' = '+ nativeGetNotificationVal(feature, evt, arg) + ' ();\n')
         jfile.write ('    }\n')
         jfile.write ('    \n')
@@ -1916,6 +1904,13 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         jfile.write ('    \n')
         
         for cmd in feature.cmds:
+            jfile.write ('    /**\n')
+            jfile.write ('     * Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code>\n')
+            jfile.write ('     * ' + cmd.doc.replace('\n', '\n     * ')+'\n')
+            for arg in cmd.args:
+                jfile.write ('     * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
+            jfile.write ('     * return executing error\n')
+            jfile.write ('     */\n')
             jfile.write ('    public ARCONTROLLER_ERROR_ENUM '+sendingFunction (cmd)+' (')
             first = True
             for arg in cmd.args:
@@ -1935,7 +1930,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             jfile.write ('                int nativeError = '+nativeSendingFunction(cmd)+' (jniFeature')
             for arg in cmd.args:
                 jfile.write (', _' + arg.name)
-                if 'enum' == arg.type:
+                if isinstance(arg.argType, ArEnum):
                     jfile.write ('.getValue()')
             jfile.write (');\n')
             jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
@@ -1945,7 +1940,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             jfile.write ('    }\n')
             jfile.write ('    \n')
             
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 jfile.write ('    public ARCONTROLLER_ERROR_ENUM '+javaSetNAckFunction (cmd)+' (')
                 isFirst = True
                 for arg in cmd.args:
@@ -1964,7 +1959,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                 jfile.write ('                int nativeError = '+nativeSetNAckFunction(cmd)+' (jniFeature')
                 for arg in cmd.args:
                     jfile.write (', _' + arg.name)
-                    if 'enum' == arg.type:
+                    if isinstance(arg.argType, ArEnum):
                         jfile.write ('.getValue()')
                 jfile.write (');\n')
                 jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
@@ -1982,7 +1977,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     jfile.write ('        {\n')
                     jfile.write ('            if(initOk == true)\n')
                     jfile.write ('            {\n')
-                    if 'enum' == arg.type:
+                    if isinstance(arg.argType, ArEnum):
                         jfile.write ('                int nativeError = '+nativeSetNAckFunction(cmd, arg)+' (jniFeature, _' + arg.name + '.getValue());\n')
                     else:
                         jfile.write ('                int nativeError = '+nativeSetNAckFunction(cmd, arg)+' (jniFeature, _' + arg.name + ');\n')
@@ -2004,12 +1999,12 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     # Write Feature controller JNI c file           #
     #################################################
     
-    for feature in allFeatures:
+    for feature in ctx.features:
         
-        javaClassName = 'ARFeature'+ ARCapitalize(feature.name)
-        jniClassName = MODULE_ARCONTROLLER + '_JNI_Feature'+ ARCapitalize(feature.name) #ARTypeName (MODULE_FEATURE, 'JNI_'+feature.name, '')
-        className = ARTypeName (MODULE_FEATURE, feature.name, '')
-        classTag = 'ARCONTROLLER_JNIFEATURE'+feature.name.upper()+'_TAG'
+        javaClassName = 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature))
+        jniClassName = MODULE_ARCONTROLLER + '_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature)) #ARTypeName (MODULE_FEATURE, 'JNI_'+get_ftr_old_name(feature), '')
+        className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')
+        classTag = 'ARCONTROLLER_JNIFEATURE'+get_ftr_old_name(feature).upper()+'_TAG'
 
         cFileName = jniClassName + '.c'
         filepath = JNI_C_DIR + cFileName
@@ -2028,7 +2023,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
 
         cFile.write ('/**\n')
         cFile.write ('* @file '+jniClassName+'\n')
-        cFile.write ('* @brief '+ARTypeName (MODULE_FEATURE, feature.name, '')+' JNI feature '+feature.name+' c file.\n')
+        cFile.write ('* @brief '+ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')+' JNI feature '+get_ftr_old_name(feature)+' c file.\n')
         cFile.write ('*/\n')
         cFile.write ('\n')
         
@@ -2069,7 +2064,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         cFile.write ('\n')
         
         for evt in feature.evts:
-            for arg in evt.args:
+            for arg in [arg1 for arg1 in evt.args if arg1.name != _LIST_FLAG]:
                 cFile.write ('JNIEXPORT jstring JNICALL\n')
                 cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_' + nativeGetNotificationVal(feature, evt, arg) + ' (JNIEnv *env , jclass class)\n')
                 cFile.write ('{\n')
@@ -2081,7 +2076,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             cFile.write ('JNIEXPORT jint JNICALL\n')
             cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSendingFunction(cmd)+' (JNIEnv *env, jobject thizz, jlong jFeature')
             for arg in cmd.args:
-                cFile.write (', ' + xmlToJNI (arg) + ' _' + arg.name + '')
+                cFile.write (', ' + xmlToJni (feature, cmd, arg) + ' _' + arg.name + '')
             cFile.write (')\n')
             cFile.write ('{\n')
             cFile.write ('    // local declarations\n')
@@ -2089,13 +2084,13 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
             hasArgString = False
             for arg in cmd.args:
-                if (arg.type == 'string'):
+                if (arg.argType == ArArgType.STRING):
                     hasArgString = True
                     cFile.write ('    const char *native'+ARCapitalize(arg.name)+' = (*env)->GetStringUTFChars(env, _'+arg.name+', 0);\n')
             cFile.write ('    \n')
             cFile.write ('    error = nativeFeature->'+sendingFunction(cmd)+' (nativeFeature')
             for arg in cmd.args:
-                if (arg.type == 'string'):
+                if (arg.argType == ArArgType.STRING):
                     cFile.write (', (char *)native'+ARCapitalize(arg.name))
                 else:
                     cFile.write (', _' + arg.name)
@@ -2105,7 +2100,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             if hasArgString:
                 cFile.write ('    // cleanup\n')
             for arg in cmd.args:
-                if (arg.type == 'string'):
+                if (arg.argType == ArArgType.STRING):
                     cFile.write ('    (*env)->ReleaseStringUTFChars(env, _'+arg.name+', native'+ARCapitalize(arg.name)+');\n')
                     
             if hasArgString:
@@ -2115,11 +2110,11 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             cFile.write ('}\n')
             cFile.write ('\n')
             
-            if cmd.buf == ARCommandBuffer.NON_ACK:
+            if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('JNIEXPORT jint JNICALL\n')
                 cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSetNAckFunction(cmd)+' (JNIEnv *env, jobject thizz, jlong jFeature')
                 for arg in cmd.args:
-                    cFile.write (', ' + xmlToJNI (arg) + ' _' + arg.name + '')
+                    cFile.write (', ' + xmlToJni (feature, cmd, arg) + ' _' + arg.name + '')
                 cFile.write (')\n')
                 cFile.write ('{\n')
                 cFile.write ('    // local declarations\n')
@@ -2127,13 +2122,13 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                 cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
                 hasArgString = False
                 for arg in cmd.args:
-                    if (arg.type == 'string'):
+                    if (arg.argType == ArArgType.STRING):
                         hasArgString = True
                         cFile.write ('    const char *native'+ARCapitalize(arg.name)+' = (*env)->GetStringUTFChars(env, _'+arg.name+', 0);\n')
                 cFile.write ('    \n')
                 cFile.write ('    error = nativeFeature->'+setNAckFunction(cmd)+' (nativeFeature')
                 for arg in cmd.args:
-                    if (arg.type == 'string'):
+                    if (arg.argType == ArArgType.STRING):
                         cFile.write (', (char *)native'+ARCapitalize(arg.name))
                     else:
                         cFile.write (', _' + arg.name)
@@ -2143,7 +2138,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                 if hasArgString:
                     cFile.write ('    // cleanup\n')
                 for arg in cmd.args:
-                    if (arg.type == 'string'):
+                    if (arg.argType == ArArgType.STRING):
                         cFile.write ('    (*env)->ReleaseStringUTFChars(env, _'+arg.name+', native'+ARCapitalize(arg.name)+');\n')
                         
                 if hasArgString:
@@ -2155,24 +2150,24 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     
                 for arg in cmd.args:
                     cFile.write ('JNIEXPORT jint JNICALL\n')
-                    cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSetNAckFunction(cmd, arg)+' (JNIEnv *env, jobject thizz, jlong jFeature, ' + xmlToJNI (arg) + ' _' + arg.name + ')\n')
+                    cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSetNAckFunction(cmd, arg)+' (JNIEnv *env, jobject thizz, jlong jFeature, ' + xmlToJni (feature, cmd, arg) + ' _' + arg.name + ')\n')
                     cFile.write ('{\n')
                     cFile.write ('    // local declarations\n')
                     cFile.write ('    '+className+' *nativeFeature = ('+className+'*) (intptr_t) jFeature;\n')
                     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
 
-                    if (arg.type == 'string'):
+                    if (arg.argType == ArArgType.STRING):
                         cFile.write ('    const char *native'+ARCapitalize(arg.name)+' = (*env)->GetStringUTFChars(env, _'+arg.name+', 0);\n')
                     cFile.write ('    \n')
                     cFile.write ('    error = nativeFeature->'+setNAckFunction(cmd, arg)+' (nativeFeature')
-                    if (arg.type == 'string'):
+                    if (arg.argType == ArArgType.STRING):
                         cFile.write (', (char *)native'+ARCapitalize(arg.name))
                     else:
                         cFile.write (', _' + arg.name)
                     cFile.write (');\n')
                     cFile.write ('\n')
     
-                    if (arg.type == 'string'):
+                    if (arg.argType == ArArgType.STRING):
                         cFile.write ('    // cleanup\n')
                         cFile.write ('    (*env)->ReleaseStringUTFChars(env, _'+arg.name+', native'+ARCapitalize(arg.name)+');\n')
                         cFile.write ('\n')
