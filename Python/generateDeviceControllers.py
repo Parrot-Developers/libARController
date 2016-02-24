@@ -40,6 +40,7 @@ if '' == MYDIR:
     MYDIR=os.getcwd()
 
 sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
+sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
 
 DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
 DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
@@ -47,12 +48,13 @@ DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
 from ARFuncs import *
 from ARCommandsParser import *
 from ARControllerUtils import *
+from arsdkparser import *
 
 bref='Device controller allow to drive a device.'
 
-def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
+def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     
-    deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, allFeatures)
+    deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, ctx)
     
     #check deviceController list
     if not deviceControllers:
@@ -156,8 +158,8 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('typedef struct\n')
     hfile.write ('{\n')
-    for feature in allFeatures:
-        hfile.write ('    '+ARTypeName (MODULE_FEATURE, feature.name, '')+' *'+ARUncapitalize(feature.name)+'; /**< */\n')
+    for feature in ctx.features:
+        hfile.write ('    '+ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')+' *'+ARUncapitalize(get_ftr_old_name(feature))+'; /**< */\n')
     hfile.write ('    '+classPrivateName+' *privatePart; /**< private part of the deviceController */\n')
     hfile.write ('}'+className+';\n')
     hfile.write ('\n')
@@ -835,8 +837,8 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (deviceController != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        //initialization of the device controller\n')
-    for feature in allFeatures:
-        cFile.write ('        deviceController->'+ARUncapitalize(feature.name)+' = NULL;\n')
+    for feature in ctx.features:
+        cFile.write ('        deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' = NULL;\n')
     cFile.write ('        deviceController->privatePart = NULL;\n')
     cFile.write ('    }\n')
     cFile.write ('    else\n')
@@ -935,7 +937,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
         for featureName in deviceController.features:
             cFile.write ('                if (localError == ARCONTROLLER_OK)\n')
             cFile.write ('                {\n')
-            cFile.write ('                    deviceController->'+ARUncapitalize(featureName)+' = ' + ARFunctionName (MODULE_FEATURE, featureName, 'New')+' (deviceController->privatePart->networkController, &localError);\n')
+            cFile.write ('                    deviceController->'+ARUncapitalize(ftr_new_to_old_name(featureName))+' = ' + ARFunctionName (MODULE_FEATURE, ftr_new_to_old_name(featureName), 'New')+' (deviceController->privatePart->networkController, &localError);\n')
             cFile.write ('                }\n')
             cFile.write ('                \n')
         cFile.write ('                break;\n')
@@ -1010,7 +1012,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     for deviceController in deviceControllers:
         cFile.write ('                    case '+discoveryProduct (deviceController.product)+':\n')
         for featureName in deviceController.features:
-            cFile.write ('                        ' + ARFunctionName (MODULE_FEATURE, featureName, 'Delete')+' (&((*deviceController)->'+ARUncapitalize(featureName)+'));\n')
+            cFile.write ('                        ' + ARFunctionName (MODULE_FEATURE, ftr_new_to_old_name(featureName), 'Delete')+' (&((*deviceController)->'+ARUncapitalize(ftr_new_to_old_name(featureName))+'));\n')
             cFile.write ('                        \n')
         cFile.write ('                        break;\n')
         cFile.write ('                    \n')
@@ -1093,13 +1095,13 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
     
-    for feature in allFeatures:
-        cFile.write ('    if ((deviceController->'+ARUncapitalize(feature.name)+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(feature.name)+')))\n')
+    for feature in ctx.features:
+        cFile.write ('    if ((deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+')))\n')
         cFile.write ('    {\n')
         for evt in feature.evts:
             cFile.write ('        if (error == ARCONTROLLER_OK)\n')
             cFile.write ('        {\n')
-            cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, feature.name, 'addCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
+            cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'addCallback')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
             cFile.write ('        }\n')
             cFile.write ('        \n')
         cFile.write ('    }\n')
@@ -1128,12 +1130,12 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     
-    for feature in allFeatures:
-        cFile.write ('        if ((deviceController->'+ARUncapitalize(feature.name)+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(feature.name)+')))\n')
+    for feature in ctx.features:
+        cFile.write ('        if ((deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+')))\n')
         cFile.write ('        {\n')
         
         for evt in feature.evts:
-            cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'removeCallback')+' (deviceController->'+ARUncapitalize(feature.name)+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
+            cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'removeCallback')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
             cFile.write ('            if (error != ARCONTROLLER_OK)\n')
             cFile.write ('            {\n')
             cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring removing of the callback for '+defineNotification(feature, evt)+'; error :%s", ARCONTROLLER_Error_ToString (removingError));\n')
@@ -1458,9 +1460,9 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        switch (featureKey)\n')
     cFile.write ('        {\n')
-    for feature in allFeatures:
+    for feature in ctx.features:
         cFile.write ('            case '+defineNotification(feature)+':\n')
-        cFile.write ('                elements = ' + ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'GetCommandElements')+' (deviceController->'+ARUncapitalize(feature.name)+', commandKey, &localError);\n')
+        cFile.write ('                elements = ' + ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'GetCommandElements')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', commandKey, &localError);\n')
         cFile.write ('                \n')
         cFile.write ('                break;\n')
         cFile.write ('            \n')
@@ -2094,10 +2096,10 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     
-    for feature in allFeatures:
-        cFile.write ('        if (deviceController->'+ARUncapitalize(feature.name)+' != NULL)\n')
+    for feature in ctx.features:
+        cFile.write ('        if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
         cFile.write ('        {\n')
-        cFile.write ('            settingError = '+ARFunctionName(MODULE_FEATURE, feature.name, 'SetNetworkController')+' (deviceController->'+ARUncapitalize(feature.name)+', deviceController->privatePart->networkController);\n')
+        cFile.write ('            settingError = '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'SetNetworkController')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', deviceController->privatePart->networkController);\n')
         cFile.write ('            if (error != ARCONTROLLER_OK)\n')
         cFile.write ('            {\n')
         cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring setting the network Controller to the feature of the callback for '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (settingError));\n')
@@ -2960,14 +2962,14 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('            ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('            \n')
 
-    for feature in allFeatures:
+    for feature in ctx.features:
         #if there are NON_ACK cmd
-        if [cmd for cmd in feature.cmds if cmd.buf == ARCommandBuffer.NON_ACK]:
-            cFile.write ('            if (deviceController->'+ARUncapitalize(feature.name)+' != NULL)\n')
+        if [cmd for cmd in feature.cmds if cmd.bufferType == ARCommandBuffer.NON_ACK]:
+            cFile.write ('            if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
             cFile.write ('            {\n')
             for cmd in feature.cmds:
-                if cmd.buf == ARCommandBuffer.NON_ACK:
-                    cFile.write ('                error = '+ sendNAckFunctionName (feature, cmd)+' (deviceController->'+ARUncapitalize(feature.name)+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
+                if cmd.bufferType == ARCommandBuffer.NON_ACK:
+                    cFile.write ('                error = '+ sendNAckFunctionName (feature, cmd)+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
                     cFile.write ('                if (error != ARCONTROLLER_OK)\n')
                     cFile.write ('                {\n')
                     cFile.write ('                    ARSAL_PRINT (ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured while send '+cmd.name+' : %s", ARCONTROLLER_Error_ToString (error));\n')
@@ -3223,7 +3225,7 @@ def generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.close ()
 
-def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
+def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     
     #########################################
     # Write Device controller header file   #
@@ -3278,7 +3280,7 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     jfile.write ('    private native int nativeStop (long jDeviceController);\n')
     jfile.write ('    \n')
     
-    for feature in allFeatures:
+    for feature in ctx.features:
         jfile.write ('    private native long '+nativeGetFeature(feature)+' (long jDeviceController);\n')
         
     jfile.write ('    private native int nativeGetState (long jDeviceController) throws ARControllerException;\n')
@@ -3295,7 +3297,7 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     jfile.write ('    private List<ARDeviceControllerStreamListener> streamlisteners;\n')
 
     
-    for feature in allFeatures:
+    for feature in ctx.features:
         jfile.write ('    '+javaFeatureClassName(feature)+' '+javaFeatureName(feature)+';\n')
     
     
@@ -3352,7 +3354,7 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     jfile.write ('                jniDeviceController = 0;\n')
     jfile.write ('                initOk = false;\n')
     jfile.write ('                \n')
-    for feature in allFeatures:
+    for feature in ctx.features:
         jfile.write ('                if ('+javaFeatureName(feature)+' != null)\n')
         jfile.write ('                {\n')
         jfile.write ('                    '+javaFeatureName(feature)+'.dispose();\n')
@@ -3421,8 +3423,8 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     jfile.write ('    }\n')
     jfile.write ('    \n')
     
-    for feature in allFeatures:
-        jfile.write ('    public '+javaFeatureClassName(feature)+' getFeature'+ ARCapitalize(feature.name)+' ()\n')
+    for feature in ctx.features:
+        jfile.write ('    public '+javaFeatureClassName(feature)+' getFeature'+ ARCapitalize(get_ftr_old_name(feature))+' ()\n')
         jfile.write ('    {\n')
         jfile.write ('        return '+javaFeatureName(feature)+';\n')
         jfile.write ('    }\n')
@@ -3544,7 +3546,7 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     jfile.write ('    private void reloadFeatures()\n')
     jfile.write ('    {\n')
     
-    for feature in allFeatures:
+    for feature in ctx.features:
         jfile.write ('        long '+nativeFeatureName(feature)+' = '+nativeGetFeature(feature)+' (jniDeviceController);\n')
         jfile.write ('        if (('+javaFeatureName(feature)+' == null) && ('+nativeFeatureName(feature)+' != 0))\n')
         jfile.write ('        {\n')
@@ -3903,14 +3905,14 @@ def generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    for feature in allFeatures:
+    for feature in ctx.features:
         cFile.write ('JNIEXPORT jlong JNICALL\n')
         cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_'+nativeGetFeature(feature)+' (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
         cFile.write ('{\n')
         cFile.write ('    // local declarations\n')
         cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
         cFile.write ('\n')
-        cFile.write ('    return (long) jniDeviceController->nativeDeviceController->'+ARUncapitalize(feature.name)+';\n')
+        cFile.write ('    return (long) jniDeviceController->nativeDeviceController->'+ARUncapitalize(get_ftr_old_name(feature))+';\n')
         cFile.write ('}\n')
         cFile.write ('\n')
         

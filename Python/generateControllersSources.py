@@ -40,12 +40,14 @@ if '' == MYDIR:
     MYDIR=os.getcwd()
 
 sys.path.append('%(MYDIR)s/../../ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
 
 from ARFuncs import *
 from ARCommandsParser import *
 from generateFeatureControllers import *
 from generateDeviceControllers import *
 from generateDictionaryKeyEnum import *
+from arsdkparser import *
 
 # Default project name
 DEFAULT_FEATURE_NAME='common'
@@ -186,83 +188,68 @@ ARPrint ('libARCommandsDir = ' + libARCommandsDir)
 # of commands / classes         #
 #################################
 
-allFeatures = parseAllFeatures(features, '%(libARCommandsDir)s' % locals(), genDebug)
 
-# Check all
-err = ''
-for feature in allFeatures:
-    err = err + feature.check ()
-if len (err) > 0:
-    ARPrint ('Your XML Files contain errors:', True)
-    ARPrint (err)
-    EXIT (1)
+# Get xml file
+xmlDir = libARCommandsDir + '/Xml/'
+listDir = os.listdir(xmlDir)
+xmlFiles = [f for f in listDir if f.endswith('.xml')] # check if in features
+xmlFiles.remove('generic.xml')
+xmlFiles = sorted(xmlFiles, key=str)
+
+# Parse all xml files
+ctx = ArParserCtx()
+for xml in ['generic.xml'] + xmlFiles:
+    xmlPath = xmlDir+'/'+xml
+    parse_xml(ctx, xmlPath)
 
 if noGen: # called with "-nogen"
     ARPrint ('Commands parsed:')
     for ftr in allFeatures:
-        ARPrint ('Feature ' + ftr.name)
+        ARPrint ('Feature ' + get_ftr_old_name(ftr))
         ARPrint ('/*')
-        for comment in ftr.comments:
-            ARPrint (' * ' + comment)
+        ARPrint (' * ' + ftr.doc.replace('\n', '\n * '))
         ARPrint (' */')
         for enum in ftr.enums:
             ARPrint (' --> enum:' + enum.name)
             ARPrint ('     /* ')
-            for comment in enum.comments:
-                ARPrint ('      * ' + comment)
+            ARPrint ('      * ' + enum.doc.replace('\n', '\n      * '))
             ARPrint ('      */')
-            for val in enum.values:
-                ARPrint ('     --> ' + val.name)
+            for eVal in enum.values:
+                ARPrint ('     --> ' + eVal.name + 'val:' + str(eVal.value))
                 ARPrint ('     /* ')
-                for comment in val.comments:
-                    ARPrint ('      * ' + comment)
+                ARPrint ('      * ' + eVal.doc.replace('\n', '\n      * '))
                 ARPrint ('      */ ')
-        for cmd in ftr.cmds:
-            ARPrint (' --> cmd:' + cmd.name)
-            ARPrint ('     buffer:  ' + ARCommandBuffer.toString(cmd.buf))
-            ARPrint ('     timeout: ' + ARCommandTimeoutPolicy.toString(cmd.timeout))
-            ARPrint ('     list:    ' + ARCommandListType.toString(cmd.listtype))
+        for msg in ftr.cmds + ftr.evts:
+            if isinstance (msg, ArCmd):
+                ARPrint (' --> cmd:' + msg.name)
+            else:
+                ARPrint (' --> evt:' + msg.name)
+            ARPrint ('     buffer:  ' + ArCmdBufferType.TO_STRING[msg.bufferType])
+            ARPrint ('     timeout: ' + ArCmdTimeoutPolicy.TO_STRING[msg.timeoutPolicy])
+            ARPrint ('     list:    ' + ArCmdListType.TO_STRING[msg.listType])
+            ARPrint ('     content: ' + ArCmdContent.TO_STRING[msg.content])
             ARPrint ('     /* ')
-            for comment in cmd.comments:
-                ARPrint ('      * ' + comment)
+            ARPrint ('      * ' + msg.doc.replace('\n', '\n      * '))
             ARPrint ('      */')
-            for arg in cmd.args:
-                if isinstance (arg.type, AREnum):
-                    ARPrint ('     (' + arg.type.name + ' ' + arg.name + ')')
+            for arg in msg.args:
+                if isinstance (arg.argType, ArEnum):
+                    ARPrint ('     (' + arg.argType.name + ' ' + arg.name + ')')
+                elif isinstance (arg.argType, ArBitfield):
+                    ARPrint ('     (bitfield:' + ArArgType.TO_STRING[arg.argType.btfType] + ':' + arg.argType.enum.name + ' ' + arg.name + ')')
                 else:
-                    ARPrint ('     (' + arg.type + ' ' + arg.name + ')')
+                    ARPrint ('     (' + ArArgType.TO_STRING[arg.argType] + ' ' + arg.name + ')')
                 ARPrint ('     /* ')
-                for comment in arg.comments:
-                    ARPrint ('      * ' + comment)
+                ARPrint ('      * ' + arg.doc.replace('\n', '\n      * '))
                 ARPrint ('      */')
-        for evt in ftr.evts:
-            ARPrint (' --> evt:' + evt.name)
-            ARPrint ('     buffer:  ' + ARCommandBuffer.toString(evt.buf))
-            ARPrint ('     timeout: ' + ARCommandTimeoutPolicy.toString(evt.timeout))
-            ARPrint ('     list:    ' + ARCommandListType.toString(evt.listtype))
-            ARPrint ('     /* ')
-            for comment in evt.comments:
-                ARPrint ('      * ' + comment)
-            ARPrint ('      */')
-            for arg in evt.args:
-                if isinstance (arg.type, AREnum):
-                    ARPrint ('     (' + arg.type.name + ' ' + arg.name + ')')
-                else:
-                    ARPrint ('     (' + arg.type + ' ' + arg.name + ')')
-                ARPrint ('     /* ')
-                for comment in arg.comments:
-                    ARPrint ('      * ' + comment)
-                ARPrint ('      */')
-
     EXIT (0)
 
 # generate Feature Controllers
-generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR)
-generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR);
+generateFeatureControllers (ctx, SRC_DIR, INC_DIR)
+generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR);
 
 # generate Device Controllers
-generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR)
-generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR)
+generateDeviceControllers (ctx, SRC_DIR, INC_DIR)
+generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR)
 
 # generate DictionaryKeyEnum
-generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR)
+generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR)
