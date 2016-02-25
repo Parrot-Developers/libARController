@@ -598,11 +598,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
             case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM:
                 bufferID = networkController->networkConfig.controllerToDeviceARStreamAck;
                 break;
-                
-            case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX:
-                error = ARCONTROLLER_ERROR;
-                break;
-            
+
             default:
                 ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "DataType : %d not known", dataType);
                 error = ARCONTROLLER_ERROR;
