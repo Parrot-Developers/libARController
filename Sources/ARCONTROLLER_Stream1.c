@@ -404,7 +404,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream1_TryGetFrame (ARCONTROLLER_Stream1_t *
     }
     // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
-    if ((error == ARCONTROLLER_OK) && (stream1Controller->isRunning))
+    if ((localError == ARCONTROLLER_OK) && (stream1Controller->isRunning))
     {
         frame = ARCONTROLLER_StreamQueue_TryPop (stream1Controller->readyQueue, &localError);
     }
