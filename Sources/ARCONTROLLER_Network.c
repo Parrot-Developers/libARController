@@ -621,7 +621,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
     {
         *netError = localNetError;
     }
-    
+
+    if (error != ARCONTROLLER_OK)
+        free(sendingConfig);
+
     return error;
 }
 
