@@ -264,7 +264,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Dictionary_AddDictionaryElement (ARCONTROLLER_D
     // Check parameters
     if (dictionary == NULL)
     {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+        return ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
     // No Else: The checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
