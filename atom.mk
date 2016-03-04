@@ -57,4 +57,7 @@ LOCAL_INSTALL_HEADERS := \
 	gen/Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h:usr/include/libARController/ \
 	gen/Includes/libARController/ARCONTROLLER_Feature.h:usr/include/libARController/
 
+LOCAL_CUSTOM_MACROS := \
+	arsdkgen-macro:$(LOCAL_PATH)/Python/generateControllersSources.py,$(LOCAL_PATH)/gen
+
 include $(BUILD_LIBRARY)

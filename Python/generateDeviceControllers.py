@@ -34,23 +34,29 @@
 import sys
 import os
 import re
+import arsdkparser
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
-
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
-sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
-
-DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
-DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+LIBARCONTROLLER_DIR=os.path.realpath(os.path.join(MYDIR, ".."))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
+from libARCommandsgen import *
 from ARControllerUtils import *
 from arsdkparser import *
 
+DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
+DEVICE_CONTROLLER_FILE = PACKAGES_DIR+'/libARController/Xml/'+DEVICE_CONTROLLER_FILE_NAME
+
 bref='Device controller allow to drive a device.'
+
+CTRL_DEVICE_H_NAME = 'ARCONTROLLER_Device.h'
+CTRL_DEVICE_PRIV_H_NAME = 'ARCONTROLLER_Device.h'
+CTRL_DEVICE_C_NAME = 'ARCONTROLLER_Device.c'
+CTRL_DEVICE_JAVA_NAME = 'ARDeviceController.java'
+CTRL_DEVICE_JNI_C_NAME = 'ARCONTROLLER_JNI_Device.c'
 
 def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     
@@ -75,7 +81,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     className = ARTypeName (MODULE_ARCONTROLLER, 'device', '')
     classPrivateName = ARTypeName (MODULE_ARCONTROLLER, 'device', 'private')
 
-    headerFileName = 'ARCONTROLLER_Device.h'
+    headerFileName = CTRL_DEVICE_H_NAME
     filepath = INC_DIR + headerFileName
     hfile = open (filepath, 'w')
 
@@ -330,7 +336,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
 
     includeDefine = '_' + MODULE_DEVICE + '_PRIVATE_H_'
 
-    headerPrivateFileName = 'ARCONTROLLER_Device' + '.h'
+    headerPrivateFileName = CTRL_DEVICE_PRIV_H_NAME
     filepath = SRC_DIR + headerPrivateFileName
     hPrivFile = open (filepath, 'w')
 
@@ -744,7 +750,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     classTag = 'ARCONTROLLER_Device'
     className = 'ARCONTROLLER_Device_t'
     
-    cFileName = 'ARCONTROLLER_Device.c'
+    cFileName = CTRL_DEVICE_C_NAME
     filepath = SRC_DIR + cFileName
     cFile = open (filepath, 'w')
 
@@ -2964,11 +2970,11 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
 
     for feature in ctx.features:
         #if there are NON_ACK cmd
-        if [cmd for cmd in feature.cmds if cmd.bufferType == ARCommandBuffer.NON_ACK]:
+        if [cmd for cmd in feature.cmds if cmd.bufferType == ArCmdBufferType.NON_ACK]:
             cFile.write ('            if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
             cFile.write ('            {\n')
             for cmd in feature.cmds:
-                if cmd.bufferType == ARCommandBuffer.NON_ACK:
+                if cmd.bufferType == ArCmdBufferType.NON_ACK:
                     cFile.write ('                error = '+ sendNAckFunctionName (feature, cmd)+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
                     cFile.write ('                if (error != ARCONTROLLER_OK)\n')
                     cFile.write ('                {\n')
@@ -3234,7 +3240,7 @@ def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     className = 'ARDeviceController'
     classPrivateName = ARTypeName (MODULE_ARCONTROLLER, 'device', 'private')
 
-    fileName = 'ARDeviceController.java'
+    fileName = CTRL_DEVICE_JAVA_NAME
     filepath = JNI_JAVA_DIR + fileName
     jfile = open (filepath, 'w')
 
@@ -3656,8 +3662,7 @@ def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     className = 'ARCONTROLLER_JNIDeviceController_t'
     classTag = 'ARCONTROLLER_JNIDEVICE_TAG'
 
-    cFileName = jniClassName + '.c'
-    filepath = JNI_C_DIR + cFileName
+    filepath = JNI_C_DIR + CTRL_DEVICE_JNI_C_NAME
     cFile = open (filepath, 'w')
 
     cFile.write ('/**********************************************************\n')
@@ -4461,3 +4466,11 @@ def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
+
+def list_files_deviceCtrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR):
+    ''' Print device controllers generated files '''
+    print INC_DIR + CTRL_DEVICE_H_NAME
+    print SRC_DIR + CTRL_DEVICE_PRIV_H_NAME
+    print SRC_DIR + CTRL_DEVICE_C_NAME
+    print JNI_JAVA_DIR + CTRL_DEVICE_JAVA_NAME
+    print JNI_C_DIR + CTRL_DEVICE_JNI_C_NAME

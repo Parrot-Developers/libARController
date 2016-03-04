@@ -34,21 +34,23 @@
 import sys
 import os
 import re
+import arsdkparser
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
-
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
-sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
-
-DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
-DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
+from libARCommandsgen import *
 from ARControllerUtils import *
 from arsdkparser import *
+
+DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
+DEVICE_CONTROLLER_FILE = PACKAGES_DIR+'/libARController/Xml/'+DEVICE_CONTROLLER_FILE_NAME
+
+CTRL_DICT_KEY_H_NAME = 'ARCONTROLLER_DICTIONARY_Key.h'
+CTRL_DICT_KEY_C_NAME = 'ARCONTROLLER_DICTIONARY_Key.c'
 
 def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     
@@ -69,8 +71,8 @@ def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
 
     includeDefine = '_' + MODULE_DICTIONARY + '_KEY_H_'
 
-    headerFileName = 'ARCONTROLLER_DICTIONARY_Key.h'
     bref = '.h'
+    headerFileName = CTRL_DICT_KEY_H_NAME
     filepath = INC_DIR + headerFileName
     hFile = open (filepath, 'w')
 
@@ -129,7 +131,7 @@ def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     
     classTag = 'ARCONTROLLER_Device'
     
-    cFileName = 'ARCONTROLLER_DICTIONARY_Key.c'
+    cFileName = CTRL_DICT_KEY_C_NAME
     filepath = SRC_DIR + cFileName
     cFile = open (filepath, 'w')
 
@@ -195,3 +197,8 @@ def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     cFile.write ('\n')
     
     cFile.close ()
+
+def list_files_dict_key (ctx, SRC_DIR, INC_DIR):
+    ''' Print device dictionary key generated files '''
+    print INC_DIR + CTRL_DICT_KEY_H_NAME
+    print SRC_DIR + CTRL_DICT_KEY_C_NAME

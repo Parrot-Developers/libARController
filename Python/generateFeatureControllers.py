@@ -34,23 +34,27 @@
 import sys
 import os
 import re
+import arsdkparser
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
-
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
-sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
+from libARCommandsgen import *
 from ARControllerUtils import *
 from arsdkparser import *
 
 _LIST_FLAG = 'list_flags'
 
+CTRL_FTR_H_NAME = 'ARCONTROLLER_Feature.h'
+CTRL_FTR_PRIV_H_NAME = 'ARCONTROLLER_Feature.h'
+CTRL_FTR_C_NAME = 'ARCONTROLLER_Feature.c'
+
 def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     allFeatures = ctx.features
+
     ARPrint ('generateFeatureControllers ...')
 
     #########################################
@@ -64,7 +68,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
     includeDefine = '_' + MODULE_FEATURE + '_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), 'H') + '_'  # see automake all source of folder !!!!
 
-    headerFileName = 'ARCONTROLLER_Feature.h' #headerFileName = className + '.h'!!!!
+    headerFileName = CTRL_FTR_H_NAME #headerFileName = className + '.h'!!!!
     filepath = INC_DIR + headerFileName
     hfile = open (filepath, 'w')
 
@@ -289,7 +293,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
     includeDefine = '_' + MODULE_FEATURE + '_PRIVATE_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), 'PRIVATE_H') + '_'  # see automake all source of folder !!!!
 
-    headerPrivateFileName = 'ARCONTROLLER_Feature' + '.h'  #headerPrivateFileName = className + '.h' # see automake all source of folder !!!!
+    headerPrivateFileName = CTRL_FTR_PRIV_H_NAME #headerPrivateFileName = className + '.h' # see automake all source of folder !!!!
     filepath = SRC_DIR + headerPrivateFileName
     hPrivFile = open (filepath, 'w')
 
@@ -476,8 +480,8 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '') # see automake all source of folder !!!!!!!!!!
     classTag = 'ARCONTROLLER_Feature' #classTag = ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), '') # see automake all source of folder !!!!!!!!!!
 
-    cFileName = 'ARCONTROLLER_Feature.c' #cFileName = className + '.c' # see automake all source of folder !!!!!!!!!!
-    filepath = SRC_DIR + cFileName
+    cFileName = CTRL_FTR_C_NAME #cFileName = className + '.c' # see automake all source of folder !!!!!!!!!!
+    filepath = SRC_DIR + CTRL_FTR_C_NAME
     cFile = open (filepath, 'w')
 
     cFile.write ('/**********************************************************\n')
@@ -1123,11 +1127,11 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 bufferType = 'ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGH_PRIORITY'
                 
             timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP'
-            if cmd.timeoutPolicy == ARCommandTimeoutPolicy.POP:
+            if cmd.timeoutPolicy == ArCmdTimeoutPolicy.POP:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP'
-            elif cmd.timeoutPolicy == ARCommandTimeoutPolicy.RETRY:
+            elif cmd.timeoutPolicy == ArCmdTimeoutPolicy.RETRY:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_RETRY'
-            elif cmd.timeoutPolicy == ARCommandTimeoutPolicy.FLUSH:
+            elif cmd.timeoutPolicy == ArCmdTimeoutPolicy.FLUSH:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_FLUSH'
 
             cFile.write ('        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, '+bufferType+', '+timeoutPolicy+', &netError);\n')
@@ -2177,3 +2181,17 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
                     cFile.write ('\n')
         
         cFile.close ()
+
+def list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR):
+    ''' Print features controllers generated files '''
+    print INC_DIR + CTRL_FTR_H_NAME
+    print SRC_DIR + CTRL_FTR_PRIV_H_NAME
+    print SRC_DIR + CTRL_FTR_C_NAME
+
+    # Print java feature class files
+    for feature in ctx.features:
+        print JNI_JAVA_DIR + 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature)) +'.java'
+
+    # Print feature JNI c files
+    for feature in ctx.features:
+        print JNI_C_DIR + 'ARCONTROLLER_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature)) + '.c'

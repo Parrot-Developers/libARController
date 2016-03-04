@@ -34,20 +34,18 @@
 import sys
 import os
 import re
+import arsdkparser
 
 from xml.dom.minidom import parseString
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
-
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
-sys.path.append('%(MYDIR)s/../../libARCommands/tools' % locals())
-sys.path.append('%(MYDIR)s/../../libARCommands/Xml' % locals())
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 
 from ARFuncs import *
 from arsdkparser import *
-from generateLibARCommands import *
+from libARCommandsgen import *
 
 MODULE_ARCONTROLLER='ARCONTROLLER'
 MODULE_NETWORK=MODULE_ARCONTROLLER+'_NETWORK'
