@@ -43,7 +43,6 @@ PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
 sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
 from generateFeatureControllers import *
 from generateDeviceControllers import *
 from generateDictionaryKeyEnum import *
