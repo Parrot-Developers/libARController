@@ -249,21 +249,12 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureGeneric (J
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureARDrone3 (JNIEnv *env, jobject thizz, jlong jDeviceController)
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureMiniDrone (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
     ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
 
-    return (long) jniDeviceController->nativeDeviceController->aRDrone3;
-}
-
-JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureFollowMe (JNIEnv *env, jobject thizz, jlong jDeviceController)
-{
-    // local declarations
-    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
-
-    return (long) jniDeviceController->nativeDeviceController->follow_me;
+    return (long) jniDeviceController->nativeDeviceController->miniDrone;
 }
 
 JNIEXPORT jlong JNICALL
@@ -276,12 +267,12 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureJumpingSum
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureMiniDrone (JNIEnv *env, jobject thizz, jlong jDeviceController)
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureCommonDebug (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
     ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
 
-    return (long) jniDeviceController->nativeDeviceController->miniDrone;
+    return (long) jniDeviceController->nativeDeviceController->commonDebug;
 }
 
 JNIEXPORT jlong JNICALL
@@ -303,21 +294,30 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureCommon (JN
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureCommonDebug (JNIEnv *env, jobject thizz, jlong jDeviceController)
-{
-    // local declarations
-    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
-
-    return (long) jniDeviceController->nativeDeviceController->commonDebug;
-}
-
-JNIEXPORT jlong JNICALL
 Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeaturePro (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
     ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
 
     return (long) jniDeviceController->nativeDeviceController->pro;
+}
+
+JNIEXPORT jlong JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureARDrone3 (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+
+    return (long) jniDeviceController->nativeDeviceController->aRDrone3;
+}
+
+JNIEXPORT jlong JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureFollowMe (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+
+    return (long) jniDeviceController->nativeDeviceController->follow_me;
 }
 
 JNIEXPORT jlong JNICALL

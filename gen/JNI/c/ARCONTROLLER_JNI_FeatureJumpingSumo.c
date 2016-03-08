@@ -73,6 +73,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureJumpingSumo_nativeStaticGetKeyJumpin
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureJumpingSumo_nativeStaticGetKeyJumpingSumoPilotingStateFlyingStateChangedState (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED_STATE);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureJumpingSumo_nativeStaticGetKeyJumpingSumoAnimationsStateJumpLoadChangedState (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE);
@@ -398,6 +404,30 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureJumpingSumo_nativeSendPilotingAddCap
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendPilotingAddCapOffset (nativeFeature, _offset);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureJumpingSumo_nativeSendPilotingUserTakeOff (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _state)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_JumpingSumo_t *nativeFeature = (ARCONTROLLER_FEATURE_JumpingSumo_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingUserTakeOff (nativeFeature, _state);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureJumpingSumo_nativeSendPilotingLand (JNIEnv *env, jobject thizz, jlong jFeature)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_JumpingSumo_t *nativeFeature = (ARCONTROLLER_FEATURE_JumpingSumo_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingLand (nativeFeature);
 
     return error;
 }

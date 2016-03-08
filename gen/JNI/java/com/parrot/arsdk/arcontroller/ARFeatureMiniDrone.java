@@ -29,6 +29,7 @@ public class ARFeatureMiniDrone
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAutoTakeOffModeChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGMODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>PilotingStateFlyingModeChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>MiniDrone</code> */
@@ -63,6 +64,7 @@ public class ARFeatureMiniDrone
     private static native String nativeStaticGetKeyMiniDronePilotingStateFlyingStateChangedState ();
     private static native String nativeStaticGetKeyMiniDronePilotingStateAlertStateChangedState ();
     private static native String nativeStaticGetKeyMiniDronePilotingStateAutoTakeOffModeChangedState ();
+    private static native String nativeStaticGetKeyMiniDronePilotingStateFlyingModeChangedMode ();
     private static native String nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedState ();
     private static native String nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedMassstorageid ();
     private static native String nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedV2State ();
@@ -107,7 +109,8 @@ public class ARFeatureMiniDrone
     private native int nativeSendPilotingLanding (long jFeature);
     private native int nativeSendPilotingEmergency (long jFeature);
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
-    private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
+    private native int nativeSendPilotingFlyingMode (long jFeature, int mode);
+    private native int nativeSendAnimationsFlip (long jFeature, int direction);
     private native int nativeSendAnimationsCap (long jFeature, short offset);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
@@ -131,6 +134,7 @@ public class ARFeatureMiniDrone
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = nativeStaticGetKeyMiniDronePilotingStateFlyingStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED_STATE = nativeStaticGetKeyMiniDronePilotingStateAlertStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE = nativeStaticGetKeyMiniDronePilotingStateAutoTakeOffModeChangedState ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGMODECHANGED_MODE = nativeStaticGetKeyMiniDronePilotingStateFlyingModeChangedMode ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedMassstorageid ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedV2State ();
@@ -208,6 +212,11 @@ public class ARFeatureMiniDrone
         }
     }
     
+    /**
+     * Send a command <code>PilotingFlatTrim</code>
+     * Do a flat trim
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingFlatTrim ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -222,6 +231,11 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingTakeOff</code>
+     * Ask the drone to take off
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingTakeOff ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -236,6 +250,17 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingPCMD</code>
+     * Ask the drone to move around.
+     * @param flag Boolean flag to activate roll/pitch movement
+     * @param roll Roll consign for the MiniDrone [-100;100]
+     * @param pitch Pitch consign for the MiniDrone [-100;100]
+     * @param yaw Yaw consign for the MiniDrone [-100;100]
+     * @param gaz Gaz consign for the MiniDrone [-100;100]
+     * @param timestamp Timestamp in miliseconds. Not an absolute time. (Typically 0 = time of connexion).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingPCMD (byte _flag, byte _roll, byte _pitch, byte _yaw, byte _gaz, int _timestamp)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -348,6 +373,11 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingLanding</code>
+     * Ask the MiniDrone to land
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingLanding ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -362,6 +392,11 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingEmergency</code>
+     * Put drone in emergency state
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingEmergency ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -376,6 +411,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingAutoTakeOffMode</code>
+     * Set MiniDrone automatic take off mode
+     * @param state State of automatic take off mode
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingAutoTakeOffMode (byte _state)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -390,6 +431,32 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingFlyingMode</code>
+     * Set drone FlyingMode. Only supported by WingX
+     * @param mode Drone Flying Mode
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendPilotingFlyingMode (ARCOMMANDS_MINIDRONE_PILOTING_FLYINGMODE_MODE_ENUM _mode)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingFlyingMode (jniFeature, _mode.getValue());
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>AnimationsFlip</code>
+     * Make a flip
+     * @param direction Direction for the flip
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsFlip (ARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION_ENUM _direction)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -397,13 +464,19 @@ public class ARFeatureMiniDrone
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction);
+                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsCap</code>
+     * Change the product cap
+     * @param offset Change the cap with offset angle [-180;180]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsCap (short _offset)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -418,6 +491,13 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordPicture</code>
+     * @deprecated
+     * Take picture
+     * @param mass_storage_id Mass storage id to take picture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordPicture (byte _mass_storage_id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -432,6 +512,11 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordPictureV2</code>
+     * Take picture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordPictureV2 ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -446,6 +531,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsMaxAltitude</code>
+     * Set Max Altitude
+     * @param current Current altitude max in m
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMaxAltitude (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -460,6 +551,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsMaxTilt</code>
+     * Set Max Tilt
+     * @param current Current tilt max in degree
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMaxTilt (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -474,6 +571,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsMaxVerticalSpeed</code>
+     * Set Max Vertical speed
+     * @param current Current max vertical speed in m/s
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxVerticalSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -488,6 +591,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsMaxRotationSpeed</code>
+     * Set Max Rotation speed
+     * @param current Current max rotation speed in degree/s
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxRotationSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -502,6 +611,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsWheels</code>
+     * Presence of wheels
+     * @param present 1 if present, 0 if not present
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsWheels (byte _present)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -516,6 +631,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsMaxHorizontalSpeed</code>
+     * Set Max Horizontal speed (only used in case where PilotingSettings_MaxTilt is not used like in hydrofoil mode)
+     * @param current Current max Horizontal speed in m/s
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxHorizontalSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -530,6 +651,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsCutOutMode</code>
+     * Set MiniDrone cut out mode
+     * @param enable Enable cut out mode (1 if is activate, 0 otherwise)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsCutOutMode (byte _enable)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -544,6 +671,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>GPSControllerLatitudeForRun</code>
+     * Set the controller latitude for a run.
+     * @param latitude Controller latitude in decimal degrees
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSControllerLatitudeForRun (double _latitude)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -558,6 +691,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>GPSControllerLongitudeForRun</code>
+     * Set the controller longitude for a run.
+     * @param longitude Controller longitude in decimal degrees
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSControllerLongitudeForRun (double _longitude)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -572,6 +711,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>ConfigurationControllerType</code>
+     * Set the controller type.
+     * @param type Controller type like iOS or Android
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendConfigurationControllerType (String _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -586,6 +731,12 @@ public class ARFeatureMiniDrone
         return error;
     }
     
+    /**
+     * Send a command <code>ConfigurationControllerName</code>
+     * Set the controller name.
+     * @param name Controller name like com.parrot.freeflight3
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendConfigurationControllerName (String _name)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

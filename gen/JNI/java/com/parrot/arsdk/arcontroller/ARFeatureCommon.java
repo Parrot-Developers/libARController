@@ -184,18 +184,18 @@ public class ARFeatureCommon
     private native int nativeSendOverHeatVentilate (long jFeature);
     private native int nativeSendControllerIsPiloting (long jFeature, byte piloting);
     private native int nativeSendWifiSettingsOutdoorSetting (long jFeature, byte outdoor);
-    private native int nativeSendMavlinkStart (long jFeature, String filepath, ARCOMMANDS_COMMON_MAVLINK_START_TYPE_ENUM type);
+    private native int nativeSendMavlinkStart (long jFeature, String filepath, int type);
     private native int nativeSendMavlinkPause (long jFeature);
     private native int nativeSendMavlinkStop (long jFeature);
     private native int nativeSendCalibrationMagnetoCalibration (long jFeature, byte calibrate);
     private native int nativeSendGPSControllerPositionForRun (long jFeature, double latitude, double longitude);
     private native int nativeSendAudioControllerReadyForStreaming (long jFeature, byte ready);
     private native int nativeSendHeadlightsIntensity (long jFeature, byte left, byte right);
-    private native int nativeSendAnimationsStartAnimation (long jFeature, ARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM_ENUM anim);
-    private native int nativeSendAnimationsStopAnimation (long jFeature, ARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM_ENUM anim);
+    private native int nativeSendAnimationsStartAnimation (long jFeature, int anim);
+    private native int nativeSendAnimationsStopAnimation (long jFeature, int anim);
     private native int nativeSendAnimationsStopAllAnimations (long jFeature);
-    private native int nativeSendAccessoryConfig (long jFeature, ARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY_ENUM accessory);
-    private native int nativeSendChargerSetMaxChargeRate (long jFeature, ARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE_ENUM rate);
+    private native int nativeSendAccessoryConfig (long jFeature, int accessory);
+    private native int nativeSendChargerSetMaxChargeRate (long jFeature, int rate);
 
     private long jniFeature;
     private boolean initOk;
@@ -320,6 +320,13 @@ public class ARFeatureCommon
         }
     }
     
+    /**
+     * Send a command <code>NetworkDisconnect</code>
+     * @deprecated
+     * Signals the remote that the host will disconnect and close its
+     * libARNetwork instance (and all threads that use libARNetwork)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkDisconnect ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -334,6 +341,11 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsAllSettings</code>
+     * Get all product settings, the product must send all settings
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsAllSettings ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -348,6 +360,11 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsReset</code>
+     * Reset all settings
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsReset ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -362,6 +379,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsProductName</code>
+     * Set Product name
+     * @param name Product name
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsProductName (String _name)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -376,6 +399,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsCountry</code>
+     * Set current Country of controller
+     * @param code Country code with ISO 3166 format
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsCountry (String _code)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -390,6 +419,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsAutoCountry</code>
+     * Set Auto Country Settings
+     * @param automatic Boolean : 0 : Manual / 1 : Auto
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsAutoCountry (byte _automatic)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -404,6 +439,11 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>CommonAllStates</code>
+     * Get all product states.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCommonAllStates ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -418,6 +458,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>CommonCurrentDate</code>
+     * Set current date of controller
+     * @param date Date with ISO-8601 format
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCommonCurrentDate (String _date)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -432,6 +478,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>CommonCurrentTime</code>
+     * Set current time of controller
+     * @param time Time with ISO-8601 format
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCommonCurrentTime (String _time)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -446,6 +498,11 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>CommonReboot</code>
+     * Command to ask reboot to product
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCommonReboot ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -460,6 +517,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>OverHeatSwitchOff</code>
+     * @deprecated
+     * Switch off the drone when a overheat appeared
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendOverHeatSwitchOff ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -474,6 +537,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>OverHeatVentilate</code>
+     * @deprecated
+     * Ventilate the drone when a overheat appeared
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendOverHeatVentilate ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -488,6 +557,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>ControllerIsPiloting</code>
+     * Tell the device when the controller application enters/leaves the piloting HUD.
+     * @param piloting 0 when the application is not in the piloting HUD, 1 when it enters the HUD.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendControllerIsPiloting (byte _piloting)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -502,6 +577,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>WifiSettingsOutdoorSetting</code>
+     * Send to product if it should use its outdoor wifi config, or indoor
+     * @param outdoor 1 if it should use outdoor wifi settings, 0 otherwise
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendWifiSettingsOutdoorSetting (byte _outdoor)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -516,6 +597,13 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>MavlinkStart</code>
+     * Start the flight plan
+     * @param filepath flight plan file path from the mavlink ftp root
+     * @param type type of the played mavlink file
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMavlinkStart (String _filepath, ARCOMMANDS_COMMON_MAVLINK_START_TYPE_ENUM _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -523,13 +611,18 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMavlinkStart (jniFeature, _filepath, _type);
+                int nativeError = nativeSendMavlinkStart (jniFeature, _filepath, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>MavlinkPause</code>
+     * Pause the flightplan (can be restarted with a start)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMavlinkPause ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -544,6 +637,11 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>MavlinkStop</code>
+     * Stop the flightplan
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMavlinkStop ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -558,6 +656,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>CalibrationMagnetoCalibration</code>
+     * Sent when a calibration of the magnetometer is asked or is aborted
+     * @param calibrate 1 if the calibration should be started, 0 if it should be aborted
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCalibrationMagnetoCalibration (byte _calibrate)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -572,6 +676,13 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>GPSControllerPositionForRun</code>
+     * Set the controller position for a run. This command is used by all non gps products. Watch out, this command cannot be used with BLE products
+     * @param latitude Controller latitude in decimal degrees
+     * @param longitude Controller longitude in decimal degrees
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSControllerPositionForRun (double _latitude, double _longitude)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -586,6 +697,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>AudioControllerReadyForStreaming</code>
+     * Tell the firmware whether the controller is ready to start audio streaming.
+     * @param ready Bit field for TX and RX ready. bit 0 is 1 if controller is ready and wants to receive sound (Drone TX) bit 1 is 1 if controller is ready and wants to send sound (Drone RX)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAudioControllerReadyForStreaming (byte _ready)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -600,6 +717,13 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>HeadlightsIntensity</code>
+     * Set instensity of lighting LEDs.
+     * @param left Set the left LED intensity value (0 through 255).
+     * @param right Set the right LED intensity value (0 through 255).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendHeadlightsIntensity (byte _left, byte _right)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -614,6 +738,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsStartAnimation</code>
+     * Start a paramaterless animation.
+     * @param anim Animation to start.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsStartAnimation (ARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM_ENUM _anim)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -621,13 +751,19 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsStartAnimation (jniFeature, _anim);
+                int nativeError = nativeSendAnimationsStartAnimation (jniFeature, _anim.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsStopAnimation</code>
+     * Stop a running animation.
+     * @param anim Animation to stop.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsStopAnimation (ARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM_ENUM _anim)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -635,13 +771,18 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsStopAnimation (jniFeature, _anim);
+                int nativeError = nativeSendAnimationsStopAnimation (jniFeature, _anim.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsStopAllAnimations</code>
+     * Stop all running animations.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsStopAllAnimations ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -656,6 +797,12 @@ public class ARFeatureCommon
         return error;
     }
     
+    /**
+     * Send a command <code>AccessoryConfig</code>
+     * Set the current accessory configuration.
+     * @param accessory Accessory configuration to set.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAccessoryConfig (ARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY_ENUM _accessory)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -663,13 +810,20 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAccessoryConfig (jniFeature, _accessory);
+                int nativeError = nativeSendAccessoryConfig (jniFeature, _accessory.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>ChargerSetMaxChargeRate</code>
+     * @deprecated
+     * Set the maximum charge rate allowed to charge a battery.
+     * @param rate The new maximum charge rate.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendChargerSetMaxChargeRate (ARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE_ENUM _rate)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -677,7 +831,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendChargerSetMaxChargeRate (jniFeature, _rate);
+                int nativeError = nativeSendChargerSetMaxChargeRate (jniFeature, _rate.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

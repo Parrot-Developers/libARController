@@ -30,11 +30,9 @@ public class ARFeatureWifi
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>ScannedItem</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_BAND = ""; /**< Key of the argument </code>band</code> of event <code>ScannedItem</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>ScannedItem</code> in feature <code>Wifi</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_LIST_FLAGS = ""; /**< Key of the argument </code>list_flags</code> of event <code>ScannedItem</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND = ""; /**< Key of the argument </code>band</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT = ""; /**< Key of the argument </code>environement</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_LIST_FLAGS = ""; /**< Key of the argument </code>list_flags</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
@@ -66,10 +64,10 @@ public class ARFeatureWifi
 
     private native int nativeSendScan (long jFeature, byte band);
     private native int nativeSendUpdateAuthorizedChannels (long jFeature);
-    private native int nativeSendSetApChannel (long jFeature, ARCOMMANDS_WIFI_SELECTION_TYPE_ENUM type, ARCOMMANDS_WIFI_BAND_ENUM band, byte channel);
-    private native int nativeSendSetSecurity (long jFeature, ARCOMMANDS_WIFI_SECURITY_TYPE_ENUM type, String key, ARCOMMANDS_WIFI_SECURITY_KEY_TYPE_ENUM key_type);
-    private native int nativeSendSetCountry (long jFeature, ARCOMMANDS_WIFI_COUNTRY_SELECTION_ENUM selection_mode, String code);
-    private native int nativeSendSetEnvironement (long jFeature, ARCOMMANDS_WIFI_ENVIRONEMENT_ENUM environement);
+    private native int nativeSendSetApChannel (long jFeature, int type, int band, byte channel);
+    private native int nativeSendSetSecurity (long jFeature, int type, String key, int key_type);
+    private native int nativeSendSetCountry (long jFeature, int selection_mode, String code);
+    private native int nativeSendSetEnvironement (long jFeature, int environement);
 
     private long jniFeature;
     private boolean initOk;
@@ -80,11 +78,9 @@ public class ARFeatureWifi
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_RSSI = nativeStaticGetKeyWifiScannedItemRssi ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_BAND = nativeStaticGetKeyWifiScannedItemBand ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_CHANNEL = nativeStaticGetKeyWifiScannedItemChannel ();
-        ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_LIST_FLAGS = nativeStaticGetKeyWifiScannedItemListflags ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND = nativeStaticGetKeyWifiAuthorizedChannelBand ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_CHANNEL = nativeStaticGetKeyWifiAuthorizedChannelChannel ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT = nativeStaticGetKeyWifiAuthorizedChannelEnvironement ();
-        ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_LIST_FLAGS = nativeStaticGetKeyWifiAuthorizedChannelListflags ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_TYPE = nativeStaticGetKeyWifiApChannelChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_BAND = nativeStaticGetKeyWifiApChannelChangedBand ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = nativeStaticGetKeyWifiApChannelChangedChannel ();
@@ -141,6 +137,12 @@ public class ARFeatureWifi
         }
     }
     
+    /**
+     * Send a command <code>Scan</code>
+     * Launches wifi network scan for a given band to get a list of all wifi networks found by the drone.
+     * @param band The band : 2.4 Ghz or 5 Ghz
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendScan (byte _band)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -155,6 +157,12 @@ public class ARFeatureWifi
         return error;
     }
     
+    /**
+     * Send a command <code>UpdateAuthorizedChannels</code>
+     * Get all available Wifi channels.
+     * The list of available Wifi channels is related to the country of the drone. You can get this country with the event [WifiCountryChanged](#wifi-CountryChanged).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendUpdateAuthorizedChannels ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -169,6 +177,14 @@ public class ARFeatureWifi
         return error;
     }
     
+    /**
+     * Send a command <code>SetApChannel</code>
+     * Select channel of choosen band to put the drone's access point on this channel.
+     * @param type The wifi selection type available
+     * @param band The band : 2.4 Ghz or 5 Ghz
+     * @param channel The channel you want to select. Used only when type is manual.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSetApChannel (ARCOMMANDS_WIFI_SELECTION_TYPE_ENUM _type, ARCOMMANDS_WIFI_BAND_ENUM _band, byte _channel)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -176,13 +192,22 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetApChannel (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendSetApChannel (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>SetSecurity</code>
+     * Set the wifi security.
+     * The security is changed on the next boot.
+     * @param type The type of wifi security (open, wpa2)
+     * @param key The key to secure the network. Not used if type is open
+     * @param key_type Type of the key sent
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSetSecurity (ARCOMMANDS_WIFI_SECURITY_TYPE_ENUM _type, String _key, ARCOMMANDS_WIFI_SECURITY_KEY_TYPE_ENUM _key_type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -190,13 +215,20 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetSecurity (jniFeature, _type, _key, _key_type);
+                int nativeError = nativeSendSetSecurity (jniFeature, _type.getValue(), _key, _key_type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>SetCountry</code>
+     * Set the wifi country.
+     * @param selection_mode Type of country selection
+     * @param code Country code with ISO 3166 format. Not used if automatic is 1.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSetCountry (ARCOMMANDS_WIFI_COUNTRY_SELECTION_ENUM _selection_mode, String _code)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -204,13 +236,19 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetCountry (jniFeature, _selection_mode, _code);
+                int nativeError = nativeSendSetCountry (jniFeature, _selection_mode.getValue(), _code);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>SetEnvironement</code>
+     * Set indoor or outdoor wifi settings.
+     * @param environement Type of environement
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSetEnvironement (ARCOMMANDS_WIFI_ENVIRONEMENT_ENUM _environement)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -218,7 +256,7 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetEnvironement (jniFeature, _environement);
+                int nativeError = nativeSendSetEnvironement (jniFeature, _environement.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
