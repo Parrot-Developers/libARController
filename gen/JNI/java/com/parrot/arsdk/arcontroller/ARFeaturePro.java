@@ -96,6 +96,13 @@ public class ARFeaturePro
         }
     }
     
+    /**
+     * Send a command <code>ProBoughtFeatures</code>
+     * Bought features on this pro version of the controller (features that have been bought)
+     * This command starts the pro authentification process
+     * @param features Bought features
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendProBoughtFeatures (long _features)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -110,6 +117,13 @@ public class ARFeaturePro
         return error;
     }
     
+    /**
+     * Send a command <code>ProResponse</code>
+     * Response to the challenge string sent by the controller
+     * @param listFlags List entry attribute Bitfield. 0x01: First: indicate it's the first element of the list. 0x02: Last:  indicate it's the last element of the list. 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
+     * @param signedChallenge the signed challenge
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendProResponse (byte _listFlags, String _signedChallenge)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -124,6 +138,13 @@ public class ARFeaturePro
         return error;
     }
     
+    /**
+     * Send a command <code>ProActivateFeatures</code>
+     * Activate some pro features
+     * Pro features activated should be part of the list returned by ProState->FeaturesSupported
+     * @param features Pro features to activate
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendProActivateFeatures (long _features)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

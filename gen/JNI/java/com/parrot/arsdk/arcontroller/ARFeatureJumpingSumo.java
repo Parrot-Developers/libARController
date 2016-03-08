@@ -30,6 +30,7 @@ public class ARFeatureJumpingSumo
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED = ""; /**< Key of the argument </code>speed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED = ""; /**< Key of the argument </code>realSpeed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpLoadChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpTypeChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>AnimationsStateJumpMotorProblemChanged</code> in feature <code>JumpingSumo</code> */
@@ -76,6 +77,7 @@ public class ARFeatureJumpingSumo
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateAlertStateChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedSpeed ();
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedRealSpeed ();
+    private static native String nativeStaticGetKeyJumpingSumoPilotingStateFlyingStateChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoAnimationsStateJumpLoadChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoAnimationsStateJumpTypeChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoAnimationsStateJumpMotorProblemChangedError ();
@@ -123,22 +125,24 @@ public class ARFeatureJumpingSumo
     private native int nativeSetPilotingPCMDFlag (long jFeature, byte flag);
     private native int nativeSetPilotingPCMDSpeed (long jFeature, byte speed);
     private native int nativeSetPilotingPCMDTurn (long jFeature, byte turn);
-    private native int nativeSendPilotingPosture (long jFeature, ARCOMMANDS_JUMPINGSUMO_PILOTING_POSTURE_TYPE_ENUM type);
+    private native int nativeSendPilotingPosture (long jFeature, int type);
     private native int nativeSendPilotingAddCapOffset (long jFeature, float offset);
+    private native int nativeSendPilotingUserTakeOff (long jFeature, byte state);
+    private native int nativeSendPilotingLand (long jFeature);
     private native int nativeSendAnimationsJumpStop (long jFeature);
     private native int nativeSendAnimationsJumpCancel (long jFeature);
     private native int nativeSendAnimationsJumpLoad (long jFeature);
-    private native int nativeSendAnimationsJump (long jFeature, ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM type);
-    private native int nativeSendAnimationsSimpleAnimation (long jFeature, ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_SIMPLEANIMATION_ID_ENUM id);
+    private native int nativeSendAnimationsJump (long jFeature, int type);
+    private native int nativeSendAnimationsSimpleAnimation (long jFeature, int id);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
-    private native int nativeSendMediaRecordVideo (long jFeature, ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEO_RECORD_ENUM record, byte mass_storage_id);
+    private native int nativeSendMediaRecordVideo (long jFeature, int record, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
-    private native int nativeSendMediaRecordVideoV2 (long jFeature, ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEOV2_RECORD_ENUM record);
-    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
-    private native int nativeSendNetworkWifiScan (long jFeature, ARCOMMANDS_JUMPINGSUMO_NETWORK_WIFISCAN_BAND_ENUM band);
+    private native int nativeSendMediaRecordVideoV2 (long jFeature, int record);
+    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
+    private native int nativeSendNetworkWifiScan (long jFeature, int band);
     private native int nativeSendNetworkWifiAuthChannel (long jFeature);
     private native int nativeSendAudioSettingsMasterVolume (long jFeature, byte volume);
-    private native int nativeSendAudioSettingsTheme (long jFeature, ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM theme);
+    private native int nativeSendAudioSettingsTheme (long jFeature, int theme);
     private native int nativeSendRoadPlanAllScriptsMetadata (long jFeature);
     private native int nativeSendRoadPlanScriptUploaded (long jFeature, String uuid, String md5Hash);
     private native int nativeSendRoadPlanScriptDelete (long jFeature, String uuid);
@@ -156,6 +160,7 @@ public class ARFeatureJumpingSumo
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED_STATE = nativeStaticGetKeyJumpingSumoPilotingStateAlertStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED = nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedSpeed ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED = nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedRealSpeed ();
+        ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = nativeStaticGetKeyJumpingSumoPilotingStateFlyingStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE = nativeStaticGetKeyJumpingSumoAnimationsStateJumpLoadChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = nativeStaticGetKeyJumpingSumoAnimationsStateJumpTypeChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = nativeStaticGetKeyJumpingSumoAnimationsStateJumpMotorProblemChangedError ();
@@ -244,6 +249,14 @@ public class ARFeatureJumpingSumo
         }
     }
     
+    /**
+     * Send a command <code>PilotingPCMD</code>
+     * Ask the JS speed and turn ratio.
+     * @param flag Boolean for "touch screen".
+     * @param speed Speed value [-100:100].
+     * @param turn Turn value. [-100:100]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingPCMD (byte _flag, byte _speed, byte _turn)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -314,6 +327,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingPosture</code>
+     * Request a posture
+     * @param type Type of Posture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingPosture (ARCOMMANDS_JUMPINGSUMO_PILOTING_POSTURE_TYPE_ENUM _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -321,13 +340,19 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingPosture (jniFeature, _type);
+                int nativeError = nativeSendPilotingPosture (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingAddCapOffset</code>
+     * Add the specified offset to the current cap.
+     * @param offset Offset value in radians.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingAddCapOffset (float _offset)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -342,6 +367,51 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingUserTakeOff</code>
+     * Set drone in user take off state
+     * Only used for Unknown_Product_1 product
+     * @param state State of user take off mode - 1 to enter in user take off. - 0 to exit from user take off.
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendPilotingUserTakeOff (byte _state)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingUserTakeOff (jniFeature, _state);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>PilotingLand</code>
+     * Ask the Unknown_Product_1 to land
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendPilotingLand ()
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingLand (jniFeature);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>AnimationsJumpStop</code>
+     * Stop jump, emergency jump stop, stop jump motor and stay there.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsJumpStop ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -356,6 +426,11 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsJumpCancel</code>
+     * Cancel jump and come back to previous state (if possible).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsJumpCancel ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -370,6 +445,11 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsJumpLoad</code>
+     * Request jump loading
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsJumpLoad ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -384,6 +464,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsJump</code>
+     * Request a jump
+     * @param type Type of jump
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsJump (ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -391,13 +477,19 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsJump (jniFeature, _type);
+                int nativeError = nativeSendAnimationsJump (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsSimpleAnimation</code>
+     * Play a parameterless animation.
+     * @param id Animation ID.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsSimpleAnimation (ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_SIMPLEANIMATION_ID_ENUM _id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -405,13 +497,20 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsSimpleAnimation (jniFeature, _id);
+                int nativeError = nativeSendAnimationsSimpleAnimation (jniFeature, _id.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordPicture</code>
+     * @deprecated
+     * Take picture
+     * @param mass_storage_id Mass storage id to take picture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordPicture (byte _mass_storage_id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -426,6 +525,14 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordVideo</code>
+     * @deprecated
+     * Video record
+     * @param record Command to record video
+     * @param mass_storage_id Mass storage id to record
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordVideo (ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEO_RECORD_ENUM _record, byte _mass_storage_id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -433,13 +540,18 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record, _mass_storage_id);
+                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record.getValue(), _mass_storage_id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordPictureV2</code>
+     * Take picture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordPictureV2 ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -454,6 +566,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordVideoV2</code>
+     * Video record
+     * @param record Command to record video
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordVideoV2 (ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEOV2_RECORD_ENUM _record)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -461,13 +579,21 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record);
+                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkSettingsWifiSelection</code>
+     * Auto-select channel of choosen band
+     * @param type The type of wifi selection (auto, manual)
+     * @param band The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
+     * @param channel The channel (not used in auto mode)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkSettingsWifiSelection (ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM _type, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM _band, byte _channel)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -475,13 +601,19 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkWifiScan</code>
+     * Launches wifi network scan
+     * @param band The band(s) : 2.4 Ghz, 5 Ghz, or both
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkWifiScan (ARCOMMANDS_JUMPINGSUMO_NETWORK_WIFISCAN_BAND_ENUM _band)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -489,13 +621,18 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band);
+                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkWifiAuthChannel</code>
+     * Controller inquire the list of authorized wifi channels.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkWifiAuthChannel ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -510,6 +647,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>AudioSettingsMasterVolume</code>
+     * Master volume control.
+     * @param volume Master audio volume [0:100].
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAudioSettingsMasterVolume (byte _volume)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -524,6 +667,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>AudioSettingsTheme</code>
+     * Audio Theme.
+     * @param theme The audio theme to set.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAudioSettingsTheme (ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM _theme)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -531,13 +680,18 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAudioSettingsTheme (jniFeature, _theme);
+                int nativeError = nativeSendAudioSettingsTheme (jniFeature, _theme.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>RoadPlanAllScriptsMetadata</code>
+     * Command to ask device all metadata scripts.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendRoadPlanAllScriptsMetadata ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -552,6 +706,13 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>RoadPlanScriptUploaded</code>
+     * Notify device that a new file has been uploaded.
+     * @param uuid UUID of uploaded file.
+     * @param md5Hash MD5 hash code computed over file.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendRoadPlanScriptUploaded (String _uuid, String _md5Hash)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -566,6 +727,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>RoadPlanScriptDelete</code>
+     * Ask the device to delete a script.
+     * @param uuid UUID of the file to delete.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendRoadPlanScriptDelete (String _uuid)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -580,6 +747,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>RoadPlanPlayScript</code>
+     * Ask the device to play a script.
+     * @param uuid UUID of the file to play.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendRoadPlanPlayScript (String _uuid)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -594,6 +767,13 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsOutdoor</code>
+     * @deprecated
+     * Outdoor property
+     * @param outdoor 1 if outdoor, 0 if indoor
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsOutdoor (byte _outdoor)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -608,6 +788,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>MediaStreamingVideoEnable</code>
+     * Enable/disable video streaming.
+     * @param enable 1 to enable, 0 to disable.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaStreamingVideoEnable (byte _enable)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -622,6 +808,12 @@ public class ARFeatureJumpingSumo
         return error;
     }
     
+    /**
+     * Send a command <code>VideoSettingsAutorecord</code>
+     * Set video automatic recording state.
+     * @param enabled 0: Disabled 1: Enabled.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendVideoSettingsAutorecord (byte _enabled)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

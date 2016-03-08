@@ -82,6 +82,11 @@ public class ARFeatureGeneric
         }
     }
     
+    /**
+     * Send a command <code>Default</code>
+     * default
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDefault ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

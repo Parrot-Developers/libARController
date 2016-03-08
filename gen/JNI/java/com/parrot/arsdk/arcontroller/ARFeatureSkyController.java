@@ -141,7 +141,7 @@ public class ARFeatureSkyController
     private native int nativeSendCommonAllStates (long jFeature);
     private native int nativeSendAccessPointSettingsAccessPointSSID (long jFeature, String ssid);
     private native int nativeSendAccessPointSettingsAccessPointChannel (long jFeature, byte channel);
-    private native int nativeSendAccessPointSettingsWifiSelection (long jFeature, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
+    private native int nativeSendAccessPointSettingsWifiSelection (long jFeature, int type, int band, byte channel);
     private native int nativeSendCameraResetOrientation (long jFeature);
     private native int nativeSendGamepadInfosGetGamepadControls (long jFeature);
     private native int nativeSendButtonMappingsGetCurrentButtonMappings (long jFeature);
@@ -156,7 +156,7 @@ public class ARFeatureSkyController
     private native int nativeSendAxisFiltersGetPresetAxisFilters (long jFeature);
     private native int nativeSendAxisFiltersSetAxisFilter (long jFeature, int axis_id, String filter_uid_or_builder);
     private native int nativeSendAxisFiltersDefaultAxisFilters (long jFeature);
-    private native int nativeSendCoPilotingSetPilotingSource (long jFeature, ARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE_ENUM source);
+    private native int nativeSendCoPilotingSetPilotingSource (long jFeature, int source);
     private native int nativeSendCalibrationEnableMagnetoCalibrationQualityUpdates (long jFeature, byte enable);
 
     private long jniFeature;
@@ -261,6 +261,11 @@ public class ARFeatureSkyController
         }
     }
     
+    /**
+     * Send a command <code>WifiRequestWifiList</code>
+     * Request wifi list
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendWifiRequestWifiList ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -275,6 +280,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>WifiRequestCurrentWifi</code>
+     * Request current connected wifi
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendWifiRequestCurrentWifi ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -289,6 +299,14 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>WifiConnectToWifi</code>
+     * Connect to wifi
+     * @param bssid Wifi bssid
+     * @param ssid Wifi ssid
+     * @param passphrase Wifi passphrase
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendWifiConnectToWifi (String _bssid, String _ssid, String _passphrase)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -303,6 +321,12 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>WifiForgetWifi</code>
+     * Forget wifi
+     * @param ssid Wifi ssid
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendWifiForgetWifi (String _ssid)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -317,6 +341,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>WifiWifiAuthChannel</code>
+     * Controller inquire the list of authorized wifi channels
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendWifiWifiAuthChannel ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -331,6 +360,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>DeviceRequestDeviceList</code>
+     * Request Device list
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDeviceRequestDeviceList ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -345,6 +379,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>DeviceRequestCurrentDevice</code>
+     * Request current connected Device
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDeviceRequestCurrentDevice ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -359,6 +398,12 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>DeviceConnectToDevice</code>
+     * ask to connect to a device
+     * @param deviceName Device name
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDeviceConnectToDevice (String _deviceName)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -373,6 +418,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsAllSettings</code>
+     * Get all product settings, the product must send all settings
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsAllSettings ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -387,6 +437,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>SettingsReset</code>
+     * Reset all settings
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSettingsReset ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -401,6 +456,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>CommonAllStates</code>
+     * Get all product states
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCommonAllStates ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -415,6 +475,12 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AccessPointSettingsAccessPointSSID</code>
+     * Set AccessPoint SSID
+     * @param ssid AccessPoint SSID
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAccessPointSettingsAccessPointSSID (String _ssid)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -429,6 +495,12 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AccessPointSettingsAccessPointChannel</code>
+     * Set AccessPoint Channel
+     * @param channel AccessPoint Channel
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAccessPointSettingsAccessPointChannel (byte _channel)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -443,6 +515,14 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AccessPointSettingsWifiSelection</code>
+     * Set AccessPoint Band and Channel
+     * @param type The type of wifi selection (only manual at the moment)
+     * @param band The allowed band : 2.4 Ghz or 5 Ghz
+     * @param channel The channel
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAccessPointSettingsWifiSelection (ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE_ENUM _type, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND_ENUM _band, byte _channel)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -450,13 +530,18 @@ public class ARFeatureSkyController
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAccessPointSettingsWifiSelection (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendAccessPointSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>CameraResetOrientation</code>
+     * Reset pan and tilt to center
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCameraResetOrientation ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -471,6 +556,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>GamepadInfosGetGamepadControls</code>
+     * Asks the SkyController to send the button and axis list
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGamepadInfosGetGamepadControls ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -485,6 +575,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>ButtonMappingsGetCurrentButtonMappings</code>
+     * Asks the SkyController to send its current button mapping
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendButtonMappingsGetCurrentButtonMappings ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -499,6 +594,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>ButtonMappingsGetAvailableButtonMappings</code>
+     * Asks the SkyController to send the possible mappings for each button
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendButtonMappingsGetAvailableButtonMappings ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -513,6 +613,14 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>ButtonMappingsSetButtonMapping</code>
+     * Set a button mapping to the SkyController
+     * @note replaces previous mapping for the given key
+     * @param key_id The keycode to map
+     * @param mapping_uid The mapping to associate with the key
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendButtonMappingsSetButtonMapping (int _key_id, String _mapping_uid)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -527,6 +635,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>ButtonMappingsDefaultButtonMapping</code>
+     * Asks the SkyController to reset the button mappings to the default value
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendButtonMappingsDefaultButtonMapping ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -541,6 +654,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisMappingsGetCurrentAxisMappings</code>
+     * Asks the SkyController to send its current axis mapping
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisMappingsGetCurrentAxisMappings ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -555,6 +673,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisMappingsGetAvailableAxisMappings</code>
+     * Asks the SkyController to send the possible mappings for each axis
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisMappingsGetAvailableAxisMappings ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -569,6 +692,14 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisMappingsSetAxisMapping</code>
+     * Set a axis mapping to the SkyController
+     * @note replaces previous mapping for the given axis
+     * @param axis_id The axiscode to map
+     * @param mapping_uid The mapping to associate with the axis
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisMappingsSetAxisMapping (int _axis_id, String _mapping_uid)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -583,6 +714,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisMappingsDefaultAxisMapping</code>
+     * Asks the SkyController to reset the axis mappings to the default value
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisMappingsDefaultAxisMapping ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -597,6 +733,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisFiltersGetCurrentAxisFilters</code>
+     * Asks the SkyController to send its current axis filters
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisFiltersGetCurrentAxisFilters ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -611,6 +752,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisFiltersGetPresetAxisFilters</code>
+     * Asks the SkyController to send the preset filters
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisFiltersGetPresetAxisFilters ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -625,6 +771,14 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisFiltersSetAxisFilter</code>
+     * Set an axis filter to the SkyController
+     * @note replaces previous filter for the given axis
+     * @param axis_id The axiscode to filter
+     * @param filter_uid_or_builder The mapping preset to associate with the axis (Or a string to build a new one)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisFiltersSetAxisFilter (int _axis_id, String _filter_uid_or_builder)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -639,6 +793,11 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>AxisFiltersDefaultAxisFilters</code>
+     * Asks the SkyController to reset the axis filters to the default value
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAxisFiltersDefaultAxisFilters ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -653,6 +812,12 @@ public class ARFeatureSkyController
         return error;
     }
     
+    /**
+     * Send a command <code>CoPilotingSetPilotingSource</code>
+     * Set the SkyController piloting source
+     * @param source The source
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCoPilotingSetPilotingSource (ARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE_ENUM _source)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -660,13 +825,21 @@ public class ARFeatureSkyController
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendCoPilotingSetPilotingSource (jniFeature, _source);
+                int nativeError = nativeSendCoPilotingSetPilotingSource (jniFeature, _source.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>CalibrationEnableMagnetoCalibrationQualityUpdates</code>
+     * Asks the SkyController to send (or not) the magneto calibration quality updates.
+     * The MagnetoCalibrationState will always be sent when the status parameters changes,
+     * regardless of this setting.
+     * @param enable Flag to enable the feature. 1 = enable quality updates 0 = disable quality updates
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCalibrationEnableMagnetoCalibrationQualityUpdates (byte _enable)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

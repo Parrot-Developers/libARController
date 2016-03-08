@@ -318,14 +318,14 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
     private native int nativeSendPilotingMoveBy (long jFeature, float dX, float dY, float dZ, float dPsi);
     private native int nativeSendPilotingUserTakeOff (long jFeature, byte state);
-    private native int nativeSendPilotingCircle (long jFeature, ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM direction);
-    private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
+    private native int nativeSendPilotingCircle (long jFeature, int direction);
+    private native int nativeSendAnimationsFlip (long jFeature, int direction);
     private native int nativeSendCameraOrientation (long jFeature, byte tilt, byte pan);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
-    private native int nativeSendMediaRecordVideo (long jFeature, ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEO_RECORD_ENUM record, byte mass_storage_id);
+    private native int nativeSendMediaRecordVideo (long jFeature, int record, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
-    private native int nativeSendMediaRecordVideoV2 (long jFeature, ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEOV2_RECORD_ENUM record);
-    private native int nativeSendNetworkWifiScan (long jFeature, ARCOMMANDS_ARDRONE3_NETWORK_WIFISCAN_BAND_ENUM band);
+    private native int nativeSendMediaRecordVideoV2 (long jFeature, int record);
+    private native int nativeSendNetworkWifiScan (long jFeature, int band);
     private native int nativeSendNetworkWifiAuthChannel (long jFeature);
     private native int nativeSendPilotingSettingsMaxAltitude (long jFeature, float current);
     private native int nativeSendPilotingSettingsMaxTilt (long jFeature, float current);
@@ -339,33 +339,33 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (long jFeature, float value);
     private native int nativeSendPilotingSettingsBankedTurn (long jFeature, byte value);
     private native int nativeSendPilotingSettingsMinAltitude (long jFeature, float current);
-    private native int nativeSendPilotingSettingsCirclingDirection (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsCirclingDirection (long jFeature, int value);
     private native int nativeSendPilotingSettingsCirclingRadius (long jFeature, short value);
     private native int nativeSendPilotingSettingsCirclingAltitude (long jFeature, short value);
-    private native int nativeSendPilotingSettingsPitchMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM value);
-    private native int nativeSendPilotingSettingsLandingMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsPitchMode (long jFeature, int value);
+    private native int nativeSendPilotingSettingsLandingMode (long jFeature, int value);
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
     private native int nativeSendSpeedSettingsOutdoor (long jFeature, byte outdoor);
     private native int nativeSendSpeedSettingsMaxPitchRollRotationSpeed (long jFeature, float current);
-    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
-    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_TYPE_ENUM type, String key, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_KEYTYPE_ENUM keyType);
-    private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_PICTUREFORMATSELECTION_TYPE_ENUM type);
-    private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_AUTOWHITEBALANCESELECTION_TYPE_ENUM type);
+    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
+    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, int type, String key, int keyType);
+    private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, int type);
+    private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, int type);
     private native int nativeSendPictureSettingsExpositionSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsSaturationSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsTimelapseSelection (long jFeature, byte enabled, float interval);
     private native int nativeSendPictureSettingsVideoAutorecordSelection (long jFeature, byte enabled, byte mass_storage_id);
-    private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM mode);
+    private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, int mode);
     private native int nativeSendMediaStreamingVideoEnable (long jFeature, byte enable);
     private native int nativeSendGPSSettingsSetHome (long jFeature, double latitude, double longitude, double altitude);
     private native int nativeSendGPSSettingsResetHome (long jFeature);
     private native int nativeSendGPSSettingsSendControllerGPS (long jFeature, double latitude, double longitude, double altitude, double horizontalAccuracy, double verticalAccuracy);
-    private native int nativeSendGPSSettingsHomeType (long jFeature, ARCOMMANDS_ARDRONE3_GPSSETTINGS_HOMETYPE_TYPE_ENUM type);
+    private native int nativeSendGPSSettingsHomeType (long jFeature, int type);
     private native int nativeSendGPSSettingsReturnHomeDelay (long jFeature, short delay);
-    private native int nativeSendAntiflickeringElectricFrequency (long jFeature, ARCOMMANDS_ARDRONE3_ANTIFLICKERING_ELECTRICFREQUENCY_FREQUENCY_ENUM frequency);
-    private native int nativeSendAntiflickeringSetMode (long jFeature, ARCOMMANDS_ARDRONE3_ANTIFLICKERING_SETMODE_MODE_ENUM mode);
+    private native int nativeSendAntiflickeringElectricFrequency (long jFeature, int frequency);
+    private native int nativeSendAntiflickeringSetMode (long jFeature, int mode);
 
     private long jniFeature;
     private boolean initOk;
@@ -556,6 +556,11 @@ public class ARFeatureARDrone3
         }
     }
     
+    /**
+     * Send a command <code>PilotingFlatTrim</code>
+     * Do a flat trim
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingFlatTrim ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -570,6 +575,11 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingTakeOff</code>
+     * Ask the drone to take off
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingTakeOff ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -584,6 +594,17 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingPCMD</code>
+     * Ask the drone to move around.
+     * @param flag Boolean flag to activate roll/pitch movement
+     * @param roll Roll consign for the drone [-100;100]
+     * @param pitch Pitch consign for the drone [-100;100]
+     * @param yaw Yaw consign for the drone [-100;100]
+     * @param gaz Gaz consign for the drone [-100;100]
+     * @param timestampAndSeqNum Command timestamp in milliseconds (low 24 bits) + command sequence number [0;255] (high 8 bits).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingPCMD (byte _flag, byte _roll, byte _pitch, byte _yaw, byte _gaz, int _timestampAndSeqNum)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -696,6 +717,11 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingLanding</code>
+     * Ask the drone to land
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingLanding ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -710,6 +736,11 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingEmergency</code>
+     * Put drone in emergency user state
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingEmergency ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -724,6 +755,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingNavigateHome</code>
+     * Ask the drone to fly to home
+     * @param start 1 to start the navigate home, 0 to stop it
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingNavigateHome (byte _start)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -738,6 +775,13 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingAutoTakeOffMode</code>
+     * @deprecated
+     * [NOT USED] Set Drone3 in automatic take off mode
+     * @param state State of automatic take off mode (1 for autotake off enabled)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingAutoTakeOffMode (byte _state)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -752,6 +796,20 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingMoveBy</code>
+     * [DRAFT] Move the drone to a relative position and rotate heading by a given angle
+     * The frame is horizontal and relative to the current drone orientation:
+     * - X is front
+     * - Y is right
+     * - Z is down
+     * The movement settings of the device are those set for the autonomous flight.
+     * @param dX Wanted displacement along the front axis [m]
+     * @param dY Wanted displacement along the right axis [m]
+     * @param dZ Wanted displacement along the down axis [m]
+     * @param dPsi Wanted rotation of heading  [rad]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingMoveBy (float _dX, float _dY, float _dZ, float _dPsi)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -766,6 +824,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingUserTakeOff</code>
+     * Set drone in user take off state
+     * @param state State of user take off mode - 1 to enter in user take off. - 0 to exit from user take off.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingUserTakeOff (byte _state)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -780,6 +844,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingCircle</code>
+     * Ask Fixed wings to circle
+     * @param direction The circling direction
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingCircle (ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM _direction)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -787,13 +857,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingCircle (jniFeature, _direction);
+                int nativeError = nativeSendPilotingCircle (jniFeature, _direction.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>AnimationsFlip</code>
+     * Make a flip
+     * @param direction Direction for the flip
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAnimationsFlip (ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM _direction)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -801,13 +877,20 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction);
+                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>CameraOrientation</code>
+     * Ask the drone to move camera.
+     * @param tilt Tilt camera consign for the drone (in degree) The value is saturated by the drone. Saturation value is sent by thre drone through CameraSettingsChanged command.
+     * @param pan Pan camera consign for the drone (in degree) The value is saturated by the drone. Saturation value is sent by thre drone through CameraSettingsChanged command.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCameraOrientation (byte _tilt, byte _pan)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -822,6 +905,13 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordPicture</code>
+     * @deprecated
+     * Take picture
+     * @param mass_storage_id Mass storage id to take picture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordPicture (byte _mass_storage_id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -836,6 +926,14 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordVideo</code>
+     * @deprecated
+     * Video record
+     * @param record Command to record video
+     * @param mass_storage_id Mass storage id to record
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordVideo (ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEO_RECORD_ENUM _record, byte _mass_storage_id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -843,13 +941,18 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record, _mass_storage_id);
+                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record.getValue(), _mass_storage_id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordPictureV2</code>
+     * Take picture
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordPictureV2 ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -864,6 +967,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>MediaRecordVideoV2</code>
+     * Video record
+     * @param record Command to record video
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaRecordVideoV2 (ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEOV2_RECORD_ENUM _record)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -871,13 +980,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record);
+                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkWifiScan</code>
+     * Launches wifi network scan
+     * @param band The band(s) : 2.4 Ghz, 5 Ghz, or both
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkWifiScan (ARCOMMANDS_ARDRONE3_NETWORK_WIFISCAN_BAND_ENUM _band)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -885,13 +1000,18 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band);
+                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkWifiAuthChannel</code>
+     * Controller inquire the list of authorized wifi channels.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkWifiAuthChannel ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -906,6 +1026,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsMaxAltitude</code>
+     * Set Max Altitude
+     * @param current Current altitude max in m
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMaxAltitude (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -920,6 +1046,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsMaxTilt</code>
+     * Set Max Tilt
+     * @param current Current tilt max in degree
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMaxTilt (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -934,6 +1066,13 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsAbsolutControl</code>
+     * @deprecated
+     * Enable/Disable absolut control
+     * @param on 1 to enable, 0 to disable
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsAbsolutControl (byte _on)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -948,6 +1087,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsMaxDistance</code>
+     * Set the distance max of the drone
+     * @param value Current max distance in meter
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMaxDistance (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -962,6 +1107,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsNoFlyOverMaxDistance</code>
+     * Indication about how the product handle flying over the max distance limitation
+     * @param shouldNotFlyOver 1 if the drone can't fly further than max distance, 0 if no limitation on the drone should be done
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsNoFlyOverMaxDistance (byte _shouldNotFlyOver)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -976,6 +1127,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsSetAutonomousFlightMaxHorizontalSpeed</code>
+     * [NOT USED] Set the maximum horizontal speed used by the autonomous flight
+     * @param value maximum horizontal speed [m/s]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsSetAutonomousFlightMaxHorizontalSpeed (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -990,6 +1147,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsSetAutonomousFlightMaxVerticalSpeed</code>
+     * [NOT USED] Set the maximum vertical speed used by the autonomous flight
+     * @param value maximum vertical speed [m/s]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsSetAutonomousFlightMaxVerticalSpeed (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1004,6 +1167,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration</code>
+     * [NOT USED] Set the maximum horizontal acceleration used by the autonomous flight
+     * @param value maximum horizontal acceleration [m/s2]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1018,6 +1187,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsSetAutonomousFlightMaxVerticalAcceleration</code>
+     * [NOT USED] Set the maximum vertical acceleration used by the autonomous flight
+     * @param value maximum vertical acceleration [m/s2]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1032,6 +1207,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsSetAutonomousFlightMaxRotationSpeed</code>
+     * [NOT USED] Set the maximum yaw rotation speed used by the autonomous flight
+     * @param value maximum yaw rotation speed [rad/s]
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1046,6 +1227,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsBankedTurn</code>
+     * Enable / Disable Banked Turn mode.
+     * @param value 1 to enable, 0 to disable
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsBankedTurn (byte _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1060,6 +1247,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsMinAltitude</code>
+     * Set Min Altitude
+     * @param current Current altitude min in m
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMinAltitude (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1074,6 +1267,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsCirclingDirection</code>
+     * Set Fixed wings circling default direction
+     * @param value The circling direction
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingDirection (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1081,13 +1280,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingSettingsCirclingDirection (jniFeature, _value);
+                int nativeError = nativeSendPilotingSettingsCirclingDirection (jniFeature, _value.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsCirclingRadius</code>
+     * Set Fixed wings circling radius
+     * @param value The circling radius in meter
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingRadius (short _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1102,6 +1307,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsCirclingAltitude</code>
+     * Set Fixed wings circling altitude
+     * @param value The circling altitude in meter
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingAltitude (short _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1116,6 +1327,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsPitchMode</code>
+     * Set pitch mode
+     * @param value The Pitch mode
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsPitchMode (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1123,13 +1340,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingSettingsPitchMode (jniFeature, _value);
+                int nativeError = nativeSendPilotingSettingsPitchMode (jniFeature, _value.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>PilotingSettingsLandingMode</code>
+     * Set fixed wings Landing Mode
+     * @param value The Landing mode
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsLandingMode (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1137,13 +1360,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingSettingsLandingMode (jniFeature, _value);
+                int nativeError = nativeSendPilotingSettingsLandingMode (jniFeature, _value.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsMaxVerticalSpeed</code>
+     * Set Max Vertical speed
+     * @param current Current max vertical speed in m/s
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxVerticalSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1158,6 +1387,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsMaxRotationSpeed</code>
+     * Set Max Yaw Rotation speed
+     * @param current Current max yaw rotation speed in degree/s
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxRotationSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1172,6 +1407,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsHullProtection</code>
+     * Presence of hull protection
+     * @param present 1 if present, 0 if not present
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsHullProtection (byte _present)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1186,6 +1427,13 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsOutdoor</code>
+     * @deprecated
+     * Outdoor property
+     * @param outdoor 1 if outdoor flight, 0 if indoor flight
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsOutdoor (byte _outdoor)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1200,6 +1448,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>SpeedSettingsMaxPitchRollRotationSpeed</code>
+     * Set Max Pitch/Rool Rotation speed
+     * @param current Current max pitch/roll rotation speed in degree/s
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxPitchRollRotationSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1214,6 +1468,14 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkSettingsWifiSelection</code>
+     * Auto-select channel of choosen band
+     * @param type The type of wifi selection (auto, manual)
+     * @param band The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
+     * @param channel The channel (not used in auto mode)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkSettingsWifiSelection (ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM _type, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM _band, byte _channel)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1221,13 +1483,21 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>NetworkSettingsWifiSecurity</code>
+     * Sent by the controller to set the wifi security
+     * @param type The type of wifi security (open, wpa2)
+     * @param key The key to secure the network (empty if type is open)
+     * @param keyType Type of the key
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendNetworkSettingsWifiSecurity (ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_TYPE_ENUM _type, String _key, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_KEYTYPE_ENUM _keyType)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1235,13 +1505,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type, _key, _keyType);
+                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type.getValue(), _key, _keyType.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsPictureFormatSelection</code>
+     * The format of the photo
+     * @param type The type of photo format
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsPictureFormatSelection (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_PICTUREFORMATSELECTION_TYPE_ENUM _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1249,13 +1525,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsPictureFormatSelection (jniFeature, _type);
+                int nativeError = nativeSendPictureSettingsPictureFormatSelection (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsAutoWhiteBalanceSelection</code>
+     * AutoWhiteBalance mode
+     * @param type The type auto white balance
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsAutoWhiteBalanceSelection (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_AUTOWHITEBALANCESELECTION_TYPE_ENUM _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1263,13 +1545,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsAutoWhiteBalanceSelection (jniFeature, _type);
+                int nativeError = nativeSendPictureSettingsAutoWhiteBalanceSelection (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsExpositionSelection</code>
+     * The exposition of the image
+     * @param value Exposition value (bounds given by ExpositionChanged arg min and max, by default [-3:3])
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsExpositionSelection (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1284,6 +1572,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsSaturationSelection</code>
+     * The saturation of the image
+     * @param value Saturation value (bounds given by SaturationChanged arg min and max, by default [-100:100])
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsSaturationSelection (float _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1298,6 +1592,13 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsTimelapseSelection</code>
+     * Picture taken periodically
+     * @param enabled 1 if timelapse is enabled, 0 otherwise
+     * @param interval interval in seconds for taking pictures
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsTimelapseSelection (byte _enabled, float _interval)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1312,6 +1613,13 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsVideoAutorecordSelection</code>
+     * Video autorecord
+     * @param enabled 1 if video autorecord is enabled, 0 otherwise
+     * @param mass_storage_id Mass storage id to take video
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsVideoAutorecordSelection (byte _enabled, byte _mass_storage_id)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1326,6 +1634,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>PictureSettingsVideoStabilizationMode</code>
+     * Set Video stabilization mode
+     * @param mode Video stabilization mode
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendPictureSettingsVideoStabilizationMode (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM _mode)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1333,13 +1647,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode);
+                int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>MediaStreamingVideoEnable</code>
+     * Enable/disable video streaming.
+     * @param enable 1 to enable, 0 to disable.
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendMediaStreamingVideoEnable (byte _enable)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1354,6 +1674,15 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>GPSSettingsSetHome</code>
+     * @deprecated
+     * Set home location
+     * @param latitude Home latitude in decimal degrees
+     * @param longitude Home longitude in decimal degrees
+     * @param altitude Home altitude in meters
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSSettingsSetHome (double _latitude, double _longitude, double _altitude)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1368,6 +1697,11 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>GPSSettingsResetHome</code>
+     * Reset home location and let the drone make its own home
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSSettingsResetHome ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1382,6 +1716,16 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>GPSSettingsSendControllerGPS</code>
+     * send controller GPS location
+     * @param latitude GPS latitude in decimal degrees
+     * @param longitude GPS longitude in decimal degrees
+     * @param altitude GPS altitude in meters
+     * @param horizontalAccuracy Horizontal Accuracy in meter ; equal -1 if no horizontal Accuracy
+     * @param verticalAccuracy Vertical Accuracy in meter ; equal -1 if no vertical Accuracy
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSSettingsSendControllerGPS (double _latitude, double _longitude, double _altitude, double _horizontalAccuracy, double _verticalAccuracy)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1396,6 +1740,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>GPSSettingsHomeType</code>
+     * Set user preference for the type of the home position. Note that this is only a preference
+     * @param type The type of the home position
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSSettingsHomeType (ARCOMMANDS_ARDRONE3_GPSSETTINGS_HOMETYPE_TYPE_ENUM _type)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1403,13 +1753,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendGPSSettingsHomeType (jniFeature, _type);
+                int nativeError = nativeSendGPSSettingsHomeType (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>GPSSettingsReturnHomeDelay</code>
+     * Set the delay after which the drone will automatically try to return home
+     * @param delay Delay in second
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGPSSettingsReturnHomeDelay (short _delay)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1424,6 +1780,12 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    /**
+     * Send a command <code>AntiflickeringElectricFrequency</code>
+     * Electric frequency of the country determined by the position of the controller
+     * @param frequency Type of the electric frequency
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAntiflickeringElectricFrequency (ARCOMMANDS_ARDRONE3_ANTIFLICKERING_ELECTRICFREQUENCY_FREQUENCY_ENUM _frequency)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1431,13 +1793,19 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAntiflickeringElectricFrequency (jniFeature, _frequency);
+                int nativeError = nativeSendAntiflickeringElectricFrequency (jniFeature, _frequency.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
         return error;
     }
     
+    /**
+     * Send a command <code>AntiflickeringSetMode</code>
+     * Set the anti flickering mode
+     * @param mode Mode of the anti flickering functionnality
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendAntiflickeringSetMode (ARCOMMANDS_ARDRONE3_ANTIFLICKERING_SETMODE_MODE_ENUM _mode)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1445,7 +1813,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAntiflickeringSetMode (jniFeature, _mode);
+                int nativeError = nativeSendAntiflickeringSetMode (jniFeature, _mode.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

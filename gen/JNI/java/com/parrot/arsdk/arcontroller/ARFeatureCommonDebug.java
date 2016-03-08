@@ -122,6 +122,12 @@ public class ARFeatureCommonDebug
         }
     }
     
+    /**
+     * Send a command <code>StatsSendPacket</code>
+     * Send a packet to the drone
+     * @param packet Packet to send to the drone
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendStatsSendPacket (String _packet)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -136,6 +142,14 @@ public class ARFeatureCommonDebug
         return error;
     }
     
+    /**
+     * Send a command <code>StatsStartSendingPacketFromDrone</code>
+     * Ask drone to start sending packets
+     * @param frequency Frequency of the packet
+     * @param packetSize Size of the the packet
+     * @param date time of day in sec
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendStatsStartSendingPacketFromDrone (byte _frequency, byte _packetSize, int _date)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -150,6 +164,11 @@ public class ARFeatureCommonDebug
         return error;
     }
     
+    /**
+     * Send a command <code>StatsStopSendingPacketFromDrone</code>
+     * Ask drone to stop sending packets
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendStatsStopSendingPacketFromDrone ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -164,6 +183,11 @@ public class ARFeatureCommonDebug
         return error;
     }
     
+    /**
+     * Send a command <code>DebugSettingsGetAll</code>
+     * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDebugSettingsGetAll ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -178,6 +202,14 @@ public class ARFeatureCommonDebug
         return error;
     }
     
+    /**
+     * Send a command <code>DebugSettingsSet</code>
+     * Change setting value.
+     * Cmd sent by controller to change a writable setting.
+     * @param id Setting Id.
+     * @param value New setting value (string encoded).
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDebugSettingsSet (short _id, String _value)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

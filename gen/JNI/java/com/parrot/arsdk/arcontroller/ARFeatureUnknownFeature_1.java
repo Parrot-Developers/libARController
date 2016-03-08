@@ -216,6 +216,19 @@ public class ARFeatureUnknownFeature_1
         }
     }
     
+    /**
+     * Send a command <code>GeographicRun</code>
+     * Begin or stop geographic type followMe (follow the leader keeping the same vector).
+     * Sending this command will stop other running followMe.
+     * @param start 1 to start geographic unknown feature_1 process, 0 to stop it
+     * @param distance_is_default 0 if distance is set by user, 1 if set by current distance (in this case distance value is not used) Not used when arg start is at 0
+     * @param distance The distance leader-follower in meter Not used when arg start is at 0
+     * @param elevation_is_default 0 if elevation is set by user, 1 if set by current elevation (in this case elevation value is not used) (not used when arg start is at 0)
+     * @param elevation The elevation leader-follower in rad (not used when arg start is at 0)
+     * @param azimuth_is_default 0 if azimuth is set by user, 1 if set by current azimuth (in this case azimuth value is not used) (not used when arg start is at 0)
+     * @param azimuth The azimuth north-leader-follower in rad (not used when arg start is at 0)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendGeographicRun (byte _start, byte _distance_is_default, float _distance, byte _elevation_is_default, float _elevation, byte _azimuth_is_default, float _azimuth)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -230,6 +243,19 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>RelativeRun</code>
+     * Begin or stop relative type followMe (follow the leader keeping the same orientation to its direction).
+     * Sending this command will stop other running followMe.
+     * @param start 1 to start relative unknown feature_1 process, 0 to stop it
+     * @param distance_is_default 0 if distance is set by user, 1 if set by current distance (in this case distance value is not used) (not used when arg start is at 0)
+     * @param distance The distance leader-follower in meter (not used when arg start is at 0)
+     * @param elevation_is_default 0 if elevation is set by user, 1 if set by current elevation (in this case elevation value is not used) (not used when arg start is at 0)
+     * @param elevation The elevation leader-follower in rad (not used when arg start is at 0)
+     * @param azimuth_is_default 0 if azimuth is set by user, 1 if set by current azimuth (in this case azimuth value is not used) (not used when arg start is at 0)
+     * @param azimuth The azimuth north-leader-follower in rad (not used when arg start is at 0)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendRelativeRun (byte _start, byte _distance_is_default, float _distance, byte _elevation_is_default, float _elevation, byte _azimuth_is_default, float _azimuth)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -244,6 +270,13 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>LookAtRun</code>
+     * Begin or stop look at type followMe (stare at the leader while hovering).
+     * Sending this command will stop other running followMe.
+     * @param start 1 to start look at process, 0 to stop it
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendLookAtRun (byte _start)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -258,6 +291,19 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>SpiralAnimRun</code>
+     * Begin or stop a spiral animation.
+     * The spiral animation allows the drone to revolve around the target while going up, with a fixed radius.
+     * @param start 1 to start the anim, 0 to stop it
+     * @param speed_is_default 0 if speed is set by user, 1 if default speed should be used Not used when start is 0
+     * @param speed The desired speed of the anim in m/s Not used when speed_is_default is 1 Not used when start is 0
+     * @param revolution_nb_is_default 0 if the number of revolution is set by user, 1 if default revolution nb should be used Not used when start is 0
+     * @param revolution_number The number of revolution (in turn) Negative value is infinite Example: 1.5 makes an entire turn plus half of a turn Not used when revolutionNb_is_default is 1 Not used when start is 0
+     * @param vertical_distance_is_default 0 if the vertical distance is set by user, 1 if default value should be used Not used when start is 0
+     * @param vertical_distance Distance that should be made by the product to reach the top of the spiral in m Not used when verticalDistance_is_default is 1 Not used when start is 0
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSpiralAnimRun (byte _start, byte _speed_is_default, float _speed, byte _revolution_nb_is_default, float _revolution_number, byte _vertical_distance_is_default, float _vertical_distance)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -272,6 +318,17 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>SwingAnimRun</code>
+     * Begin or stop a swing animation.
+     * The swing animation enables a vertical point of view while the drone passes over the target.
+     * @param start 1 to start the anim, 0 to stop it
+     * @param speed_is_default 0 if speed is set by user, 1 if default speed should be used Not used when start is 0
+     * @param speed The desired speed of the anim in m/s Not used when speed_is_default is 1 Not used when start is 0
+     * @param vertical_distance_is_default 0 if the vertical distance is set by user, 1 if default value should be used Not used when start is 0
+     * @param vertical_distance Distance that should be made by the product to reach the top of the swing in m Not used when verticalDistance_is_default is 1 Not used when start is 0
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendSwingAnimRun (byte _start, byte _speed_is_default, float _speed, byte _vertical_distance_is_default, float _vertical_distance)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -286,6 +343,17 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>BoomerangAnimRun</code>
+     * Begin or stop a boomerang animation.
+     * The boomerang animation enables a zoom-out/zoom-in trajectory while preserving the framing chosen by the user.
+     * @param start 1 to start the anim, 0 to stop it
+     * @param speed_is_default 0 if speed is set by user, 1 if default speed should be used Not used when start is 0
+     * @param speed The desired speed of the anim in m/s Not used when speed_is_default is 1 Not used when start is 0
+     * @param distance_is_default 0 if the distance is set by user, 1 if default value should be used Not used when start is 0
+     * @param distance Distance that should be made by the product to reach its return point in m Not used when distance_is_default is 1 Not used when start is 0
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendBoomerangAnimRun (byte _start, byte _speed_is_default, float _speed, byte _distance_is_default, float _distance)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -300,6 +368,17 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>CandleAnimRun</code>
+     * Begin or stop a candle animation.
+     * The candle animation enables a zoom-in directly on the target followed by a vertical zoom-out.
+     * @param start 1 to start the anim, 0 to stop it
+     * @param speed_is_default 0 if speed is set by user, 1 if default speed should be used Not used when start is 0
+     * @param speed The desired speed of the anim in m/s Not used when speed_is_default is 1 Not used when start is 0
+     * @param vertical_distance_is_default 0 if the vertical distance is set by user, 1 if default value should be used Not used when start is 0
+     * @param vertical_distance Distance that should be made by the product to reach the top of the vertical zoom-out in m Not used when verticalDistance_is_default is 1 Not used when start is 0
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendCandleAnimRun (byte _start, byte _speed_is_default, float _speed, byte _vertical_distance_is_default, float _vertical_distance)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -314,6 +393,19 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>DollySlideAnimRun</code>
+     * Begin or stop a dolly slide animation.
+     * Allows the drone to catch up to the target before flying past it, creating a zoom-in/zoom_out effect without a curved path.
+     * @param start 1 to start the anim, 0 to stop it
+     * @param speed_is_default 0 if speed is set by user, 1 if default speed should be used Not used when start is 0
+     * @param speed The desired speed of the anim in m/s Not used when speed_is_default is 1 Not used when start is 0
+     * @param angle_is_default 0 if the angle is set by user, 1 if default value should be used Not used when start is 0
+     * @param angle Desired angle Product-User-Target in rad Not used when angle_is_default is 1 Not used when start is 0
+     * @param horizontal_distance_is_default 0 if the horizontal distance is set by user, 1 if default value should be used Not used when start is 0
+     * @param horizontal_distance Distance that should be made by the product to reach its target in m Not used when horizontalDistance_is_default is 1 Not used when start is 0
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendDollySlideAnimRun (byte _start, byte _speed_is_default, float _speed, byte _angle_is_default, float _angle, byte _horizontal_distance_is_default, float _horizontal_distance)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -328,6 +420,13 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>UserFramingPosition</code>
+     * User desired framing in the video.
+     * @param horizontal Horizontal position in the video (in %, from left to right)
+     * @param vertical Vertical position in the video (in %, from bottom to top)
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendUserFramingPosition (byte _horizontal, byte _vertical)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -342,6 +441,20 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>UserGPSData</code>
+     * User gps data
+     * @param latitude Latitude of the user (in deg)
+     * @param longitude Longitude of the user (in deg)
+     * @param altitude Altitude of the user (in meters, according to sea level)
+     * @param horizontal_accuracy Horizontal accuracy (in meter)
+     * @param vertical_accuracy Vertical accuracy (in meter)
+     * @param north_speed North speed (in meter per second)
+     * @param east_speed East speed (in meter per second)
+     * @param down_speed Vertical speed (in meter per second) (down is positive)
+     * @param timestamp Timestamp of the gps data
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendUserGPSData (double _latitude, double _longitude, float _altitude, float _horizontal_accuracy, float _vertical_accuracy, float _north_speed, float _east_speed, float _down_speed, double _timestamp)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -356,6 +469,13 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>UserBaroData</code>
+     * User barometer data
+     * @param pressure Atmospheric pressure in hPa (millibar)
+     * @param timestamp Timestamp of the barometer data
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendUserBaroData (float _pressure, double _timestamp)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -370,6 +490,17 @@ public class ARFeatureUnknownFeature_1
         return error;
     }
     
+    /**
+     * Send a command <code>LynxDetection</code>
+     * Send vision detection results.
+     * @param target_pan Pan angle of detected target in radian
+     * @param target_tilt Tilt angle of detected target in radian
+     * @param change_of_scale Target's change of scale : new width = (1+ changOfScale) * old width
+     * @param confidence_index Confidence index of the Lynx detection (from 0 to 255, the highest is the best)
+     * @param is_new_selection Boolean. 1 if the selection is new, 0 otherwise
+     * @param timestamp Acquisition time of processed picture in millisecond
+     * return executing error
+     */
     public ARCONTROLLER_ERROR_ENUM sendLynxDetection (float _target_pan, float _target_tilt, float _change_of_scale, byte _confidence_index, byte _is_new_selection, long _timestamp)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;

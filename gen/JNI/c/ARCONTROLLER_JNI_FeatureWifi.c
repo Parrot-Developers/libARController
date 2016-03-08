@@ -73,12 +73,6 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiScannedIt
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiScannedItemListflags (JNIEnv *env , jclass class)
-{
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_LIST_FLAGS);
-}
-
-JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiAuthorizedChannelBand (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND);
@@ -94,12 +88,6 @@ JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiAuthorizedChannelEnvironement (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT);
-}
-
-JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiAuthorizedChannelListflags (JNIEnv *env , jclass class)
-{
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_LIST_FLAGS);
 }
 
 JNIEXPORT jstring JNICALL

@@ -67,6 +67,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDron
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDronePilotingStateFlyingModeChangedMode (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGMODECHANGED_MODE);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneMediaRecordStatePictureStateChangedState (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE);
@@ -398,6 +404,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendPilotingAutoTake
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendPilotingAutoTakeOffMode (nativeFeature, _state);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendPilotingFlyingMode (JNIEnv *env, jobject thizz, jlong jFeature, jint _mode)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingFlyingMode (nativeFeature, _mode);
 
     return error;
 }
