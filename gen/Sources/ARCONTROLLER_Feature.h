@@ -436,9 +436,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonom
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxRotationSpeed</code> in project <code>ARDrone3</code>
- * [NOT USED] Set the maximum yaw rotation speed used by the autonomous flight
+ * Set the maximum yaw rotation speed used by the autonomous flight
  * @param feature feature owning the commands
- * @param value maximum yaw rotation speed [rad/s]
+ * @param value maximum yaw rotation speed [deg/s]
  * return executing error
  */
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float value);
@@ -977,7 +977,7 @@ void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxVerti
 /**
  * @brief callback used when the command <code>PilotingSettingsStateAutonomousFlightMaxRotationSpeed</code> is decoded
  * @param feature The feature controller registred
- * @param value maximum yaw rotation speed [rad/s]
+ * @param value maximum yaw rotation speed [deg/s]
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_ARDrone3_PilotingSettingsStateAutonomousFlightMaxRotationSpeedCallback (float _value, void *customData);

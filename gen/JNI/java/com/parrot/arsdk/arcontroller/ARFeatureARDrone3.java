@@ -1209,8 +1209,8 @@ public class ARFeatureARDrone3
     
     /**
      * Send a command <code>PilotingSettingsSetAutonomousFlightMaxRotationSpeed</code>
-     * [NOT USED] Set the maximum yaw rotation speed used by the autonomous flight
-     * @param value maximum yaw rotation speed [rad/s]
+     * Set the maximum yaw rotation speed used by the autonomous flight
+     * @param value maximum yaw rotation speed [deg/s]
      * return executing error
      */
     public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (float _value)
