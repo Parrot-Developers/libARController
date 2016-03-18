@@ -735,9 +735,9 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettings
 
 /**
  * @brief Send a command <code>PilotingSettingsSetAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code>
- * [NOT USED] Set the maximum yaw rotation speed used by the autonomous flight
+ * Set the maximum yaw rotation speed used by the autonomous flight
  * @param feature feature owning the commands
- * @param value maximum yaw rotation speed [rad/s]
+ * @param value maximum yaw rotation speed [deg/s]
  * return executing error
  */
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPilotingSettingsSetAutonomousFlightMaxRotationSpeed_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, float value);
