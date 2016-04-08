@@ -63,7 +63,7 @@
 #define ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE 4
 
 int ARCONTROLLER_Stream1_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int numberOfParameters, int id);
-void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize);
+int ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize);
 
 void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data);
 int ARCONTROLLER_Stream1_useStream1V2 (ARCONTROLLER_Stream1_t *stream1Controller);
@@ -673,19 +673,19 @@ int ARCONTROLLER_Stream1_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int n
 void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
 {
     // -- Manage the reception of the Video -- 
-    
+
     // local declarations 
     ARCONTROLLER_Stream1_t *stream1Controller = data;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
     ARCONTROLLER_Stream_Codec_t codec;
     eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
-    
+
     uint8_t *spsBuffer = NULL;
     int spsSize = 0;
     uint8_t *ppsBuffer = NULL;
     int ppsSize = 0;
-    
+
     // Check parameters
     if (stream1Controller != NULL)
     {
@@ -702,25 +702,32 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         
                         if (frame->isIFrame)
                         {
-                            ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
-                            
-                            //Remove sps/pps of the frame data
-                            frame->data = frame->data + spsSize + ppsSize;
-                            frame->used = frame->used - spsSize - ppsSize;
-                            
-                            //Set Codec
-                            codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
-                            codec.parameters.h264parameters.spsBuffer = spsBuffer;
-                            codec.parameters.h264parameters.spsSize = spsSize;
-                            codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
-                            codec.parameters.h264parameters.ppsSize = ppsSize;
-                            codec.parameters.h264parameters.isMP4Compliant = stream1Controller->isMP4Compliant;
-                            
-                            //Configuration decoder callback 
-                            if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
+                            error = ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
+
+                            if (error == ARCONTROLLER_OK)
                             {
-                                stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
-                                stream1Controller->decoderConfigCalled = 1;
+                                //Remove sps/pps of the frame data
+                                frame->data = frame->data + spsSize + ppsSize;
+                                frame->used = frame->used - spsSize - ppsSize;
+
+                                //Set Codec
+                                codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
+                                codec.parameters.h264parameters.spsBuffer = spsBuffer;
+                                codec.parameters.h264parameters.spsSize = spsSize;
+                                codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
+                                codec.parameters.h264parameters.ppsSize = ppsSize;
+                                codec.parameters.h264parameters.isMP4Compliant = stream1Controller->isMP4Compliant;
+
+                                //Configuration decoder callback
+                                if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
+                                {
+                                    stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
+                                    stream1Controller->decoderConfigCalled = 1;
+                                }
+                            }
+                            else
+                            {
+                                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "sps pps not found.");
                             }
                         }
                         // NO ELSE ; no callback registered
@@ -740,7 +747,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         //Set Codec
                         codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
                         
-                        //Callback 
+                        //Callback
                         if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
                         {
                             stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
@@ -778,42 +785,78 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
             }
         }
     }
-        
+
     return NULL;
 }
 
-void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize)
+int ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize)
 {
     // -- Get sps and pps from Iframe --
-    
+
     size_t searchIndex = 0;
+    int found = 0;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
 
-    // we'll need to search the "00 00 00 01" pattern to find each header size
-    // Search start at index 4 to avoid finding the SPS "00 00 00 01" tag
-    for (searchIndex = ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex <= frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex ++)
+    if (frame->used < ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE ||
+        0 != frame->data[0] ||
+        0 != frame->data[1] ||
+        0 != frame->data[2] ||
+        1 != frame->data[3])
     {
-        if (0 == frame->data[searchIndex] &&
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "bad frame.");
+        error = ARCONTROLLER_ERROR;
+    }
+
+    if (error == ARCONTROLLER_OK)
+    {
+        // we'll need to search the "00 00 00 01" pattern to find each header size
+        // Search start at index 4 to avoid finding the SPS "00 00 00 01" tag
+        for (searchIndex = ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex <= frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex++)
+        {
+            if (0 == frame->data[searchIndex] &&
                 0 == frame->data[searchIndex+1] &&
                 0 == frame->data[searchIndex+2] &&
                 1 == frame->data[searchIndex+3])
+            {
+                *spsBuffer = frame->data;
+                *spsSize = searchIndex;
+                found = 1;
+                break;  // PPS header found
+            }
+        }
+
+        if (found == 0)
         {
-            *spsBuffer = frame->data;
-            *spsSize = searchIndex;
-            break;  // PPS header found
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "sps not Found.");
+            error = ARCONTROLLER_ERROR;
         }
     }
 
-    // Search start at index 4 to avoid finding the PSS "00 00 00 01" tag
-    for (searchIndex = (*spsSize) + ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex <= frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex ++)
+    if (error == ARCONTROLLER_OK)
     {
-        if (0 == frame->data[searchIndex  ] &&
+        found = 0;
+
+        // Search start at index 4 to avoid finding the PSS "00 00 00 01" tag
+        for (searchIndex = (*spsSize) + ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex <= frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE; searchIndex ++)
+        {
+            if (0 == frame->data[searchIndex  ] &&
                 0 == frame->data[searchIndex+1] &&
                 0 == frame->data[searchIndex+2] &&
                 1 == frame->data[searchIndex+3])
+            {
+                *ppsBuffer = (*spsBuffer) + (*spsSize);
+                *ppsSize = searchIndex - (*spsSize);
+                found = 1;
+                break;  // frame header found
+            }
+        }
+
+        if (found == 0)
         {
-            *ppsBuffer = (*spsBuffer) + (*spsSize);
-            *ppsSize = searchIndex - (*spsSize);
-            break;  // frame header found
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "pps not Found.");
+            error = ARCONTROLLER_ERROR;
         }
     }
+
+    return error;
 }
