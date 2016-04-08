@@ -85,9 +85,9 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiAuthorize
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiAuthorizedChannelEnvironement (JNIEnv *env , jclass class)
+Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiAuthorizedChannelEnvironment (JNIEnv *env , jclass class)
 {
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT);
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONMENT);
 }
 
 JNIEXPORT jstring JNICALL
@@ -133,9 +133,9 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiCountryCh
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiEnvironementChangedEnvironement (JNIEnv *env , jclass class)
+Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeStaticGetKeyWifiEnvironmentChangedEnvironment (JNIEnv *env , jclass class)
 {
-    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT);
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED_ENVIRONMENT);
 }
 
 JNIEXPORT jstring JNICALL
@@ -213,13 +213,13 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeSendSetCountry (JNIEnv *e
 }
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeSendSetEnvironement (JNIEnv *env, jobject thizz, jlong jFeature, jint _environement)
+Java_com_parrot_arsdk_arcontroller_ARFeatureWifi_nativeSendSetEnvironment (JNIEnv *env, jobject thizz, jlong jFeature, jint _environment)
 {
     // local declarations
     ARCONTROLLER_FEATURE_Wifi_t *nativeFeature = (ARCONTROLLER_FEATURE_Wifi_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    error = nativeFeature->sendSetEnvironement (nativeFeature, _environement);
+    error = nativeFeature->sendSetEnvironment (nativeFeature, _environment);
 
     return error;
 }

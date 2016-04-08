@@ -212,6 +212,9 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED, /**< Key used to define the event <code>SettingsStateProductInertialVersionChanged</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED, /**< Key used to define the event <code>SettingsStateCutOutModeChanged</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED, /**< Key used to define the event <code>FloodControlStateFloodControlChanged</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE, /**< Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE, /**< Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE, /**< Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO, /**< Key used to define the feature <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES, /**< Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED, /**< Key used to define the event <code>ProStateFeaturesActivated</code> in project <code>Pro</code> */
@@ -259,7 +262,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED, /**< Key used to define the event <code>ApChannelChanged</code> in project <code>Wifi</code> */
     ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED, /**< Key used to define the event <code>SecurityChanged</code> in project <code>Wifi</code> */
     ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED, /**< Key used to define the event <code>CountryChanged</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED, /**< Key used to define the event <code>EnvironementChanged</code> in project <code>Wifi</code> */
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED, /**< Key used to define the event <code>EnvironmentChanged</code> in project <code>Wifi</code> */
     ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED, /**< Key used to define the event <code>RssiChanged</code> in project <code>Wifi</code> */
     ARCONTROLLER_DICTIONARY_DICTIONARY_KEY_MAX, /**< Unused, iterator maximum value */
 }eARCONTROLLER_DICTIONARY_KEY;

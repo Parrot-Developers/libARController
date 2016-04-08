@@ -2643,6 +2643,16 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMOD
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY; /**< Key of the argument </code>delay</code> of event <code>FloodControlStateFloodControlChanged</code> in feature <code>MiniDrone</code> */
 
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_ID; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateLightState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateLightState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_INTENSITY; /**< Key of the argument </code>intensity</code> of event <code>UsbAccessoryStateLightState</code> in feature <code>MiniDrone</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ID; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateClawState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateClawState</code> in feature <code>MiniDrone</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
+
 /**
  * @brief Send a command <code>PilotingFlatTrim</code> in feature <code>MiniDrone</code>
  * Do a flat trim
@@ -2921,6 +2931,37 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationCo
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * name);
 
 /**
+ * @brief Send a command <code>UsbAccessoryLightControl</code> in feature <code>MiniDrone</code>
+ * USB Light control cmd.
+ * @param feature feature owning the commands
+ * @param id Usb accessory id
+ * @param mode Usb Light mode.
+ * @param intensity Light intensity from 0 (OFF) to 100 (Max intensity). Only used in FIXED mode.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryLightControl_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_LIGHTCONTROL_MODE mode, uint8_t intensity);
+
+/**
+ * @brief Send a command <code>UsbAccessoryClawControl</code> in feature <code>MiniDrone</code>
+ * USB Claw control cmd.
+ * @param feature feature owning the commands
+ * @param id Usb accessory id.
+ * @param action USB Claw action.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryClawControl_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_CLAWCONTROL_ACTION action);
+
+/**
+ * @brief Send a command <code>UsbAccessoryGunControl</code> in feature <code>MiniDrone</code>
+ * USB Gun control cmd.
+ * @param feature feature owning the commands
+ * @param id Usb accessory id
+ * @param action USB Gun action.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryGunControl_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_GUNCONTROL_ACTION action);
+
+/**
  * @brief Feature controller allow to send command related of MiniDrone Feature.
  * All MiniDrone-only commands
  */
@@ -2955,6 +2996,9 @@ struct ARCONTROLLER_FEATURE_MiniDrone_t
     ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t sendGPSControllerLongitudeForRun;
     ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType_t sendConfigurationControllerType;
     ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName_t sendConfigurationControllerName;
+    ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryLightControl_t sendUsbAccessoryLightControl;
+    ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryClawControl_t sendUsbAccessoryClawControl;
+    ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryGunControl_t sendUsbAccessoryGunControl;
     ARCONTROLLER_FEATURE_MiniDrone_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_MiniDrone_t */
 };
 
@@ -3642,7 +3686,7 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_CHANNEL; /**< Ke
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND; /**< Key of the argument </code>band</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_CHANNEL; /**< Key of the argument </code>channel</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT; /**< Key of the argument </code>environement</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONMENT; /**< Key of the argument </code>environment</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_TYPE; /**< Key of the argument </code>type</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_BAND; /**< Key of the argument </code>band</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
@@ -3654,7 +3698,7 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE; /*
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE; /**< Key of the argument </code>selection_mode</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE; /**< Key of the argument </code>code</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT; /**< Key of the argument </code>environement</code> of event <code>EnvironementChanged</code> in feature <code>Wifi</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED_ENVIRONMENT; /**< Key of the argument </code>environment</code> of event <code>EnvironmentChanged</code> in feature <code>Wifi</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED_RSSI; /**< Key of the argument </code>rssi</code> of event <code>RssiChanged</code> in feature <code>Wifi</code> */
 
@@ -3710,13 +3754,13 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetSecurity_t) (ARCO
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetCountry_t) (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION selection_mode, char * code);
 
 /**
- * @brief Send a command <code>SetEnvironement</code> in feature <code>Wifi</code>
+ * @brief Send a command <code>SetEnvironment</code> in feature <code>Wifi</code>
  * Set indoor or outdoor wifi settings.
  * @param feature feature owning the commands
- * @param environement Type of environement
+ * @param environment Type of environment
  * return executing error
  */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetEnvironement_t) (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONEMENT environement);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Wifi_SendSetEnvironment_t) (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONMENT environment);
 
 /**
  * @brief Feature controller allow to send command related of wifi Feature.
@@ -3729,7 +3773,7 @@ struct ARCONTROLLER_FEATURE_Wifi_t
     ARCONTROLLER_FEATURE_Wifi_SendSetApChannel_t sendSetApChannel;
     ARCONTROLLER_FEATURE_Wifi_SendSetSecurity_t sendSetSecurity;
     ARCONTROLLER_FEATURE_Wifi_SendSetCountry_t sendSetCountry;
-    ARCONTROLLER_FEATURE_Wifi_SendSetEnvironement_t sendSetEnvironement;
+    ARCONTROLLER_FEATURE_Wifi_SendSetEnvironment_t sendSetEnvironment;
     ARCONTROLLER_FEATURE_Wifi_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Wifi_t */
 };
 

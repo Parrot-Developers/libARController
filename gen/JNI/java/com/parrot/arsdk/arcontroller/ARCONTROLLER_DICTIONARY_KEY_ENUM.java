@@ -425,106 +425,112 @@ public enum ARCONTROLLER_DICTIONARY_KEY_ENUM {
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED (189, "Key used to define the event <code>SettingsStateCutOutModeChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>FloodControlStateFloodControlChanged</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED (190, "Key used to define the event <code>FloodControlStateFloodControlChanged</code> in project <code>MiniDrone</code>"),
+   /** Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE (191, "Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code>"),
+   /** Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE (192, "Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code>"),
+   /** Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE (193, "Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code>"),
    /** Key used to define the feature <code>Pro</code> */
-    ARCONTROLLER_DICTIONARY_KEY_PRO (191, "Key used to define the feature <code>Pro</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_PRO (194, "Key used to define the feature <code>Pro</code>"),
    /** Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code> */
-    ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES (192, "Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES (195, "Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code>"),
    /** Key used to define the event <code>ProStateFeaturesActivated</code> in project <code>Pro</code> */
-    ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED (193, "Key used to define the event <code>ProStateFeaturesActivated</code> in project <code>Pro</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED (196, "Key used to define the event <code>ProStateFeaturesActivated</code> in project <code>Pro</code>"),
    /** Key used to define the event <code>ProEventChallengeEvent</code> in project <code>Pro</code> */
-    ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT (194, "Key used to define the event <code>ProEventChallengeEvent</code> in project <code>Pro</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT (197, "Key used to define the event <code>ProEventChallengeEvent</code> in project <code>Pro</code>"),
    /** Key used to define the feature <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER (195, "Key used to define the feature <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER (198, "Key used to define the feature <code>SkyController</code>"),
    /** Key used to define the event <code>WifiStateWifiList</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST (196, "Key used to define the event <code>WifiStateWifiList</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFILIST (199, "Key used to define the event <code>WifiStateWifiList</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>WifiStateConnexionChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED (197, "Key used to define the event <code>WifiStateConnexionChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_CONNEXIONCHANGED (200, "Key used to define the event <code>WifiStateConnexionChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>WifiStateWifiAuthChannelListChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED (198, "Key used to define the event <code>WifiStateWifiAuthChannelListChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFIAUTHCHANNELLISTCHANGED (201, "Key used to define the event <code>WifiStateWifiAuthChannelListChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>WifiStateAllWifiAuthChannelChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_ALLWIFIAUTHCHANNELCHANGED (199, "Key used to define the event <code>WifiStateAllWifiAuthChannelChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_ALLWIFIAUTHCHANNELCHANGED (202, "Key used to define the event <code>WifiStateAllWifiAuthChannelChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>WifiStateWifiSignalChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFISIGNALCHANGED (200, "Key used to define the event <code>WifiStateWifiSignalChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_WIFISTATE_WIFISIGNALCHANGED (203, "Key used to define the event <code>WifiStateWifiSignalChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>DeviceStateDeviceList</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_DEVICELIST (201, "Key used to define the event <code>DeviceStateDeviceList</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_DEVICELIST (204, "Key used to define the event <code>DeviceStateDeviceList</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>DeviceStateConnexionChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED (202, "Key used to define the event <code>DeviceStateConnexionChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED (205, "Key used to define the event <code>DeviceStateConnexionChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SettingsStateAllSettingsChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_ALLSETTINGSCHANGED (203, "Key used to define the event <code>SettingsStateAllSettingsChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_ALLSETTINGSCHANGED (206, "Key used to define the event <code>SettingsStateAllSettingsChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SettingsStateResetChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_RESETCHANGED (204, "Key used to define the event <code>SettingsStateResetChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_RESETCHANGED (207, "Key used to define the event <code>SettingsStateResetChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SettingsStateProductSerialChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED (205, "Key used to define the event <code>SettingsStateProductSerialChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED (208, "Key used to define the event <code>SettingsStateProductSerialChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SettingsStateProductVariantChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED (206, "Key used to define the event <code>SettingsStateProductVariantChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED (209, "Key used to define the event <code>SettingsStateProductVariantChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>CommonStateAllStatesChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED (207, "Key used to define the event <code>CommonStateAllStatesChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED (210, "Key used to define the event <code>CommonStateAllStatesChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SkyControllerStateBatteryChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED (208, "Key used to define the event <code>SkyControllerStateBatteryChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED (211, "Key used to define the event <code>SkyControllerStateBatteryChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SkyControllerStateGpsFixChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED (209, "Key used to define the event <code>SkyControllerStateGpsFixChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED (212, "Key used to define the event <code>SkyControllerStateGpsFixChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>SkyControllerStateGpsPositionChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED (210, "Key used to define the event <code>SkyControllerStateGpsPositionChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED (213, "Key used to define the event <code>SkyControllerStateGpsPositionChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AccessPointSettingsStateAccessPointSSIDChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTSSIDCHANGED (211, "Key used to define the event <code>AccessPointSettingsStateAccessPointSSIDChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTSSIDCHANGED (214, "Key used to define the event <code>AccessPointSettingsStateAccessPointSSIDChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AccessPointSettingsStateAccessPointChannelChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTCHANNELCHANGED (212, "Key used to define the event <code>AccessPointSettingsStateAccessPointChannelChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_ACCESSPOINTCHANNELCHANGED (215, "Key used to define the event <code>AccessPointSettingsStateAccessPointChannelChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AccessPointSettingsStateWifiSelectionChanged</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED (213, "Key used to define the event <code>AccessPointSettingsStateWifiSelectionChanged</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_ACCESSPOINTSETTINGSSTATE_WIFISELECTIONCHANGED (216, "Key used to define the event <code>AccessPointSettingsStateWifiSelectionChanged</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>GamepadInfosStateGamepadControl</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL (214, "Key used to define the event <code>GamepadInfosStateGamepadControl</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_GAMEPADCONTROL (217, "Key used to define the event <code>GamepadInfosStateGamepadControl</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>GamepadInfosStateAllGamepadControlsSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_ALLGAMEPADCONTROLSSENT (215, "Key used to define the event <code>GamepadInfosStateAllGamepadControlsSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_GAMEPADINFOSSTATE_ALLGAMEPADCONTROLSSENT (218, "Key used to define the event <code>GamepadInfosStateAllGamepadControlsSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>ButtonMappingsStateCurrentButtonMappings</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS (216, "Key used to define the event <code>ButtonMappingsStateCurrentButtonMappings</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_CURRENTBUTTONMAPPINGS (219, "Key used to define the event <code>ButtonMappingsStateCurrentButtonMappings</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>ButtonMappingsStateAllCurrentButtonMappingsSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_ALLCURRENTBUTTONMAPPINGSSENT (217, "Key used to define the event <code>ButtonMappingsStateAllCurrentButtonMappingsSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_ALLCURRENTBUTTONMAPPINGSSENT (220, "Key used to define the event <code>ButtonMappingsStateAllCurrentButtonMappingsSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>ButtonMappingsStateAvailableButtonMappings</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS (218, "Key used to define the event <code>ButtonMappingsStateAvailableButtonMappings</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_AVAILABLEBUTTONMAPPINGS (221, "Key used to define the event <code>ButtonMappingsStateAvailableButtonMappings</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>ButtonMappingsStateAllAvailableButtonsMappingsSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_ALLAVAILABLEBUTTONSMAPPINGSSENT (219, "Key used to define the event <code>ButtonMappingsStateAllAvailableButtonsMappingsSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONMAPPINGSSTATE_ALLAVAILABLEBUTTONSMAPPINGSSENT (222, "Key used to define the event <code>ButtonMappingsStateAllAvailableButtonsMappingsSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisMappingsStateCurrentAxisMappings</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS (220, "Key used to define the event <code>AxisMappingsStateCurrentAxisMappings</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_CURRENTAXISMAPPINGS (223, "Key used to define the event <code>AxisMappingsStateCurrentAxisMappings</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisMappingsStateAllCurrentAxisMappingsSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_ALLCURRENTAXISMAPPINGSSENT (221, "Key used to define the event <code>AxisMappingsStateAllCurrentAxisMappingsSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_ALLCURRENTAXISMAPPINGSSENT (224, "Key used to define the event <code>AxisMappingsStateAllCurrentAxisMappingsSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisMappingsStateAvailableAxisMappings</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS (222, "Key used to define the event <code>AxisMappingsStateAvailableAxisMappings</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_AVAILABLEAXISMAPPINGS (225, "Key used to define the event <code>AxisMappingsStateAvailableAxisMappings</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisMappingsStateAllAvailableAxisMappingsSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_ALLAVAILABLEAXISMAPPINGSSENT (223, "Key used to define the event <code>AxisMappingsStateAllAvailableAxisMappingsSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISMAPPINGSSTATE_ALLAVAILABLEAXISMAPPINGSSENT (226, "Key used to define the event <code>AxisMappingsStateAllAvailableAxisMappingsSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisFiltersStateCurrentAxisFilters</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS (224, "Key used to define the event <code>AxisFiltersStateCurrentAxisFilters</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_CURRENTAXISFILTERS (227, "Key used to define the event <code>AxisFiltersStateCurrentAxisFilters</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisFiltersStateAllCurrentFiltersSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_ALLCURRENTFILTERSSENT (225, "Key used to define the event <code>AxisFiltersStateAllCurrentFiltersSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_ALLCURRENTFILTERSSENT (228, "Key used to define the event <code>AxisFiltersStateAllCurrentFiltersSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisFiltersStatePresetAxisFilters</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS (226, "Key used to define the event <code>AxisFiltersStatePresetAxisFilters</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_PRESETAXISFILTERS (229, "Key used to define the event <code>AxisFiltersStatePresetAxisFilters</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>AxisFiltersStateAllPresetFiltersSent</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_ALLPRESETFILTERSSENT (227, "Key used to define the event <code>AxisFiltersStateAllPresetFiltersSent</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_AXISFILTERSSTATE_ALLPRESETFILTERSSENT (230, "Key used to define the event <code>AxisFiltersStateAllPresetFiltersSent</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>CoPilotingStatePilotingSource</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE (228, "Key used to define the event <code>CoPilotingStatePilotingSource</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COPILOTINGSTATE_PILOTINGSOURCE (231, "Key used to define the event <code>CoPilotingStatePilotingSource</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>CalibrationStateMagnetoCalibrationState</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE (229, "Key used to define the event <code>CalibrationStateMagnetoCalibrationState</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATE (232, "Key used to define the event <code>CalibrationStateMagnetoCalibrationState</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>CalibrationStateMagnetoCalibrationQualityUpdatesState</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE (230, "Key used to define the event <code>CalibrationStateMagnetoCalibrationQualityUpdatesState</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_CALIBRATIONSTATE_MAGNETOCALIBRATIONQUALITYUPDATESSTATE (233, "Key used to define the event <code>CalibrationStateMagnetoCalibrationQualityUpdatesState</code> in project <code>SkyController</code>"),
    /** Key used to define the event <code>ButtonEventsSettings</code> in project <code>SkyController</code> */
-    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS (231, "Key used to define the event <code>ButtonEventsSettings</code> in project <code>SkyController</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_BUTTONEVENTS_SETTINGS (234, "Key used to define the event <code>ButtonEventsSettings</code> in project <code>SkyController</code>"),
    /** Key used to define the feature <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI (232, "Key used to define the feature <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI (235, "Key used to define the feature <code>Wifi</code>"),
    /** Key used to define the event <code>ScannedItem</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM (233, "Key used to define the event <code>ScannedItem</code> in project <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM (236, "Key used to define the event <code>ScannedItem</code> in project <code>Wifi</code>"),
    /** Key used to define the event <code>AuthorizedChannel</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL (234, "Key used to define the event <code>AuthorizedChannel</code> in project <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL (237, "Key used to define the event <code>AuthorizedChannel</code> in project <code>Wifi</code>"),
    /** Key used to define the event <code>ApChannelChanged</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED (235, "Key used to define the event <code>ApChannelChanged</code> in project <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED (238, "Key used to define the event <code>ApChannelChanged</code> in project <code>Wifi</code>"),
    /** Key used to define the event <code>SecurityChanged</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED (236, "Key used to define the event <code>SecurityChanged</code> in project <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED (239, "Key used to define the event <code>SecurityChanged</code> in project <code>Wifi</code>"),
    /** Key used to define the event <code>CountryChanged</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED (237, "Key used to define the event <code>CountryChanged</code> in project <code>Wifi</code>"),
-   /** Key used to define the event <code>EnvironementChanged</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED (238, "Key used to define the event <code>EnvironementChanged</code> in project <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED (240, "Key used to define the event <code>CountryChanged</code> in project <code>Wifi</code>"),
+   /** Key used to define the event <code>EnvironmentChanged</code> in project <code>Wifi</code> */
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED (241, "Key used to define the event <code>EnvironmentChanged</code> in project <code>Wifi</code>"),
    /** Key used to define the event <code>RssiChanged</code> in project <code>Wifi</code> */
-    ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED (239, "Key used to define the event <code>RssiChanged</code> in project <code>Wifi</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED (242, "Key used to define the event <code>RssiChanged</code> in project <code>Wifi</code>"),
    /** Unused, iterator maximum value */
-    ARCONTROLLER_DICTIONARY_DICTIONARY_KEY_MAX (240, "Unused, iterator maximum value");
+    ARCONTROLLER_DICTIONARY_DICTIONARY_KEY_MAX (243, "Unused, iterator maximum value");
 
     private final int value;
     private final String comment;

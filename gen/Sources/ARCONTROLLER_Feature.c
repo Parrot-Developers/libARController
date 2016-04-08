@@ -42104,6 +42104,16 @@ const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGE
 
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY = "arcontroller_dictionary_key_minidrone_floodcontrolstate_floodcontrolchanged_delay";
 
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_ID = "arcontroller_dictionary_key_minidrone_usbaccessorystate_lightstate_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE = "arcontroller_dictionary_key_minidrone_usbaccessorystate_lightstate_state";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_INTENSITY = "arcontroller_dictionary_key_minidrone_usbaccessorystate_lightstate_intensity";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ID = "arcontroller_dictionary_key_minidrone_usbaccessorystate_clawstate_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE = "arcontroller_dictionary_key_minidrone_usbaccessorystate_clawstate_state";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID = "arcontroller_dictionary_key_minidrone_usbaccessorystate_gunstate_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE = "arcontroller_dictionary_key_minidrone_usbaccessorystate_gunstate_state";
+
 ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Feature Controller --
@@ -42147,6 +42157,9 @@ ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLL
             featureController->sendGPSControllerLongitudeForRun = ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun;
             featureController->sendConfigurationControllerType = ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerType;
             featureController->sendConfigurationControllerName = ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName;
+            featureController->sendUsbAccessoryLightControl = ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryLightControl;
+            featureController->sendUsbAccessoryClawControl = ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryClawControl;
+            featureController->sendUsbAccessoryGunControl = ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryGunControl;
             
             featureController->privatePart = NULL;
         }
@@ -42357,6 +42370,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RegisterARCommands (ARCONTROL
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateProductInertialVersionChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductInertialVersionChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateCutOutModeChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SettingsStateCutOutModeChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneFloodControlStateFloodControlChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_FloodControlStateFloodControlChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateLightStateCallback (&ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateLightStateCallback, feature);
+        ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateClawStateCallback (&ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateClawStateCallback, feature);
+        ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateGunStateCallback (&ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateGunStateCallback, feature);
     }
     
     return error;
@@ -42395,6 +42411,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_UnregisterARCommands (ARCONTR
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateProductInertialVersionChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateCutOutModeChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneFloodControlStateFloodControlChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateLightStateCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateClawStateCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateGunStateCallback (NULL, NULL);
     }
     
     return error;
@@ -43364,6 +43383,111 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerNa
     {
         // Send ControllerName command
         cmdError = ARCOMMANDS_Generator_GenerateMiniDroneConfigurationControllerName(cmdBuffer, sizeof(cmdBuffer), &cmdSize, name);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryLightControl (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_LIGHTCONTROL_MODE mode, uint8_t intensity)
+{
+    // -- Send a command <code>UsbAccessoryLightControl</code> in project <code>MiniDrone</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send LightControl command
+        cmdError = ARCOMMANDS_Generator_GenerateMiniDroneUsbAccessoryLightControl(cmdBuffer, sizeof(cmdBuffer), &cmdSize, id, mode, intensity);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryClawControl (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_CLAWCONTROL_ACTION action)
+{
+    // -- Send a command <code>UsbAccessoryClawControl</code> in project <code>MiniDrone</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send ClawControl command
+        cmdError = ARCOMMANDS_Generator_GenerateMiniDroneUsbAccessoryClawControl(cmdBuffer, sizeof(cmdBuffer), &cmdSize, id, action);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryGunControl (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_GUNCONTROL_ACTION action)
+{
+    // -- Send a command <code>UsbAccessoryGunControl</code> in project <code>MiniDrone</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send GunControl command
+        cmdError = ARCOMMANDS_Generator_GenerateMiniDroneUsbAccessoryGunControl(cmdBuffer, sizeof(cmdBuffer), &cmdSize, id, action);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -44828,6 +44952,255 @@ void ARCONTROLLER_FEATURE_MiniDrone_FloodControlStateFloodControlChangedCallback
     {
         //Create new element
         newElement = ARCONTROLLER_MiniDrone_NewCmdElementFloodControlStateFloodControlChanged (feature,  _delay, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateLightStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE _state, uint8_t _intensity, uint8_t _list_flags, void *customData)
+{
+    // -- callback used when the command <code>UsbAccessoryStateLightState</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_MiniDrone_t *feature = (ARCONTROLLER_FEATURE_MiniDrone_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateLightState (feature,  _id,  _state,  _intensity,  _list_flags, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateClawStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE _state, uint8_t _list_flags, void *customData)
+{
+    // -- callback used when the command <code>UsbAccessoryStateClawState</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_MiniDrone_t *feature = (ARCONTROLLER_FEATURE_MiniDrone_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateClawState (feature,  _id,  _state,  _list_flags, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateGunStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE _state, uint8_t _list_flags, void *customData)
+{
+    // -- callback used when the command <code>UsbAccessoryStateGunState</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_MiniDrone_t *feature = (ARCONTROLLER_FEATURE_MiniDrone_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateGunState (feature,  _id,  _state,  _list_flags, &error);
     }
     
     //Set new element in CommandElements 
@@ -47079,6 +47452,391 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementFloodCont
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
             argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY;
             argDictNewElement->value.U16 = _delay;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateLightState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE _state, uint8_t _intensity, uint8_t _list_flags, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event UsbAccessoryStateLightState -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = snprintf (NULL, 0, "%"PRIu8, _id);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            snprintf (newElement->key, (elementKeyLength + 1), "%"PRIu8, _id);
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_ID;
+            argDictNewElement->value.U8 = _id;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE;
+            argDictNewElement->value.I32 = _state;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_INTENSITY;
+            argDictNewElement->value.U8 = _intensity;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateClawState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE _state, uint8_t _list_flags, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event UsbAccessoryStateClawState -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = snprintf (NULL, 0, "%"PRIu8, _id);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            snprintf (newElement->key, (elementKeyLength + 1), "%"PRIu8, _id);
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ID;
+            argDictNewElement->value.U8 = _id;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE;
+            argDictNewElement->value.I32 = _state;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateGunState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE _state, uint8_t _list_flags, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event UsbAccessoryStateGunState -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = snprintf (NULL, 0, "%"PRIu8, _id);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            snprintf (newElement->key, (elementKeyLength + 1), "%"PRIu8, _id);
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID;
+            argDictNewElement->value.U8 = _id;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE;
+            argDictNewElement->value.I32 = _state;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }
@@ -57042,7 +57800,7 @@ const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_CHANNEL = "arcontroller
 
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND = "arcontroller_dictionary_key_wifi_authorizedchannel_band";
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_CHANNEL = "arcontroller_dictionary_key_wifi_authorizedchannel_channel";
-const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT = "arcontroller_dictionary_key_wifi_authorizedchannel_environement";
+const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONMENT = "arcontroller_dictionary_key_wifi_authorizedchannel_environment";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_TYPE = "arcontroller_dictionary_key_wifi_apchannelchanged_type";
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_BAND = "arcontroller_dictionary_key_wifi_apchannelchanged_band";
@@ -57054,7 +57812,7 @@ const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE = "arcontr
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE = "arcontroller_dictionary_key_wifi_countrychanged_selection_mode";
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE = "arcontroller_dictionary_key_wifi_countrychanged_code";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT = "arcontroller_dictionary_key_wifi_environementchanged_environement";
+const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED_ENVIRONMENT = "arcontroller_dictionary_key_wifi_environmentchanged_environment";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED_RSSI = "arcontroller_dictionary_key_wifi_rssichanged_rssi";
 
@@ -57077,7 +57835,7 @@ ARCONTROLLER_FEATURE_Wifi_t *ARCONTROLLER_FEATURE_Wifi_New (ARCONTROLLER_Network
             featureController->sendSetApChannel = ARCONTROLLER_FEATURE_Wifi_SendSetApChannel;
             featureController->sendSetSecurity = ARCONTROLLER_FEATURE_Wifi_SendSetSecurity;
             featureController->sendSetCountry = ARCONTROLLER_FEATURE_Wifi_SendSetCountry;
-            featureController->sendSetEnvironement = ARCONTROLLER_FEATURE_Wifi_SendSetEnvironement;
+            featureController->sendSetEnvironment = ARCONTROLLER_FEATURE_Wifi_SendSetEnvironment;
             
             featureController->privatePart = NULL;
         }
@@ -57259,7 +58017,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_RegisterARCommands (ARCONTROLLER_F
         ARCOMMANDS_Decoder_SetWifiApChannelChangedCallback (&ARCONTROLLER_FEATURE_Wifi_ApChannelChangedCallback, feature);
         ARCOMMANDS_Decoder_SetWifiSecurityChangedCallback (&ARCONTROLLER_FEATURE_Wifi_SecurityChangedCallback, feature);
         ARCOMMANDS_Decoder_SetWifiCountryChangedCallback (&ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback, feature);
-        ARCOMMANDS_Decoder_SetWifiEnvironementChangedCallback (&ARCONTROLLER_FEATURE_Wifi_EnvironementChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetWifiEnvironmentChangedCallback (&ARCONTROLLER_FEATURE_Wifi_EnvironmentChangedCallback, feature);
         ARCOMMANDS_Decoder_SetWifiRssiChangedCallback (&ARCONTROLLER_FEATURE_Wifi_RssiChangedCallback, feature);
     }
     
@@ -57286,7 +58044,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_UnregisterARCommands (ARCONTROLLER
         ARCOMMANDS_Decoder_SetWifiApChannelChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetWifiSecurityChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetWifiCountryChangedCallback (NULL, NULL);
-        ARCOMMANDS_Decoder_SetWifiEnvironementChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetWifiEnvironmentChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetWifiRssiChangedCallback (NULL, NULL);
     }
     
@@ -57468,9 +58226,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATU
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetEnvironement (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONEMENT environement)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetEnvironment (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONMENT environment)
 {
-    // -- Send a command <code>SetEnvironement</code> in project <code>Wifi</code> --
+    // -- Send a command <code>SetEnvironment</code> in project <code>Wifi</code> --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     u_int8_t cmdBuffer[128];
@@ -57487,8 +58245,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetEnvironement (ARCONTROLLER_
     
     if (error == ARCONTROLLER_OK)
     {
-        // Send SetEnvironement command
-        cmdError = ARCOMMANDS_Generator_GenerateWifiSetEnvironement(cmdBuffer, sizeof(cmdBuffer), &cmdSize, environement);
+        // Send SetEnvironment command
+        cmdError = ARCOMMANDS_Generator_GenerateWifiSetEnvironment(cmdBuffer, sizeof(cmdBuffer), &cmdSize, environment);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -57604,7 +58362,7 @@ void ARCONTROLLER_FEATURE_Wifi_ScannedItemCallback (char * _ssid, int16_t _rssi,
     
 }
 
-void ARCONTROLLER_FEATURE_Wifi_AuthorizedChannelCallback (eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environement, uint8_t _list_flags, void *customData)
+void ARCONTROLLER_FEATURE_Wifi_AuthorizedChannelCallback (eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environment, uint8_t _list_flags, void *customData)
 {
     // -- callback used when the command <code>AuthorizedChannel</code> is decoded -- 
     
@@ -57664,7 +58422,7 @@ void ARCONTROLLER_FEATURE_Wifi_AuthorizedChannelCallback (eARCOMMANDS_WIFI_BAND 
             }
             
             //Create new element
-            newElement = ARCONTROLLER_Wifi_NewCmdElementAuthorizedChannel (feature, _band,  _channel,  _environement,  _list_flags, listIndex, &error);
+            newElement = ARCONTROLLER_Wifi_NewCmdElementAuthorizedChannel (feature, _band,  _channel,  _environment,  _list_flags, listIndex, &error);
             
             //Set new element in CommandElements 
             if (error == ARCONTROLLER_OK)
@@ -57960,13 +58718,13 @@ void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (eARCOMMANDS_WIFI_COUNTRY_
     
 }
 
-void ARCONTROLLER_FEATURE_Wifi_EnvironementChangedCallback (eARCOMMANDS_WIFI_ENVIRONEMENT _environement, void *customData)
+void ARCONTROLLER_FEATURE_Wifi_EnvironmentChangedCallback (eARCOMMANDS_WIFI_ENVIRONMENT _environment, void *customData)
 {
-    // -- callback used when the command <code>EnvironementChanged</code> is decoded -- 
+    // -- callback used when the command <code>EnvironmentChanged</code> is decoded -- 
     
     ARCONTROLLER_FEATURE_Wifi_t *feature = (ARCONTROLLER_FEATURE_Wifi_t *)customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED;
     ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
     int isANewCommandElement = 0;
     int elementAdded = 0;
@@ -57998,7 +58756,7 @@ void ARCONTROLLER_FEATURE_Wifi_EnvironementChangedCallback (eARCOMMANDS_WIFI_ENV
     if (error == ARCONTROLLER_OK)
     {
         //Create new element
-        newElement = ARCONTROLLER_Wifi_NewCmdElementEnvironementChanged (feature,  _environement, &error);
+        newElement = ARCONTROLLER_Wifi_NewCmdElementEnvironmentChanged (feature,  _environment, &error);
     }
     
     //Set new element in CommandElements 
@@ -58306,7 +59064,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementScannedItem (A
     return newElement;
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementAuthorizedChannel (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environement, uint8_t _list_flags, int listIndex, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementAuthorizedChannel (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environment, uint8_t _list_flags, int listIndex, eARCONTROLLER_ERROR *error)
 {
     // -- Create element of an event AuthorizedChannel -- 
     
@@ -58405,8 +59163,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementAuthorizedChan
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT;
-            argDictNewElement->value.U8 = _environement;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONMENT;
+            argDictNewElement->value.U8 = _environment;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }
@@ -58876,9 +59634,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged
     return newElement;
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironementChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONEMENT _environement, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironmentChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONMENT _environment, eARCONTROLLER_ERROR *error)
 {
-    // -- Create element of an event EnvironementChanged -- 
+    // -- Create element of an event EnvironmentChanged -- 
     
     ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
     int elementKeyLength = 0;
@@ -58933,8 +59691,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironementCh
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT;
-            argDictNewElement->value.I32 = _environement;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED_ENVIRONMENT;
+            argDictNewElement->value.I32 = _environment;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }

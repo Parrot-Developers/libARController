@@ -3677,6 +3677,37 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerTy
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendConfigurationControllerName (ARCONTROLLER_FEATURE_MiniDrone_t *feature, char * name);
 
 /**
+ * @brief Send a command <code>UsbAccessoryLightControl</code> in project <code>MiniDrone</code>
+ * USB Light control cmd.
+ * @param feature feature owning the commands
+ * @param id Usb accessory id
+ * @param mode Usb Light mode.
+ * @param intensity Light intensity from 0 (OFF) to 100 (Max intensity). Only used in FIXED mode.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryLightControl (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_LIGHTCONTROL_MODE mode, uint8_t intensity);
+
+/**
+ * @brief Send a command <code>UsbAccessoryClawControl</code> in project <code>MiniDrone</code>
+ * USB Claw control cmd.
+ * @param feature feature owning the commands
+ * @param id Usb accessory id.
+ * @param action USB Claw action.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryClawControl (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_CLAWCONTROL_ACTION action);
+
+/**
+ * @brief Send a command <code>UsbAccessoryGunControl</code> in project <code>MiniDrone</code>
+ * USB Gun control cmd.
+ * @param feature feature owning the commands
+ * @param id Usb accessory id
+ * @param action USB Gun action.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendUsbAccessoryGunControl (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t id, eARCOMMANDS_MINIDRONE_USBACCESSORY_GUNCONTROL_ACTION action);
+
+/**
  * @brief callback used when the command <code>PilotingStateFlatTrimChanged</code> is decoded
  * @param feature The feature controller registred
  * @param customData customData set by the register
@@ -3836,6 +3867,37 @@ void ARCONTROLLER_FEATURE_MiniDrone_SettingsStateCutOutModeChangedCallback (uint
  */
 void ARCONTROLLER_FEATURE_MiniDrone_FloodControlStateFloodControlChangedCallback (uint16_t _delay, void *customData);
 
+/**
+ * @brief callback used when the command <code>UsbAccessoryStateLightState</code> is decoded
+ * @param feature The feature controller registred
+ * @param id Usb accessory id
+ * @param state Usb Light state.
+ * @param intensity Light intensity from 0 (OFF) to 100 (Max intensity). Only used in FIXED state.
+ * @param list_flags List entry attribute Bitfield. 0x01: First: indicate it's the first element of the list. 0x02: Last:  indicate it's the last element of the list. 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored. 0x08: Remove: This value should be removed from the existing list.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateLightStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE _state, uint8_t _intensity, uint8_t _list_flags, void *customData);
+
+/**
+ * @brief callback used when the command <code>UsbAccessoryStateClawState</code> is decoded
+ * @param feature The feature controller registred
+ * @param id Usb accessory id
+ * @param state Usb Claw state.
+ * @param list_flags List entry attribute Bitfield. 0x01: First: indicate it's the first element of the list. 0x02: Last:  indicate it's the last element of the list. 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored. 0x08: Remove: This value should be removed from the existing list.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateClawStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE _state, uint8_t _list_flags, void *customData);
+
+/**
+ * @brief callback used when the command <code>UsbAccessoryStateGunState</code> is decoded
+ * @param feature The feature controller registred
+ * @param id Usb accessory id.
+ * @param state USB Claw state.
+ * @param list_flags List entry attribute Bitfield. 0x01: First: indicate it's the first element of the list. 0x02: Last:  indicate it's the last element of the list. 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored. 0x08: Remove: This value should be removed from the existing list.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateGunStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE _state, uint8_t _list_flags, void *customData);
+
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingStateFlatTrimChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingStateFlyingStateChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCOMMANDS_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE _state, eARCONTROLLER_ERROR *error);
@@ -3871,6 +3933,12 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSettingsS
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSettingsStateCutOutModeChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _enable, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementFloodControlStateFloodControlChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint16_t _delay, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateLightState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE _state, uint8_t _intensity, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateClawState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE _state, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateGunState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE _state, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
 
 
 /*******************************
@@ -4709,13 +4777,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetSecurity (ARCONTROLLER_FEAT
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetCountry (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION selection_mode, char * code);
 
 /**
- * @brief Send a command <code>SetEnvironement</code> in project <code>Wifi</code>
+ * @brief Send a command <code>SetEnvironment</code> in project <code>Wifi</code>
  * Set indoor or outdoor wifi settings.
  * @param feature feature owning the commands
- * @param environement Type of environement
+ * @param environment Type of environment
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetEnvironement (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONEMENT environement);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Wifi_SendSetEnvironment (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONMENT environment);
 
 /**
  * @brief callback used when the command <code>ScannedItem</code> is decoded
@@ -4734,11 +4802,11 @@ void ARCONTROLLER_FEATURE_Wifi_ScannedItemCallback (char * _ssid, int16_t _rssi,
  * @param feature The feature controller registred
  * @param band The band : 2.4 Ghz or 5 Ghz
  * @param channel The channel number
- * @param environement Type of environement
+ * @param environment Type of environment
  * @param list_flags Flags use by maps and lists
  * @param customData customData set by the register
  */
-void ARCONTROLLER_FEATURE_Wifi_AuthorizedChannelCallback (eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environement, uint8_t _list_flags, void *customData);
+void ARCONTROLLER_FEATURE_Wifi_AuthorizedChannelCallback (eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environment, uint8_t _list_flags, void *customData);
 
 /**
  * @brief callback used when the command <code>ApChannelChanged</code> is decoded
@@ -4769,12 +4837,12 @@ void ARCONTROLLER_FEATURE_Wifi_SecurityChangedCallback (char * _key, eARCOMMANDS
 void ARCONTROLLER_FEATURE_Wifi_CountryChangedCallback (eARCOMMANDS_WIFI_COUNTRY_SELECTION _selection_mode, char * _code, void *customData);
 
 /**
- * @brief callback used when the command <code>EnvironementChanged</code> is decoded
+ * @brief callback used when the command <code>EnvironmentChanged</code> is decoded
  * @param feature The feature controller registred
- * @param environement 1 if it uses outdoor wifi settings, 0 otherwise Type of environement
+ * @param environment 1 if it uses outdoor wifi settings, 0 otherwise Type of environment
  * @param customData customData set by the register
  */
-void ARCONTROLLER_FEATURE_Wifi_EnvironementChangedCallback (eARCOMMANDS_WIFI_ENVIRONEMENT _environement, void *customData);
+void ARCONTROLLER_FEATURE_Wifi_EnvironmentChangedCallback (eARCOMMANDS_WIFI_ENVIRONMENT _environment, void *customData);
 
 /**
  * @brief callback used when the command <code>RssiChanged</code> is decoded
@@ -4786,7 +4854,7 @@ void ARCONTROLLER_FEATURE_Wifi_RssiChangedCallback (int16_t _rssi, void *customD
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementScannedItem (ARCONTROLLER_FEATURE_Wifi_t *feature, char * _ssid, int16_t _rssi, eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementAuthorizedChannel (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environement, uint8_t _list_flags, int listIndex, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementAuthorizedChannel (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, uint8_t _environment, uint8_t _list_flags, int listIndex, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementApChannelChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_SELECTION_TYPE _type, eARCOMMANDS_WIFI_BAND _band, uint8_t _channel, eARCONTROLLER_ERROR *error);
 
@@ -4794,7 +4862,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementSecurityChange
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementCountryChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_COUNTRY_SELECTION _selection_mode, char * _code, eARCONTROLLER_ERROR *error);
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironementChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONEMENT _environement, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementEnvironmentChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, eARCOMMANDS_WIFI_ENVIRONMENT _environment, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Wifi_NewCmdElementRssiChanged (ARCONTROLLER_FEATURE_Wifi_t *feature, int16_t _rssi, eARCONTROLLER_ERROR *error);
 
