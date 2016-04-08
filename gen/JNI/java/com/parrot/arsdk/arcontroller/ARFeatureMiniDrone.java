@@ -60,6 +60,13 @@ public class ARFeatureMiniDrone
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductInertialVersionChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED_ENABLE = ""; /**< Key of the argument </code>enable</code> of event <code>SettingsStateCutOutModeChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY = ""; /**< Key of the argument </code>delay</code> of event <code>FloodControlStateFloodControlChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_ID = ""; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateLightState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE = ""; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateLightState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_INTENSITY = ""; /**< Key of the argument </code>intensity</code> of event <code>UsbAccessoryStateLightState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ID = ""; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateClawState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE = ""; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateClawState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID = ""; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE = ""; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
 
     private static native String nativeStaticGetKeyMiniDronePilotingStateFlyingStateChangedState ();
     private static native String nativeStaticGetKeyMiniDronePilotingStateAlertStateChangedState ();
@@ -95,6 +102,16 @@ public class ARFeatureMiniDrone
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductInertialVersionChangedHardware ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateCutOutModeChangedEnable ();
     private static native String nativeStaticGetKeyMiniDroneFloodControlStateFloodControlChangedDelay ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateId ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateState ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateIntensity ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateListflags ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateId ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateState ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateListflags ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateId ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateState ();
+    private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateListflags ();
 
     private native int nativeSendPilotingFlatTrim (long jFeature);
     private native int nativeSendPilotingTakeOff (long jFeature);
@@ -125,6 +142,9 @@ public class ARFeatureMiniDrone
     private native int nativeSendGPSControllerLongitudeForRun (long jFeature, double longitude);
     private native int nativeSendConfigurationControllerType (long jFeature, String type);
     private native int nativeSendConfigurationControllerName (long jFeature, String name);
+    private native int nativeSendUsbAccessoryLightControl (long jFeature, byte id, int mode, byte intensity);
+    private native int nativeSendUsbAccessoryClawControl (long jFeature, byte id, int action);
+    private native int nativeSendUsbAccessoryGunControl (long jFeature, byte id, int action);
 
     private long jniFeature;
     private boolean initOk;
@@ -165,6 +185,13 @@ public class ARFeatureMiniDrone
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED_HARDWARE = nativeStaticGetKeyMiniDroneSettingsStateProductInertialVersionChangedHardware ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED_ENABLE = nativeStaticGetKeyMiniDroneSettingsStateCutOutModeChangedEnable ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY = nativeStaticGetKeyMiniDroneFloodControlStateFloodControlChangedDelay ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_ID = nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateId ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE = nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateState ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_INTENSITY = nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateIntensity ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ID = nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateId ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE = nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateState ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID = nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateId ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE = nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateState ();
     }
     
     /**
@@ -745,6 +772,70 @@ public class ARFeatureMiniDrone
             if(initOk == true)
             {
                 int nativeError = nativeSendConfigurationControllerName (jniFeature, _name);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>UsbAccessoryLightControl</code>
+     * USB Light control cmd.
+     * @param id Usb accessory id
+     * @param mode Usb Light mode.
+     * @param intensity Light intensity from 0 (OFF) to 100 (Max intensity). Only used in FIXED mode.
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendUsbAccessoryLightControl (byte _id, ARCOMMANDS_MINIDRONE_USBACCESSORY_LIGHTCONTROL_MODE_ENUM _mode, byte _intensity)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendUsbAccessoryLightControl (jniFeature, _id, _mode.getValue(), _intensity);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>UsbAccessoryClawControl</code>
+     * USB Claw control cmd.
+     * @param id Usb accessory id.
+     * @param action USB Claw action.
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendUsbAccessoryClawControl (byte _id, ARCOMMANDS_MINIDRONE_USBACCESSORY_CLAWCONTROL_ACTION_ENUM _action)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendUsbAccessoryClawControl (jniFeature, _id, _action.getValue());
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>UsbAccessoryGunControl</code>
+     * USB Gun control cmd.
+     * @param id Usb accessory id
+     * @param action USB Gun action.
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendUsbAccessoryGunControl (byte _id, ARCOMMANDS_MINIDRONE_USBACCESSORY_GUNCONTROL_ACTION_ENUM _action)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendUsbAccessoryGunControl (jniFeature, _id, _action.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

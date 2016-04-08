@@ -252,6 +252,48 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDron
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED_DELAY);
 }
 
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateId (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_ID);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateState (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_STATE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateLightStateIntensity (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE_INTENSITY);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateId (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ID);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateState (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateId (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateState (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE);
+}
+
 JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendPilotingFlatTrim (JNIEnv *env, jobject thizz, jlong jFeature)
 {
@@ -604,6 +646,42 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendConfigurationCon
 
     // cleanup
     (*env)->ReleaseStringUTFChars(env, _name, nativeName);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendUsbAccessoryLightControl (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _id, jint _mode, jbyte _intensity)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendUsbAccessoryLightControl (nativeFeature, _id, _mode, _intensity);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendUsbAccessoryClawControl (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _id, jint _action)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendUsbAccessoryClawControl (nativeFeature, _id, _action);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendUsbAccessoryGunControl (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _id, jint _action)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendUsbAccessoryGunControl (nativeFeature, _id, _action);
 
     return error;
 }

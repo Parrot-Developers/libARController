@@ -32,7 +32,7 @@ public class ARFeatureWifi
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>ScannedItem</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND = ""; /**< Key of the argument </code>band</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT = ""; /**< Key of the argument </code>environement</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONMENT = ""; /**< Key of the argument </code>environment</code> of event <code>AuthorizedChannel</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>ApChannelChanged</code> in feature <code>Wifi</code> */
@@ -40,7 +40,7 @@ public class ARFeatureWifi
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE = ""; /**< Key of the argument </code>key_type</code> of event <code>SecurityChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE = ""; /**< Key of the argument </code>selection_mode</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE = ""; /**< Key of the argument </code>code</code> of event <code>CountryChanged</code> in feature <code>Wifi</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT = ""; /**< Key of the argument </code>environement</code> of event <code>EnvironementChanged</code> in feature <code>Wifi</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED_ENVIRONMENT = ""; /**< Key of the argument </code>environment</code> of event <code>EnvironmentChanged</code> in feature <code>Wifi</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>RssiChanged</code> in feature <code>Wifi</code> */
 
     private static native String nativeStaticGetKeyWifiScannedItemSsid ();
@@ -50,7 +50,7 @@ public class ARFeatureWifi
     private static native String nativeStaticGetKeyWifiScannedItemListflags ();
     private static native String nativeStaticGetKeyWifiAuthorizedChannelBand ();
     private static native String nativeStaticGetKeyWifiAuthorizedChannelChannel ();
-    private static native String nativeStaticGetKeyWifiAuthorizedChannelEnvironement ();
+    private static native String nativeStaticGetKeyWifiAuthorizedChannelEnvironment ();
     private static native String nativeStaticGetKeyWifiAuthorizedChannelListflags ();
     private static native String nativeStaticGetKeyWifiApChannelChangedType ();
     private static native String nativeStaticGetKeyWifiApChannelChangedBand ();
@@ -59,7 +59,7 @@ public class ARFeatureWifi
     private static native String nativeStaticGetKeyWifiSecurityChangedKeytype ();
     private static native String nativeStaticGetKeyWifiCountryChangedSelectionmode ();
     private static native String nativeStaticGetKeyWifiCountryChangedCode ();
-    private static native String nativeStaticGetKeyWifiEnvironementChangedEnvironement ();
+    private static native String nativeStaticGetKeyWifiEnvironmentChangedEnvironment ();
     private static native String nativeStaticGetKeyWifiRssiChangedRssi ();
 
     private native int nativeSendScan (long jFeature, byte band);
@@ -67,7 +67,7 @@ public class ARFeatureWifi
     private native int nativeSendSetApChannel (long jFeature, int type, int band, byte channel);
     private native int nativeSendSetSecurity (long jFeature, int type, String key, int key_type);
     private native int nativeSendSetCountry (long jFeature, int selection_mode, String code);
-    private native int nativeSendSetEnvironement (long jFeature, int environement);
+    private native int nativeSendSetEnvironment (long jFeature, int environment);
 
     private long jniFeature;
     private boolean initOk;
@@ -80,7 +80,7 @@ public class ARFeatureWifi
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM_CHANNEL = nativeStaticGetKeyWifiScannedItemChannel ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_BAND = nativeStaticGetKeyWifiAuthorizedChannelBand ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_CHANNEL = nativeStaticGetKeyWifiAuthorizedChannelChannel ();
-        ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONEMENT = nativeStaticGetKeyWifiAuthorizedChannelEnvironement ();
+        ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL_ENVIRONMENT = nativeStaticGetKeyWifiAuthorizedChannelEnvironment ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_TYPE = nativeStaticGetKeyWifiApChannelChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_BAND = nativeStaticGetKeyWifiApChannelChangedBand ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED_CHANNEL = nativeStaticGetKeyWifiApChannelChangedChannel ();
@@ -88,7 +88,7 @@ public class ARFeatureWifi
         ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED_KEY_TYPE = nativeStaticGetKeyWifiSecurityChangedKeytype ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_SELECTION_MODE = nativeStaticGetKeyWifiCountryChangedSelectionmode ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED_CODE = nativeStaticGetKeyWifiCountryChangedCode ();
-        ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED_ENVIRONEMENT = nativeStaticGetKeyWifiEnvironementChangedEnvironement ();
+        ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONMENTCHANGED_ENVIRONMENT = nativeStaticGetKeyWifiEnvironmentChangedEnvironment ();
         ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED_RSSI = nativeStaticGetKeyWifiRssiChangedRssi ();
     }
     
@@ -244,19 +244,19 @@ public class ARFeatureWifi
     }
     
     /**
-     * Send a command <code>SetEnvironement</code>
+     * Send a command <code>SetEnvironment</code>
      * Set indoor or outdoor wifi settings.
-     * @param environement Type of environement
+     * @param environment Type of environment
      * return executing error
      */
-    public ARCONTROLLER_ERROR_ENUM sendSetEnvironement (ARCOMMANDS_WIFI_ENVIRONEMENT_ENUM _environement)
+    public ARCONTROLLER_ERROR_ENUM sendSetEnvironment (ARCOMMANDS_WIFI_ENVIRONMENT_ENUM _environment)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetEnvironement (jniFeature, _environement.getValue());
+                int nativeError = nativeSendSetEnvironment (jniFeature, _environment.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
