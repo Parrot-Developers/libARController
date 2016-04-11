@@ -294,6 +294,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDron
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE);
 }
 
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneMassStorageMediaStateNbPhotosChangedNbphotos (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS);
+}
+
 JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendPilotingFlatTrim (JNIEnv *env, jobject thizz, jlong jFeature)
 {

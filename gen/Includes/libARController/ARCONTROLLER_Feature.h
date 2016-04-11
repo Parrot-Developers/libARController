@@ -2653,6 +2653,8 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWS
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
 
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS; /**< Key of the argument </code>nb_photos</code> of event <code>MassStorageMediaStateNbPhotosChanged</code> in feature <code>MiniDrone</code> */
+
 /**
  * @brief Send a command <code>PilotingFlatTrim</code> in feature <code>MiniDrone</code>
  * Do a flat trim
