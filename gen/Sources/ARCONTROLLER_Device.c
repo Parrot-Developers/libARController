@@ -1475,6 +1475,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
             error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
     }
     
     if ((deviceController->pro != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->pro)))
@@ -2884,6 +2889,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
         }

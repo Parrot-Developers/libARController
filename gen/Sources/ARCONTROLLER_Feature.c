@@ -42114,6 +42114,8 @@ const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_ST
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID = "arcontroller_dictionary_key_minidrone_usbaccessorystate_gunstate_id";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE = "arcontroller_dictionary_key_minidrone_usbaccessorystate_gunstate_state";
 
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS = "arcontroller_dictionary_key_minidrone_massstoragemediastate_nbphotoschanged_nb_photos";
+
 ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Feature Controller --
@@ -42373,6 +42375,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RegisterARCommands (ARCONTROL
         ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateLightStateCallback (&ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateLightStateCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateClawStateCallback (&ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateClawStateCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateGunStateCallback (&ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateGunStateCallback, feature);
+        ARCOMMANDS_Decoder_SetMiniDroneMassStorageMediaStateNbPhotosChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_MassStorageMediaStateNbPhotosChangedCallback, feature);
     }
     
     return error;
@@ -42414,6 +42417,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_UnregisterARCommands (ARCONTR
         ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateLightStateCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateClawStateCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneUsbAccessoryStateGunStateCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMiniDroneMassStorageMediaStateNbPhotosChangedCallback (NULL, NULL);
     }
     
     return error;
@@ -45245,6 +45249,89 @@ void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateGunStateCallback (uint8_t _
     
 }
 
+void ARCONTROLLER_FEATURE_MiniDrone_MassStorageMediaStateNbPhotosChangedCallback (uint16_t _nb_photos, void *customData)
+{
+    // -- callback used when the command <code>MassStorageMediaStateNbPhotosChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_MiniDrone_t *feature = (ARCONTROLLER_FEATURE_MiniDrone_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_MiniDrone_NewCmdElementMassStorageMediaStateNbPhotosChanged (feature,  _nb_photos, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingStateFlatTrimChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_ERROR *error)
 {
     // -- Create element of an event PilotingStateFlatTrimChanged -- 
@@ -47837,6 +47924,109 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccess
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
             argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE;
             argDictNewElement->value.I32 = _state;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementMassStorageMediaStateNbPhotosChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint16_t _nb_photos, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event MassStorageMediaStateNbPhotosChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS;
+            argDictNewElement->value.U16 = _nb_photos;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
         }
