@@ -68,6 +68,10 @@ int ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_
 void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data);
 int ARCONTROLLER_Stream1_useStream1V2 (ARCONTROLLER_Stream1_t *stream1Controller);
 
+static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
+static void ARCONTROLLER_Stream1_ReadMJPEGFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
+static void ARCONTROLLER_Stream1_ReadDefaultFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
+
 /*************************
  * Implementation
  *************************/
@@ -672,19 +676,12 @@ int ARCONTROLLER_Stream1_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int n
 
 void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
 {
-    // -- Manage the reception of the Video -- 
+    // -- Manage the reception of the Video --
 
-    // local declarations 
+    // local declarations
     ARCONTROLLER_Stream1_t *stream1Controller = data;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARCONTROLLER_Frame_t *frame = NULL;
-    ARCONTROLLER_Stream_Codec_t codec;
-    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
-
-    uint8_t *spsBuffer = NULL;
-    int spsSize = 0;
-    uint8_t *ppsBuffer = NULL;
-    int ppsSize = 0;
 
     // Check parameters
     if (stream1Controller != NULL)
@@ -695,82 +692,22 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
             
             if (frame != NULL)
             {
-                
                 switch (stream1Controller->codecType)
                 {
                     case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
-                        
-                        if (frame->isIFrame)
-                        {
-                            error = ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
-
-                            if (error == ARCONTROLLER_OK)
-                            {
-                                //Remove sps/pps of the frame data
-                                frame->data = frame->data + spsSize + ppsSize;
-                                frame->used = frame->used - spsSize - ppsSize;
-
-                                //Set Codec
-                                codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
-                                codec.parameters.h264parameters.spsBuffer = spsBuffer;
-                                codec.parameters.h264parameters.spsSize = spsSize;
-                                codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
-                                codec.parameters.h264parameters.ppsSize = ppsSize;
-                                codec.parameters.h264parameters.isMP4Compliant = stream1Controller->isMP4Compliant;
-
-                                //Configuration decoder callback
-                                if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
-                                {
-                                    stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
-                                    stream1Controller->decoderConfigCalled = 1;
-                                }
-                            }
-                            else
-                            {
-                                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "sps pps not found.");
-                            }
-                        }
-                        // NO ELSE ; no callback registered
-                        
-                        //reformat H264 for mp4 format
-                        if (stream1Controller->isMP4Compliant)
-                        {
-                            // replace nalu header by nalu size
-                            uint32_t naluSize = htonl (frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE);
-                            memcpy (frame->data, &naluSize, sizeof (uint32_t));
-                        }
-                        
+                        ARCONTROLLER_Stream1_ReadH264Frame (stream1Controller, frame);
                         break;
-                        
+
                     case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:
-                        
-                        //Set Codec
-                        codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
-                        
-                        //Callback
-                        if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
-                        {
-                            stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
-                            stream1Controller->decoderConfigCalled = 1;
-                        }
+                        ARCONTROLLER_Stream1_ReadMJPEGFrame (stream1Controller, frame);
                         break;
-                    
+
                     default:
                         ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "codec %d not known", stream1Controller->codecType);
+                        ARCONTROLLER_Stream1_ReadDefaultFrame (stream1Controller, frame);
                         break;
                 }
-                
-                if (stream1Controller->receiveFrameCallback != NULL)
-                {
-                    callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
-                    if (callbackError != ARCONTROLLER_OK)
-                    {
-                        //Recall decoderConfigCallback
-                        stream1Controller->decoderConfigCalled = 0;
-                    }
-                }
-                // NO ELSE ; no callback registered
-                
+
                 ARCONTROLLER_Frame_SetFree (frame);
             }
             else
@@ -787,6 +724,116 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
     }
 
     return NULL;
+}
+
+static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame)
+{
+    ARCONTROLLER_Stream_Codec_t codec;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
+
+    uint8_t *spsBuffer = NULL;
+    int spsSize = 0;
+    uint8_t *ppsBuffer = NULL;
+    int ppsSize = 0;
+
+    if (frame->isIFrame)
+    {
+        error = ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(frame, &spsBuffer, &spsSize, &ppsBuffer, &ppsSize);
+
+        if (error == ARCONTROLLER_OK)
+        {
+            //Remove sps/pps of the frame data
+            frame->data = frame->data + spsSize + ppsSize;
+            frame->used = frame->used - spsSize - ppsSize;
+
+            //Set Codec
+            codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
+            codec.parameters.h264parameters.spsBuffer = spsBuffer;
+            codec.parameters.h264parameters.spsSize = spsSize;
+            codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
+            codec.parameters.h264parameters.ppsSize = ppsSize;
+            codec.parameters.h264parameters.isMP4Compliant = stream1Controller->isMP4Compliant;
+
+            //Configuration decoder callback
+            if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
+            {
+                stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
+                stream1Controller->decoderConfigCalled = 1;
+            }
+        }
+        else
+        {
+            ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "sps pps not found.");
+        }
+    }
+    // NO ELSE ; no callback registered
+
+    if ((error == ARCONTROLLER_OK) && (stream1Controller->decoderConfigCalled == 1))
+    {
+        //reformat H264 for mp4 format
+        if (stream1Controller->isMP4Compliant)
+        {
+            // replace nalu header by nalu size
+            uint32_t naluSize = htonl (frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE);
+            memcpy (frame->data, &naluSize, sizeof (uint32_t));
+        }
+
+        if (stream1Controller->receiveFrameCallback != NULL)
+        {
+            callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
+            if (callbackError != ARCONTROLLER_OK)
+            {
+                //Recall decoderConfigCallback
+                stream1Controller->decoderConfigCalled = 0;
+            }
+        }
+        // NO ELSE ; no callback registered
+    }
+    // NO ELSE ; drop the frame
+}
+
+static void ARCONTROLLER_Stream1_ReadMJPEGFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame)
+{
+    ARCONTROLLER_Stream_Codec_t codec;
+    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
+
+    //Set Codec
+    codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
+
+    //Callback
+    if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
+    {
+        stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
+        stream1Controller->decoderConfigCalled = 1;
+    }
+
+    if (stream1Controller->receiveFrameCallback != NULL)
+    {
+        callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
+        if (callbackError != ARCONTROLLER_OK)
+        {
+            //Recall decoderConfigCallback
+            stream1Controller->decoderConfigCalled = 0;
+        }
+    }
+    // NO ELSE ; no callback registered
+}
+
+static void ARCONTROLLER_Stream1_ReadDefaultFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame)
+{
+    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
+
+    if (stream1Controller->receiveFrameCallback != NULL)
+    {
+        callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
+        if (callbackError != ARCONTROLLER_OK)
+        {
+            //Recall decoderConfigCallback
+            stream1Controller->decoderConfigCalled = 0;
+        }
+    }
+    // NO ELSE ; no callback registered
 }
 
 int ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize)
