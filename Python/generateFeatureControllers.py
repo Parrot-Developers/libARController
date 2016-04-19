@@ -62,8 +62,6 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     #########################################
 
     #for feature in allFeatures: # see automake all source of folder !!!!
-        
-    #ARPrint ('get_ftr_old_name(feature) = ' + get_ftr_old_name(feature)) # see automake all source of folder !!!!
 
     #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
     includeDefine = '_' + MODULE_FEATURE + '_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), 'H') + '_'  # see automake all source of folder !!!!
@@ -107,8 +105,6 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write ('\n')
 
     for feature in ctx.features: # see automake all source of folder !!!!!!!!!!!!!!
-        
-        ARPrint ('feature name = ' + get_ftr_old_name(feature)) # see automake all source of folder !!!!
         className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
         classPrivName = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), 'Private')  # see automake all source of folder !!!!
         
@@ -287,8 +283,6 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     #################################################
         
     #for feature in allFeatures: # see automake all source of folder !!!!!!!
-
-    ARPrint ('get_ftr_old_name(feature) = ' + get_ftr_old_name(feature))
 
     #className = ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), '')  # see automake all source of folder !!!!
     includeDefine = '_' + MODULE_FEATURE + '_PRIVATE_H_' #includeDefine = '_' + ARMacroName (MODULE_FEATURE, get_ftr_old_name(feature), 'PRIVATE_H') + '_'  # see automake all source of folder !!!!
