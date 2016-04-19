@@ -59,12 +59,9 @@ def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     #check deviceController list
     if not deviceControllers:
         exit (1)
-        
-    for d in deviceControllers:
-        ARPrint ('    name: ' + d.name)
-    
+
     ARPrint ('generateDictionaryKeyEnum ...')
-    
+
     #########################################
     # Write Feature controller header file  #
     #########################################

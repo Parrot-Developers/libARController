@@ -304,7 +304,5 @@ def parseDeviceControllersXml (fileName, ctx):
         deviceController = parseDeviceControllerXml (xmlDeviceController, ctx)
         if deviceController:
             deviceControllers.append(deviceController)
-            ARPrint ('append:'+deviceController.name)
-    
-    return deviceControllers
 
+    return deviceControllers

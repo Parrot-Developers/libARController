@@ -50,45 +50,47 @@ from arsdkparser import *
 
 genDebug = True
 
-MY_GEN_DIR = LIBARCONTROLLER_DIR+'/gen/'
+class Paths:
+    def __init__(self, outdir):
+        self.MY_GEN_DIR = outdir
 
-#Relative path of SOURCE dir
-SRC_DIR = MY_GEN_DIR + '/Sources/'
+        #Relative path of SOURCE dir
+        self.SRC_DIR = self.MY_GEN_DIR + '/Sources/'
 
-#Relative path of INCLUDES dir
-INC_DIR = MY_GEN_DIR + '/Includes/libARController/'
+        #Relative path of INCLUDES dir
+        self.INC_DIR = self.MY_GEN_DIR + '/Includes/libARController/'
 
-#Relative path of INCLUDES dir
-JNI_DIR = MY_GEN_DIR + '/JNI/'
-JNI_C_DIR = JNI_DIR + '/c/'
-JNI_JAVA_DIR = JNI_DIR + '/java/com/parrot/arsdk/arcontroller/'
+        #Relative path of INCLUDES dir
+        self.JNI_DIR = self.MY_GEN_DIR + '/JNI/'
+        self.JNI_C_DIR = self.JNI_DIR + '/c/'
+        self.JNI_JAVA_DIR = self.JNI_DIR + '/java/com/parrot/arsdk/arcontroller/'
 
-# Create array of generated files (so we can cleanup only our files)
-GENERATED_FILES = []
-GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Device.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.c')
-GENERATED_FILES.append (JNI_C_DIR + 'ARCONTROLLER_JNI_Device.c')
-GENERATED_FILES.append (JNI_JAVA_DIR + 'ARDeviceController.java')
+        # Create array of generated files (so we can cleanup only our files)
+        self.GENERATED_FILES = []
+        self.GENERATED_FILES.append (self.INC_DIR + 'ARCONTROLLER_Device.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Device.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Device.c')
+        self.GENERATED_FILES.append (self.JNI_C_DIR + 'ARCONTROLLER_JNI_Device.c')
+        self.GENERATED_FILES.append (self.JNI_JAVA_DIR + 'ARDeviceController.java')
 
-GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Feature.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.c')
-GENERATED_FILES.append (JNI_C_DIR + 'ARCONTROLLER_JNI_Feature*.c')
-GENERATED_FILES.append (JNI_JAVA_DIR + 'ARFeature*.java')
+        self.GENERATED_FILES.append (self.INC_DIR + 'ARCONTROLLER_Feature.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Feature.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Feature.c')
+        self.GENERATED_FILES.append (self.JNI_C_DIR + 'ARCONTROLLER_JNI_Feature*.c')
+        self.GENERATED_FILES.append (self.JNI_JAVA_DIR + 'ARFeature*.java')
 
-GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
+        self.GENERATED_FILES.append (self.INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
 
 def createDir(path):
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
 
-def generate_ctrls(ctx):
-    createDir(INC_DIR)
-    createDir(JNI_C_DIR)
-    createDir(JNI_JAVA_DIR)
-    createDir(SRC_DIR)
+def generate_ctrls(ctx, paths):
+    createDir(paths.INC_DIR)
+    createDir(paths.JNI_C_DIR)
+    createDir(paths.JNI_JAVA_DIR)
+    createDir(paths.SRC_DIR)
 
     #################################
     # 1ST PART :                    #
@@ -98,36 +100,36 @@ def generate_ctrls(ctx):
     #################################
 
     # generate Feature Controllers
-    generateFeatureControllers (ctx, SRC_DIR, INC_DIR)
-    generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR);
+    generateFeatureControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
+    generateFeatureControllersJNI (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR);
 
     # generate Device Controllers
-    generateDeviceControllers (ctx, SRC_DIR, INC_DIR)
-    generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR)
+    generateDeviceControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
+    generateControllersJNI (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
     # generate DictionaryKeyEnum
-    generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR)
+    generateDictionaryKeyEnum (ctx, paths.SRC_DIR, paths.INC_DIR)
 
 #===============================================================================
 #===============================================================================
 def list_files(ctx, outdir):
+    paths = Paths(outdir)
+
     # Print device controllers generated files
-    list_files_deviceCtrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR)
+    list_files_deviceCtrls (ctx, paths.SRC_DIR, paths.INC_DIR, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
     # Print device dictionary key generated files
-    list_files_dict_key (ctx, SRC_DIR, INC_DIR)
+    list_files_dict_key (ctx, paths.SRC_DIR, paths.INC_DIR)
 
     # Print features controllers generated files
-    list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR)
-    
+    list_files_ftr_ctrls (ctx, paths.SRC_DIR, paths.INC_DIR, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
 #===============================================================================
 #===============================================================================
 def generate_files(ctx, outdir):
-    # Remove old generation
-    os.system('rm -rf '+LIBARCONTROLLER_DIR+'/gen/*')
-    
+    paths = Paths(outdir)
+
     # Generation
-    generate_ctrls(ctx)
+    generate_ctrls(ctx, paths)
     PREBUILD_ACTION = PACKAGES_DIR+'/ARSDKBuildUtils/Utils/Python/ARSDK_PrebuildActions.py'
-    os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR)
+    os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR)

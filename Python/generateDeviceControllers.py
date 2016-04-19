@@ -65,13 +65,9 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     #check deviceController list
     if not deviceControllers:
         exit (1)
-        
-    ARPrint ('deviceControllers ...')
-    for d in deviceControllers:
-        ARPrint ('    name: ' + d.name)
-    
+
     ARPrint ('generateDeviceControllers ...')
-    
+
     #########################################
     # Write Device controller header file   #
     #########################################
