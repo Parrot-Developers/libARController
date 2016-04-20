@@ -112,7 +112,7 @@ def generate_ctrls(ctx, paths):
 
 #===============================================================================
 #===============================================================================
-def list_files(ctx, outdir):
+def list_files(ctx, outdir, extra):
     paths = Paths(outdir)
 
     # Print device controllers generated files
@@ -126,7 +126,7 @@ def list_files(ctx, outdir):
 
 #===============================================================================
 #===============================================================================
-def generate_files(ctx, outdir):
+def generate_files(ctx, outdir, extra):
     paths = Paths(outdir)
 
     # Generation
