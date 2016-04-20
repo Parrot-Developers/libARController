@@ -145,6 +145,24 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDron
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedCurrent (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_CURRENT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedMin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedMax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MAX);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedCurrent (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT);
@@ -202,6 +220,24 @@ JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMax (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedCurrent (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_CURRENT);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedMin (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MIN);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedMax (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MAX);
 }
 
 JNIEXPORT jstring JNICALL
@@ -541,6 +577,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendPilotingSettings
 }
 
 JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendPilotingSettingsPlaneModePitch (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _current)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPilotingSettingsPlaneModePitch (nativeFeature, _current);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendSpeedSettingsMaxVerticalSpeed (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _current)
 {
     // local declarations
@@ -584,6 +632,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendSpeedSettingsMax
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendSpeedSettingsMaxHorizontalSpeed (nativeFeature, _current);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureMiniDrone_nativeSendSpeedSettingsMaxPlaneModeRotationSpeed (JNIEnv *env, jobject thizz, jlong jFeature, jfloat _current)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_MiniDrone_t *nativeFeature = (ARCONTROLLER_FEATURE_MiniDrone_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendSpeedSettingsMaxPlaneModeRotationSpeed (nativeFeature, _current);
 
     return error;
 }

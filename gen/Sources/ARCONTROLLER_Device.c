@@ -1422,6 +1422,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
         if (error == ARCONTROLLER_OK)
         {
+            error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
             error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
@@ -1438,6 +1443,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
@@ -2825,6 +2835,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
             removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
@@ -2847,6 +2863,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
             removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);

@@ -42078,6 +42078,10 @@ const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTC
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = "arcontroller_dictionary_key_minidrone_pilotingsettingsstate_maxtiltchanged_min";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = "arcontroller_dictionary_key_minidrone_pilotingsettingsstate_maxtiltchanged_max";
 
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_CURRENT = "arcontroller_dictionary_key_minidrone_pilotingsettingsstate_planemodepitchchanged_current";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MIN = "arcontroller_dictionary_key_minidrone_pilotingsettingsstate_planemodepitchchanged_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MAX = "arcontroller_dictionary_key_minidrone_pilotingsettingsstate_planemodepitchchanged_max";
+
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxverticalspeedchanged_current";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxverticalspeedchanged_min";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxverticalspeedchanged_max";
@@ -42091,6 +42095,10 @@ const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANG
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxhorizontalspeedchanged_current";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxhorizontalspeedchanged_min";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxhorizontalspeedchanged_max";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_CURRENT = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxplanemoderotationspeedchanged_current";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MIN = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxplanemoderotationspeedchanged_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MAX = "arcontroller_dictionary_key_minidrone_speedsettingsstate_maxplanemoderotationspeedchanged_max";
 
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = "arcontroller_dictionary_key_minidrone_settingsstate_productmotorsversionchanged_motor";
 const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = "arcontroller_dictionary_key_minidrone_settingsstate_productmotorsversionchanged_type";
@@ -42150,10 +42158,12 @@ ARCONTROLLER_FEATURE_MiniDrone_t *ARCONTROLLER_FEATURE_MiniDrone_New (ARCONTROLL
             featureController->sendMediaRecordPictureV2 = ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2;
             featureController->sendPilotingSettingsMaxAltitude = ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude;
             featureController->sendPilotingSettingsMaxTilt = ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt;
+            featureController->sendPilotingSettingsPlaneModePitch = ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsPlaneModePitch;
             featureController->sendSpeedSettingsMaxVerticalSpeed = ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed;
             featureController->sendSpeedSettingsMaxRotationSpeed = ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed;
             featureController->sendSpeedSettingsWheels = ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels;
             featureController->sendSpeedSettingsMaxHorizontalSpeed = ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed;
+            featureController->sendSpeedSettingsMaxPlaneModeRotationSpeed = ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxPlaneModeRotationSpeed;
             featureController->sendSettingsCutOutMode = ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode;
             featureController->sendGPSControllerLatitudeForRun = ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun;
             featureController->sendGPSControllerLongitudeForRun = ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun;
@@ -42364,10 +42374,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_RegisterARCommands (ARCONTROL
         ARCOMMANDS_Decoder_SetMiniDroneMediaRecordEventPictureEventChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_MediaRecordEventPictureEventChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDronePilotingSettingsStateMaxAltitudeChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxAltitudeChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDronePilotingSettingsStateMaxTiltChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxTiltChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetMiniDronePilotingSettingsStatePlaneModePitchChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStatePlaneModePitchChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxVerticalSpeedChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxRotationSpeedChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxRotationSpeedChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateWheelsChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateWheelsChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxHorizontalSpeedChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxPlaneModeRotationSpeedChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateProductMotorsVersionChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductMotorsVersionChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateProductInertialVersionChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SettingsStateProductInertialVersionChangedCallback, feature);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateCutOutModeChangedCallback (&ARCONTROLLER_FEATURE_MiniDrone_SettingsStateCutOutModeChangedCallback, feature);
@@ -42406,10 +42418,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_UnregisterARCommands (ARCONTR
         ARCOMMANDS_Decoder_SetMiniDroneMediaRecordEventPictureEventChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDronePilotingSettingsStateMaxAltitudeChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDronePilotingSettingsStateMaxTiltChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMiniDronePilotingSettingsStatePlaneModePitchChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxRotationSpeedChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateWheelsChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateProductMotorsVersionChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateProductInertialVersionChangedCallback (NULL, NULL);
         ARCOMMANDS_Decoder_SetMiniDroneSettingsStateCutOutModeChangedCallback (NULL, NULL);
@@ -43086,6 +43100,41 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt (
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsPlaneModePitch (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current)
+{
+    // -- Send a command <code>PilotingSettingsPlaneModePitch</code> in project <code>MiniDrone</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send PlaneModePitch command
+        cmdError = ARCOMMANDS_Generator_GenerateMiniDronePilotingSettingsPlaneModePitch(cmdBuffer, sizeof(cmdBuffer), &cmdSize, current);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current)
 {
     // -- Send a command <code>SpeedSettingsMaxVerticalSpeed</code> in project <code>MiniDrone</code> --
@@ -43212,6 +43261,41 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizonta
     {
         // Send MaxHorizontalSpeed command
         cmdError = ARCOMMANDS_Generator_GenerateMiniDroneSpeedSettingsMaxHorizontalSpeed(cmdBuffer, sizeof(cmdBuffer), &cmdSize, current);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxPlaneModeRotationSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current)
+{
+    // -- Send a command <code>SpeedSettingsMaxPlaneModeRotationSpeed</code> in project <code>MiniDrone</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send MaxPlaneModeRotationSpeed command
+        cmdError = ARCOMMANDS_Generator_GenerateMiniDroneSpeedSettingsMaxPlaneModeRotationSpeed(cmdBuffer, sizeof(cmdBuffer), &cmdSize, current);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -44336,6 +44420,89 @@ void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxTiltChangedCallback 
     
 }
 
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStatePlaneModePitchChangedCallback (float _current, float _min, float _max, void *customData)
+{
+    // -- callback used when the command <code>PilotingSettingsStatePlaneModePitchChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_MiniDrone_t *feature = (ARCONTROLLER_FEATURE_MiniDrone_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_MiniDrone_NewCmdElementPilotingSettingsStatePlaneModePitchChanged (feature,  _current,  _min,  _max, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
 void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxVerticalSpeedChangedCallback (float _current, float _min, float _max, void *customData)
 {
     // -- callback used when the command <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> is decoded -- 
@@ -44624,6 +44791,89 @@ void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxHorizontalSpeedChangedC
     {
         //Create new element
         newElement = ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxHorizontalSpeedChanged (feature,  _current,  _min,  _max, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxPlaneModeRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData)
+{
+    // -- callback used when the command <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_MiniDrone_t *feature = (ARCONTROLLER_FEATURE_MiniDrone_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxPlaneModeRotationSpeedChanged (feature,  _current,  _min,  _max, &error);
     }
     
     //Set new element in CommandElements 
@@ -46472,6 +46722,147 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
     return newElement;
 }
 
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingSettingsStatePlaneModePitchChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event PilotingSettingsStatePlaneModePitchChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_CURRENT;
+            argDictNewElement->value.Float = _current;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MIN;
+            argDictNewElement->value.Float = _min;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MAX;
+            argDictNewElement->value.Float = _max;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxVerticalSpeedChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error)
 {
     // -- Create element of an event SpeedSettingsStateMaxVerticalSpeedChanged -- 
@@ -46953,6 +47344,147 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSett
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
             argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX;
+            argDictNewElement->value.Float = _max;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxPlaneModeRotationSpeedChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event SpeedSettingsStateMaxPlaneModeRotationSpeedChanged -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_CURRENT;
+            argDictNewElement->value.Float = _current;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MIN;
+            argDictNewElement->value.Float = _min;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MAX;
             argDictNewElement->value.Float = _max;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);

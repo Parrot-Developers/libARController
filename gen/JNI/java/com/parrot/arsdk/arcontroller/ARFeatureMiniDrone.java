@@ -42,6 +42,9 @@ public class ARFeatureMiniDrone
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStatePlaneModePitchChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStatePlaneModePitchChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStatePlaneModePitchChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
@@ -52,6 +55,9 @@ public class ARFeatureMiniDrone
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = ""; /**< Key of the argument </code>motor</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
@@ -85,6 +91,9 @@ public class ARFeatureMiniDrone
     private static native String nativeStaticGetKeyMiniDronePilotingSettingsStateMaxTiltChangedCurrent ();
     private static native String nativeStaticGetKeyMiniDronePilotingSettingsStateMaxTiltChangedMin ();
     private static native String nativeStaticGetKeyMiniDronePilotingSettingsStateMaxTiltChangedMax ();
+    private static native String nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedCurrent ();
+    private static native String nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedMin ();
+    private static native String nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedMax ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedMin ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -95,6 +104,9 @@ public class ARFeatureMiniDrone
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCurrent ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMin ();
     private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMax ();
+    private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedCurrent ();
+    private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedMin ();
+    private static native String nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedMax ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedMotor ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedType ();
     private static native String nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedSoftware ();
@@ -135,10 +147,12 @@ public class ARFeatureMiniDrone
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
     private native int nativeSendPilotingSettingsMaxAltitude (long jFeature, float current);
     private native int nativeSendPilotingSettingsMaxTilt (long jFeature, float current);
+    private native int nativeSendPilotingSettingsPlaneModePitch (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsWheels (long jFeature, byte present);
     private native int nativeSendSpeedSettingsMaxHorizontalSpeed (long jFeature, float current);
+    private native int nativeSendSpeedSettingsMaxPlaneModeRotationSpeed (long jFeature, float current);
     private native int nativeSendSettingsCutOutMode (long jFeature, byte enable);
     private native int nativeSendGPSControllerLatitudeForRun (long jFeature, double latitude);
     private native int nativeSendGPSControllerLongitudeForRun (long jFeature, double longitude);
@@ -169,6 +183,9 @@ public class ARFeatureMiniDrone
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT = nativeStaticGetKeyMiniDronePilotingSettingsStateMaxTiltChangedCurrent ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = nativeStaticGetKeyMiniDronePilotingSettingsStateMaxTiltChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = nativeStaticGetKeyMiniDronePilotingSettingsStateMaxTiltChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_CURRENT = nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MIN = nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MAX = nativeStaticGetKeyMiniDronePilotingSettingsStatePlaneModePitchChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -179,6 +196,9 @@ public class ARFeatureMiniDrone
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedCurrent ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxHorizontalSpeedChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_CURRENT = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MIN = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MAX = nativeStaticGetKeyMiniDroneSpeedSettingsStateMaxPlaneModeRotationSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR = nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedMotor ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE = nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_SOFTWARE = nativeStaticGetKeyMiniDroneSettingsStateProductMotorsVersionChangedSoftware ();
@@ -602,6 +622,26 @@ public class ARFeatureMiniDrone
     }
     
     /**
+     * Send a command <code>PilotingSettingsPlaneModePitch</code>
+     * Set plane mode pitch (only available for wing x)
+     * @param current Current plane mode pitch in degree
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsPlaneModePitch (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsPlaneModePitch (jniFeature, _current);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
      * Send a command <code>SpeedSettingsMaxVerticalSpeed</code>
      * Set Max Vertical speed
      * @param current Current max vertical speed in m/s
@@ -675,6 +715,26 @@ public class ARFeatureMiniDrone
             if(initOk == true)
             {
                 int nativeError = nativeSendSpeedSettingsMaxHorizontalSpeed (jniFeature, _current);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>SpeedSettingsMaxPlaneModeRotationSpeed</code>
+     * Set max plane mode rotation speed (only available for wing x)
+     * @param current Current max plane mode rotation speed in degree/s
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxPlaneModeRotationSpeed (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendSpeedSettingsMaxPlaneModeRotationSpeed (jniFeature, _current);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
