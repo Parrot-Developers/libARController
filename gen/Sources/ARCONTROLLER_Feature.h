@@ -3596,6 +3596,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitu
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
 
 /**
+ * @brief Send a command <code>PilotingSettingsPlaneModePitch</code> in project <code>MiniDrone</code>
+ * Set plane mode pitch (only available for wing x)
+ * @param feature feature owning the commands
+ * @param current Current plane mode pitch in degree
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsPlaneModePitch (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
  * @brief Send a command <code>SpeedSettingsMaxVerticalSpeed</code> in project <code>MiniDrone</code>
  * Set Max Vertical speed
  * @param feature feature owning the commands
@@ -3630,6 +3639,15 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels (ARCO
  * return executing error
  */
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>SpeedSettingsMaxPlaneModeRotationSpeed</code> in project <code>MiniDrone</code>
+ * Set max plane mode rotation speed (only available for wing x)
+ * @param feature feature owning the commands
+ * @param current Current max plane mode rotation speed in degree/s
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxPlaneModeRotationSpeed (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
 
 /**
  * @brief Send a command <code>SettingsCutOutMode</code> in project <code>MiniDrone</code>
@@ -3794,6 +3812,16 @@ void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxAltitudeChangedCallb
 void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStateMaxTiltChangedCallback (float _current, float _min, float _max, void *customData);
 
 /**
+ * @brief callback used when the command <code>PilotingSettingsStatePlaneModePitchChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param current Current plane mode pitch in degree
+ * @param min Range min of plane mode pitch in degree
+ * @param max Range max of plane mode pitch in degree
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_PilotingSettingsStatePlaneModePitchChangedCallback (float _current, float _min, float _max, void *customData);
+
+/**
  * @brief callback used when the command <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> is decoded
  * @param feature The feature controller registred
  * @param current Current max vertical speed in m/s
@@ -3830,6 +3858,16 @@ void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateWheelsChangedCallback (uin
  * @param customData customData set by the register
  */
 void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxHorizontalSpeedChangedCallback (float _current, float _min, float _max, void *customData);
+
+/**
+ * @brief callback used when the command <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param current Current max plane mode rotation speed in degree/s
+ * @param min Range min of plane mode rotation speed
+ * @param max Range max of plane mode rotation speed
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_MiniDrone_SpeedSettingsStateMaxPlaneModeRotationSpeedChangedCallback (float _current, float _min, float _max, void *customData);
 
 /**
  * @brief callback used when the command <code>SettingsStateProductMotorsVersionChanged</code> is decoded
@@ -3926,6 +3964,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingS
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingSettingsStateMaxTiltChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
 
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingSettingsStatePlaneModePitchChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
+
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxVerticalSpeedChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxRotationSpeedChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
@@ -3933,6 +3973,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSett
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateWheelsChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _present, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxHorizontalSpeedChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSpeedSettingsStateMaxPlaneModeRotationSpeedChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float _current, float _min, float _max, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementSettingsStateProductMotorsVersionChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _motor, char * _type, char * _software, char * _hardware, eARCONTROLLER_ERROR *error);
 

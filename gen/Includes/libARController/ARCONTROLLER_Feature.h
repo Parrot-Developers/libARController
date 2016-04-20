@@ -2617,6 +2617,10 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_M
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>MiniDrone</code> */
 
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStatePlaneModePitchChanged</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStatePlaneModePitchChanged</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStatePlaneModePitchChanged</code> in feature <code>MiniDrone</code> */
+
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>MiniDrone</code> */
@@ -2630,6 +2634,10 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEE
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in feature <code>MiniDrone</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in feature <code>MiniDrone</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_MOTOR; /**< Key of the argument </code>motor</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED_TYPE; /**< Key of the argument </code>type</code> of event <code>SettingsStateProductMotorsVersionChanged</code> in feature <code>MiniDrone</code> */
@@ -2852,6 +2860,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSetting
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
 
 /**
+ * @brief Send a command <code>PilotingSettingsPlaneModePitch</code> in feature <code>MiniDrone</code>
+ * Set plane mode pitch (only available for wing x)
+ * @param feature feature owning the commands
+ * @param current Current plane mode pitch in degree
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsPlaneModePitch_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
  * @brief Send a command <code>SpeedSettingsMaxVerticalSpeed</code> in feature <code>MiniDrone</code>
  * Set Max Vertical speed
  * @param feature feature owning the commands
@@ -2886,6 +2903,15 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWh
  * return executing error
  */
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
+
+/**
+ * @brief Send a command <code>SpeedSettingsMaxPlaneModeRotationSpeed</code> in feature <code>MiniDrone</code>
+ * Set max plane mode rotation speed (only available for wing x)
+ * @param feature feature owning the commands
+ * @param current Current max plane mode rotation speed in degree/s
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxPlaneModeRotationSpeed_t) (ARCONTROLLER_FEATURE_MiniDrone_t *feature, float current);
 
 /**
  * @brief Send a command <code>SettingsCutOutMode</code> in feature <code>MiniDrone</code>
@@ -2989,10 +3015,12 @@ struct ARCONTROLLER_FEATURE_MiniDrone_t
     ARCONTROLLER_FEATURE_MiniDrone_SendMediaRecordPictureV2_t sendMediaRecordPictureV2;
     ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxAltitude_t sendPilotingSettingsMaxAltitude;
     ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsMaxTilt_t sendPilotingSettingsMaxTilt;
+    ARCONTROLLER_FEATURE_MiniDrone_SendPilotingSettingsPlaneModePitch_t sendPilotingSettingsPlaneModePitch;
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxVerticalSpeed_t sendSpeedSettingsMaxVerticalSpeed;
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxRotationSpeed_t sendSpeedSettingsMaxRotationSpeed;
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsWheels_t sendSpeedSettingsWheels;
     ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxHorizontalSpeed_t sendSpeedSettingsMaxHorizontalSpeed;
+    ARCONTROLLER_FEATURE_MiniDrone_SendSpeedSettingsMaxPlaneModeRotationSpeed_t sendSpeedSettingsMaxPlaneModeRotationSpeed;
     ARCONTROLLER_FEATURE_MiniDrone_SendSettingsCutOutMode_t sendSettingsCutOutMode;
     ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLatitudeForRun_t sendGPSControllerLatitudeForRun;
     ARCONTROLLER_FEATURE_MiniDrone_SendGPSControllerLongitudeForRun_t sendGPSControllerLongitudeForRun;
