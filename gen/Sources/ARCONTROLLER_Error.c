@@ -40,7 +40,7 @@
 
 #include <libARController/ARCONTROLLER_Error.h>
 
-char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
+const char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
 {
     switch (error)
     {
@@ -165,7 +165,6 @@ char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error)
         return "Stream re-synchronization required";
         break;
     default:
-        return "Unknown value";
         break;
     }
     return "Unknown value";

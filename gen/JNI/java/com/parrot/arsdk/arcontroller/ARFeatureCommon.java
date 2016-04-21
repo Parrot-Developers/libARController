@@ -26,77 +26,77 @@ public class ARFeatureCommon
 {
     private static String TAG = "ARFeatureCommon";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_NETWORKEVENT_DISCONNECTION_CAUSE = ""; /**< Key of the argument </code>cause</code> of class <code>NetworkEvent</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTNAMECHANGED_NAME = ""; /**< Key of the argument </code>name</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALHIGHCHANGED_HIGH = ""; /**< Key of the argument </code>high</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALLOWCHANGED_LOW = ""; /**< Key of the argument </code>low</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_COUNTRYCHANGED_CODE = ""; /**< Key of the argument </code>code</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_AUTOCOUNTRYCHANGED_AUTOMATIC = ""; /**< Key of the argument </code>automatic</code> of class <code>SettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED_PERCENT = ""; /**< Key of the argument </code>percent</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_NAME = ""; /**< Key of the argument </code>name</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_SIZE = ""; /**< Key of the argument </code>size</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_USED_SIZE = ""; /**< Key of the argument </code>used_size</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_PLUGGED = ""; /**< Key of the argument </code>plugged</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_FULL = ""; /**< Key of the argument </code>full</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_INTERNAL = ""; /**< Key of the argument </code>internal</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED_DATE = ""; /**< Key of the argument </code>date</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED_TIME = ""; /**< Key of the argument </code>time</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_FREE_SPACE = ""; /**< Key of the argument </code>free_space</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_REC_TIME = ""; /**< Key of the argument </code>rec_time</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_PHOTO_REMAINING = ""; /**< Key of the argument </code>photo_remaining</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME = ""; /**< Key of the argument </code>sensorName</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE = ""; /**< Key of the argument </code>sensorState</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL = ""; /**< Key of the argument </code>model</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = ""; /**< Key of the argument </code>countryCodes</code> of class <code>CommonState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = ""; /**< Key of the argument </code>regulationType</code> of class <code>OverHeatState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of class <code>WifiSettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_FILEPATH = ""; /**< Key of the argument </code>filepath</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MavlinkState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_XAXISCALIBRATION = ""; /**< Key of the argument </code>xAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_YAXISCALIBRATION = ""; /**< Key of the argument </code>yAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_ZAXISCALIBRATION = ""; /**< Key of the argument </code>zAxisCalibration</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_CALIBRATIONFAILED = ""; /**< Key of the argument </code>calibrationFailed</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE_REQUIRED = ""; /**< Key of the argument </code>required</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS = ""; /**< Key of the argument </code>axis</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED_STARTED = ""; /**< Key of the argument </code>started</code> of class <code>CalibrationState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_FOV = ""; /**< Key of the argument </code>fov</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMAX = ""; /**< Key of the argument </code>panMax</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMIN = ""; /**< Key of the argument </code>panMin</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMAX = ""; /**< Key of the argument </code>tiltMax</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMIN = ""; /**< Key of the argument </code>tiltMin</code> of class <code>CameraSettingsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED_AVAILABILITYSTATE = ""; /**< Key of the argument </code>AvailabilityState</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT = ""; /**< Key of the argument </code>component</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_STATE = ""; /**< Key of the argument </code>State</code> of class <code>FlightPlanState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION_VERSION = ""; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION_VERSION = ""; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION_VERSION = ""; /**< Key of the argument </code>version</code> of class <code>ARLibsVersionsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING_RUNNING = ""; /**< Key of the argument </code>running</code> of class <code>AudioState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_LEFT = ""; /**< Key of the argument </code>left</code> of class <code>HeadlightsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_RIGHT = ""; /**< Key of the argument </code>right</code> of class <code>HeadlightsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ANIM = ""; /**< Key of the argument </code>anim</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_STATE = ""; /**< Key of the argument </code>state</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>AnimationsState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY = ""; /**< Key of the argument </code>accessory</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY = ""; /**< Key of the argument </code>newAccessory</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>AccessoryState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE = ""; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS = ""; /**< Key of the argument </code>status</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE = ""; /**< Key of the argument </code>phase</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE = ""; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE = ""; /**< Key of the argument </code>phase</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE = ""; /**< Key of the argument </code>rate</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_INTENSITY = ""; /**< Key of the argument </code>intensity</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME = ""; /**< Key of the argument </code>fullChargingTime</code> of class <code>ChargerState</code> in feature <code>Common</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID = ""; /**< Key of the argument </code>runId</code> of class <code>RunState</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_NETWORKEVENT_DISCONNECTION_CAUSE = ""; /**< Key of the argument </code>cause</code> of event <code>NetworkEventDisconnection</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTNAMECHANGED_NAME = ""; /**< Key of the argument </code>name</code> of event <code>SettingsStateProductNameChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductVersionChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductVersionChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALHIGHCHANGED_HIGH = ""; /**< Key of the argument </code>high</code> of event <code>SettingsStateProductSerialHighChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_PRODUCTSERIALLOWCHANGED_LOW = ""; /**< Key of the argument </code>low</code> of event <code>SettingsStateProductSerialLowChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_COUNTRYCHANGED_CODE = ""; /**< Key of the argument </code>code</code> of event <code>SettingsStateCountryChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_AUTOCOUNTRYCHANGED_AUTOMATIC = ""; /**< Key of the argument </code>automatic</code> of event <code>SettingsStateAutoCountryChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED_PERCENT = ""; /**< Key of the argument </code>percent</code> of event <code>CommonStateBatteryStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>CommonStateMassStorageStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED_NAME = ""; /**< Key of the argument </code>name</code> of event <code>CommonStateMassStorageStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>CommonStateMassStorageInfoStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_SIZE = ""; /**< Key of the argument </code>size</code> of event <code>CommonStateMassStorageInfoStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_USED_SIZE = ""; /**< Key of the argument </code>used_size</code> of event <code>CommonStateMassStorageInfoStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_PLUGGED = ""; /**< Key of the argument </code>plugged</code> of event <code>CommonStateMassStorageInfoStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_FULL = ""; /**< Key of the argument </code>full</code> of event <code>CommonStateMassStorageInfoStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED_INTERNAL = ""; /**< Key of the argument </code>internal</code> of event <code>CommonStateMassStorageInfoStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED_DATE = ""; /**< Key of the argument </code>date</code> of event <code>CommonStateCurrentDateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED_TIME = ""; /**< Key of the argument </code>time</code> of event <code>CommonStateCurrentTimeChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_FREE_SPACE = ""; /**< Key of the argument </code>free_space</code> of event <code>CommonStateMassStorageInfoRemainingListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_REC_TIME = ""; /**< Key of the argument </code>rec_time</code> of event <code>CommonStateMassStorageInfoRemainingListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED_PHOTO_REMAINING = ""; /**< Key of the argument </code>photo_remaining</code> of event <code>CommonStateMassStorageInfoRemainingListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>CommonStateWifiSignalChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME = ""; /**< Key of the argument </code>sensorName</code> of event <code>CommonStateSensorsStatesListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORSTATE = ""; /**< Key of the argument </code>sensorState</code> of event <code>CommonStateSensorsStatesListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL = ""; /**< Key of the argument </code>model</code> of event <code>CommonStateProductModel</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = ""; /**< Key of the argument </code>countryCodes</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = ""; /**< Key of the argument </code>regulationType</code> of event <code>OverHeatStateOverHeatRegulationChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of event <code>WifiSettingsStateOutdoorSettingsChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_FILEPATH = ""; /**< Key of the argument </code>filepath</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MavlinkStateMavlinkPlayErrorStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_XAXISCALIBRATION = ""; /**< Key of the argument </code>xAxisCalibration</code> of event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_YAXISCALIBRATION = ""; /**< Key of the argument </code>yAxisCalibration</code> of event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_ZAXISCALIBRATION = ""; /**< Key of the argument </code>zAxisCalibration</code> of event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED_CALIBRATIONFAILED = ""; /**< Key of the argument </code>calibrationFailed</code> of event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE_REQUIRED = ""; /**< Key of the argument </code>required</code> of event <code>CalibrationStateMagnetoCalibrationRequiredState</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS = ""; /**< Key of the argument </code>axis</code> of event <code>CalibrationStateMagnetoCalibrationAxisToCalibrateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED_STARTED = ""; /**< Key of the argument </code>started</code> of event <code>CalibrationStateMagnetoCalibrationStartedChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_FOV = ""; /**< Key of the argument </code>fov</code> of event <code>CameraSettingsStateCameraSettingsChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMAX = ""; /**< Key of the argument </code>panMax</code> of event <code>CameraSettingsStateCameraSettingsChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_PANMIN = ""; /**< Key of the argument </code>panMin</code> of event <code>CameraSettingsStateCameraSettingsChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMAX = ""; /**< Key of the argument </code>tiltMax</code> of event <code>CameraSettingsStateCameraSettingsChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED_TILTMIN = ""; /**< Key of the argument </code>tiltMin</code> of event <code>CameraSettingsStateCameraSettingsChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED_AVAILABILITYSTATE = ""; /**< Key of the argument </code>AvailabilityState</code> of event <code>FlightPlanStateAvailabilityStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT = ""; /**< Key of the argument </code>component</code> of event <code>FlightPlanStateComponentStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_STATE = ""; /**< Key of the argument </code>State</code> of event <code>FlightPlanStateComponentStateListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION_VERSION = ""; /**< Key of the argument </code>version</code> of event <code>ARLibsVersionsStateControllerLibARCommandsVersion</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION_VERSION = ""; /**< Key of the argument </code>version</code> of event <code>ARLibsVersionsStateSkyControllerLibARCommandsVersion</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION_VERSION = ""; /**< Key of the argument </code>version</code> of event <code>ARLibsVersionsStateDeviceLibARCommandsVersion</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING_RUNNING = ""; /**< Key of the argument </code>running</code> of event <code>AudioStateAudioStreamingRunning</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_LEFT = ""; /**< Key of the argument </code>left</code> of event <code>HeadlightsStateIntensityChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED_RIGHT = ""; /**< Key of the argument </code>right</code> of event <code>HeadlightsStateIntensityChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ANIM = ""; /**< Key of the argument </code>anim</code> of event <code>AnimationsStateList</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateList</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>AnimationsStateList</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY = ""; /**< Key of the argument </code>accessory</code> of event <code>AccessoryStateSupportedAccessoriesListChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY = ""; /**< Key of the argument </code>newAccessory</code> of event <code>AccessoryStateAccessoryConfigChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>AccessoryStateAccessoryConfigChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>AccessoryStateAccessoryConfigModificationEnabled</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE = ""; /**< Key of the argument </code>rate</code> of event <code>ChargerStateMaxChargeRateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS = ""; /**< Key of the argument </code>status</code> of event <code>ChargerStateCurrentChargeStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE = ""; /**< Key of the argument </code>phase</code> of event <code>ChargerStateCurrentChargeStateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE = ""; /**< Key of the argument </code>rate</code> of event <code>ChargerStateLastChargeRateChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE = ""; /**< Key of the argument </code>phase</code> of event <code>ChargerStateChargingInfo</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE = ""; /**< Key of the argument </code>rate</code> of event <code>ChargerStateChargingInfo</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_INTENSITY = ""; /**< Key of the argument </code>intensity</code> of event <code>ChargerStateChargingInfo</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_FULLCHARGINGTIME = ""; /**< Key of the argument </code>fullChargingTime</code> of event <code>ChargerStateChargingInfo</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID = ""; /**< Key of the argument </code>runId</code> of event <code>RunStateRunIdChanged</code> in feature <code>Common</code> */
 
     private static native String nativeStaticGetKeyCommonNetworkEventDisconnectionCause ();
     private static native String nativeStaticGetKeyCommonSettingsStateProductNameChangedName ();
@@ -184,18 +184,18 @@ public class ARFeatureCommon
     private native int nativeSendOverHeatVentilate (long jFeature);
     private native int nativeSendControllerIsPiloting (long jFeature, byte piloting);
     private native int nativeSendWifiSettingsOutdoorSetting (long jFeature, byte outdoor);
-    private native int nativeSendMavlinkStart (long jFeature, String filepath, int type);
+    private native int nativeSendMavlinkStart (long jFeature, String filepath, ARCOMMANDS_COMMON_MAVLINK_START_TYPE_ENUM type);
     private native int nativeSendMavlinkPause (long jFeature);
     private native int nativeSendMavlinkStop (long jFeature);
     private native int nativeSendCalibrationMagnetoCalibration (long jFeature, byte calibrate);
     private native int nativeSendGPSControllerPositionForRun (long jFeature, double latitude, double longitude);
     private native int nativeSendAudioControllerReadyForStreaming (long jFeature, byte ready);
     private native int nativeSendHeadlightsIntensity (long jFeature, byte left, byte right);
-    private native int nativeSendAnimationsStartAnimation (long jFeature, int anim);
-    private native int nativeSendAnimationsStopAnimation (long jFeature, int anim);
+    private native int nativeSendAnimationsStartAnimation (long jFeature, ARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM_ENUM anim);
+    private native int nativeSendAnimationsStopAnimation (long jFeature, ARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM_ENUM anim);
     private native int nativeSendAnimationsStopAllAnimations (long jFeature);
-    private native int nativeSendAccessoryConfig (long jFeature, int accessory);
-    private native int nativeSendChargerSetMaxChargeRate (long jFeature, int rate);
+    private native int nativeSendAccessoryConfig (long jFeature, ARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY_ENUM accessory);
+    private native int nativeSendChargerSetMaxChargeRate (long jFeature, ARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE_ENUM rate);
 
     private long jniFeature;
     private boolean initOk;
@@ -523,7 +523,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMavlinkStart (jniFeature, _filepath, _type.getValue());
+                int nativeError = nativeSendMavlinkStart (jniFeature, _filepath, _type);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -621,7 +621,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsStartAnimation (jniFeature, _anim.getValue());
+                int nativeError = nativeSendAnimationsStartAnimation (jniFeature, _anim);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -635,7 +635,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsStopAnimation (jniFeature, _anim.getValue());
+                int nativeError = nativeSendAnimationsStopAnimation (jniFeature, _anim);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -663,7 +663,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAccessoryConfig (jniFeature, _accessory.getValue());
+                int nativeError = nativeSendAccessoryConfig (jniFeature, _accessory);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -677,7 +677,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendChargerSetMaxChargeRate (jniFeature, _rate.getValue());
+                int nativeError = nativeSendChargerSetMaxChargeRate (jniFeature, _rate);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

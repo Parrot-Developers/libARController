@@ -13,6 +13,10 @@
 * @brief Device controller allow to drive a device.
 */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <stdio.h>
 #include <time.h>
 #include <json/json.h>
@@ -38,9 +42,9 @@
  *
  ****************************************/
 
-static int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *b);
+static int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *a, ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *b);
 
-static int ARCONTROLLER_Device_ExtensionElementCompare(ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *b);
+static int ARCONTROLLER_Device_ExtensionElementCompare(ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *a, ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *b);
 
 /*****************************************
  *
@@ -69,17 +73,16 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
     if (deviceController != NULL)
     {
         //initialization of the device controller
+        deviceController->generic = NULL;
         deviceController->aRDrone3 = NULL;
-        deviceController->aRDrone3Debug = NULL;
         deviceController->jumpingSumo = NULL;
-        deviceController->jumpingSumoDebug = NULL;
         deviceController->miniDrone = NULL;
-        deviceController->miniDroneDebug = NULL;
         deviceController->skyController = NULL;
-        deviceController->skyControllerDebug = NULL;
+        deviceController->unknown_feature_1 = NULL;
         deviceController->common = NULL;
         deviceController->commonDebug = NULL;
         deviceController->pro = NULL;
+        deviceController->wifi = NULL;
         deviceController->privatePart = NULL;
     }
     else
@@ -91,7 +94,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
     {
         // Allocate the private part of the Device Controller
         deviceController->privatePart = malloc (sizeof(ARCONTROLLER_Device_Private_t));
-        if (deviceController != NULL)
+        if (deviceController->privatePart != NULL)
         {
             //initialization of the private part of the device controller
             deviceController->privatePart->networkController = NULL;
@@ -511,6 +514,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
     }
     // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
+    if ((deviceController->generic != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->generic)))
+    {
+    }
+    
     if ((deviceController->aRDrone3 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3)))
     {
         if (error == ARCONTROLLER_OK)
@@ -665,6 +672,41 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
         if (error == ARCONTROLLER_OK)
         {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
@@ -685,12 +727,22 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
         if (error == ARCONTROLLER_OK)
         {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
@@ -756,6 +808,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
@@ -831,20 +888,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-    }
-    
-    if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
-    {
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_ARDrone3Debug_AddCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_ARDrone3Debug_AddCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
     }
@@ -998,15 +1041,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
-    {
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_JumpingSumoDebug_AddCallback (deviceController->jumpingSumoDebug, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-    }
-    
     if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
     {
         if (error == ARCONTROLLER_OK)
@@ -1094,10 +1128,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
             error = ARCONTROLLER_FEATURE_MiniDrone_AddCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
-    }
-    
-    if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
-    {
     }
     
     if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
@@ -1284,8 +1314,63 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if ((deviceController->skyControllerDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyControllerDebug)))
+    if ((deviceController->unknown_feature_1 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->unknown_feature_1)))
     {
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_AVAILABILITY, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_RUN, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_GEOGRAPHICCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_RELATIVECONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_ANIMRUN, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_SPIRALANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_SWINGANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_BOOMERANGANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_CANDLEANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_DOLLYSLIDEANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_UnknownFeature1_AddCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_USERFRAMINGPOSITIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
     }
     
     if ((deviceController->common != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->common)))
@@ -1570,6 +1655,45 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
+    if ((deviceController->wifi != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->wifi)))
+    {
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Wifi_AddCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+    }
+    
     return error;
 }
 
@@ -1589,6 +1713,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
     
     if (error == ARCONTROLLER_OK)
     {
+        if ((deviceController->generic != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->generic)))
+        {
+        }
+        
         if ((deviceController->aRDrone3 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3)))
         {
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -1771,6 +1899,48 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
@@ -1795,6 +1965,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
@@ -1805,6 +1981,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -1883,6 +2065,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
             removingError = ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (deviceController->aRDrone3, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -1973,22 +2161,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-        }
-        
-        if ((deviceController->aRDrone3Debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->aRDrone3Debug)))
-        {
-            removingError = ARCONTROLLER_FEATURE_ARDrone3Debug_RemoveCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_BATTERYDEBUGSETTINGSSTATE_USEDRONE2BATTERYCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-            removingError = ARCONTROLLER_FEATURE_ARDrone3Debug_RemoveCallback (deviceController->aRDrone3Debug, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_GPSDEBUGSTATE_NBSATELLITECHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
         }
@@ -2171,16 +2343,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if ((deviceController->jumpingSumoDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->jumpingSumoDebug)))
-        {
-            removingError = ARCONTROLLER_FEATURE_JumpingSumoDebug_RemoveCallback (deviceController->jumpingSumoDebug, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_USERSCRIPTSTATE_USERSCRIPTPARSED; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-        }
-        
         if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
         {
             removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -2285,10 +2447,6 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
-        }
-        
-        if ((deviceController->miniDroneDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDroneDebug)))
-        {
         }
         
         if ((deviceController->skyController != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyController)))
@@ -2511,8 +2669,74 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if ((deviceController->skyControllerDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->skyControllerDebug)))
+        if ((deviceController->unknown_feature_1 != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->unknown_feature_1)))
         {
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_AVAILABILITY, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_AVAILABILITY; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_RUN, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_RUN; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_GEOGRAPHICCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_GEOGRAPHICCONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_RELATIVECONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_RELATIVECONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_ANIMRUN, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_ANIMRUN; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_SPIRALANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_SPIRALANIMCONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_SWINGANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_SWINGANIMCONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_BOOMERANGANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_BOOMERANGANIMCONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_CANDLEANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_CANDLEANIMCONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_DOLLYSLIDEANIMCONFIGCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_DOLLYSLIDEANIMCONFIGCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_UnknownFeature1_RemoveCallback (deviceController->unknown_feature_1, ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_USERFRAMINGPOSITIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1_USERFRAMINGPOSITIONCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
         }
         
         if ((deviceController->common != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->common)))
@@ -2851,6 +3075,52 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
+        if ((deviceController->wifi != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->wifi)))
+        {
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_SCANNEDITEM; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_AUTHORIZEDCHANNEL; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_APCHANNELCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_SECURITYCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_COUNTRYCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_ENVIRONEMENTCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Wifi_RemoveCallback (deviceController->wifi, ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI_RSSICHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+        }
+        
     }
     
     return error;
@@ -3125,13 +3395,13 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
     {
         switch (featureKey)
         {
-            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3:
-                elements = ARCONTROLLER_ARDrone3_GetCommandElements (deviceController->aRDrone3, commandKey, &localError);
+            case ARCONTROLLER_DICTIONARY_KEY_GENERIC:
+                elements = ARCONTROLLER_Generic_GetCommandElements (deviceController->generic, commandKey, &localError);
                 
                 break;
             
-            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG:
-                elements = ARCONTROLLER_ARDrone3Debug_GetCommandElements (deviceController->aRDrone3Debug, commandKey, &localError);
+            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3:
+                elements = ARCONTROLLER_ARDrone3_GetCommandElements (deviceController->aRDrone3, commandKey, &localError);
                 
                 break;
             
@@ -3140,18 +3410,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
                 
                 break;
             
-            case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG:
-                elements = ARCONTROLLER_JumpingSumoDebug_GetCommandElements (deviceController->jumpingSumoDebug, commandKey, &localError);
-                
-                break;
-            
             case ARCONTROLLER_DICTIONARY_KEY_MINIDRONE:
                 elements = ARCONTROLLER_MiniDrone_GetCommandElements (deviceController->miniDrone, commandKey, &localError);
-                
-                break;
-            
-            case ARCONTROLLER_DICTIONARY_KEY_MINIDRONEDEBUG:
-                elements = ARCONTROLLER_MiniDroneDebug_GetCommandElements (deviceController->miniDroneDebug, commandKey, &localError);
                 
                 break;
             
@@ -3160,8 +3420,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
                 
                 break;
             
-            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLERDEBUG:
-                elements = ARCONTROLLER_SkyControllerDebug_GetCommandElements (deviceController->skyControllerDebug, commandKey, &localError);
+            case ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1:
+                elements = ARCONTROLLER_UnknownFeature1_GetCommandElements (deviceController->unknown_feature_1, commandKey, &localError);
                 
                 break;
             
@@ -3177,6 +3437,11 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
             
             case ARCONTROLLER_DICTIONARY_KEY_PRO:
                 elements = ARCONTROLLER_Pro_GetCommandElements (deviceController->pro, commandKey, &localError);
+                
+                break;
+            
+            case ARCONTROLLER_DICTIONARY_KEY_WIFI:
+                elements = ARCONTROLLER_Wifi_GetCommandElements (deviceController->wifi, commandKey, &localError);
                 
                 break;
             
@@ -3716,22 +3981,22 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
     
     if (error == ARCONTROLLER_OK)
     {
+        if (deviceController->generic != NULL)
+        {
+            settingError = ARCONTROLLER_FEATURE_Generic_SetNetworkController (deviceController->generic, deviceController->privatePart->networkController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_GENERIC; error :%s", ARCONTROLLER_Error_ToString (settingError));
+            }
+            
+        }
+        
         if (deviceController->aRDrone3 != NULL)
         {
             settingError = ARCONTROLLER_FEATURE_ARDrone3_SetNetworkController (deviceController->aRDrone3, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
-            }
-            
-        }
-        
-        if (deviceController->aRDrone3Debug != NULL)
-        {
-            settingError = ARCONTROLLER_FEATURE_ARDrone3Debug_SetNetworkController (deviceController->aRDrone3Debug, deviceController->privatePart->networkController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3DEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_ARDRONE3; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -3741,17 +4006,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             settingError = ARCONTROLLER_FEATURE_JumpingSumo_SetNetworkController (deviceController->jumpingSumo, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
-            }
-            
-        }
-        
-        if (deviceController->jumpingSumoDebug != NULL)
-        {
-            settingError = ARCONTROLLER_FEATURE_JumpingSumoDebug_SetNetworkController (deviceController->jumpingSumoDebug, deviceController->privatePart->networkController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMODEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -3761,17 +4016,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             settingError = ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController (deviceController->miniDrone, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
-            }
-            
-        }
-        
-        if (deviceController->miniDroneDebug != NULL)
-        {
-            settingError = ARCONTROLLER_FEATURE_MiniDroneDebug_SetNetworkController (deviceController->miniDroneDebug, deviceController->privatePart->networkController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONEDEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_MINIDRONE; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -3781,17 +4026,17 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             settingError = ARCONTROLLER_FEATURE_SkyController_SetNetworkController (deviceController->skyController, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
         
-        if (deviceController->skyControllerDebug != NULL)
+        if (deviceController->unknown_feature_1 != NULL)
         {
-            settingError = ARCONTROLLER_FEATURE_SkyControllerDebug_SetNetworkController (deviceController->skyControllerDebug, deviceController->privatePart->networkController);
+            settingError = ARCONTROLLER_FEATURE_UnknownFeature1_SetNetworkController (deviceController->unknown_feature_1, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLERDEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_UNKNOWN_FEATURE_1; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -3801,7 +4046,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             settingError = ARCONTROLLER_FEATURE_Common_SetNetworkController (deviceController->common, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMON_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMON; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -3811,7 +4056,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             settingError = ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (deviceController->commonDebug, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -3821,7 +4066,17 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             settingError = ARCONTROLLER_FEATURE_Pro_SetNetworkController (deviceController->pro, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_PRO_PROEVENT_CHALLENGEEVENT; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_PRO; error :%s", ARCONTROLLER_Error_ToString (settingError));
+            }
+            
+        }
+        
+        if (deviceController->wifi != NULL)
+        {
+            settingError = ARCONTROLLER_FEATURE_Wifi_SetNetworkController (deviceController->wifi, deviceController->privatePart->networkController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_WIFI; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
@@ -4629,16 +4884,16 @@ void *ARCONTROLLER_Device_ControllerLooperThread (void *data)
     return NULL;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData)
 {
     // -- Add callback in array --
     
     // Local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *newElement = NULL;
 
     // Add the callback
-    newElement = malloc (sizeof(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t));
+    newElement = malloc (sizeof(ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t));
     if (newElement != NULL)
     {
         newElement->callback = callback;
@@ -4653,16 +4908,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddCallbackInList (ARCONTROLLER_Device_S
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData)
 {
     // -- Add extension callback in array --
     
     // Local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *newElement = NULL;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *newElement = NULL;
 
     // Add the callback
-    newElement = malloc (sizeof(ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t));
+    newElement = malloc (sizeof(ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t));
     if (newElement != NULL)
     {
         newElement->callback = callback;
@@ -4677,14 +4932,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_AddExtensionCallbackInList (ARCONTROLLER
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCallbackFromList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCallbackFromList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_StateChangedCallback_t callback, void *customData)
 {
     // -- Remove callback from array --
 
     // Local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *elementFind = NULL;
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t likeElement;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t likeElement;
 
     // Element to find
     likeElement.callback = callback;
@@ -4703,14 +4958,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveCallbackFromList (ARCONTROLLER_Dev
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveExtensionCallbackFromList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveExtensionCallbackFromList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList, ARCONTROLLER_Device_ExtensionStateChangedCallback_t callback, void *customData)
 {
     // -- Remove callback from array --
 
     // Local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *elementFind = NULL;
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t likeElement;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *elementFind = NULL;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t likeElement;
 
     // Element to find
     likeElement.callback = callback;
@@ -4729,13 +4984,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RemoveExtensionCallbackFromList (ARCONTR
     return error;
 }
 
-void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList)
+void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList)
 {
     // -- Delete all callback in array --
     
     // Local declarations
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *element = NULL;
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *elementTmp = NULL;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *element = NULL;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *elementTmp = NULL;
 
     // Delete each element, use the safe iterator
     DL_FOREACH_SAFE ((*callbackList), element, elementTmp)
@@ -4744,13 +4999,13 @@ void ARCONTROLLER_Device_DeleteCallbackList (ARCONTROLLER_Device_STATE_CHANGED_C
     }
 }
 
-void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList)
+void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList)
 {
     // -- Delete all callback in array --
     
     // Local declarations
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *element = NULL;
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *elementTmp = NULL;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *element = NULL;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *elementTmp = NULL;
 
     // Delete each element, use the safe iterator
     DL_FOREACH_SAFE ((*callbackList), element, elementTmp)
@@ -4759,12 +5014,12 @@ void ARCONTROLLER_Device_DeleteExtensionCallbackList (ARCONTROLLER_Device_EXTENS
     }
 }
 
-void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARCONTROLLER_ERROR error)
+void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARCONTROLLER_ERROR error)
 {
     // -- Notify all listeners --
     
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *callbackElement = NULL;
-    ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *callbackElementTmp = NULL;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *callbackElement = NULL;
+    ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *callbackElementTmp = NULL;
 
     // for each callback
     DL_FOREACH_SAFE ((*callbackList), callbackElement, callbackElementTmp)
@@ -4776,12 +5031,12 @@ void ARCONTROLLER_Device_NotifyAllCallbackInList (ARCONTROLLER_Device_STATE_CHAN
     }
 }
 
-void ARCONTROLLER_Device_NotifyAllExtensionCallbackInList (ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error)
+void ARCONTROLLER_Device_NotifyAllExtensionCallbackInList (ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error)
 {
     // -- Notify all listeners --
     
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *callbackElement = NULL;
-    ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *callbackElementTmp = NULL;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *callbackElement = NULL;
+    ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *callbackElementTmp = NULL;
 
     // for each callback
     DL_FOREACH_SAFE ((*callbackList), callbackElement, callbackElementTmp)
@@ -4821,12 +5076,12 @@ void ARCONTROLLER_Device_SetExtensionState (ARCONTROLLER_Device_t *deviceControl
  *
  ****************************************/
 
-static int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_STATE_CHANGED_CALLBACK_ELEMENT_t *b)
+static int ARCONTROLLER_Device_ElementCompare(ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *a, ARCONTROLLER_Device_STATECHANGEDCALLBACKELEMENT_t *b)
 {
     return !((a->callback == b->callback) && (a->customData == b->customData));
 }
 
-static int ARCONTROLLER_Device_ExtensionElementCompare(ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *a, ARCONTROLLER_Device_EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT_t *b)
+static int ARCONTROLLER_Device_ExtensionElementCompare(ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *a, ARCONTROLLER_Device_EXTENSIONSTATECHANGEDCALLBACKELEMENT_t *b)
 {
     return !((a->callback == b->callback) && (a->customData == b->customData));
 }

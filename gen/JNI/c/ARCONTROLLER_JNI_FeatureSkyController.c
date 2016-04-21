@@ -590,12 +590,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureSkyController_nativeSendButtonMappin
     // local declarations
     ARCONTROLLER_FEATURE_SkyController_t *nativeFeature = (ARCONTROLLER_FEATURE_SkyController_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    const char *nativeMapping_uid = (*env)->GetStringUTFChars(env, _mapping_uid, 0);
+    const char *nativeMappingUid = (*env)->GetStringUTFChars(env, _mapping_uid, 0);
     
-    error = nativeFeature->sendButtonMappingsSetButtonMapping (nativeFeature, _key_id, (char *)nativeMapping_uid);
+    error = nativeFeature->sendButtonMappingsSetButtonMapping (nativeFeature, _key_id, (char *)nativeMappingUid);
 
     // cleanup
-    (*env)->ReleaseStringUTFChars(env, _mapping_uid, nativeMapping_uid);
+    (*env)->ReleaseStringUTFChars(env, _mapping_uid, nativeMappingUid);
 
     return error;
 }
@@ -642,12 +642,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureSkyController_nativeSendAxisMappings
     // local declarations
     ARCONTROLLER_FEATURE_SkyController_t *nativeFeature = (ARCONTROLLER_FEATURE_SkyController_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    const char *nativeMapping_uid = (*env)->GetStringUTFChars(env, _mapping_uid, 0);
+    const char *nativeMappingUid = (*env)->GetStringUTFChars(env, _mapping_uid, 0);
     
-    error = nativeFeature->sendAxisMappingsSetAxisMapping (nativeFeature, _axis_id, (char *)nativeMapping_uid);
+    error = nativeFeature->sendAxisMappingsSetAxisMapping (nativeFeature, _axis_id, (char *)nativeMappingUid);
 
     // cleanup
-    (*env)->ReleaseStringUTFChars(env, _mapping_uid, nativeMapping_uid);
+    (*env)->ReleaseStringUTFChars(env, _mapping_uid, nativeMappingUid);
 
     return error;
 }
@@ -694,12 +694,12 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureSkyController_nativeSendAxisFiltersS
     // local declarations
     ARCONTROLLER_FEATURE_SkyController_t *nativeFeature = (ARCONTROLLER_FEATURE_SkyController_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    const char *nativeFilter_uid_or_builder = (*env)->GetStringUTFChars(env, _filter_uid_or_builder, 0);
+    const char *nativeFilterUidOrBuilder = (*env)->GetStringUTFChars(env, _filter_uid_or_builder, 0);
     
-    error = nativeFeature->sendAxisFiltersSetAxisFilter (nativeFeature, _axis_id, (char *)nativeFilter_uid_or_builder);
+    error = nativeFeature->sendAxisFiltersSetAxisFilter (nativeFeature, _axis_id, (char *)nativeFilterUidOrBuilder);
 
     // cleanup
-    (*env)->ReleaseStringUTFChars(env, _filter_uid_or_builder, nativeFilter_uid_or_builder);
+    (*env)->ReleaseStringUTFChars(env, _filter_uid_or_builder, nativeFilterUidOrBuilder);
 
     return error;
 }

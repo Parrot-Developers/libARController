@@ -69,17 +69,16 @@ typedef struct ARCONTROLLER_Device_Private_t ARCONTROLLER_Device_Private_t;
  */
 typedef struct
 {
+    ARCONTROLLER_FEATURE_Generic_t *generic; /**< */
     ARCONTROLLER_FEATURE_ARDrone3_t *aRDrone3; /**< */
-    ARCONTROLLER_FEATURE_ARDrone3Debug_t *aRDrone3Debug; /**< */
     ARCONTROLLER_FEATURE_JumpingSumo_t *jumpingSumo; /**< */
-    ARCONTROLLER_FEATURE_JumpingSumoDebug_t *jumpingSumoDebug; /**< */
     ARCONTROLLER_FEATURE_MiniDrone_t *miniDrone; /**< */
-    ARCONTROLLER_FEATURE_MiniDroneDebug_t *miniDroneDebug; /**< */
     ARCONTROLLER_FEATURE_SkyController_t *skyController; /**< */
-    ARCONTROLLER_FEATURE_SkyControllerDebug_t *skyControllerDebug; /**< */
+    ARCONTROLLER_FEATURE_UnknownFeature1_t *unknown_feature_1; /**< */
     ARCONTROLLER_FEATURE_Common_t *common; /**< */
     ARCONTROLLER_FEATURE_CommonDebug_t *commonDebug; /**< */
     ARCONTROLLER_FEATURE_Pro_t *pro; /**< */
+    ARCONTROLLER_FEATURE_Wifi_t *wifi; /**< */
     ARCONTROLLER_Device_Private_t *privatePart; /**< private part of the deviceController */
 }ARCONTROLLER_Device_t;
 

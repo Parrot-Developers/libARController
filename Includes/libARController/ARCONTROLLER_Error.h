@@ -101,6 +101,6 @@ typedef enum
  *
  * @note User should NEVER try to modify a returned string
  */
-char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error);
+const char *ARCONTROLLER_Error_ToString (eARCONTROLLER_ERROR error);
 
 #endif /* _ARCONTROLLER_ERROR_H_ */

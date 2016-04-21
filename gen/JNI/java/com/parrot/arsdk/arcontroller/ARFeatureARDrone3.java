@@ -26,123 +26,143 @@ public class ARFeatureARDrone3
 {
     private static String TAG = "ARFeatureARDrone3";
     
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_VIDEOEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of class <code>MediaRecordEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_VIDEOEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>MediaRecordEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED_REASON = ""; /**< Key of the argument </code>reason</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDX = ""; /**< Key of the argument </code>speedX</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDY = ""; /**< Key of the argument </code>speedY</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDZ = ""; /**< Key of the argument </code>speedZ</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED_ROLL = ""; /**< Key of the argument </code>roll</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED_PITCH = ""; /**< Key of the argument </code>pitch</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED_YAW = ""; /**< Key of the argument </code>yaw</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALTITUDECHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of class <code>PilotingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DX = ""; /**< Key of the argument </code>dX</code> of class <code>PilotingEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DY = ""; /**< Key of the argument </code>dY</code> of class <code>PilotingEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DZ = ""; /**< Key of the argument </code>dZ</code> of class <code>PilotingEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DPSI = ""; /**< Key of the argument </code>dPsi</code> of class <code>PilotingEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_ERROR = ""; /**< Key of the argument </code>error</code> of class <code>PilotingEvent</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT = ""; /**< Key of the argument </code>in_or_out</code> of class <code>NetworkState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_ABSOLUTCONTROLCHANGED_ON = ""; /**< Key of the argument </code>on</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_NOFLYOVERMAXDISTANCECHANGED_SHOULDNOTFLYOVER = ""; /**< Key of the argument </code>shouldNotFlyOver</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PilotingSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT = ""; /**< Key of the argument </code>present</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of class <code>SpeedSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>NetworkSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = ""; /**< Key of the argument </code>motor_number</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORSTATECHANGED_MOTORIDS = ""; /**< Key of the argument </code>motorIds</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORSTATECHANGED_MOTORERROR = ""; /**< Key of the argument </code>motorError</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORSOFTWAREVERSIONCHANGED_VERSION = ""; /**< Key of the argument </code>version</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_NBFLIGHTS = ""; /**< Key of the argument </code>nbFlights</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_LASTFLIGHTDURATION = ""; /**< Key of the argument </code>lastFlightDuration</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_TOTALFLIGHTDURATION = ""; /**< Key of the argument </code>totalFlightDuration</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORLASTERRORCHANGED_MOTORERROR = ""; /**< Key of the argument </code>motorError</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_P7ID_SERIALID = ""; /**< Key of the argument </code>serialID</code> of class <code>SettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_PICTUREFORMATCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_AUTOWHITEBALANCECHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_SATURATIONCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_SATURATIONCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_SATURATIONCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_INTERVAL = ""; /**< Key of the argument </code>interval</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MININTERVAL = ""; /**< Key of the argument </code>minInterval</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MAXINTERVAL = ""; /**< Key of the argument </code>maxInterval</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of class <code>PictureSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of class <code>MediaStreamingState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_GPSFIXSTATECHANGED_FIXED = ""; /**< Key of the argument </code>fixed</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_GPSUPDATESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMETYPECHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED_DELAY = ""; /**< Key of the argument </code>delay</code> of class <code>GPSSettingsState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT = ""; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN = ""; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT = ""; /**< Key of the argument </code>tilt</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN = ""; /**< Key of the argument </code>pan</code> of class <code>CameraState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY = ""; /**< Key of the argument </code>frequency</code> of class <code>AntiflickeringState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of class <code>AntiflickeringState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED_NUMBEROFSATELLITE = ""; /**< Key of the argument </code>numberOfSatellite</code> of class <code>GPSState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>GPSState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED_AVAILABLE = ""; /**< Key of the argument </code>available</code> of class <code>GPSState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of class <code>GPSState</code> in feature <code>ARDrone3</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES_FEATURES = ""; /**< Key of the argument </code>features</code> of class <code>PROState</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>MediaRecordStatePictureStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStateVideoStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>MediaRecordStateVideoStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MediaRecordStateVideoStateChangedV2</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordStateVideoStateChangedV2</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_VIDEOEVENTCHANGED_EVENT = ""; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventVideoEventChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDEVENT_VIDEOEVENTCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventVideoEventChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateNavigateHomeStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED_REASON = ""; /**< Key of the argument </code>reason</code> of event <code>PilotingStateNavigateHomeStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>PilotingStatePositionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of event <code>PilotingStatePositionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of event <code>PilotingStatePositionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDX = ""; /**< Key of the argument </code>speedX</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDY = ""; /**< Key of the argument </code>speedY</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED_SPEEDZ = ""; /**< Key of the argument </code>speedZ</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED_ROLL = ""; /**< Key of the argument </code>roll</code> of event <code>PilotingStateAttitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED_PITCH = ""; /**< Key of the argument </code>pitch</code> of event <code>PilotingStateAttitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED_YAW = ""; /**< Key of the argument </code>yaw</code> of event <code>PilotingStateAttitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAutoTakeOffModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALTITUDECHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of event <code>PilotingStateAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DX = ""; /**< Key of the argument </code>dX</code> of event <code>PilotingEventMoveByEnd</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DY = ""; /**< Key of the argument </code>dY</code> of event <code>PilotingEventMoveByEnd</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DZ = ""; /**< Key of the argument </code>dZ</code> of event <code>PilotingEventMoveByEnd</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_DPSI = ""; /**< Key of the argument </code>dPsi</code> of event <code>PilotingEventMoveByEnd</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGEVENT_MOVEBYEND_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>PilotingEventMoveByEnd</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_SSID = ""; /**< Key of the argument </code>ssid</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_RSSI = ""; /**< Key of the argument </code>rssi</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT = ""; /**< Key of the argument </code>in_or_out</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMaxAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxTiltChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_ABSOLUTCONTROLCHANGED_ON = ""; /**< Key of the argument </code>on</code> of event <code>PilotingSettingsStateAbsolutControlChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMaxDistanceChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMaxDistanceChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMaxDistanceChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_NOFLYOVERMAXDISTANCECHANGED_SHOULDNOTFLYOVER = ""; /**< Key of the argument </code>shouldNotFlyOver</code> of event <code>PilotingSettingsStateNoFlyOverMaxDistanceChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxHorizontalSpeed</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxVerticalSpeed</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxHorizontalAcceleration</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxVerticalAcceleration</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateAutonomousFlightMaxRotationSpeed</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingSettingsStateBankedTurnChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateMinAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateCirclingDirectionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateCirclingRadiusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateCirclingAltitudeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStatePitchModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PilotingSettingsStateLandingModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT = ""; /**< Key of the argument </code>present</code> of event <code>SpeedSettingsStateHullProtectionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of event <code>SpeedSettingsStateOutdoorChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT = ""; /**< Key of the argument </code>current</code> of event <code>SpeedSettingsStateMaxPitchRollRotationSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>SpeedSettingsStateMaxPitchRollRotationSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>SpeedSettingsStateMaxPitchRollRotationSpeedChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = ""; /**< Key of the argument </code>band</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = ""; /**< Key of the argument </code>channel</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>NetworkSettingsStateWifiSecurityChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>NetworkSettingsStateWifiSecurity</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY = ""; /**< Key of the argument </code>key</code> of event <code>NetworkSettingsStateWifiSecurity</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE = ""; /**< Key of the argument </code>keyType</code> of event <code>NetworkSettingsStateWifiSecurity</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = ""; /**< Key of the argument </code>motor_number</code> of event <code>SettingsStateProductMotorVersionListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>SettingsStateProductMotorVersionListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductMotorVersionListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductMotorVersionListChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductGPSVersionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductGPSVersionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORSTATECHANGED_MOTORIDS = ""; /**< Key of the argument </code>motorIds</code> of event <code>SettingsStateMotorErrorStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORSTATECHANGED_MOTORERROR = ""; /**< Key of the argument </code>motorError</code> of event <code>SettingsStateMotorErrorStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORSOFTWAREVERSIONCHANGED_VERSION = ""; /**< Key of the argument </code>version</code> of event <code>SettingsStateMotorSoftwareVersionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_NBFLIGHTS = ""; /**< Key of the argument </code>nbFlights</code> of event <code>SettingsStateMotorFlightsStatusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_LASTFLIGHTDURATION = ""; /**< Key of the argument </code>lastFlightDuration</code> of event <code>SettingsStateMotorFlightsStatusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORFLIGHTSSTATUSCHANGED_TOTALFLIGHTDURATION = ""; /**< Key of the argument </code>totalFlightDuration</code> of event <code>SettingsStateMotorFlightsStatusChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_MOTORERRORLASTERRORCHANGED_MOTORERROR = ""; /**< Key of the argument </code>motorError</code> of event <code>SettingsStateMotorErrorLastErrorChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_P7ID_SERIALID = ""; /**< Key of the argument </code>serialID</code> of event <code>SettingsStateP7ID</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_PICTUREFORMATCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>PictureSettingsStatePictureFormatChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_AUTOWHITEBALANCECHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>PictureSettingsStateAutoWhiteBalanceChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PictureSettingsStateExpositionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PictureSettingsStateExpositionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PictureSettingsStateExpositionChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_SATURATIONCHANGED_VALUE = ""; /**< Key of the argument </code>value</code> of event <code>PictureSettingsStateSaturationChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_SATURATIONCHANGED_MIN = ""; /**< Key of the argument </code>min</code> of event <code>PictureSettingsStateSaturationChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_SATURATIONCHANGED_MAX = ""; /**< Key of the argument </code>max</code> of event <code>PictureSettingsStateSaturationChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>PictureSettingsStateTimelapseChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_INTERVAL = ""; /**< Key of the argument </code>interval</code> of event <code>PictureSettingsStateTimelapseChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MININTERVAL = ""; /**< Key of the argument </code>minInterval</code> of event <code>PictureSettingsStateTimelapseChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MAXINTERVAL = ""; /**< Key of the argument </code>maxInterval</code> of event <code>PictureSettingsStateTimelapseChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoStabilizationModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>GPSSettingsStateResetHomeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of event <code>GPSSettingsStateResetHomeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED_ALTITUDE = ""; /**< Key of the argument </code>altitude</code> of event <code>GPSSettingsStateResetHomeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_GPSFIXSTATECHANGED_FIXED = ""; /**< Key of the argument </code>fixed</code> of event <code>GPSSettingsStateGPSFixStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_GPSUPDATESTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>GPSSettingsStateGPSUpdateStateChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMETYPECHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>GPSSettingsStateHomeTypeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED_DELAY = ""; /**< Key of the argument </code>delay</code> of event <code>GPSSettingsStateReturnHomeDelayChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_TILT = ""; /**< Key of the argument </code>tilt</code> of event <code>CameraStateOrientation</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION_PAN = ""; /**< Key of the argument </code>pan</code> of event <code>CameraStateOrientation</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT = ""; /**< Key of the argument </code>tilt</code> of event <code>CameraStateDefaultCameraOrientation</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN = ""; /**< Key of the argument </code>pan</code> of event <code>CameraStateDefaultCameraOrientation</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY = ""; /**< Key of the argument </code>frequency</code> of event <code>AntiflickeringStateElectricFrequencyChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>AntiflickeringStateModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED_NUMBEROFSATELLITE = ""; /**< Key of the argument </code>numberOfSatellite</code> of event <code>GPSStateNumberOfSatelliteChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>GPSStateHomeTypeAvailabilityChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED_AVAILABLE = ""; /**< Key of the argument </code>available</code> of event <code>GPSStateHomeTypeAvailabilityChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED_TYPE = ""; /**< Key of the argument </code>type</code> of event <code>GPSStateHomeTypeChosenChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES_FEATURES = ""; /**< Key of the argument </code>features</code> of event <code>PROStateFeatures</code> in feature <code>ARDrone3</code> */
 
     private static native String nativeStaticGetKeyARDrone3MediaRecordStatePictureStateChangedState ();
     private static native String nativeStaticGetKeyARDrone3MediaRecordStatePictureStateChangedMassstorageid ();
@@ -199,6 +219,19 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationValue ();
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationValue ();
     private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedValue ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnChangedState ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMax ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingDirectionChangedValue ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMax ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMax ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStatePitchModeChangedValue ();
+    private static native String nativeStaticGetKeyARDrone3PilotingSettingsStateLandingModeChangedValue ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMin ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -207,10 +240,16 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxRotationSpeedChangedMax ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateHullProtectionChangedPresent ();
     private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateOutdoorChangedOutdoor ();
+    private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedCurrent ();
+    private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMin ();
+    private static native String nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMax ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedType ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedBand ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedChannel ();
     private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityType ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKey ();
+    private static native String nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKeyType ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedType ();
     private static native String nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedSoftware ();
@@ -239,6 +278,7 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateTimelapseChangedMaxInterval ();
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedEnabled ();
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid ();
+    private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode ();
     private static native String nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled ();
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLatitude ();
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLongitude ();
@@ -277,13 +317,15 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingNavigateHome (long jFeature, byte start);
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
     private native int nativeSendPilotingMoveBy (long jFeature, float dX, float dY, float dZ, float dPsi);
-    private native int nativeSendAnimationsFlip (long jFeature, int direction);
+    private native int nativeSendPilotingUserTakeOff (long jFeature, byte state);
+    private native int nativeSendPilotingCircle (long jFeature, ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM direction);
+    private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
     private native int nativeSendCameraOrientation (long jFeature, byte tilt, byte pan);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
-    private native int nativeSendMediaRecordVideo (long jFeature, int record, byte mass_storage_id);
+    private native int nativeSendMediaRecordVideo (long jFeature, ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEO_RECORD_ENUM record, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
-    private native int nativeSendMediaRecordVideoV2 (long jFeature, int record);
-    private native int nativeSendNetworkWifiScan (long jFeature, int band);
+    private native int nativeSendMediaRecordVideoV2 (long jFeature, ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEOV2_RECORD_ENUM record);
+    private native int nativeSendNetworkWifiScan (long jFeature, ARCOMMANDS_ARDRONE3_NETWORK_WIFISCAN_BAND_ENUM band);
     private native int nativeSendNetworkWifiAuthChannel (long jFeature);
     private native int nativeSendPilotingSettingsMaxAltitude (long jFeature, float current);
     private native int nativeSendPilotingSettingsMaxTilt (long jFeature, float current);
@@ -295,26 +337,35 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxHorizontalAcceleration (long jFeature, float value);
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxVerticalAcceleration (long jFeature, float value);
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (long jFeature, float value);
+    private native int nativeSendPilotingSettingsBankedTurn (long jFeature, byte value);
+    private native int nativeSendPilotingSettingsMinAltitude (long jFeature, float current);
+    private native int nativeSendPilotingSettingsCirclingDirection (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsCirclingRadius (long jFeature, short value);
+    private native int nativeSendPilotingSettingsCirclingAltitude (long jFeature, short value);
+    private native int nativeSendPilotingSettingsPitchMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsLandingMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM value);
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
     private native int nativeSendSpeedSettingsOutdoor (long jFeature, byte outdoor);
-    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
-    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, int type, String key, int keyType);
-    private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, int type);
-    private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, int type);
+    private native int nativeSendSpeedSettingsMaxPitchRollRotationSpeed (long jFeature, float current);
+    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
+    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_TYPE_ENUM type, String key, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_KEYTYPE_ENUM keyType);
+    private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_PICTUREFORMATSELECTION_TYPE_ENUM type);
+    private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_AUTOWHITEBALANCESELECTION_TYPE_ENUM type);
     private native int nativeSendPictureSettingsExpositionSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsSaturationSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsTimelapseSelection (long jFeature, byte enabled, float interval);
     private native int nativeSendPictureSettingsVideoAutorecordSelection (long jFeature, byte enabled, byte mass_storage_id);
+    private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM mode);
     private native int nativeSendMediaStreamingVideoEnable (long jFeature, byte enable);
     private native int nativeSendGPSSettingsSetHome (long jFeature, double latitude, double longitude, double altitude);
     private native int nativeSendGPSSettingsResetHome (long jFeature);
     private native int nativeSendGPSSettingsSendControllerGPS (long jFeature, double latitude, double longitude, double altitude, double horizontalAccuracy, double verticalAccuracy);
-    private native int nativeSendGPSSettingsHomeType (long jFeature, int type);
+    private native int nativeSendGPSSettingsHomeType (long jFeature, ARCOMMANDS_ARDRONE3_GPSSETTINGS_HOMETYPE_TYPE_ENUM type);
     private native int nativeSendGPSSettingsReturnHomeDelay (long jFeature, short delay);
-    private native int nativeSendAntiflickeringElectricFrequency (long jFeature, int frequency);
-    private native int nativeSendAntiflickeringSetMode (long jFeature, int mode);
+    private native int nativeSendAntiflickeringElectricFrequency (long jFeature, ARCOMMANDS_ARDRONE3_ANTIFLICKERING_ELECTRICFREQUENCY_FREQUENCY_ENUM frequency);
+    private native int nativeSendAntiflickeringSetMode (long jFeature, ARCOMMANDS_ARDRONE3_ANTIFLICKERING_SETMODE_MODE_ENUM mode);
 
     private long jniFeature;
     private boolean initOk;
@@ -376,6 +427,19 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXHORIZONTALACCELERATION_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxHorizontalAccelerationValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXVERTICALACCELERATION_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxVerticalAccelerationValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_AUTONOMOUSFLIGHTMAXROTATIONSPEED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateAutonomousFlightMaxRotationSpeedValue ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE = nativeStaticGetKeyARDrone3PilotingSettingsStateBankedTurnChangedState ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_CURRENT = nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MIN = nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MINALTITUDECHANGED_MAX = nativeStaticGetKeyARDrone3PilotingSettingsStateMinAltitudeChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGDIRECTIONCHANGED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingDirectionChangedValue ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MIN = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_MAX = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingRadiusChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MIN = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_MAX = nativeStaticGetKeyARDrone3PilotingSettingsStateCirclingAltitudeChangedMax ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_PITCHMODECHANGED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStatePitchModeChangedValue ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_LANDINGMODECHANGED_VALUE = nativeStaticGetKeyARDrone3PilotingSettingsStateLandingModeChangedValue ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedCurrent ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MIN = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMin ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxVerticalSpeedChangedMax ();
@@ -384,10 +448,16 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxRotationSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT = nativeStaticGetKeyARDrone3SpeedSettingsStateHullProtectionChangedPresent ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR = nativeStaticGetKeyARDrone3SpeedSettingsStateOutdoorChangedOutdoor ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_CURRENT = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedCurrent ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MIN = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMin ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXPITCHROLLROTATIONSPEEDCHANGED_MAX = nativeStaticGetKeyARDrone3SpeedSettingsStateMaxPitchRollRotationSpeedChangedMax ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedBand ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSelectionChangedChannel ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITYCHANGED_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityChangedType ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_TYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityType ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEY = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKey ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISECURITY_KEYTYPE = nativeStaticGetKeyARDrone3NetworkSettingsStateWifiSecurityKeyType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_MOTOR_NUMBER = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedMotornumber ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_TYPE = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedType ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SETTINGSSTATE_PRODUCTMOTORVERSIONLISTCHANGED_SOFTWARE = nativeStaticGetKeyARDrone3SettingsStateProductMotorVersionListChangedSoftware ();
@@ -416,6 +486,7 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED_MAXINTERVAL = nativeStaticGetKeyARDrone3PictureSettingsStateTimelapseChangedMaxInterval ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedEnabled ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE = nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLatitude ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLongitude ();
@@ -695,6 +766,34 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    public ARCONTROLLER_ERROR_ENUM sendPilotingUserTakeOff (byte _state)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingUserTakeOff (jniFeature, _state);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingCircle (ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM _direction)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingCircle (jniFeature, _direction);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
     public ARCONTROLLER_ERROR_ENUM sendAnimationsFlip (ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM _direction)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -702,7 +801,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction.getValue());
+                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -744,7 +843,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record.getValue(), _mass_storage_id);
+                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record, _mass_storage_id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -772,7 +871,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record.getValue());
+                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -786,7 +885,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band.getValue());
+                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -947,6 +1046,104 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsBankedTurn (byte _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsBankedTurn (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsMinAltitude (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsMinAltitude (jniFeature, _current);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingDirection (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsCirclingDirection (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingRadius (short _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsCirclingRadius (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsCirclingAltitude (short _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsCirclingAltitude (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsPitchMode (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsPitchMode (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPilotingSettingsLandingMode (ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM _value)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPilotingSettingsLandingMode (jniFeature, _value);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
     public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxVerticalSpeed (float _current)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1003,6 +1200,20 @@ public class ARFeatureARDrone3
         return error;
     }
     
+    public ARCONTROLLER_ERROR_ENUM sendSpeedSettingsMaxPitchRollRotationSpeed (float _current)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendSpeedSettingsMaxPitchRollRotationSpeed (jniFeature, _current);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
     public ARCONTROLLER_ERROR_ENUM sendNetworkSettingsWifiSelection (ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM _type, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM _band, byte _channel)
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
@@ -1010,7 +1221,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
+                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type, _band, _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1024,7 +1235,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type.getValue(), _key, _keyType.getValue());
+                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type, _key, _keyType);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1038,7 +1249,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsPictureFormatSelection (jniFeature, _type.getValue());
+                int nativeError = nativeSendPictureSettingsPictureFormatSelection (jniFeature, _type);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1052,7 +1263,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsAutoWhiteBalanceSelection (jniFeature, _type.getValue());
+                int nativeError = nativeSendPictureSettingsAutoWhiteBalanceSelection (jniFeature, _type);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1109,6 +1320,20 @@ public class ARFeatureARDrone3
             if(initOk == true)
             {
                 int nativeError = nativeSendPictureSettingsVideoAutorecordSelection (jniFeature, _enabled, _mass_storage_id);
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    public ARCONTROLLER_ERROR_ENUM sendPictureSettingsVideoStabilizationMode (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM _mode)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1178,7 +1403,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendGPSSettingsHomeType (jniFeature, _type.getValue());
+                int nativeError = nativeSendGPSSettingsHomeType (jniFeature, _type);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1206,7 +1431,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAntiflickeringElectricFrequency (jniFeature, _frequency.getValue());
+                int nativeError = nativeSendAntiflickeringElectricFrequency (jniFeature, _frequency);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1220,7 +1445,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAntiflickeringSetMode (jniFeature, _mode.getValue());
+                int nativeError = nativeSendAntiflickeringSetMode (jniFeature, _mode);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

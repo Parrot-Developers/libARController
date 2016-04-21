@@ -9,9 +9,9 @@
  **********************************************************/
 
 /**
- * @file ARFeatureSkyControllerDebug.java
- * @brief Feature controller allow to send command related of SkyControllerDebug Feature.
- * All debug SkyController-only commands
+ * @file ARFeatureGeneric.java
+ * @brief Feature controller allow to send command related of generic Feature.
+ * All generic messages
  */
 package com.parrot.arsdk.arcontroller;
 
@@ -22,13 +22,13 @@ import com.parrot.arsdk.ardiscovery.ARDiscoveryDevice;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ARFeatureSkyControllerDebug
+public class ARFeatureGeneric
 {
-    private static String TAG = "ARFeatureSkyControllerDebug";
+    private static String TAG = "ARFeatureGeneric";
     
 
 
-    private native int nativeSendDebugTest1 (long jFeature, byte t1Args);
+    private native int nativeSendDefault (long jFeature);
 
     private long jniFeature;
     private boolean initOk;
@@ -40,7 +40,7 @@ public class ARFeatureSkyControllerDebug
     /**
      * Constructor
      */
-    public ARFeatureSkyControllerDebug (long nativeFeature)
+    public ARFeatureGeneric (long nativeFeature)
     {
         initOk = false;
         
@@ -82,14 +82,14 @@ public class ARFeatureSkyControllerDebug
         }
     }
     
-    public ARCONTROLLER_ERROR_ENUM sendDebugTest1 (byte _t1Args)
+    public ARCONTROLLER_ERROR_ENUM sendDefault ()
     {
         ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
         synchronized (this)
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendDebugTest1 (jniFeature, _t1Args);
+                int nativeError = nativeSendDefault (jniFeature);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

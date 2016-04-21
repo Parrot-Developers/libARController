@@ -404,7 +404,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream1_TryGetFrame (ARCONTROLLER_Stream1_t *
     }
     // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
-    if ((error == ARCONTROLLER_OK) && (stream1Controller->isRunning))
+    if ((localError == ARCONTROLLER_OK) && (stream1Controller->isRunning))
     {
         frame = ARCONTROLLER_StreamQueue_TryPop (stream1Controller->readyQueue, &localError);
     }
@@ -681,10 +681,10 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
     ARCONTROLLER_Stream_Codec_t codec;
     eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
     
-    uint8_t *spsBuffer;
-    int spsSize;
-    uint8_t *ppsBuffer;
-    int ppsSize;
+    uint8_t *spsBuffer = NULL;
+    int spsSize = 0;
+    uint8_t *ppsBuffer = NULL;
+    int ppsSize = 0;
     
     // Check parameters
     if (stream1Controller != NULL)
@@ -786,7 +786,7 @@ void ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8
 {
     // -- Get sps and pps from Iframe --
     
-    int searchIndex = 0;
+    size_t searchIndex = 0;
 
     // we'll need to search the "00 00 00 01" pattern to find each header size
     // Search start at index 4 to avoid finding the SPS "00 00 00 01" tag

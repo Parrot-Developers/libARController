@@ -9,8 +9,8 @@
  **********************************************************/
 
 /**
-* @file ARCONTROLLER_JNI_FeatureSkyControllerDebug
-* @brief ARCONTROLLER_FEATURE_SkyControllerDebug_t JNI feature SkyControllerDebug c file.
+* @file ARCONTROLLER_JNI_FeatureGeneric
+* @brief ARCONTROLLER_FEATURE_Generic_t JNI feature generic c file.
 */
 
 /*****************************************
@@ -33,7 +33,7 @@
  *
  *****************************************/
 
-#define ARCONTROLLER_JNIFEATURESKYCONTROLLERDEBUG_TAG "ARCONTROLLER_JNI_FeatureSkyControllerDebug"
+#define ARCONTROLLER_JNIFEATUREGENERIC_TAG "ARCONTROLLER_JNI_FeatureGeneric"
 
 /*****************************************
  *
@@ -49,13 +49,13 @@
  *****************************************/
 
 JNIEXPORT jint JNICALL
-Java_com_parrot_arsdk_arcontroller_ARFeatureSkyControllerDebug_nativeSendDebugTest1 (JNIEnv *env, jobject thizz, jlong jFeature, jbyte _t1Args)
+Java_com_parrot_arsdk_arcontroller_ARFeatureGeneric_nativeSendDefault (JNIEnv *env, jobject thizz, jlong jFeature)
 {
     // local declarations
-    ARCONTROLLER_FEATURE_SkyControllerDebug_t *nativeFeature = (ARCONTROLLER_FEATURE_SkyControllerDebug_t*) (intptr_t) jFeature;
+    ARCONTROLLER_FEATURE_Generic_t *nativeFeature = (ARCONTROLLER_FEATURE_Generic_t*) (intptr_t) jFeature;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
-    error = nativeFeature->sendDebugTest1 (nativeFeature, _t1Args);
+    error = nativeFeature->sendDefault (nativeFeature);
 
     return error;
 }
