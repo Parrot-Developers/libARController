@@ -379,7 +379,7 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Stream1_GetFrame (ARCONTROLLER_Stream1_t *str
     }
     // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
-    if ((error == ARCONTROLLER_OK) && (stream1Controller->isRunning))
+    if ((localError == ARCONTROLLER_OK) && (stream1Controller->isRunning))
     {
         frame = ARCONTROLLER_StreamQueue_Pop (stream1Controller->readyQueue, &localError);
     }
