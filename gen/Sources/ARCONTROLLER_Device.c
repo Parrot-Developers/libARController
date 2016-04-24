@@ -510,7 +510,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
     // Check parameters
     if (deviceController == NULL)
     {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+        return ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
     // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
@@ -1747,7 +1747,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
     // Check parameters
     if (deviceController == NULL)
     {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+        return ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
     // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
@@ -3822,7 +3822,7 @@ void *ARCONTROLLER_Device_StartRun (void *data)
     // Check parameters
     if ((deviceController == NULL) || (deviceController->privatePart == NULL))
     {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+        return NULL;
     }
     // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
     
