@@ -105,6 +105,14 @@
         
     </ARController_Device>
     
+    <ARController_Device name="SkyController2" product="SKYCONTROLLER_2">
+        Sky Controller 2 project
+        
+        <feature name="common"/>
+        <feature name="skyctrl"/>
+        
+    </ARController_Device>
+    
     <ARController_Device name="PowerUP" product="POWER_UP">
         Power Up project
         

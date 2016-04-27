@@ -90,6 +90,7 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration
             case ARDISCOVERY_PRODUCT_ARDRONE:
             case ARDISCOVERY_PRODUCT_BEBOP_2:
             case ARDISCOVERY_PRODUCT_SKYCONTROLLER:
+            case ARDISCOVERY_PRODUCT_SKYCONTROLLER_2:
                 codecType = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
                 break;
     

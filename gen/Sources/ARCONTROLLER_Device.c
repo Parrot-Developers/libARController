@@ -288,6 +288,19 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
                 
                 break;
             
+            case ARDISCOVERY_PRODUCT_SKYCONTROLLER_2:
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->common = ARCONTROLLER_FEATURE_Common_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                if (localError == ARCONTROLLER_OK)
+                {
+                    deviceController->skyController = ARCONTROLLER_FEATURE_SkyController_New (deviceController->privatePart->networkController, &localError);
+                }
+                
+                break;
+            
             case ARDISCOVERY_PRODUCT_POWER_UP:
                 if (localError == ARCONTROLLER_OK)
                 {
@@ -440,6 +453,13 @@ void ARCONTROLLER_Device_Delete (ARCONTROLLER_Device_t **deviceController)
                         break;
                     
                     case ARDISCOVERY_PRODUCT_SKYCONTROLLER:
+                        ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
+                        
+                        ARCONTROLLER_FEATURE_SkyController_Delete (&((*deviceController)->skyController));
+                        
+                        break;
+                    
+                    case ARDISCOVERY_PRODUCT_SKYCONTROLLER_2:
                         ARCONTROLLER_FEATURE_Common_Delete (&((*deviceController)->common));
                         
                         ARCONTROLLER_FEATURE_SkyController_Delete (&((*deviceController)->skyController));

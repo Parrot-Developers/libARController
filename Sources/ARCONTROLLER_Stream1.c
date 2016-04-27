@@ -459,7 +459,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson (ARCONTROLLER_Stream1_t *s
     // local declarations
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
     eARCONTROLLER_ERROR controllerError = ARCONTROLLER_OK;
-    
+
     json_object *valueJsonObj = NULL;
     
     if ((jsonObj == NULL) ||

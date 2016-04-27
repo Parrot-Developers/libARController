@@ -52,6 +52,7 @@
 
 #include "ARCONTROLLER_Stream2.h"
 #include <libARController/ARCONTROLLER_Stream2.h>
+#include <libmux.h>
 
 /*************************
  * Private header
@@ -93,7 +94,13 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->isRunning = 0;
             
             stream2Controller->serverAddress[0] = '\0';
-            ARDISCOVERY_DEVICE_WifiGetIpAddress (discoveryDevice, stream2Controller->serverAddress, ARCONTROLLER_STREAM2_IP_SIZE);
+            if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_NSNETSERVICE) {
+                ARDISCOVERY_DEVICE_WifiGetIpAddress (discoveryDevice, stream2Controller->serverAddress, ARCONTROLLER_STREAM2_IP_SIZE);
+                stream2Controller->mux = NULL;
+            } else if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_USBSERVICE) {
+                ARDISCOVERY_Device_UsbGetMux(discoveryDevice, &stream2Controller->mux);
+                mux_ref(stream2Controller->mux);
+            }
             
             stream2Controller->clientStreamPort = ARCONTROLLER_STREAM2_CLIENT_STREAM_PORT;
             stream2Controller->clientControlPort = ARCONTROLLER_STREAM2_CLIENT_CONTROL_PORT;
@@ -144,6 +151,9 @@ void ARCONTROLLER_Stream2_Delete (ARCONTROLLER_Stream2_t **stream2Controller)
         if ((*stream2Controller) != NULL)
         {
             ARCONTROLLER_Stream2_Stop (*stream2Controller);
+
+            if ((*stream2Controller)->mux)
+                mux_unref((*stream2Controller)->mux);
 
             free ((*stream2Controller)->parmeterSets);
             (*stream2Controller)->parmeterSets = NULL;
@@ -430,6 +440,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARSTREAM2_StreamReceiver_Config_t config;
     ARSTREAM2_StreamReceiver_NetConfig_t net_config;
+    ARSTREAM2_StreamReceiver_MuxConfig_t mux_config;
     eARSTREAM2_ERROR stream2Error = ARSTREAM2_OK;
     
     // Check parameters
@@ -443,14 +454,8 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
     {
         memset(&config, 0, sizeof(ARSTREAM2_StreamReceiver_Config_t));
         memset(&net_config, 0, sizeof(ARSTREAM2_StreamReceiver_NetConfig_t));
-        
-        net_config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
-        net_config.mcastAddr = NULL;
-        net_config.mcastIfaceAddr = NULL;
-        net_config.serverStreamPort = stream2Controller->serverStreamPort;
-        net_config.serverControlPort = stream2Controller->serverControlPort;
-        net_config.clientStreamPort = stream2Controller->clientStreamPort;
-        net_config.clientControlPort = stream2Controller->clientControlPort;
+        memset(&mux_config, 0, sizeof(ARSTREAM2_StreamReceiver_MuxConfig_t));
+
         config.maxPacketSize = stream2Controller->maxPaquetSize;
         config.maxBitrate = stream2Controller->maxBiterate;
         config.maxLatencyMs = stream2Controller->maxLatency;
@@ -462,11 +467,21 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
         config.replaceStartCodesWithNaluSize = stream2Controller->replaceStartCodesWithNaluSize;
         config.generateSkippedPSlices = 1;
         config.generateFirstGrayIFrame = 1;
-    }
 
-    if (error == ARCONTROLLER_OK)
-    {
-        stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, &net_config, NULL);
+        if (stream2Controller->mux) {
+            mux_config.mux = stream2Controller->mux;
+            stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, NULL, &mux_config);
+        } else {
+            net_config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
+            net_config.mcastAddr = NULL;
+            net_config.mcastIfaceAddr = NULL;
+            net_config.serverStreamPort = stream2Controller->serverStreamPort;
+            net_config.serverControlPort = stream2Controller->serverControlPort;
+            net_config.clientStreamPort = stream2Controller->clientStreamPort;
+            net_config.clientControlPort = stream2Controller->clientControlPort;
+            stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, &net_config, NULL);
+        }
+
         if (stream2Error != ARSTREAM2_OK)
         {
             error = ARCONTROLLER_ERROR_INIT_STREAM;

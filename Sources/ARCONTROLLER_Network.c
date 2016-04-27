@@ -154,6 +154,17 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
             localError = ARCONTROLLER_ERROR_INIT_DEVICE_JSON_CALLBACK;
         }
     }
+    // or an usb device
+    else if ((localError == ARCONTROLLER_OK) && 
+             (ARDISCOVERY_getProductService (networkController->discoveryDevice->productID) == ARDISCOVERY_PRODUCT_USBSERVICE))
+    {
+        // Add callbacks for the connection json part
+        dicoveryError = ARDISCOVERY_Device_UsbAddConnectionCallbacks (networkController->discoveryDevice, ARCONTROLLER_Network_OnSendJson, ARCONTROLLER_Network_OnReceiveJson, networkController);
+        if (dicoveryError != ARDISCOVERY_OK)
+        {
+            localError = ARCONTROLLER_ERROR_INIT_DEVICE_JSON_CALLBACK;
+        }
+    }
     
     if (localError == ARCONTROLLER_OK)
     {

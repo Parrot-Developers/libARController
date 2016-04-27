@@ -47,6 +47,7 @@
 #include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_Stream.h>
 #include <libARController/ARCONTROLLER_Stream2.h>
+#include <libmux.h>
 
 #define ARCONTROLLER_STREAM2_TAG "ARCONTROLLER_Stream2"
 
@@ -73,6 +74,7 @@ struct ARCONTROLLER_Stream2_t
     ARSAL_Thread_t runControllerThread; /**< Stream2 ReaderFilter control thread */
     
     char serverAddress[ARCONTROLLER_STREAM2_IP_SIZE]; /**< Server address */
+    struct mux_ctx *mux;
     int clientStreamPort; /**< Client stream port */
     int clientControlPort; /**< Client control port */
     int serverStreamPort; /**< Server stream port */

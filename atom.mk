@@ -18,7 +18,8 @@ LOCAL_LIBRARIES := \
 	libARNetworkAL \
 	libARNetwork \
 	uthash \
-	json
+	json \
+	libmux
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/Includes \
