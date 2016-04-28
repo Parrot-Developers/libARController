@@ -739,6 +739,18 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3P
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PictureSettingsStateVideoRecordingModeChangedMode (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED_MODE);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3PictureSettingsStateVideoFramerateChangedFramerate (JNIEnv *env , jclass class)
+{
+    return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED_FRAMERATE);
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled (JNIEnv *env , jclass class)
 {
     return (*env)->NewStringUTF(env, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED);
@@ -1542,6 +1554,30 @@ Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPictureSettingsVi
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
     error = nativeFeature->sendPictureSettingsVideoStabilizationMode (nativeFeature, _mode);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPictureSettingsVideoRecordingMode (JNIEnv *env, jobject thizz, jlong jFeature, jint _mode)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPictureSettingsVideoRecordingMode (nativeFeature, _mode);
+
+    return error;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_parrot_arsdk_arcontroller_ARFeatureARDrone3_nativeSendPictureSettingsVideoFramerate (JNIEnv *env, jobject thizz, jlong jFeature, jint _framerate)
+{
+    // local declarations
+    ARCONTROLLER_FEATURE_ARDrone3_t *nativeFeature = (ARCONTROLLER_FEATURE_ARDrone3_t*) (intptr_t) jFeature;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    error = nativeFeature->sendPictureSettingsVideoFramerate (nativeFeature, _framerate);
 
     return error;
 }

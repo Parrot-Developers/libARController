@@ -82,6 +82,8 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_TIMELAPSECHANGED, /**< Key used to define the event <code>PictureSettingsStateTimelapseChanged</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED, /**< Key used to define the event <code>PictureSettingsStateVideoAutorecordChanged</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED, /**< Key used to define the event <code>PictureSettingsStateVideoStabilizationModeChanged</code> in project <code>ARDrone3</code> */
+    ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED, /**< Key used to define the event <code>PictureSettingsStateVideoRecordingModeChanged</code> in project <code>ARDrone3</code> */
+    ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED, /**< Key used to define the event <code>PictureSettingsStateVideoFramerateChanged</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, /**< Key used to define the event <code>MediaStreamingStateVideoEnableChanged</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED, /**< Key used to define the event <code>GPSSettingsStateHomeChanged</code> in project <code>ARDrone3</code> */
     ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RESETHOMECHANGED, /**< Key used to define the event <code>GPSSettingsStateResetHomeChanged</code> in project <code>ARDrone3</code> */
