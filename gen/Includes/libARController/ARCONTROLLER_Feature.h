@@ -1574,120 +1574,90 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Common_SetNetworkController (ARCONTROLL
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_GetCommandElements (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /*******************************
- * --- FEATURE commonDebug --- 
+ * --- FEATURE debug --- 
  ******************************/
 
 /**
- * @brief Private part of ARCONTROLLER_FEATURE_CommonDebug_t.
+ * @brief Private part of ARCONTROLLER_FEATURE_Debug_t.
  */
-typedef struct ARCONTROLLER_FEATURE_CommonDebug_Private_t ARCONTROLLER_FEATURE_CommonDebug_Private_t;
+typedef struct ARCONTROLLER_FEATURE_Debug_Private_t ARCONTROLLER_FEATURE_Debug_Private_t;
 
 /**
- * @brief Feature controller allow to send command related of commonDebug Feature.
- * All debug commands shared between all projects
+ * @brief Feature controller allow to send command related of debug Feature.
+ * All commands/events related to the Wifi
  */
-typedef struct ARCONTROLLER_FEATURE_CommonDebug_t ARCONTROLLER_FEATURE_CommonDebug_t;
+typedef struct ARCONTROLLER_FEATURE_Debug_t ARCONTROLLER_FEATURE_Debug_t;
 
 /**
- * @brief Create a new commonDebug Feature Controller
+ * @brief Create a new debug Feature Controller
  * @warning This function allocate memory
- * @post ARCONTROLLER_FEATURE_CommonDebug_Delete() must be called to delete the Feature Controller and free the memory allocated.
- * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController().
+ * @post ARCONTROLLER_FEATURE_Debug_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Debug_SetNetworkController().
  * @param[out] error executing error.
- * @return the new commonDebug Feature Controller
- * @see ARCONTROLLER_FEATURE_CommonDebug_Delete
+ * @return the new debug Feature Controller
+ * @see ARCONTROLLER_FEATURE_Debug_Delete
  */
-ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_FEATURE_Debug_t *ARCONTROLLER_FEATURE_Debug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
 
 /**
- * @brief Delete the commonDebug Feature Controller
+ * @brief Delete the debug Feature Controller
  * @warning This function free memory
  * @param feature The feature controller to delete
- * @see ARCONTROLLER_FEATURE_CommonDebug_New
+ * @see ARCONTROLLER_FEATURE_Debug_New
  */
-void ARCONTROLLER_FEATURE_CommonDebug_Delete (ARCONTROLLER_FEATURE_CommonDebug_t **feature);
+void ARCONTROLLER_FEATURE_Debug_Delete (ARCONTROLLER_FEATURE_Debug_t **feature);
 
 /**
- * @brief Get the dictionay of the commonDebug Feature Controller
+ * @brief Get the dictionay of the debug Feature Controller
  * @param feature The feature controller owning the dictionary to get
  * @param[out] error executing error.
  */
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_CommonDebug_GetDictionary (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Debug_GetDictionary (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_ERROR *error);
 
 /**
- * @brief Add a callback to use when a command in project <code>CommonDebug</code> is received
+ * @brief Add a callback to use when a command in project <code>Debug</code> is received
  * @param feature The feature controller receiving the command.
  * @param[in] callback the callback to add.
  * @param[in] commandKey Key of the command which the callback must be associated.
  * @param[out] error executing error.
  * @param[int] customData custom data given as parameter to the callback.
- * @see ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback.
+ * @see ARCONTROLLER_FEATURE_Debug_RemoveCallback.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_AddCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_AddCallback (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
 
 /**
- * @brief Remove a callback used when a command in project <code>CommonDebug</code> is received
+ * @brief Remove a callback used when a command in project <code>Debug</code> is received
  * @param feature The feature controller receiving the command.
  * @param[in] commandKey Key of the command which the callback must be unassociated.
  * @param[in] callback the callback to remove.
  * @param[int] customData The custom data given to the register.
  * @param[out] error executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_RemoveCallback (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET; /**< Key of the argument </code>packet</code> of event <code>StatsEventSendPacket</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_LISTFLAGS; /**< Key of the argument </code>listFlags</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_ID; /**< Key of the argument </code>id</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_LABEL; /**< Key of the argument </code>label</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_TYPE; /**< Key of the argument </code>type</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_MODE; /**< Key of the argument </code>mode</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_MIN; /**< Key of the argument </code>range_min</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_MAX; /**< Key of the argument </code>range_max</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_STEP; /**< Key of the argument </code>range_step</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_VALUE; /**< Key of the argument </code>value</code> of event <code>SettingsInfo</code> in feature <code>Debug</code> */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS; /**< Key of the argument </code>listFlags</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID; /**< Key of the argument </code>id</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL; /**< Key of the argument </code>label</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE; /**< Key of the argument </code>type</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE; /**< Key of the argument </code>mode</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN; /**< Key of the argument </code>range_min</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX; /**< Key of the argument </code>range_max</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP; /**< Key of the argument </code>range_step</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE; /**< Key of the argument </code>value</code> of event <code>DebugSettingsStateInfo</code> in feature <code>CommonDebug</code> */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID; /**< Key of the argument </code>id</code> of event <code>DebugSettingsStateListChanged</code> in feature <code>CommonDebug</code> */
-extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE; /**< Key of the argument </code>value</code> of event <code>DebugSettingsStateListChanged</code> in feature <code>CommonDebug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST_ID; /**< Key of the argument </code>id</code> of event <code>SettingsList</code> in feature <code>Debug</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST_VALUE; /**< Key of the argument </code>value</code> of event <code>SettingsList</code> in feature <code>Debug</code> */
 
 /**
- * @brief Send a command <code>StatsSendPacket</code> in feature <code>CommonDebug</code>
- * Send a packet to the drone
- * @param feature feature owning the commands
- * @param packet Packet to send to the drone
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet);
-
-/**
- * @brief Send a command <code>StatsStartSendingPacketFromDrone</code> in feature <code>CommonDebug</code>
- * Ask drone to start sending packets
- * @param feature feature owning the commands
- * @param frequency Frequency of the packet
- * @param packetSize Size of the the packet
- * @param date time of day in sec
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date);
-
-/**
- * @brief Send a command <code>StatsStopSendingPacketFromDrone</code> in feature <code>CommonDebug</code>
- * Ask drone to stop sending packets
+ * @brief Send a command <code>GetAllSettings</code> in feature <code>Debug</code>
+ * Cmd sent by controller to get all settings info (generate "settings_info" events).
  * @param feature feature owning the commands
  * return executing error
  */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Debug_SendGetAllSettings_t) (ARCONTROLLER_FEATURE_Debug_t *feature);
 
 /**
- * @brief Send a command <code>DebugSettingsGetAll</code> in feature <code>CommonDebug</code>
- * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
-
-/**
- * @brief Send a command <code>DebugSettingsSet</code> in feature <code>CommonDebug</code>
+ * @brief Send a command <code>SetSetting</code> in feature <code>Debug</code>
  * Change setting value.
  * Cmd sent by controller to change a writable setting.
  * @param feature feature owning the commands
@@ -1695,20 +1665,17 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettings
  * @param value New setting value (string encoded).
  * return executing error
  */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet_t) (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value);
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Debug_SendSetSetting_t) (ARCONTROLLER_FEATURE_Debug_t *feature, uint16_t id, char * value);
 
 /**
- * @brief Feature controller allow to send command related of commonDebug Feature.
- * All debug commands shared between all projects
+ * @brief Feature controller allow to send command related of debug Feature.
+ * All commands/events related to the Wifi
  */
-struct ARCONTROLLER_FEATURE_CommonDebug_t
+struct ARCONTROLLER_FEATURE_Debug_t
 {
-    ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket_t sendStatsSendPacket;
-    ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone_t sendStatsStartSendingPacketFromDrone;
-    ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone_t sendStatsStopSendingPacketFromDrone;
-    ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll_t sendDebugSettingsGetAll;
-    ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet_t sendDebugSettingsSet;
-    ARCONTROLLER_FEATURE_CommonDebug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_CommonDebug_t */
+    ARCONTROLLER_FEATURE_Debug_SendGetAllSettings_t sendGetAllSettings;
+    ARCONTROLLER_FEATURE_Debug_SendSetSetting_t sendSetSetting;
+    ARCONTROLLER_FEATURE_Debug_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Debug_t */
 };
 
 /**
@@ -1718,7 +1685,7 @@ struct ARCONTROLLER_FEATURE_CommonDebug_t
  * @param[in] networkController The networkController used to send commands ; must be not NULL.
  * @return error executing error.
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (ARCONTROLLER_FEATURE_CommonDebug_t *feature, ARCONTROLLER_Network_t *networkController);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SetNetworkController (ARCONTROLLER_FEATURE_Debug_t *feature, ARCONTROLLER_Network_t *networkController);
 
 /**
  * @brief Get the elements of a command received.
@@ -1727,7 +1694,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (ARCON
  * @param[out] error executing error.
  * @return Element dictionary of the command ; Can be null if an error is occurred.
  */
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_GetCommandElements (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_GetCommandElements (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /*******************************
  * --- FEATURE follow_me --- 

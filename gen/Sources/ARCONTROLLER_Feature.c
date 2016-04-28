@@ -29725,7 +29725,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_GetCommandElements (ARCON
  * Private Implementation
  *************************/
 /*******************************
- * --- FEATURE commonDebug --- 
+ * --- FEATURE debug --- 
  ******************************/
 
 /*************************
@@ -29736,40 +29736,35 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_GetCommandElements (ARCON
  * Implementation
  *************************/
 
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET = "arcontroller_dictionary_key_commondebug_statsevent_sendpacket_packet";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_LISTFLAGS = "arcontroller_dictionary_key_debug_settingsinfo_listflags";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_ID = "arcontroller_dictionary_key_debug_settingsinfo_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_LABEL = "arcontroller_dictionary_key_debug_settingsinfo_label";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_TYPE = "arcontroller_dictionary_key_debug_settingsinfo_type";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_MODE = "arcontroller_dictionary_key_debug_settingsinfo_mode";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_MIN = "arcontroller_dictionary_key_debug_settingsinfo_range_min";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_MAX = "arcontroller_dictionary_key_debug_settingsinfo_range_max";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_STEP = "arcontroller_dictionary_key_debug_settingsinfo_range_step";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_VALUE = "arcontroller_dictionary_key_debug_settingsinfo_value";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_listflags";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_id";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_label";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_type";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_mode";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_range_min";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_range_max";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_range_step";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_info_value";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST_ID = "arcontroller_dictionary_key_debug_settingslist_id";
+const char *ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST_VALUE = "arcontroller_dictionary_key_debug_settingslist_value";
 
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID = "arcontroller_dictionary_key_commondebug_debugsettingsstate_listchanged_id";
-const char *ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE = "arcontroller_dictionary_key_commondebug_debugsettingsstate_listchanged_value";
-
-ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_FEATURE_Debug_t *ARCONTROLLER_FEATURE_Debug_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Feature Controller --
     
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-   ARCONTROLLER_FEATURE_CommonDebug_t *featureController =  NULL;
+   ARCONTROLLER_FEATURE_Debug_t *featureController =  NULL;
     
     if (localError == ARCONTROLLER_OK)
     {
         // Create the Feature Controller
-        featureController = malloc (sizeof (ARCONTROLLER_FEATURE_CommonDebug_t));
+        featureController = malloc (sizeof (ARCONTROLLER_FEATURE_Debug_t));
         if (featureController != NULL)
         {
-            featureController->sendStatsSendPacket = ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket;
-            featureController->sendStatsStartSendingPacketFromDrone = ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone;
-            featureController->sendStatsStopSendingPacketFromDrone = ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone;
-            featureController->sendDebugSettingsGetAll = ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll;
-            featureController->sendDebugSettingsSet = ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet;
+            featureController->sendGetAllSettings = ARCONTROLLER_FEATURE_Debug_SendGetAllSettings;
+            featureController->sendSetSetting = ARCONTROLLER_FEATURE_Debug_SendSetSetting;
             
             featureController->privatePart = NULL;
         }
@@ -29783,7 +29778,7 @@ ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONT
     if (localError == ARCONTROLLER_OK)
     {
         // Create the Feature Controller private part
-        featureController->privatePart = malloc (sizeof (ARCONTROLLER_FEATURE_CommonDebug_Private_t));
+        featureController->privatePart = malloc (sizeof (ARCONTROLLER_FEATURE_Debug_Private_t));
         if (featureController->privatePart != NULL)
         {
             featureController->privatePart->networkController = networkController;
@@ -29804,14 +29799,14 @@ ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONT
     
     if (localError == ARCONTROLLER_OK)
     {
-        localError = ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (featureController);
+        localError = ARCONTROLLER_FEATURE_Debug_RegisterARCommands (featureController);
     }
     // No else: skipped by an error 
     
     // delete the feature Controller if an error occurred
     if (localError != ARCONTROLLER_OK)
     {
-        ARCONTROLLER_FEATURE_CommonDebug_Delete (&featureController);
+        ARCONTROLLER_FEATURE_Debug_Delete (&featureController);
     }
     // No else: skipped no error 
     
@@ -29825,15 +29820,15 @@ ARCONTROLLER_FEATURE_CommonDebug_t *ARCONTROLLER_FEATURE_CommonDebug_New (ARCONT
     return featureController;
 }
 
-void ARCONTROLLER_FEATURE_CommonDebug_Delete (ARCONTROLLER_FEATURE_CommonDebug_t **feature)
+void ARCONTROLLER_FEATURE_Debug_Delete (ARCONTROLLER_FEATURE_Debug_t **feature)
 {
-    // -- Delete the commonDebug feature Controller --
+    // -- Delete the debug feature Controller --
     
     if (feature != NULL)
     {
         if ((*feature) != NULL)
         {
-            ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands ((*feature));
+            ARCONTROLLER_FEATURE_Debug_UnregisterARCommands ((*feature));
             
             if ((*feature)->privatePart != NULL)
             {
@@ -29860,9 +29855,9 @@ void ARCONTROLLER_FEATURE_CommonDebug_Delete (ARCONTROLLER_FEATURE_CommonDebug_t
     }
 }
 
-ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_CommonDebug_GetDictionary (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Debug_GetDictionary (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_ERROR *error)
 {
-    // -- Get the dictionary of the commonDebug Feature Controller --
+    // -- Get the dictionary of the debug Feature Controller --
     
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary = NULL;
@@ -29889,9 +29884,9 @@ ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_CommonDebug_GetDictiona
     return dictionary;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_AddCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_AddCallback (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
-    // -- Add a callback to use when a command in project <code>CommonDebug</code> is received --
+    // -- Add a callback to use when a command in project <code>Debug</code> is received --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
@@ -29910,9 +29905,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_AddCallback (ARCONTROLLER_F
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_RemoveCallback (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
 {
-    // -- Remove a callback to use when a command in project <code>CommonDebug</code> is received --
+    // -- Remove a callback to use when a command in project <code>Debug</code> is received --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     
@@ -29931,7 +29926,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (ARCONTROLLE
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_RegisterARCommands (ARCONTROLLER_FEATURE_Debug_t *feature)
 {
     // -- Register the feature controller to be called when the commands are decoded. -- 
     
@@ -29946,15 +29941,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (ARCONTR
     
     if (error == ARCONTROLLER_OK)
     {
-        ARCOMMANDS_Decoder_SetCommonDebugStatsEventSendPacketCallback (&ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback, feature);
-        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateInfoCallback (&ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback, feature);
-        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateListChangedCallback (&ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback, feature);
+        ARCOMMANDS_Decoder_SetDebugSettingsInfoCallback (&ARCONTROLLER_FEATURE_Debug_SettingsInfoCallback, feature);
+        ARCOMMANDS_Decoder_SetDebugSettingsListCallback (&ARCONTROLLER_FEATURE_Debug_SettingsListCallback, feature);
     }
     
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_UnregisterARCommands (ARCONTROLLER_FEATURE_Debug_t *feature)
 {
     // -- Unregister the feature controller to be called when the commands are decoded. -- 
     
@@ -29969,17 +29963,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands (ARCON
     
     if (error == ARCONTROLLER_OK)
     {
-        ARCOMMANDS_Decoder_SetCommonDebugStatsEventSendPacketCallback (NULL, NULL);
-        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateInfoCallback (NULL, NULL);
-        ARCOMMANDS_Decoder_SetCommonDebugDebugSettingsStateListChangedCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetDebugSettingsInfoCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetDebugSettingsListCallback (NULL, NULL);
     }
     
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SendGetAllSettings (ARCONTROLLER_FEATURE_Debug_t *feature)
 {
-    // -- Send a command <code>StatsSendPacket</code> in project <code>CommonDebug</code> --
+    // -- Send a command <code>GetAllSettings</code> in project <code>Debug</code> --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     u_int8_t cmdBuffer[128];
@@ -29996,8 +29989,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket (ARCONT
     
     if (error == ARCONTROLLER_OK)
     {
-        // Send SendPacket command
-        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugStatsSendPacket(cmdBuffer, sizeof(cmdBuffer), &cmdSize, packet);
+        // Send GetAllSettings command
+        cmdError = ARCOMMANDS_Generator_GenerateDebugGetAllSettings(cmdBuffer, sizeof(cmdBuffer), &cmdSize);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -30012,9 +30005,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket (ARCONT
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SendSetSetting (ARCONTROLLER_FEATURE_Debug_t *feature, uint16_t id, char * value)
 {
-    // -- Send a command <code>StatsStartSendingPacketFromDrone</code> in project <code>CommonDebug</code> --
+    // -- Send a command <code>SetSetting</code> in project <code>Debug</code> --
     
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     u_int8_t cmdBuffer[128];
@@ -30031,8 +30024,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacket
     
     if (error == ARCONTROLLER_OK)
     {
-        // Send StartSendingPacketFromDrone command
-        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugStatsStartSendingPacketFromDrone(cmdBuffer, sizeof(cmdBuffer), &cmdSize, frequency, packetSize, date);
+        // Send SetSetting command
+        cmdError = ARCOMMANDS_Generator_GenerateDebugSetSetting(cmdBuffer, sizeof(cmdBuffer), &cmdSize, id, value);
         if (cmdError != ARCOMMANDS_GENERATOR_OK)
         {
             error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
@@ -30047,201 +30040,13 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacket
     return error;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature)
+void ARCONTROLLER_FEATURE_Debug_SettingsInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_DEBUG_SETTING_TYPE _type, eARCOMMANDS_DEBUG_SETTING_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData)
 {
-    // -- Send a command <code>StatsStopSendingPacketFromDrone</code> in project <code>CommonDebug</code> --
+    // -- callback used when the command <code>SettingsInfo</code> is decoded -- 
     
+    ARCONTROLLER_FEATURE_Debug_t *feature = (ARCONTROLLER_FEATURE_Debug_t *)customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    u_int8_t cmdBuffer[128];
-    int32_t cmdSize = 0;
-    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
-    eARNETWORK_ERROR netError = ARNETWORK_OK;
-    
-    // Check parameters
-    if (feature == NULL)
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Send StopSendingPacketFromDrone command
-        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugStatsStopSendingPacketFromDrone(cmdBuffer, sizeof(cmdBuffer), &cmdSize);
-        if (cmdError != ARCOMMANDS_GENERATOR_OK)
-        {
-            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
-        }
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
-    }
-    
-    return error;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll (ARCONTROLLER_FEATURE_CommonDebug_t *feature)
-{
-    // -- Send a command <code>DebugSettingsGetAll</code> in project <code>CommonDebug</code> --
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    u_int8_t cmdBuffer[128];
-    int32_t cmdSize = 0;
-    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
-    eARNETWORK_ERROR netError = ARNETWORK_OK;
-    
-    // Check parameters
-    if (feature == NULL)
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Send GetAll command
-        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugDebugSettingsGetAll(cmdBuffer, sizeof(cmdBuffer), &cmdSize);
-        if (cmdError != ARCOMMANDS_GENERATOR_OK)
-        {
-            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
-        }
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
-    }
-    
-    return error;
-}
-
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value)
-{
-    // -- Send a command <code>DebugSettingsSet</code> in project <code>CommonDebug</code> --
-    
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    u_int8_t cmdBuffer[128];
-    int32_t cmdSize = 0;
-    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
-    eARNETWORK_ERROR netError = ARNETWORK_OK;
-    
-    // Check parameters
-    if (feature == NULL)
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Send Set command
-        cmdError = ARCOMMANDS_Generator_GenerateCommonDebugDebugSettingsSet(cmdBuffer, sizeof(cmdBuffer), &cmdSize, id, value);
-        if (cmdError != ARCOMMANDS_GENERATOR_OK)
-        {
-            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
-        }
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
-    }
-    
-    return error;
-}
-
-void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _packet, void *customData)
-{
-    // -- callback used when the command <code>StatsEventSendPacket</code> is decoded -- 
-    
-    ARCONTROLLER_FEATURE_CommonDebug_t *feature = (ARCONTROLLER_FEATURE_CommonDebug_t *)customData;
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET;
-    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
-    int isANewCommandElement = 0;
-    int elementAdded = 0;
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Find command elements
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-        
-        if (dictCmdElement == NULL)
-        {
-            // New command element
-            isANewCommandElement = 1;
-            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
-        }
-        // No Else ; commandElement already exists.
-        
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        //Create new element
-        newElement = ARCONTROLLER_CommonDebug_NewCmdElementStatsEventSendPacket (feature,  _packet, &error);
-    }
-    
-    //Set new element in CommandElements 
-    if (error == ARCONTROLLER_OK)
-    {
-        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
-        
-        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
-        
-        //Add new commandElement if necessary
-        if (isANewCommandElement)
-        {
-            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
-        }
-        
-        elementAdded = 1;
-        
-        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
-    }
-    
-    if (error == ARCONTROLLER_OK)
-    {
-        // Notification Callback
-        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
-    }
-    
-    // if an error occurred 
-    if (error != ARCONTROLLER_OK)
-    {
-        // cleanup
-        if ((dictCmdElement != NULL) && (isANewCommandElement))
-        {
-            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
-        }
-        
-        if ((newElement != NULL) && (!elementAdded ))
-        {
-            ARCONTROLLER_Feature_DeleteElement (&newElement);
-        }
-        
-    }
-    
-}
-
-void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData)
-{
-    // -- callback used when the command <code>DebugSettingsStateInfo</code> is decoded -- 
-    
-    ARCONTROLLER_FEATURE_CommonDebug_t *feature = (ARCONTROLLER_FEATURE_CommonDebug_t *)customData;
-    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO;
     ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
     int isANewCommandElement = 0;
     int elementAdded = 0;
@@ -30279,7 +30084,7 @@ void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _l
     if (error == ARCONTROLLER_OK)
     {
         //Create new element
-        newElement = ARCONTROLLER_CommonDebug_NewCmdElementDebugSettingsStateInfo (feature,  _listFlags,  _id,  _label,  _type,  _mode,  _range_min,  _range_max,  _range_step,  _value, listIndex, &error);
+        newElement = ARCONTROLLER_Debug_NewCmdElementSettingsInfo (feature,  _listFlags,  _id,  _label,  _type,  _mode,  _range_min,  _range_max,  _range_step,  _value, listIndex, &error);
     }
     
     //Set new element in CommandElements 
@@ -30324,13 +30129,13 @@ void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _l
     
 }
 
-void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uint16_t _id, char * _value, void *customData)
+void ARCONTROLLER_FEATURE_Debug_SettingsListCallback (uint16_t _id, char * _value, void *customData)
 {
-    // -- callback used when the command <code>DebugSettingsStateListChanged</code> is decoded -- 
+    // -- callback used when the command <code>SettingsList</code> is decoded -- 
     
-    ARCONTROLLER_FEATURE_CommonDebug_t *feature = (ARCONTROLLER_FEATURE_CommonDebug_t *)customData;
+    ARCONTROLLER_FEATURE_Debug_t *feature = (ARCONTROLLER_FEATURE_Debug_t *)customData;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    int commandKey = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST;
     ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
     int isANewCommandElement = 0;
     int elementAdded = 0;
@@ -30362,7 +30167,7 @@ void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uin
     if (error == ARCONTROLLER_OK)
     {
         //Create new element
-        newElement = ARCONTROLLER_CommonDebug_NewCmdElementDebugSettingsStateListChanged (feature,  _id,  _value, &error);
+        newElement = ARCONTROLLER_Debug_NewCmdElementSettingsList (feature,  _id,  _value, &error);
     }
     
     //Set new element in CommandElements 
@@ -30407,132 +30212,9 @@ void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uin
     
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementStatsEventSendPacket (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * _packet, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_NewCmdElementSettingsInfo (ARCONTROLLER_FEATURE_Debug_t *feature, uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_DEBUG_SETTING_TYPE _type, eARCOMMANDS_DEBUG_SETTING_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, int listIndex, eARCONTROLLER_ERROR *error)
 {
-    // -- Create element of an event StatsEventSendPacket -- 
-    
-    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
-    int elementKeyLength = 0;
-    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
-    int strLength = 0;
-    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
-    
-    // Check parameters
-    if ((feature == NULL) || (feature->privatePart == NULL))
-    {
-        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
-    }
-    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
-    
-    //Create Element Dictionary
-    if (localError == ARCONTROLLER_OK)
-    {
-        // New element
-        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
-        if (newElement != NULL)
-        {
-            newElement->key = NULL;
-            newElement->arguments = NULL;
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    if (localError == ARCONTROLLER_OK)
-    {
-        //Alloc Element Key
-        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
-        newElement->key = malloc (elementKeyLength + 1);
-        if (newElement->key != NULL)
-        {
-            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
-            newElement->key[elementKeyLength] = '\0';
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    //Create argument Dictionary
-    //Add argument To the element
-    if (localError == ARCONTROLLER_OK)
-    {
-        // New argument element
-        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
-        if (argDictNewElement != NULL)
-        {
-            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET_PACKET;
-            strLength = strlen (_packet);
-            argDictNewElement->value.String = malloc (strLength + 1);
-            if (argDictNewElement->value.String != NULL)
-            {
-                strncpy (argDictNewElement->value.String, _packet, strLength);
-                argDictNewElement->value.String[strLength] = '\0';
-            }
-            else
-            {
-                localError = ARCONTROLLER_ERROR_ALLOC;
-            }
-            
-            if (localError == ARCONTROLLER_OK)
-            {
-                HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
-            }
-        }
-        else
-        {
-            localError = ARCONTROLLER_ERROR_ALLOC;
-        }
-    }
-    
-    // If an error occurred 
-    if (localError != ARCONTROLLER_OK)
-    {
-        // cleanup
-        if (newElement != NULL)
-        {
-            if (newElement->arguments != NULL)
-            {
-                if (newElement->arguments->value.String != NULL)
-                {
-                    free(newElement->arguments->value.String);
-                    newElement->arguments->value.String = NULL;
-                }
-                
-                free (newElement->arguments);
-                newElement->arguments = NULL;
-            }
-            
-            if (newElement->key != NULL)
-            {
-                free (newElement->key);
-                newElement->key = NULL;
-            }
-            
-            free (newElement);
-            newElement = NULL;
-        }
-
-        free (argDictNewElement);
-        argDictNewElement = NULL;
-    }
-    // Return the error
-    if (error != NULL)
-    {
-        *error = localError;
-    }
-    // No else: error is not returned 
-    
-    return newElement;
-}
-
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSettingsStateInfo (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, int listIndex, eARCONTROLLER_ERROR *error)
-{
-    // -- Create element of an event DebugSettingsStateInfo -- 
+    // -- Create element of an event SettingsInfo -- 
     
     ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
     int elementKeyLength = 0;
@@ -30592,7 +30274,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LISTFLAGS;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_LISTFLAGS;
             argDictNewElement->value.U8 = _listFlags;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
@@ -30611,7 +30293,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_ID;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_ID;
             argDictNewElement->value.U16 = _id;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
@@ -30630,7 +30312,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_LABEL;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_LABEL;
             strLength = strlen (_label);
             argDictNewElement->value.String = malloc (strLength + 1);
             if (argDictNewElement->value.String != NULL)
@@ -30662,7 +30344,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_TYPE;
             argDictNewElement->value.I32 = _type;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
@@ -30681,7 +30363,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_MODE;
             argDictNewElement->value.I32 = _mode;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
@@ -30700,7 +30382,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MIN;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_MIN;
             strLength = strlen (_range_min);
             argDictNewElement->value.String = malloc (strLength + 1);
             if (argDictNewElement->value.String != NULL)
@@ -30732,7 +30414,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_MAX;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_MAX;
             strLength = strlen (_range_max);
             argDictNewElement->value.String = malloc (strLength + 1);
             if (argDictNewElement->value.String != NULL)
@@ -30764,7 +30446,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_RANGE_STEP;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_RANGE_STEP;
             strLength = strlen (_range_step);
             argDictNewElement->value.String = malloc (strLength + 1);
             if (argDictNewElement->value.String != NULL)
@@ -30796,7 +30478,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_VALUE;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO_VALUE;
             strLength = strlen (_value);
             argDictNewElement->value.String = malloc (strLength + 1);
             if (argDictNewElement->value.String != NULL)
@@ -30885,9 +30567,9 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
     return newElement;
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSettingsStateListChanged (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t _id, char * _value, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_NewCmdElementSettingsList (ARCONTROLLER_FEATURE_Debug_t *feature, uint16_t _id, char * _value, eARCONTROLLER_ERROR *error)
 {
-    // -- Create element of an event DebugSettingsStateListChanged -- 
+    // -- Create element of an event SettingsList -- 
     
     ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
     int elementKeyLength = 0;
@@ -30943,7 +30625,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_ID;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST_ID;
             argDictNewElement->value.U16 = _id;
             
             HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
@@ -30962,7 +30644,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
         if (argDictNewElement != NULL)
         {
             argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING;
-            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED_VALUE;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST_VALUE;
             strLength = strlen (_value);
             argDictNewElement->value.String = malloc (strLength + 1);
             if (argDictNewElement->value.String != NULL)
@@ -31027,7 +30709,7 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSe
     return newElement;
 }
 
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (ARCONTROLLER_FEATURE_CommonDebug_t *feature, ARCONTROLLER_Network_t *networkController)
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SetNetworkController (ARCONTROLLER_FEATURE_Debug_t *feature, ARCONTROLLER_Network_t *networkController)
 {
     // -- Set a NetworkController to use to send commands. --
     
@@ -31048,7 +30730,7 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (ARCON
     return error;
 }
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_GetCommandElements (ARCONTROLLER_FEATURE_CommonDebug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_GetCommandElements (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
 {
     // -- Get Command Arguments --
     

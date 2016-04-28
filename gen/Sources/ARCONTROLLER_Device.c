@@ -76,7 +76,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
         deviceController->generic = NULL;
         deviceController->aRDrone3 = NULL;
         deviceController->common = NULL;
-        deviceController->commonDebug = NULL;
+        deviceController->debug = NULL;
         deviceController->follow_me = NULL;
         deviceController->jumpingSumo = NULL;
         deviceController->miniDrone = NULL;
@@ -1136,21 +1136,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
-    if ((deviceController->commonDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->commonDebug)))
+    if ((deviceController->debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->debug)))
     {
         if (error == ARCONTROLLER_OK)
         {
-            error = ARCONTROLLER_FEATURE_CommonDebug_AddCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            error = ARCONTROLLER_FEATURE_Debug_AddCallback (deviceController->debug, ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
         {
-            error = ARCONTROLLER_FEATURE_CommonDebug_AddCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-        }
-        
-        if (error == ARCONTROLLER_OK)
-        {
-            error = ARCONTROLLER_FEATURE_CommonDebug_AddCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            error = ARCONTROLLER_FEATURE_Debug_AddCallback (deviceController->debug, ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
     }
@@ -2497,24 +2492,18 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
-        if ((deviceController->commonDebug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->commonDebug)))
+        if ((deviceController->debug != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->debug)))
         {
-            removingError = ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            removingError = ARCONTROLLER_FEATURE_Debug_RemoveCallback (deviceController->debug, ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET; error :%s", ARCONTROLLER_Error_ToString (removingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
-            removingError = ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            removingError = ARCONTROLLER_FEATURE_Debug_RemoveCallback (deviceController->debug, ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO; error :%s", ARCONTROLLER_Error_ToString (removingError));
-            }
-            
-            removingError = ARCONTROLLER_FEATURE_CommonDebug_RemoveCallback (deviceController->commonDebug, ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
-            if (error != ARCONTROLLER_OK)
-            {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
         }
@@ -3498,8 +3487,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
                 
                 break;
             
-            case ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG:
-                elements = ARCONTROLLER_CommonDebug_GetCommandElements (deviceController->commonDebug, commandKey, &localError);
+            case ARCONTROLLER_DICTIONARY_KEY_DEBUG:
+                elements = ARCONTROLLER_Debug_GetCommandElements (deviceController->debug, commandKey, &localError);
                 
                 break;
             
@@ -4099,12 +4088,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             
         }
         
-        if (deviceController->commonDebug != NULL)
+        if (deviceController->debug != NULL)
         {
-            settingError = ARCONTROLLER_FEATURE_CommonDebug_SetNetworkController (deviceController->commonDebug, deviceController->privatePart->networkController);
+            settingError = ARCONTROLLER_FEATURE_Debug_SetNetworkController (deviceController->debug, deviceController->privatePart->networkController);
             if (error != ARCONTROLLER_OK)
             {
-                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG; error :%s", ARCONTROLLER_Error_ToString (settingError));
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_DEBUG; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }
