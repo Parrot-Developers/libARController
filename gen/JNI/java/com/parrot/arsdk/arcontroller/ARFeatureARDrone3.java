@@ -141,6 +141,8 @@ public class ARFeatureARDrone3
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>PictureSettingsStateVideoAutorecordChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoStabilizationModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED_MODE = ""; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoRecordingModeChanged</code> in feature <code>ARDrone3</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED_FRAMERATE = ""; /**< Key of the argument </code>framerate</code> of event <code>PictureSettingsStateVideoFramerateChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = ""; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = ""; /**< Key of the argument </code>longitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
@@ -279,6 +281,8 @@ public class ARFeatureARDrone3
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedEnabled ();
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid ();
     private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode ();
+    private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoRecordingModeChangedMode ();
+    private static native String nativeStaticGetKeyARDrone3PictureSettingsStateVideoFramerateChangedFramerate ();
     private static native String nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled ();
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLatitude ();
     private static native String nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLongitude ();
@@ -358,6 +362,8 @@ public class ARFeatureARDrone3
     private native int nativeSendPictureSettingsTimelapseSelection (long jFeature, byte enabled, float interval);
     private native int nativeSendPictureSettingsVideoAutorecordSelection (long jFeature, byte enabled, byte mass_storage_id);
     private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, int mode);
+    private native int nativeSendPictureSettingsVideoRecordingMode (long jFeature, int mode);
+    private native int nativeSendPictureSettingsVideoFramerate (long jFeature, int framerate);
     private native int nativeSendMediaStreamingVideoEnable (long jFeature, byte enable);
     private native int nativeSendGPSSettingsSetHome (long jFeature, double latitude, double longitude, double altitude);
     private native int nativeSendGPSSettingsResetHome (long jFeature);
@@ -487,6 +493,8 @@ public class ARFeatureARDrone3
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_ENABLED = nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedEnabled ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOAUTORECORDCHANGED_MASS_STORAGE_ID = nativeStaticGetKeyARDrone3PictureSettingsStateVideoAutorecordChangedMassstorageid ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE = nativeStaticGetKeyARDrone3PictureSettingsStateVideoStabilizationModeChangedMode ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED_MODE = nativeStaticGetKeyARDrone3PictureSettingsStateVideoRecordingModeChangedMode ();
+        ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED_FRAMERATE = nativeStaticGetKeyARDrone3PictureSettingsStateVideoFramerateChangedFramerate ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED = nativeStaticGetKeyARDrone3MediaStreamingStateVideoEnableChangedEnabled ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE = nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLatitude ();
         ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LONGITUDE = nativeStaticGetKeyARDrone3GPSSettingsStateHomeChangedLongitude ();
@@ -1648,6 +1656,46 @@ public class ARFeatureARDrone3
             if(initOk == true)
             {
                 int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode.getValue());
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>PictureSettingsVideoRecordingMode</code>
+     * Set Video recording mode
+     * @param mode Video recording mode
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendPictureSettingsVideoRecordingMode (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEORECORDINGMODE_MODE_ENUM _mode)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPictureSettingsVideoRecordingMode (jniFeature, _mode.getValue());
+                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
+            }
+        }
+        return error;
+    }
+    
+    /**
+     * Send a command <code>PictureSettingsVideoFramerate</code>
+     * Set Video framerate
+     * @param framerate Video framerate
+     * return executing error
+     */
+    public ARCONTROLLER_ERROR_ENUM sendPictureSettingsVideoFramerate (ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOFRAMERATE_FRAMERATE_ENUM _framerate)
+    {
+        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
+        synchronized (this)
+        {
+            if(initOk == true)
+            {
+                int nativeError = nativeSendPictureSettingsVideoFramerate (jniFeature, _framerate.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

@@ -640,6 +640,24 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoAutore
 eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoStabilizationMode (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE mode);
 
 /**
+ * @brief Send a command <code>PictureSettingsVideoRecordingMode</code> in project <code>ARDrone3</code>
+ * Set Video recording mode
+ * @param feature feature owning the commands
+ * @param mode Video recording mode
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoRecordingMode (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEORECORDINGMODE_MODE mode);
+
+/**
+ * @brief Send a command <code>PictureSettingsVideoFramerate</code> in project <code>ARDrone3</code>
+ * Set Video framerate
+ * @param feature feature owning the commands
+ * @param framerate Video framerate
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoFramerate (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOFRAMERATE_FRAMERATE framerate);
+
+/**
  * @brief Send a command <code>MediaStreamingVideoEnable</code> in project <code>ARDrone3</code>
  * Enable/disable video streaming.
  * @param feature feature owning the commands
@@ -1246,6 +1264,22 @@ void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateVideoAutorecordChangedCal
 void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateVideoStabilizationModeChangedCallback (eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE _mode, void *customData);
 
 /**
+ * @brief callback used when the command <code>PictureSettingsStateVideoRecordingModeChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param mode Video recording mode
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateVideoRecordingModeChangedCallback (eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED_MODE _mode, void *customData);
+
+/**
+ * @brief callback used when the command <code>PictureSettingsStateVideoFramerateChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param framerate Video framerate
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_ARDrone3_PictureSettingsStateVideoFramerateChangedCallback (eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED_FRAMERATE _framerate, void *customData);
+
+/**
  * @brief callback used when the command <code>MediaStreamingStateVideoEnableChanged</code> is decoded
  * @param feature The feature controller registred
  * @param enabled Current video streaming status.
@@ -1489,6 +1523,10 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSet
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateVideoAutorecordChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, uint8_t _enabled, uint8_t _mass_storage_id, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateVideoStabilizationModeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE _mode, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateVideoRecordingModeChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED_MODE _mode, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementPictureSettingsStateVideoFramerateChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED_FRAMERATE _framerate, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_ARDrone3_NewCmdElementMediaStreamingStateVideoEnableChanged (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED _enabled, eARCONTROLLER_ERROR *error);
 

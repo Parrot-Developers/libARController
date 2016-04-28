@@ -362,6 +362,10 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VID
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOSTABILIZATIONMODECHANGED_MODE; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoStabilizationModeChanged</code> in feature <code>ARDrone3</code> */
 
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEORECORDINGMODECHANGED_MODE; /**< Key of the argument </code>mode</code> of event <code>PictureSettingsStateVideoRecordingModeChanged</code> in feature <code>ARDrone3</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_VIDEOFRAMERATECHANGED_FRAMERATE; /**< Key of the argument </code>framerate</code> of event <code>PictureSettingsStateVideoFramerateChanged</code> in feature <code>ARDrone3</code> */
+
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>ARDrone3</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMECHANGED_LATITUDE; /**< Key of the argument </code>latitude</code> of event <code>GPSSettingsStateHomeChanged</code> in feature <code>ARDrone3</code> */
@@ -939,6 +943,24 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsV
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoStabilizationMode_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE mode);
 
 /**
+ * @brief Send a command <code>PictureSettingsVideoRecordingMode</code> in feature <code>ARDrone3</code>
+ * Set Video recording mode
+ * @param feature feature owning the commands
+ * @param mode Video recording mode
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoRecordingMode_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEORECORDINGMODE_MODE mode);
+
+/**
+ * @brief Send a command <code>PictureSettingsVideoFramerate</code> in feature <code>ARDrone3</code>
+ * Set Video framerate
+ * @param feature feature owning the commands
+ * @param framerate Video framerate
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoFramerate_t) (ARCONTROLLER_FEATURE_ARDrone3_t *feature, eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOFRAMERATE_FRAMERATE framerate);
+
+/**
  * @brief Send a command <code>MediaStreamingVideoEnable</code> in feature <code>ARDrone3</code>
  * Enable/disable video streaming.
  * @param feature feature owning the commands
@@ -1078,6 +1100,8 @@ struct ARCONTROLLER_FEATURE_ARDrone3_t
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsTimelapseSelection_t sendPictureSettingsTimelapseSelection;
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoAutorecordSelection_t sendPictureSettingsVideoAutorecordSelection;
     ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoStabilizationMode_t sendPictureSettingsVideoStabilizationMode;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoRecordingMode_t sendPictureSettingsVideoRecordingMode;
+    ARCONTROLLER_FEATURE_ARDrone3_SendPictureSettingsVideoFramerate_t sendPictureSettingsVideoFramerate;
     ARCONTROLLER_FEATURE_ARDrone3_SendMediaStreamingVideoEnable_t sendMediaStreamingVideoEnable;
     ARCONTROLLER_FEATURE_ARDrone3_SendGPSSettingsSetHome_t sendGPSSettingsSetHome;
     ARCONTROLLER_FEATURE_ARDrone3_SendGPSSettingsResetHome_t sendGPSSettingsResetHome;
