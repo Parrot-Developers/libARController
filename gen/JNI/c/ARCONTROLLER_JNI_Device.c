@@ -267,12 +267,12 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureCommon (JN
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureCommonDebug (JNIEnv *env, jobject thizz, jlong jDeviceController)
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureDebug (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
     ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
 
-    return (long) jniDeviceController->nativeDeviceController->commonDebug;
+    return (long) jniDeviceController->nativeDeviceController->debug;
 }
 
 JNIEXPORT jlong JNICALL

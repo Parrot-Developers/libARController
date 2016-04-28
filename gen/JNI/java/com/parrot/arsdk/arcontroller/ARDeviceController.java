@@ -40,7 +40,7 @@ public class ARDeviceController
     private native long nativeGetFeatureGeneric (long jDeviceController);
     private native long nativeGetFeatureARDrone3 (long jDeviceController);
     private native long nativeGetFeatureCommon (long jDeviceController);
-    private native long nativeGetFeatureCommonDebug (long jDeviceController);
+    private native long nativeGetFeatureDebug (long jDeviceController);
     private native long nativeGetFeatureUnknownFeature_1 (long jDeviceController);
     private native long nativeGetFeatureJumpingSumo (long jDeviceController);
     private native long nativeGetFeatureMiniDrone (long jDeviceController);
@@ -61,7 +61,7 @@ public class ARDeviceController
     ARFeatureGeneric featureGeneric;
     ARFeatureARDrone3 featureARDrone3;
     ARFeatureCommon featureCommon;
-    ARFeatureCommonDebug featureCommonDebug;
+    ARFeatureDebug featureDebug;
     ARFeatureUnknownFeature_1 featureUnknownFeature_1;
     ARFeatureJumpingSumo featureJumpingSumo;
     ARFeatureMiniDrone featureMiniDrone;
@@ -138,10 +138,10 @@ public class ARDeviceController
                     featureCommon = null;
                 }
                 
-                if (featureCommonDebug != null)
+                if (featureDebug != null)
                 {
-                    featureCommonDebug.dispose();
-                    featureCommonDebug = null;
+                    featureDebug.dispose();
+                    featureDebug = null;
                 }
                 
                 if (featureUnknownFeature_1 != null)
@@ -256,9 +256,9 @@ public class ARDeviceController
         return featureCommon;
     }
     
-    public ARFeatureCommonDebug getFeatureCommonDebug ()
+    public ARFeatureDebug getFeatureDebug ()
     {
-        return featureCommonDebug;
+        return featureDebug;
     }
     
     public ARFeatureUnknownFeature_1 getFeatureUnknownFeature_1 ()
@@ -431,14 +431,14 @@ public class ARDeviceController
             featureCommon = null;
         }
         
-        long nativeFeatureCommonDebug = nativeGetFeatureCommonDebug (jniDeviceController);
-        if ((featureCommonDebug == null) && (nativeFeatureCommonDebug != 0))
+        long nativeFeatureDebug = nativeGetFeatureDebug (jniDeviceController);
+        if ((featureDebug == null) && (nativeFeatureDebug != 0))
         {
-            featureCommonDebug = new ARFeatureCommonDebug(nativeFeatureCommonDebug);
+            featureDebug = new ARFeatureDebug(nativeFeatureDebug);
         }
         else
         {
-            featureCommonDebug = null;
+            featureDebug = null;
         }
         
         long nativeFeatureUnknownFeature_1 = nativeGetFeatureUnknownFeature_1 (jniDeviceController);

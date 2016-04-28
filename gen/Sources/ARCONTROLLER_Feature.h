@@ -2286,12 +2286,12 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementRunStateRunI
 
 
 /*******************************
- * --- FEATURE commonDebug --- 
+ * --- FEATURE debug --- 
  ******************************/
 /**
- * @brief Private part of ARCONTROLLER_FEATURE_CommonDebug_t.
+ * @brief Private part of ARCONTROLLER_FEATURE_Debug_t.
  */
-struct ARCONTROLLER_FEATURE_CommonDebug_Private_t
+struct ARCONTROLLER_FEATURE_Debug_Private_t
 {
     ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
     ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
@@ -2304,53 +2304,25 @@ struct ARCONTROLLER_FEATURE_CommonDebug_Private_t
  * @param feature The feature controller to register
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_RegisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_RegisterARCommands (ARCONTROLLER_FEATURE_Debug_t *feature);
 
 /**
  * @brief Unegister the feature controller to be called when the commands are decoded.
  * @param feature The feature controller to unregister
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_UnregisterARCommands (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_UnregisterARCommands (ARCONTROLLER_FEATURE_Debug_t *feature);
 
 /**
- * @brief Send a command <code>StatsSendPacket</code> in project <code>CommonDebug</code>
- * Send a packet to the drone
- * @param feature feature owning the commands
- * @param packet Packet to send to the drone
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsSendPacket (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * packet);
-
-/**
- * @brief Send a command <code>StatsStartSendingPacketFromDrone</code> in project <code>CommonDebug</code>
- * Ask drone to start sending packets
- * @param feature feature owning the commands
- * @param frequency Frequency of the packet
- * @param packetSize Size of the the packet
- * @param date time of day in sec
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStartSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t frequency, uint8_t packetSize, uint32_t date);
-
-/**
- * @brief Send a command <code>StatsStopSendingPacketFromDrone</code> in project <code>CommonDebug</code>
- * Ask drone to stop sending packets
+ * @brief Send a command <code>GetAllSettings</code> in project <code>Debug</code>
+ * Cmd sent by controller to get all settings info (generate "settings_info" events).
  * @param feature feature owning the commands
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendStatsStopSendingPacketFromDrone (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SendGetAllSettings (ARCONTROLLER_FEATURE_Debug_t *feature);
 
 /**
- * @brief Send a command <code>DebugSettingsGetAll</code> in project <code>CommonDebug</code>
- * Cmd sent by controller to get all settings info (generate "SettingInfo" events).
- * @param feature feature owning the commands
- * return executing error
- */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll (ARCONTROLLER_FEATURE_CommonDebug_t *feature);
-
-/**
- * @brief Send a command <code>DebugSettingsSet</code> in project <code>CommonDebug</code>
+ * @brief Send a command <code>SetSetting</code> in project <code>Debug</code>
  * Change setting value.
  * Cmd sent by controller to change a writable setting.
  * @param feature feature owning the commands
@@ -2358,46 +2330,36 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsGetAll (AR
  * @param value New setting value (string encoded).
  * return executing error
  */
-eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_CommonDebug_SendDebugSettingsSet (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t id, char * value);
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SendSetSetting (ARCONTROLLER_FEATURE_Debug_t *feature, uint16_t id, char * value);
 
 /**
- * @brief callback used when the command <code>StatsEventSendPacket</code> is decoded
- * @param feature The feature controller registred
- * @param packet packet from drone
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_CommonDebug_StatsEventSendPacketCallback (char * _packet, void *customData);
-
-/**
- * @brief callback used when the command <code>DebugSettingsStateInfo</code> is decoded
+ * @brief callback used when the command <code>SettingsInfo</code> is decoded
  * @param feature The feature controller registred
  * @param listFlags List entry attribute Bitfield. 0x01: First: indicate it's the first element of the list. 0x02: Last:  indicate it's the last element of the list. 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored.
  * @param id Setting Id.
  * @param label Setting displayed label (single line).
- * @param type Setting type.
- * @param mode Setting mode.
+ * @param type Setting type. Setting type.
+ * @param mode Setting mode. Setting mode.
  * @param range_min Setting range minimal value for decimal type.
  * @param range_max Setting range max value for decimal type.
  * @param range_step Setting step value for decimal type
  * @param value Current Setting value (string encoded).
  * @param customData customData set by the register
  */
-void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData);
+void ARCONTROLLER_FEATURE_Debug_SettingsInfoCallback (uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_DEBUG_SETTING_TYPE _type, eARCOMMANDS_DEBUG_SETTING_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, void *customData);
 
 /**
- * @brief callback used when the command <code>DebugSettingsStateListChanged</code> is decoded
+ * @brief callback used when the command <code>SettingsList</code> is decoded
  * @param feature The feature controller registred
  * @param id Setting Id.
  * @param value New setting value (string encoded).
  * @param customData customData set by the register
  */
-void ARCONTROLLER_FEATURE_CommonDebug_DebugSettingsStateListChangedCallback (uint16_t _id, char * _value, void *customData);
+void ARCONTROLLER_FEATURE_Debug_SettingsListCallback (uint16_t _id, char * _value, void *customData);
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementStatsEventSendPacket (ARCONTROLLER_FEATURE_CommonDebug_t *feature, char * _packet, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_NewCmdElementSettingsInfo (ARCONTROLLER_FEATURE_Debug_t *feature, uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_DEBUG_SETTING_TYPE _type, eARCOMMANDS_DEBUG_SETTING_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, int listIndex, eARCONTROLLER_ERROR *error);
 
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSettingsStateInfo (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint8_t _listFlags, uint16_t _id, char * _label, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_TYPE _type, eARCOMMANDS_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO_MODE _mode, char * _range_min, char * _range_max, char * _range_step, char * _value, int listIndex, eARCONTROLLER_ERROR *error);
-
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_CommonDebug_NewCmdElementDebugSettingsStateListChanged (ARCONTROLLER_FEATURE_CommonDebug_t *feature, uint16_t _id, char * _value, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_NewCmdElementSettingsList (ARCONTROLLER_FEATURE_Debug_t *feature, uint16_t _id, char * _value, eARCONTROLLER_ERROR *error);
 
 
 /*******************************

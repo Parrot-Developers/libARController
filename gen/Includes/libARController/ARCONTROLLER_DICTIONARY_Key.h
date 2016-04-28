@@ -146,10 +146,9 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED, /**< Key used to define the event <code>ChargerStateLastChargeRateChanged</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO, /**< Key used to define the event <code>ChargerStateChargingInfo</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED, /**< Key used to define the event <code>RunStateRunIdChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG, /**< Key used to define the feature <code>CommonDebug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_STATSEVENT_SENDPACKET, /**< Key used to define the event <code>StatsEventSendPacket</code> in project <code>CommonDebug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_INFO, /**< Key used to define the event <code>DebugSettingsStateInfo</code> in project <code>CommonDebug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMONDEBUG_DEBUGSETTINGSSTATE_LISTCHANGED, /**< Key used to define the event <code>DebugSettingsStateListChanged</code> in project <code>CommonDebug</code> */
+    ARCONTROLLER_DICTIONARY_KEY_DEBUG, /**< Key used to define the feature <code>Debug</code> */
+    ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO, /**< Key used to define the event <code>SettingsInfo</code> in project <code>Debug</code> */
+    ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST, /**< Key used to define the event <code>SettingsList</code> in project <code>Debug</code> */
     ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME, /**< Key used to define the feature <code>UnknownFeature_1</code> */
     ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_AVAILABILITY, /**< Key used to define the event <code>Availability</code> in project <code>UnknownFeature_1</code> */
     ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_RUN, /**< Key used to define the event <code>Run</code> in project <code>UnknownFeature_1</code> */

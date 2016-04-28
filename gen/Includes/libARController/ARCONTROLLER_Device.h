@@ -72,7 +72,7 @@ typedef struct
     ARCONTROLLER_FEATURE_Generic_t *generic; /**< */
     ARCONTROLLER_FEATURE_ARDrone3_t *aRDrone3; /**< */
     ARCONTROLLER_FEATURE_Common_t *common; /**< */
-    ARCONTROLLER_FEATURE_CommonDebug_t *commonDebug; /**< */
+    ARCONTROLLER_FEATURE_Debug_t *debug; /**< */
     ARCONTROLLER_FEATURE_UnknownFeature_1_t *unknown_feature_1; /**< */
     ARCONTROLLER_FEATURE_JumpingSumo_t *jumpingSumo; /**< */
     ARCONTROLLER_FEATURE_MiniDrone_t *miniDrone; /**< */
