@@ -120,5 +120,12 @@
         <feature name="ardrone3"/>
         
     </ARController_Device>
-    
+    <ARController_Device name="Disco" product="EVINRUDE">
+        Disco project
+        
+        <feature name="common"/>
+        <feature name="ardrone3"/>
+        
+    </ARController_Device>
+
 </deviceControllers>
