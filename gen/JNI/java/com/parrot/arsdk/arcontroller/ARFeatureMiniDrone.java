@@ -107,7 +107,7 @@ public class ARFeatureMiniDrone
     private native int nativeSendPilotingLanding (long jFeature);
     private native int nativeSendPilotingEmergency (long jFeature);
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
-    private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_MINIDRONE_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
+    private native int nativeSendAnimationsFlip (long jFeature, int direction);
     private native int nativeSendAnimationsCap (long jFeature, short offset);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
@@ -397,7 +397,7 @@ public class ARFeatureMiniDrone
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction);
+                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

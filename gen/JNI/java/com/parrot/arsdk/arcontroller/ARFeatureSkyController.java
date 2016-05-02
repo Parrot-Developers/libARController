@@ -141,7 +141,7 @@ public class ARFeatureSkyController
     private native int nativeSendCommonAllStates (long jFeature);
     private native int nativeSendAccessPointSettingsAccessPointSSID (long jFeature, String ssid);
     private native int nativeSendAccessPointSettingsAccessPointChannel (long jFeature, byte channel);
-    private native int nativeSendAccessPointSettingsWifiSelection (long jFeature, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_SKYCONTROLLER_ACCESSPOINTSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
+    private native int nativeSendAccessPointSettingsWifiSelection (long jFeature, int type, int band, byte channel);
     private native int nativeSendCameraResetOrientation (long jFeature);
     private native int nativeSendGamepadInfosGetGamepadControls (long jFeature);
     private native int nativeSendButtonMappingsGetCurrentButtonMappings (long jFeature);
@@ -156,7 +156,7 @@ public class ARFeatureSkyController
     private native int nativeSendAxisFiltersGetPresetAxisFilters (long jFeature);
     private native int nativeSendAxisFiltersSetAxisFilter (long jFeature, int axis_id, String filter_uid_or_builder);
     private native int nativeSendAxisFiltersDefaultAxisFilters (long jFeature);
-    private native int nativeSendCoPilotingSetPilotingSource (long jFeature, ARCOMMANDS_SKYCONTROLLER_COPILOTING_SETPILOTINGSOURCE_SOURCE_ENUM source);
+    private native int nativeSendCoPilotingSetPilotingSource (long jFeature, int source);
     private native int nativeSendCalibrationEnableMagnetoCalibrationQualityUpdates (long jFeature, byte enable);
 
     private long jniFeature;
@@ -450,7 +450,7 @@ public class ARFeatureSkyController
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAccessPointSettingsWifiSelection (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendAccessPointSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -660,7 +660,7 @@ public class ARFeatureSkyController
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendCoPilotingSetPilotingSource (jniFeature, _source);
+                int nativeError = nativeSendCoPilotingSetPilotingSource (jniFeature, _source.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

@@ -318,14 +318,14 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingAutoTakeOffMode (long jFeature, byte state);
     private native int nativeSendPilotingMoveBy (long jFeature, float dX, float dY, float dZ, float dPsi);
     private native int nativeSendPilotingUserTakeOff (long jFeature, byte state);
-    private native int nativeSendPilotingCircle (long jFeature, ARCOMMANDS_ARDRONE3_PILOTING_CIRCLE_DIRECTION_ENUM direction);
-    private native int nativeSendAnimationsFlip (long jFeature, ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_ENUM direction);
+    private native int nativeSendPilotingCircle (long jFeature, int direction);
+    private native int nativeSendAnimationsFlip (long jFeature, int direction);
     private native int nativeSendCameraOrientation (long jFeature, byte tilt, byte pan);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
-    private native int nativeSendMediaRecordVideo (long jFeature, ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEO_RECORD_ENUM record, byte mass_storage_id);
+    private native int nativeSendMediaRecordVideo (long jFeature, int record, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
-    private native int nativeSendMediaRecordVideoV2 (long jFeature, ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEOV2_RECORD_ENUM record);
-    private native int nativeSendNetworkWifiScan (long jFeature, ARCOMMANDS_ARDRONE3_NETWORK_WIFISCAN_BAND_ENUM band);
+    private native int nativeSendMediaRecordVideoV2 (long jFeature, int record);
+    private native int nativeSendNetworkWifiScan (long jFeature, int band);
     private native int nativeSendNetworkWifiAuthChannel (long jFeature);
     private native int nativeSendPilotingSettingsMaxAltitude (long jFeature, float current);
     private native int nativeSendPilotingSettingsMaxTilt (long jFeature, float current);
@@ -339,33 +339,33 @@ public class ARFeatureARDrone3
     private native int nativeSendPilotingSettingsSetAutonomousFlightMaxRotationSpeed (long jFeature, float value);
     private native int nativeSendPilotingSettingsBankedTurn (long jFeature, byte value);
     private native int nativeSendPilotingSettingsMinAltitude (long jFeature, float current);
-    private native int nativeSendPilotingSettingsCirclingDirection (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_CIRCLINGDIRECTION_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsCirclingDirection (long jFeature, int value);
     private native int nativeSendPilotingSettingsCirclingRadius (long jFeature, short value);
     private native int nativeSendPilotingSettingsCirclingAltitude (long jFeature, short value);
-    private native int nativeSendPilotingSettingsPitchMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_PITCHMODE_VALUE_ENUM value);
-    private native int nativeSendPilotingSettingsLandingMode (long jFeature, ARCOMMANDS_ARDRONE3_PILOTINGSETTINGS_LANDINGMODE_VALUE_ENUM value);
+    private native int nativeSendPilotingSettingsPitchMode (long jFeature, int value);
+    private native int nativeSendPilotingSettingsLandingMode (long jFeature, int value);
     private native int nativeSendSpeedSettingsMaxVerticalSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsMaxRotationSpeed (long jFeature, float current);
     private native int nativeSendSpeedSettingsHullProtection (long jFeature, byte present);
     private native int nativeSendSpeedSettingsOutdoor (long jFeature, byte outdoor);
     private native int nativeSendSpeedSettingsMaxPitchRollRotationSpeed (long jFeature, float current);
-    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
-    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_TYPE_ENUM type, String key, ARCOMMANDS_ARDRONE3_NETWORKSETTINGS_WIFISECURITY_KEYTYPE_ENUM keyType);
-    private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_PICTUREFORMATSELECTION_TYPE_ENUM type);
-    private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_AUTOWHITEBALANCESELECTION_TYPE_ENUM type);
+    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
+    private native int nativeSendNetworkSettingsWifiSecurity (long jFeature, int type, String key, int keyType);
+    private native int nativeSendPictureSettingsPictureFormatSelection (long jFeature, int type);
+    private native int nativeSendPictureSettingsAutoWhiteBalanceSelection (long jFeature, int type);
     private native int nativeSendPictureSettingsExpositionSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsSaturationSelection (long jFeature, float value);
     private native int nativeSendPictureSettingsTimelapseSelection (long jFeature, byte enabled, float interval);
     private native int nativeSendPictureSettingsVideoAutorecordSelection (long jFeature, byte enabled, byte mass_storage_id);
-    private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, ARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE_ENUM mode);
+    private native int nativeSendPictureSettingsVideoStabilizationMode (long jFeature, int mode);
     private native int nativeSendMediaStreamingVideoEnable (long jFeature, byte enable);
     private native int nativeSendGPSSettingsSetHome (long jFeature, double latitude, double longitude, double altitude);
     private native int nativeSendGPSSettingsResetHome (long jFeature);
     private native int nativeSendGPSSettingsSendControllerGPS (long jFeature, double latitude, double longitude, double altitude, double horizontalAccuracy, double verticalAccuracy);
-    private native int nativeSendGPSSettingsHomeType (long jFeature, ARCOMMANDS_ARDRONE3_GPSSETTINGS_HOMETYPE_TYPE_ENUM type);
+    private native int nativeSendGPSSettingsHomeType (long jFeature, int type);
     private native int nativeSendGPSSettingsReturnHomeDelay (long jFeature, short delay);
-    private native int nativeSendAntiflickeringElectricFrequency (long jFeature, ARCOMMANDS_ARDRONE3_ANTIFLICKERING_ELECTRICFREQUENCY_FREQUENCY_ENUM frequency);
-    private native int nativeSendAntiflickeringSetMode (long jFeature, ARCOMMANDS_ARDRONE3_ANTIFLICKERING_SETMODE_MODE_ENUM mode);
+    private native int nativeSendAntiflickeringElectricFrequency (long jFeature, int frequency);
+    private native int nativeSendAntiflickeringSetMode (long jFeature, int mode);
 
     private long jniFeature;
     private boolean initOk;
@@ -787,7 +787,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingCircle (jniFeature, _direction);
+                int nativeError = nativeSendPilotingCircle (jniFeature, _direction.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -801,7 +801,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction);
+                int nativeError = nativeSendAnimationsFlip (jniFeature, _direction.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -843,7 +843,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record, _mass_storage_id);
+                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record.getValue(), _mass_storage_id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -871,7 +871,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record);
+                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -885,7 +885,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band);
+                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1081,7 +1081,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingSettingsCirclingDirection (jniFeature, _value);
+                int nativeError = nativeSendPilotingSettingsCirclingDirection (jniFeature, _value.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1123,7 +1123,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingSettingsPitchMode (jniFeature, _value);
+                int nativeError = nativeSendPilotingSettingsPitchMode (jniFeature, _value.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1137,7 +1137,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingSettingsLandingMode (jniFeature, _value);
+                int nativeError = nativeSendPilotingSettingsLandingMode (jniFeature, _value.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1221,7 +1221,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1235,7 +1235,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type, _key, _keyType);
+                int nativeError = nativeSendNetworkSettingsWifiSecurity (jniFeature, _type.getValue(), _key, _keyType.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1249,7 +1249,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsPictureFormatSelection (jniFeature, _type);
+                int nativeError = nativeSendPictureSettingsPictureFormatSelection (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1263,7 +1263,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsAutoWhiteBalanceSelection (jniFeature, _type);
+                int nativeError = nativeSendPictureSettingsAutoWhiteBalanceSelection (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1333,7 +1333,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode);
+                int nativeError = nativeSendPictureSettingsVideoStabilizationMode (jniFeature, _mode.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1403,7 +1403,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendGPSSettingsHomeType (jniFeature, _type);
+                int nativeError = nativeSendGPSSettingsHomeType (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1431,7 +1431,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAntiflickeringElectricFrequency (jniFeature, _frequency);
+                int nativeError = nativeSendAntiflickeringElectricFrequency (jniFeature, _frequency.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -1445,7 +1445,7 @@ public class ARFeatureARDrone3
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAntiflickeringSetMode (jniFeature, _mode);
+                int nativeError = nativeSendAntiflickeringSetMode (jniFeature, _mode.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

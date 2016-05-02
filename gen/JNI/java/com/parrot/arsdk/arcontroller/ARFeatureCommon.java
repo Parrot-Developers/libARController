@@ -184,18 +184,18 @@ public class ARFeatureCommon
     private native int nativeSendOverHeatVentilate (long jFeature);
     private native int nativeSendControllerIsPiloting (long jFeature, byte piloting);
     private native int nativeSendWifiSettingsOutdoorSetting (long jFeature, byte outdoor);
-    private native int nativeSendMavlinkStart (long jFeature, String filepath, ARCOMMANDS_COMMON_MAVLINK_START_TYPE_ENUM type);
+    private native int nativeSendMavlinkStart (long jFeature, String filepath, int type);
     private native int nativeSendMavlinkPause (long jFeature);
     private native int nativeSendMavlinkStop (long jFeature);
     private native int nativeSendCalibrationMagnetoCalibration (long jFeature, byte calibrate);
     private native int nativeSendGPSControllerPositionForRun (long jFeature, double latitude, double longitude);
     private native int nativeSendAudioControllerReadyForStreaming (long jFeature, byte ready);
     private native int nativeSendHeadlightsIntensity (long jFeature, byte left, byte right);
-    private native int nativeSendAnimationsStartAnimation (long jFeature, ARCOMMANDS_COMMON_ANIMATIONS_STARTANIMATION_ANIM_ENUM anim);
-    private native int nativeSendAnimationsStopAnimation (long jFeature, ARCOMMANDS_COMMON_ANIMATIONS_STOPANIMATION_ANIM_ENUM anim);
+    private native int nativeSendAnimationsStartAnimation (long jFeature, int anim);
+    private native int nativeSendAnimationsStopAnimation (long jFeature, int anim);
     private native int nativeSendAnimationsStopAllAnimations (long jFeature);
-    private native int nativeSendAccessoryConfig (long jFeature, ARCOMMANDS_COMMON_ACCESSORY_CONFIG_ACCESSORY_ENUM accessory);
-    private native int nativeSendChargerSetMaxChargeRate (long jFeature, ARCOMMANDS_COMMON_CHARGER_SETMAXCHARGERATE_RATE_ENUM rate);
+    private native int nativeSendAccessoryConfig (long jFeature, int accessory);
+    private native int nativeSendChargerSetMaxChargeRate (long jFeature, int rate);
 
     private long jniFeature;
     private boolean initOk;
@@ -523,7 +523,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMavlinkStart (jniFeature, _filepath, _type);
+                int nativeError = nativeSendMavlinkStart (jniFeature, _filepath, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -621,7 +621,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsStartAnimation (jniFeature, _anim);
+                int nativeError = nativeSendAnimationsStartAnimation (jniFeature, _anim.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -635,7 +635,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsStopAnimation (jniFeature, _anim);
+                int nativeError = nativeSendAnimationsStopAnimation (jniFeature, _anim.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -663,7 +663,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAccessoryConfig (jniFeature, _accessory);
+                int nativeError = nativeSendAccessoryConfig (jniFeature, _accessory.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -677,7 +677,7 @@ public class ARFeatureCommon
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendChargerSetMaxChargeRate (jniFeature, _rate);
+                int nativeError = nativeSendChargerSetMaxChargeRate (jniFeature, _rate.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

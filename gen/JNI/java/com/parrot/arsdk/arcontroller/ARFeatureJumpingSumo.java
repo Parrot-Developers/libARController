@@ -123,22 +123,22 @@ public class ARFeatureJumpingSumo
     private native int nativeSetPilotingPCMDFlag (long jFeature, byte flag);
     private native int nativeSetPilotingPCMDSpeed (long jFeature, byte speed);
     private native int nativeSetPilotingPCMDTurn (long jFeature, byte turn);
-    private native int nativeSendPilotingPosture (long jFeature, ARCOMMANDS_JUMPINGSUMO_PILOTING_POSTURE_TYPE_ENUM type);
+    private native int nativeSendPilotingPosture (long jFeature, int type);
     private native int nativeSendPilotingAddCapOffset (long jFeature, float offset);
     private native int nativeSendAnimationsJumpStop (long jFeature);
     private native int nativeSendAnimationsJumpCancel (long jFeature);
     private native int nativeSendAnimationsJumpLoad (long jFeature);
-    private native int nativeSendAnimationsJump (long jFeature, ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_JUMP_TYPE_ENUM type);
-    private native int nativeSendAnimationsSimpleAnimation (long jFeature, ARCOMMANDS_JUMPINGSUMO_ANIMATIONS_SIMPLEANIMATION_ID_ENUM id);
+    private native int nativeSendAnimationsJump (long jFeature, int type);
+    private native int nativeSendAnimationsSimpleAnimation (long jFeature, int id);
     private native int nativeSendMediaRecordPicture (long jFeature, byte mass_storage_id);
-    private native int nativeSendMediaRecordVideo (long jFeature, ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEO_RECORD_ENUM record, byte mass_storage_id);
+    private native int nativeSendMediaRecordVideo (long jFeature, int record, byte mass_storage_id);
     private native int nativeSendMediaRecordPictureV2 (long jFeature);
-    private native int nativeSendMediaRecordVideoV2 (long jFeature, ARCOMMANDS_JUMPINGSUMO_MEDIARECORD_VIDEOV2_RECORD_ENUM record);
-    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_TYPE_ENUM type, ARCOMMANDS_JUMPINGSUMO_NETWORKSETTINGS_WIFISELECTION_BAND_ENUM band, byte channel);
-    private native int nativeSendNetworkWifiScan (long jFeature, ARCOMMANDS_JUMPINGSUMO_NETWORK_WIFISCAN_BAND_ENUM band);
+    private native int nativeSendMediaRecordVideoV2 (long jFeature, int record);
+    private native int nativeSendNetworkSettingsWifiSelection (long jFeature, int type, int band, byte channel);
+    private native int nativeSendNetworkWifiScan (long jFeature, int band);
     private native int nativeSendNetworkWifiAuthChannel (long jFeature);
     private native int nativeSendAudioSettingsMasterVolume (long jFeature, byte volume);
-    private native int nativeSendAudioSettingsTheme (long jFeature, ARCOMMANDS_JUMPINGSUMO_AUDIOSETTINGS_THEME_THEME_ENUM theme);
+    private native int nativeSendAudioSettingsTheme (long jFeature, int theme);
     private native int nativeSendRoadPlanAllScriptsMetadata (long jFeature);
     private native int nativeSendRoadPlanScriptUploaded (long jFeature, String uuid, String md5Hash);
     private native int nativeSendRoadPlanScriptDelete (long jFeature, String uuid);
@@ -321,7 +321,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendPilotingPosture (jniFeature, _type);
+                int nativeError = nativeSendPilotingPosture (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -391,7 +391,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsJump (jniFeature, _type);
+                int nativeError = nativeSendAnimationsJump (jniFeature, _type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -405,7 +405,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAnimationsSimpleAnimation (jniFeature, _id);
+                int nativeError = nativeSendAnimationsSimpleAnimation (jniFeature, _id.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -433,7 +433,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record, _mass_storage_id);
+                int nativeError = nativeSendMediaRecordVideo (jniFeature, _record.getValue(), _mass_storage_id);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -461,7 +461,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record);
+                int nativeError = nativeSendMediaRecordVideoV2 (jniFeature, _record.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -475,7 +475,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendNetworkSettingsWifiSelection (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -489,7 +489,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band);
+                int nativeError = nativeSendNetworkWifiScan (jniFeature, _band.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -531,7 +531,7 @@ public class ARFeatureJumpingSumo
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendAudioSettingsTheme (jniFeature, _theme);
+                int nativeError = nativeSendAudioSettingsTheme (jniFeature, _theme.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

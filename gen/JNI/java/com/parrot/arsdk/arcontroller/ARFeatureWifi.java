@@ -66,10 +66,10 @@ public class ARFeatureWifi
 
     private native int nativeSendScan (long jFeature, byte band);
     private native int nativeSendUpdateAuthorizedChannels (long jFeature);
-    private native int nativeSendSetApChannel (long jFeature, ARCOMMANDS_WIFI_SELECTION_TYPE_ENUM type, ARCOMMANDS_WIFI_BAND_ENUM band, byte channel);
-    private native int nativeSendSetSecurity (long jFeature, ARCOMMANDS_WIFI_SECURITY_TYPE_ENUM type, String key, ARCOMMANDS_WIFI_SECURITY_KEY_TYPE_ENUM key_type);
-    private native int nativeSendSetCountry (long jFeature, ARCOMMANDS_WIFI_COUNTRY_SELECTION_ENUM selection_mode, String code);
-    private native int nativeSendSetEnvironement (long jFeature, ARCOMMANDS_WIFI_ENVIRONEMENT_ENUM environement);
+    private native int nativeSendSetApChannel (long jFeature, int type, int band, byte channel);
+    private native int nativeSendSetSecurity (long jFeature, int type, String key, int key_type);
+    private native int nativeSendSetCountry (long jFeature, int selection_mode, String code);
+    private native int nativeSendSetEnvironement (long jFeature, int environement);
 
     private long jniFeature;
     private boolean initOk;
@@ -176,7 +176,7 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetApChannel (jniFeature, _type, _band, _channel);
+                int nativeError = nativeSendSetApChannel (jniFeature, _type.getValue(), _band.getValue(), _channel);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -190,7 +190,7 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetSecurity (jniFeature, _type, _key, _key_type);
+                int nativeError = nativeSendSetSecurity (jniFeature, _type.getValue(), _key, _key_type.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -204,7 +204,7 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetCountry (jniFeature, _selection_mode, _code);
+                int nativeError = nativeSendSetCountry (jniFeature, _selection_mode.getValue(), _code);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
@@ -218,7 +218,7 @@ public class ARFeatureWifi
         {
             if(initOk == true)
             {
-                int nativeError = nativeSendSetEnvironement (jniFeature, _environement);
+                int nativeError = nativeSendSetEnvironement (jniFeature, _environement.getValue());
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }
