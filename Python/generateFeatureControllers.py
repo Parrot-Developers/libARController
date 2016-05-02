@@ -51,6 +51,7 @@ _LIST_FLAG = 'list_flags'
 CTRL_FTR_H_NAME = 'ARCONTROLLER_Feature.h'
 CTRL_FTR_PRIV_H_NAME = 'ARCONTROLLER_Feature.h'
 CTRL_FTR_C_NAME = 'ARCONTROLLER_Feature.c'
+CTRL_FTR_JNI_C_NAME = 'ARCONTROLLER_JNI_Features.c'
 
 def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     allFeatures = ctx.features
@@ -2175,6 +2176,15 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
                     cFile.write ('\n')
         
         cFile.close ()
+    cFileName = jniClassName + '.c'
+    filepath = JNI_C_DIR + CTRL_FTR_JNI_C_NAME
+
+    cFile = open (filepath, 'w')
+    for feature in ctx.features:
+        jniClassName = MODULE_ARCONTROLLER + '_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature))
+        jniFtrFileName = jniClassName + '.c'
+        cFile.write ('#include "'+jniFtrFileName+'"\n')
+    cFile.close ()
 
 def list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR):
     ''' Print features controllers generated files '''
@@ -2189,3 +2199,4 @@ def list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR):
     # Print feature JNI c files
     for feature in ctx.features:
         print JNI_C_DIR + 'ARCONTROLLER_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature)) + '.c'
+    print JNI_C_DIR + CTRL_FTR_JNI_C_NAME
