@@ -237,7 +237,7 @@ def generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR):
                         hfile.write (' * @param ' + arg.name + ' ' + comm + '\n')
                     hfile.write (' * return executing error\n')
                     hfile.write (' */\n')
-                    hfile.write ('typedef eARCONTROLLER_ERROR (*' + setNAckFunctionType (feature, cmd, arg)+') ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name+');\n') #toto
+                    hfile.write ('typedef eARCONTROLLER_ERROR (*' + setNAckFunctionType (feature, cmd, arg)+') ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name+');\n')
                     hfile.write ('\n')
                     
             
@@ -1836,7 +1836,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
         for cmd in feature.cmds:
             jfile.write ('    private native int '+nativeSendingFunction(cmd)+' (long jFeature')
             for arg in cmd.args:
-                if 'enum' == arg.type:
+                if isinstance(arg.type, AREnum):
                     jfile.write (', int ' + arg.name + '')
                 else:
                     jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + '')
@@ -1845,14 +1845,14 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             if cmd.buf == ARCommandBuffer.NON_ACK:
                 jfile.write ('    private native int '+nativeSetNAckFunction(cmd)+' (long jFeature')
                 for arg in cmd.args:
-                    if 'enum' == arg.type:
+                    if isinstance(arg.type, AREnum):
                         jfile.write (', int ' + arg.name + '')
                     else:
                         jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + '')
                 jfile.write (');\n')
             
                 for arg in cmd.args:
-                    if 'enum' == arg.type:
+                    if isinstance(arg.type, AREnum):
                         jfile.write ('    private native int '+nativeSetNAckFunction(cmd, arg)+' (long jFeature, int ' + arg.name + ');\n')
                     else:
                         jfile.write ('    private native int '+nativeSetNAckFunction(cmd, arg)+' (long jFeature, ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + ');\n')
@@ -1935,7 +1935,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
             jfile.write ('                int nativeError = '+nativeSendingFunction(cmd)+' (jniFeature')
             for arg in cmd.args:
                 jfile.write (', _' + arg.name)
-                if 'enum' == arg.type:
+                if isinstance(arg.type, AREnum):
                     jfile.write ('.getValue()')
             jfile.write (');\n')
             jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
@@ -1964,7 +1964,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                 jfile.write ('                int nativeError = '+nativeSetNAckFunction(cmd)+' (jniFeature')
                 for arg in cmd.args:
                     jfile.write (', _' + arg.name)
-                    if 'enum' == arg.type:
+                    if isinstance(arg.type, AREnum):
                         jfile.write ('.getValue()')
                 jfile.write (');\n')
                 jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
@@ -1982,7 +1982,7 @@ def generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR):
                     jfile.write ('        {\n')
                     jfile.write ('            if(initOk == true)\n')
                     jfile.write ('            {\n')
-                    if 'enum' == arg.type:
+                    if isinstance(arg.type, AREnum):
                         jfile.write ('                int nativeError = '+nativeSetNAckFunction(cmd, arg)+' (jniFeature, _' + arg.name + '.getValue());\n')
                     else:
                         jfile.write ('                int nativeError = '+nativeSetNAckFunction(cmd, arg)+' (jniFeature, _' + arg.name + ');\n')
