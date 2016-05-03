@@ -75,6 +75,7 @@ typedef struct
     ARCONTROLLER_FEATURE_Debug_t *debug; /**< */
     ARCONTROLLER_FEATURE_FollowMe_t *follow_me; /**< */
     ARCONTROLLER_FEATURE_JumpingSumo_t *jumpingSumo; /**< */
+    ARCONTROLLER_FEATURE_Mapper_t *mapper; /**< */
     ARCONTROLLER_FEATURE_MiniDrone_t *miniDrone; /**< */
     ARCONTROLLER_FEATURE_Pro_t *pro; /**< */
     ARCONTROLLER_FEATURE_SkyController_t *skyController; /**< */

@@ -42175,6 +42175,2053 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_GetCommandElements (
  * Private Implementation
  *************************/
 /*******************************
+ * --- FEATURE mapper --- 
+ ******************************/
+
+/*************************
+ * Private header
+ *************************/
+
+/*************************
+ * Implementation
+ *************************/
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_BUTTONS = "arcontroller_dictionary_key_mapper_grabstate_buttons";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_AXES = "arcontroller_dictionary_key_mapper_grabstate_axes";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_BUTTONS_STATE = "arcontroller_dictionary_key_mapper_grabstate_buttons_state";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT_BUTTON = "arcontroller_dictionary_key_mapper_grabbuttonevent_button";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT_EVENT = "arcontroller_dictionary_key_mapper_grabbuttonevent_event";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT_AXIS = "arcontroller_dictionary_key_mapper_grabaxisevent_axis";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT_VALUE = "arcontroller_dictionary_key_mapper_grabaxisevent_value";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_UID = "arcontroller_dictionary_key_mapper_buttonmappingitem_uid";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_PRODUCT = "arcontroller_dictionary_key_mapper_buttonmappingitem_product";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_ACTION = "arcontroller_dictionary_key_mapper_buttonmappingitem_action";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_BUTTONS = "arcontroller_dictionary_key_mapper_buttonmappingitem_buttons";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_UID = "arcontroller_dictionary_key_mapper_axismappingitem_uid";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_PRODUCT = "arcontroller_dictionary_key_mapper_axismappingitem_product";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_ACTION = "arcontroller_dictionary_key_mapper_axismappingitem_action";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_AXIS = "arcontroller_dictionary_key_mapper_axismappingitem_axis";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_BUTTONS = "arcontroller_dictionary_key_mapper_axismappingitem_buttons";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT_ACTION = "arcontroller_dictionary_key_mapper_applicationaxisevent_action";
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT_VALUE = "arcontroller_dictionary_key_mapper_applicationaxisevent_value";
+
+const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT_ACTION = "arcontroller_dictionary_key_mapper_applicationbuttonevent_action";
+
+ARCONTROLLER_FEATURE_Mapper_t *ARCONTROLLER_FEATURE_Mapper_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error)
+{
+    // -- Create a new Feature Controller --
+    
+    //local declarations
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+   ARCONTROLLER_FEATURE_Mapper_t *featureController =  NULL;
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        // Create the Feature Controller
+        featureController = malloc (sizeof (ARCONTROLLER_FEATURE_Mapper_t));
+        if (featureController != NULL)
+        {
+            featureController->sendGrab = ARCONTROLLER_FEATURE_Mapper_SendGrab;
+            featureController->sendMapButtonAction = ARCONTROLLER_FEATURE_Mapper_SendMapButtonAction;
+            featureController->sendMapAxisAction = ARCONTROLLER_FEATURE_Mapper_SendMapAxisAction;
+            featureController->sendResetMapping = ARCONTROLLER_FEATURE_Mapper_SendResetMapping;
+            
+            featureController->privatePart = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    // No else: skipped by an error 
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        // Create the Feature Controller private part
+        featureController->privatePart = malloc (sizeof (ARCONTROLLER_FEATURE_Mapper_Private_t));
+        if (featureController->privatePart != NULL)
+        {
+            featureController->privatePart->networkController = networkController;
+            featureController->privatePart->dictionary = NULL;
+            featureController->privatePart->commandCallbacks = NULL;
+            // Create the mutex 
+            if (ARSAL_Mutex_Init (&(featureController->privatePart->mutex)) != 0)
+            {
+                localError = ARCONTROLLER_ERROR_INIT_MUTEX;
+            }
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    // No else: skipped by an error 
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        localError = ARCONTROLLER_FEATURE_Mapper_RegisterARCommands (featureController);
+    }
+    // No else: skipped by an error 
+    
+    // delete the feature Controller if an error occurred
+    if (localError != ARCONTROLLER_OK)
+    {
+        ARCONTROLLER_FEATURE_Mapper_Delete (&featureController);
+    }
+    // No else: skipped no error 
+    
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return featureController;
+}
+
+void ARCONTROLLER_FEATURE_Mapper_Delete (ARCONTROLLER_FEATURE_Mapper_t **feature)
+{
+    // -- Delete the mapper feature Controller --
+    
+    if (feature != NULL)
+    {
+        if ((*feature) != NULL)
+        {
+            ARCONTROLLER_FEATURE_Mapper_UnregisterARCommands ((*feature));
+            
+            if ((*feature)->privatePart != NULL)
+            {
+                ARSAL_Mutex_Destroy (&((*feature)->privatePart->mutex));
+                
+                if ((*feature)->privatePart->dictionary != NULL)
+                {
+                    ARCONTROLLER_Feature_DeleteCommandsDictionary (&((*feature)->privatePart->dictionary));
+                }
+                
+                if ((*feature)->privatePart->commandCallbacks != NULL)
+                {
+                    // Free the hash table contents the command callback
+                    ARCONTROLLER_Dictionary_DeleteDictionary (&((*feature)->privatePart->commandCallbacks));
+                }
+                
+                free ((*feature)->privatePart);
+                (*feature)->privatePart = NULL;
+            }
+            
+            free (*feature);
+            (*feature) = NULL;
+        }
+    }
+}
+
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Mapper_GetDictionary (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_ERROR *error)
+{
+    // -- Get the dictionary of the mapper Feature Controller --
+    
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary = NULL;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        dictionary = feature->privatePart->dictionary;
+    }
+    
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return dictionary;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_AddCallback (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
+{
+    // -- Add a callback to use when a command in project <code>Mapper</code> is received --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Dictionary_AddDictionaryElement (&(feature->privatePart->commandCallbacks), commandKey, callback, customData);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_RemoveCallback (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData)
+{
+    // -- Remove a callback to use when a command in project <code>Mapper</code> is received --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Dictionary_RemoveDictionaryElement (feature->privatePart->commandCallbacks, commandKey, callback, customData);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_RegisterARCommands (ARCONTROLLER_FEATURE_Mapper_t *feature)
+{
+    // -- Register the feature controller to be called when the commands are decoded. -- 
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARCOMMANDS_Decoder_SetMapperGrabStateCallback (&ARCONTROLLER_FEATURE_Mapper_GrabStateCallback, feature);
+        ARCOMMANDS_Decoder_SetMapperGrabButtonEventCallback (&ARCONTROLLER_FEATURE_Mapper_GrabButtonEventCallback, feature);
+        ARCOMMANDS_Decoder_SetMapperGrabAxisEventCallback (&ARCONTROLLER_FEATURE_Mapper_GrabAxisEventCallback, feature);
+        ARCOMMANDS_Decoder_SetMapperButtonMappingItemCallback (&ARCONTROLLER_FEATURE_Mapper_ButtonMappingItemCallback, feature);
+        ARCOMMANDS_Decoder_SetMapperAxisMappingItemCallback (&ARCONTROLLER_FEATURE_Mapper_AxisMappingItemCallback, feature);
+        ARCOMMANDS_Decoder_SetMapperApplicationAxisEventCallback (&ARCONTROLLER_FEATURE_Mapper_ApplicationAxisEventCallback, feature);
+        ARCOMMANDS_Decoder_SetMapperApplicationButtonEventCallback (&ARCONTROLLER_FEATURE_Mapper_ApplicationButtonEventCallback, feature);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_UnregisterARCommands (ARCONTROLLER_FEATURE_Mapper_t *feature)
+{
+    // -- Unregister the feature controller to be called when the commands are decoded. -- 
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        ARCOMMANDS_Decoder_SetMapperGrabStateCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMapperGrabButtonEventCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMapperGrabAxisEventCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMapperButtonMappingItemCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMapperAxisMappingItemCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMapperApplicationAxisEventCallback (NULL, NULL);
+        ARCOMMANDS_Decoder_SetMapperApplicationButtonEventCallback (NULL, NULL);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendGrab (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t buttons, uint32_t axes)
+{
+    // -- Send a command <code>Grab</code> in project <code>Mapper</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send Grab command
+        cmdError = ARCOMMANDS_Generator_GenerateMapperGrab(cmdBuffer, sizeof(cmdBuffer), &cmdSize, buttons, axes);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendMapButtonAction (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product, eARCOMMANDS_MAPPER_BUTTON_ACTION action, uint32_t buttons)
+{
+    // -- Send a command <code>MapButtonAction</code> in project <code>Mapper</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send MapButtonAction command
+        cmdError = ARCOMMANDS_Generator_GenerateMapperMapButtonAction(cmdBuffer, sizeof(cmdBuffer), &cmdSize, product, action, buttons);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendMapAxisAction (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product, eARCOMMANDS_MAPPER_AXIS_ACTION action, int32_t axis, uint32_t buttons)
+{
+    // -- Send a command <code>MapAxisAction</code> in project <code>Mapper</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send MapAxisAction command
+        cmdError = ARCOMMANDS_Generator_GenerateMapperMapAxisAction(cmdBuffer, sizeof(cmdBuffer), &cmdSize, product, action, axis, buttons);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendResetMapping (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product)
+{
+    // -- Send a command <code>ResetMapping</code> in project <code>Mapper</code> --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    u_int8_t cmdBuffer[128];
+    int32_t cmdSize = 0;
+    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;
+    eARNETWORK_ERROR netError = ARNETWORK_OK;
+    
+    // Check parameters
+    if (feature == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Send ResetMapping command
+        cmdError = ARCOMMANDS_Generator_GenerateMapperResetMapping(cmdBuffer, sizeof(cmdBuffer), &cmdSize, product);
+        if (cmdError != ARCOMMANDS_GENERATOR_OK)
+        {
+            error = ARCONTROLLER_ERROR_COMMAND_GENERATING;
+        }
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, &netError);
+    }
+    
+    return error;
+}
+
+void ARCONTROLLER_FEATURE_Mapper_GrabStateCallback (uint32_t _buttons, uint32_t _axes, uint32_t _buttons_state, void *customData)
+{
+    // -- callback used when the command <code>GrabState</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_Mapper_NewCmdElementGrabState (feature,  _buttons,  _axes,  _buttons_state, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_Mapper_GrabButtonEventCallback (uint32_t _button, eARCOMMANDS_MAPPER_BUTTON_EVENT _event, void *customData)
+{
+    // -- callback used when the command <code>GrabButtonEvent</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_Mapper_NewCmdElementGrabButtonEvent (feature,  _button,  _event, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_Mapper_GrabAxisEventCallback (uint32_t _axis, int8_t _value, void *customData)
+{
+    // -- callback used when the command <code>GrabAxisEvent</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_Mapper_NewCmdElementGrabAxisEvent (feature,  _axis,  _value, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_Mapper_ButtonMappingItemCallback (uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_BUTTON_ACTION _action, uint32_t _buttons, uint8_t _list_flags, void *customData)
+{
+    // -- callback used when the command <code>ButtonMappingItem</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int remove = (_list_flags & ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_REMOVE);
+    int clear = (_list_flags & (ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_FIRST | ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_EMPTY));
+    int notify = (_list_flags & (ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_LAST | ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_EMPTY));
+    int add = !(_list_flags & (ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_REMOVE | ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_EMPTY));
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if ((error == ARCONTROLLER_OK) && (dictCmdElement != NULL) && (clear))
+    {
+        //Delete the command
+        ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (remove)
+        {
+            //remove
+        }
+
+        if (add)
+        {
+            if (dictCmdElement == NULL)
+            {
+                // New command element
+                isANewCommandElement = 1;
+                dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+            }
+            // No Else ; commandElement already exists.
+            
+            //Create new element
+            newElement = ARCONTROLLER_Mapper_NewCmdElementButtonMappingItem (feature, _uid,  _product,  _action,  _buttons,  _list_flags, &error);
+            
+            //Set new element in CommandElements 
+            if (error == ARCONTROLLER_OK)
+            {
+                ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+                
+                ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+                
+                //Add new commandElement if necessary
+                if (isANewCommandElement)
+                {
+                    HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+                }
+                
+                elementAdded = 1;
+                
+                ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+            }
+        }
+        
+    }
+    
+    if ((error == ARCONTROLLER_OK) && (notify))
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_Mapper_AxisMappingItemCallback (uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_AXIS_ACTION _action, int32_t _axis, uint32_t _buttons, uint8_t _list_flags, void *customData)
+{
+    // -- callback used when the command <code>AxisMappingItem</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int remove = (_list_flags & ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_REMOVE);
+    int clear = (_list_flags & (ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_FIRST | ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_EMPTY));
+    int notify = (_list_flags & (ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_LAST | ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_EMPTY));
+    int add = !(_list_flags & (ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_REMOVE | ARCOMMANDS_FLAG_GENERIC_LIST_FLAGS_EMPTY));
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if ((error == ARCONTROLLER_OK) && (dictCmdElement != NULL) && (clear))
+    {
+        //Delete the command
+        ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        if (remove)
+        {
+            //remove
+        }
+
+        if (add)
+        {
+            if (dictCmdElement == NULL)
+            {
+                // New command element
+                isANewCommandElement = 1;
+                dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+            }
+            // No Else ; commandElement already exists.
+            
+            //Create new element
+            newElement = ARCONTROLLER_Mapper_NewCmdElementAxisMappingItem (feature, _uid,  _product,  _action,  _axis,  _buttons,  _list_flags, &error);
+            
+            //Set new element in CommandElements 
+            if (error == ARCONTROLLER_OK)
+            {
+                ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+                
+                ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+                
+                //Add new commandElement if necessary
+                if (isANewCommandElement)
+                {
+                    HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+                }
+                
+                elementAdded = 1;
+                
+                ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+            }
+        }
+        
+    }
+    
+    if ((error == ARCONTROLLER_OK) && (notify))
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_Mapper_ApplicationAxisEventCallback (eARCOMMANDS_MAPPER_AXIS_ACTION _action, int8_t _value, void *customData)
+{
+    // -- callback used when the command <code>ApplicationAxisEvent</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_Mapper_NewCmdElementApplicationAxisEvent (feature,  _action,  _value, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+void ARCONTROLLER_FEATURE_Mapper_ApplicationButtonEventCallback (eARCOMMANDS_MAPPER_BUTTON_ACTION _action, void *customData)
+{
+    // -- callback used when the command <code>ApplicationButtonEvent</code> is decoded -- 
+    
+    ARCONTROLLER_FEATURE_Mapper_t *feature = (ARCONTROLLER_FEATURE_Mapper_t *)customData;
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int commandKey = ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictCmdElement = NULL;
+    int isANewCommandElement = 0;
+    int elementAdded = 0;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Find command elements
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        HASH_FIND_INT (feature->privatePart->dictionary, &commandKey, dictCmdElement);
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (dictCmdElement == NULL)
+        {
+            // New command element
+            isANewCommandElement = 1;
+            dictCmdElement = ARCONTROLLER_Feature_NewCommandsElement (commandKey, &error);
+        }
+        // No Else ; commandElement already exists.
+        
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        //Create new element
+        newElement = ARCONTROLLER_Mapper_NewCmdElementApplicationButtonEvent (feature,  _action, &error);
+    }
+    
+    //Set new element in CommandElements 
+    if (error == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        ARCONTROLLER_Feature_AddElement (&(dictCmdElement->elements), newElement);
+        
+        //Add new commandElement if necessary
+        if (isANewCommandElement)
+        {
+            HASH_ADD_INT (feature->privatePart->dictionary, command, dictCmdElement);
+        }
+        
+        elementAdded = 1;
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+    }
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        // Notification Callback
+        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);
+    }
+    
+    // if an error occurred 
+    if (error != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if ((dictCmdElement != NULL) && (isANewCommandElement))
+        {
+            ARCONTROLLER_Feature_DeleteCommandsElement(&dictCmdElement);
+        }
+        
+        if ((newElement != NULL) && (!elementAdded ))
+        {
+            ARCONTROLLER_Feature_DeleteElement (&newElement);
+        }
+        
+    }
+    
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementGrabState (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _buttons, uint32_t _axes, uint32_t _buttons_state, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event GrabState -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_BUTTONS;
+            argDictNewElement->value.U32 = _buttons;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_AXES;
+            argDictNewElement->value.U32 = _axes;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_BUTTONS_STATE;
+            argDictNewElement->value.U32 = _buttons_state;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementGrabButtonEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _button, eARCOMMANDS_MAPPER_BUTTON_EVENT _event, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event GrabButtonEvent -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT_BUTTON;
+            argDictNewElement->value.U32 = _button;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT_EVENT;
+            argDictNewElement->value.I32 = _event;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementGrabAxisEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _axis, int8_t _value, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event GrabAxisEvent -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT_AXIS;
+            argDictNewElement->value.U32 = _axis;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT_VALUE;
+            argDictNewElement->value.I8 = _value;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementButtonMappingItem (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_BUTTON_ACTION _action, uint32_t _buttons, uint8_t _list_flags, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event ButtonMappingItem -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = snprintf (NULL, 0, "%"PRIu32, _uid);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            snprintf (newElement->key, (elementKeyLength + 1), "%"PRIu32, _uid);
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_UID;
+            argDictNewElement->value.U32 = _uid;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_PRODUCT;
+            argDictNewElement->value.U16 = _product;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_ACTION;
+            argDictNewElement->value.I32 = _action;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_BUTTONS;
+            argDictNewElement->value.U32 = _buttons;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementAxisMappingItem (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_AXIS_ACTION _action, int32_t _axis, uint32_t _buttons, uint8_t _list_flags, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event AxisMappingItem -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = snprintf (NULL, 0, "%"PRIu32, _uid);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            snprintf (newElement->key, (elementKeyLength + 1), "%"PRIu32, _uid);
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_UID;
+            argDictNewElement->value.U32 = _uid;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_PRODUCT;
+            argDictNewElement->value.U16 = _product;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_ACTION;
+            argDictNewElement->value.I32 = _action;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_I32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_AXIS;
+            argDictNewElement->value.I32 = _axis;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_BUTTONS;
+            argDictNewElement->value.U32 = _buttons;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementApplicationAxisEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCOMMANDS_MAPPER_AXIS_ACTION _action, int8_t _value, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event ApplicationAxisEvent -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT_ACTION;
+            argDictNewElement->value.I32 = _action;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT_VALUE;
+            argDictNewElement->value.I8 = _value;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementApplicationButtonEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCOMMANDS_MAPPER_BUTTON_ACTION _action, eARCONTROLLER_ERROR *error)
+{
+    // -- Create element of an event ApplicationButtonEvent -- 
+    
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *newElement = NULL;
+    int elementKeyLength = 0;
+    ARCONTROLLER_DICTIONARY_ARG_t *argDictNewElement = NULL;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    //Create Element Dictionary
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New element
+        newElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ELEMENT_t));
+        if (newElement != NULL)
+        {
+            newElement->key = NULL;
+            newElement->arguments = NULL;
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        //Alloc Element Key
+        elementKeyLength = strlen (ARCONTROLLER_DICTIONARY_SINGLE_KEY);
+        newElement->key = malloc (elementKeyLength + 1);
+        if (newElement->key != NULL)
+        {
+            strncpy (newElement->key, ARCONTROLLER_DICTIONARY_SINGLE_KEY, (elementKeyLength + 1));
+            newElement->key[elementKeyLength] = '\0';
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    //Create argument Dictionary
+    //Add argument To the element
+    if (localError == ARCONTROLLER_OK)
+    {
+        // New argument element
+        argDictNewElement = malloc (sizeof(ARCONTROLLER_DICTIONARY_ARG_t));
+        if (argDictNewElement != NULL)
+        {
+            argDictNewElement->valueType = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM;
+            argDictNewElement->argument = ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT_ACTION;
+            argDictNewElement->value.I32 = _action;
+            
+            HASH_ADD_KEYPTR (hh, newElement->arguments, argDictNewElement->argument, strlen(argDictNewElement->argument), argDictNewElement);
+        }
+        else
+        {
+            localError = ARCONTROLLER_ERROR_ALLOC;
+        }
+    }
+    
+    // If an error occurred 
+    if (localError != ARCONTROLLER_OK)
+    {
+        // cleanup
+        if (newElement != NULL)
+        {
+            if (newElement->arguments != NULL)
+            {
+                free (newElement->arguments);
+                newElement->arguments = NULL;
+            }
+            
+            if (newElement->key != NULL)
+            {
+                free (newElement->key);
+                newElement->key = NULL;
+            }
+            
+            free (newElement);
+            newElement = NULL;
+        }
+
+        free (argDictNewElement);
+        argDictNewElement = NULL;
+    }
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return newElement;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SetNetworkController (ARCONTROLLER_FEATURE_Mapper_t *feature, ARCONTROLLER_Network_t *networkController)
+{
+    // -- Set a NetworkController to use to send commands. --
+    
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    
+    // Check parameters
+    if ((feature == NULL) || (feature->privatePart == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (error == ARCONTROLLER_OK)
+    {
+        feature->privatePart->networkController = networkController;
+    }
+    
+    return error;
+}
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_GetCommandElements (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error)
+{
+    // -- Get Command Arguments --
+    
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *commandDic = NULL;
+    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;
+    
+    // Check parameters
+    if ((feature == NULL) ||
+        (feature->privatePart == NULL))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+    
+    if (localError == ARCONTROLLER_OK)
+    {
+        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));
+        
+        // Find elements
+        HASH_FIND_INT (feature->privatePart->dictionary, &(commandKey), commandDic);
+        if (commandDic != NULL)
+        {
+            elements = commandDic->elements;
+        }
+        // NO Else ; Command not found 
+        
+        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));
+        
+        if (elements == NULL)
+        {
+            localError = ARCONTROLLER_ERROR_NO_ELEMENT;
+        }
+    }
+    
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned 
+    
+    return elements;
+}
+
+/************************
+ * Private Implementation
+ *************************/
+/*******************************
  * --- FEATURE MiniDrone --- 
  ******************************/
 

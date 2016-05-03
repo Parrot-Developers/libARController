@@ -194,6 +194,14 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SPEEDSETTINGSSTATE_OUTDOORCHANGED, /**< Key used to define the event <code>SpeedSettingsStateOutdoorChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, /**< Key used to define the event <code>MediaStreamingStateVideoEnableChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED, /**< Key used to define the event <code>VideoSettingsStateAutorecordChanged</code> in project <code>JumpingSumo</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER, /**< Key used to define the feature <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE, /**< Key used to define the event <code>GrabState</code> in project <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT, /**< Key used to define the event <code>GrabButtonEvent</code> in project <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT, /**< Key used to define the event <code>GrabAxisEvent</code> in project <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM, /**< Key used to define the event <code>ButtonMappingItem</code> in project <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM, /**< Key used to define the event <code>AxisMappingItem</code> in project <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT, /**< Key used to define the event <code>ApplicationAxisEvent</code> in project <code>Mapper</code> */
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT, /**< Key used to define the event <code>ApplicationButtonEvent</code> in project <code>Mapper</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE, /**< Key used to define the feature <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED, /**< Key used to define the event <code>PilotingStateFlatTrimChanged</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED, /**< Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>MiniDrone</code> */

@@ -3368,6 +3368,161 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_NewCmdElementVideoSe
 
 
 /*******************************
+ * --- FEATURE mapper --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Mapper_t.
+ */
+struct ARCONTROLLER_FEATURE_Mapper_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_RegisterARCommands (ARCONTROLLER_FEATURE_Mapper_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_UnregisterARCommands (ARCONTROLLER_FEATURE_Mapper_t *feature);
+
+/**
+ * @brief Send a command <code>Grab</code> in project <code>Mapper</code>
+ * Grabbed buttons are sent to the app and are not handled by the mapper
+ * @param feature feature owning the commands
+ * @param buttons Buttons to grab/ungrab (bitfield)
+ * @param axes Axes to grab/ungrab (bitfield)
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendGrab (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t buttons, uint32_t axes);
+
+/**
+ * @brief Send a command <code>MapButtonAction</code> in project <code>Mapper</code>
+ * TODO
+ * @param feature feature owning the commands
+ * @param product Product (see libARDiscovery for list)
+ * @param action The action (mapped on a button)
+ * @param buttons Buttons combination mapped to the action (bitfield). Set 0 (no button) to unmap an action
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendMapButtonAction (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product, eARCOMMANDS_MAPPER_BUTTON_ACTION action, uint32_t buttons);
+
+/**
+ * @brief Send a command <code>MapAxisAction</code> in project <code>Mapper</code>
+ * TODO
+ * @param feature feature owning the commands
+ * @param product Product (see libARDiscovery for list)
+ * @param action The action (mapped on an axis)
+ * @param axis The axis number on which the action will be mapped. Set a negative value to unmap the action.
+ * @param buttons Buttons combination mapped to the action (bitfield). Can be zero if no buttons are required.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendMapAxisAction (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product, eARCOMMANDS_MAPPER_AXIS_ACTION action, int32_t axis, uint32_t buttons);
+
+/**
+ * @brief Send a command <code>ResetMapping</code> in project <code>Mapper</code>
+ * TODO
+ * @param feature feature owning the commands
+ * @param product The product to reset, or 0 to reset all products.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SendResetMapping (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product);
+
+/**
+ * @brief callback used when the command <code>GrabState</code> is decoded
+ * @param feature The feature controller registred
+ * @param buttons Grabbed buttons (bitfield)
+ * @param axes Grabbed axes (bitfield)
+ * @param buttons_state For grabbed buttons only. State of the button when the grab starts (bitfield)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_GrabStateCallback (uint32_t _buttons, uint32_t _axes, uint32_t _buttons_state, void *customData);
+
+/**
+ * @brief callback used when the command <code>GrabButtonEvent</code> is decoded
+ * @param feature The feature controller registred
+ * @param button Button id
+ * @param event Button event
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_GrabButtonEventCallback (uint32_t _button, eARCOMMANDS_MAPPER_BUTTON_EVENT _event, void *customData);
+
+/**
+ * @brief callback used when the command <code>GrabAxisEvent</code> is decoded
+ * @param feature The feature controller registred
+ * @param axis Axis id
+ * @param value Value in range [-100; 100].
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_GrabAxisEventCallback (uint32_t _axis, int8_t _value, void *customData);
+
+/**
+ * @brief callback used when the command <code>ButtonMappingItem</code> is decoded
+ * @param feature The feature controller registred
+ * @param uid Unique ID of the mapping.
+ * @param product Product (see libARDiscovery for list)
+ * @param action The action (mapped on a button)
+ * @param buttons Buttons combination mapped to the action (bitfield).
+ * @param list_flags Flags use by maps and lists
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_ButtonMappingItemCallback (uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_BUTTON_ACTION _action, uint32_t _buttons, uint8_t _list_flags, void *customData);
+
+/**
+ * @brief callback used when the command <code>AxisMappingItem</code> is decoded
+ * @param feature The feature controller registred
+ * @param uid Unique ID of the mapping.
+ * @param product Product (see libARDiscovery for list)
+ * @param action The action (mapped on an axis)
+ * @param axis The axis number on which the action is mapped.
+ * @param buttons Buttons combination mapped to the action (bitfield).
+ * @param list_flags Flags use by maps and lists
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_AxisMappingItemCallback (uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_AXIS_ACTION _action, int32_t _axis, uint32_t _buttons, uint8_t _list_flags, void *customData);
+
+/**
+ * @brief callback used when the command <code>ApplicationAxisEvent</code> is decoded
+ * @param feature The feature controller registred
+ * @param action The action (mapped on an axis)
+ * @param value The current value of the axis.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_ApplicationAxisEventCallback (eARCOMMANDS_MAPPER_AXIS_ACTION _action, int8_t _value, void *customData);
+
+/**
+ * @brief callback used when the command <code>ApplicationButtonEvent</code> is decoded
+ * @param feature The feature controller registred
+ * @param action The action (mapped on a button)
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Mapper_ApplicationButtonEventCallback (eARCOMMANDS_MAPPER_BUTTON_ACTION _action, void *customData);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementGrabState (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _buttons, uint32_t _axes, uint32_t _buttons_state, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementGrabButtonEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _button, eARCOMMANDS_MAPPER_BUTTON_EVENT _event, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementGrabAxisEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _axis, int8_t _value, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementButtonMappingItem (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_BUTTON_ACTION _action, uint32_t _buttons, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementAxisMappingItem (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t _uid, uint16_t _product, eARCOMMANDS_MAPPER_AXIS_ACTION _action, int32_t _axis, uint32_t _buttons, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementApplicationAxisEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCOMMANDS_MAPPER_AXIS_ACTION _action, int8_t _value, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_NewCmdElementApplicationButtonEvent (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCOMMANDS_MAPPER_BUTTON_ACTION _action, eARCONTROLLER_ERROR *error);
+
+
+/*******************************
  * --- FEATURE MiniDrone --- 
  ******************************/
 /**
