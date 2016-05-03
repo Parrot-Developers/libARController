@@ -124,6 +124,8 @@ def list_files(ctx, outdir, extra):
     # Print features controllers generated files
     list_files_ftr_ctrls (ctx, paths.SRC_DIR, paths.INC_DIR, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
+    print os.path.join(outdir, "Sources/ARCONTROLLER_Error.c")
+
 #===============================================================================
 #===============================================================================
 def generate_files(ctx, outdir, extra):
