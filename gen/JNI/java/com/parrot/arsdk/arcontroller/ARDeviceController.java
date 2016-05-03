@@ -43,6 +43,7 @@ public class ARDeviceController
     private native long nativeGetFeatureDebug (long jDeviceController);
     private native long nativeGetFeatureUnknownFeature_1 (long jDeviceController);
     private native long nativeGetFeatureJumpingSumo (long jDeviceController);
+    private native long nativeGetFeatureMapper (long jDeviceController);
     private native long nativeGetFeatureMiniDrone (long jDeviceController);
     private native long nativeGetFeaturePro (long jDeviceController);
     private native long nativeGetFeatureSkyController (long jDeviceController);
@@ -64,6 +65,7 @@ public class ARDeviceController
     ARFeatureDebug featureDebug;
     ARFeatureUnknownFeature_1 featureUnknownFeature_1;
     ARFeatureJumpingSumo featureJumpingSumo;
+    ARFeatureMapper featureMapper;
     ARFeatureMiniDrone featureMiniDrone;
     ARFeaturePro featurePro;
     ARFeatureSkyController featureSkyController;
@@ -154,6 +156,12 @@ public class ARDeviceController
                 {
                     featureJumpingSumo.dispose();
                     featureJumpingSumo = null;
+                }
+                
+                if (featureMapper != null)
+                {
+                    featureMapper.dispose();
+                    featureMapper = null;
                 }
                 
                 if (featureMiniDrone != null)
@@ -269,6 +277,11 @@ public class ARDeviceController
     public ARFeatureJumpingSumo getFeatureJumpingSumo ()
     {
         return featureJumpingSumo;
+    }
+    
+    public ARFeatureMapper getFeatureMapper ()
+    {
+        return featureMapper;
     }
     
     public ARFeatureMiniDrone getFeatureMiniDrone ()
@@ -459,6 +472,16 @@ public class ARDeviceController
         else
         {
             featureJumpingSumo = null;
+        }
+        
+        long nativeFeatureMapper = nativeGetFeatureMapper (jniDeviceController);
+        if ((featureMapper == null) && (nativeFeatureMapper != 0))
+        {
+            featureMapper = new ARFeatureMapper(nativeFeatureMapper);
+        }
+        else
+        {
+            featureMapper = null;
         }
         
         long nativeFeatureMiniDrone = nativeGetFeatureMiniDrone (jniDeviceController);

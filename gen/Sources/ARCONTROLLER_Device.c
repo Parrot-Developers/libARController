@@ -79,6 +79,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
         deviceController->debug = NULL;
         deviceController->unknown_feature_1 = NULL;
         deviceController->jumpingSumo = NULL;
+        deviceController->mapper = NULL;
         deviceController->miniDrone = NULL;
         deviceController->pro = NULL;
         deviceController->skyController = NULL;
@@ -1389,6 +1390,45 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_JumpingSumo_AddCallback (deviceController->jumpingSumo, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+    }
+    
+    if ((deviceController->mapper != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->mapper)))
+    {
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_Mapper_AddCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
     }
@@ -2804,6 +2844,52 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
+        if ((deviceController->mapper != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->mapper)))
+        {
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_Mapper_RemoveCallback (deviceController->mapper, ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+        }
+        
         if ((deviceController->miniDrone != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->miniDrone)))
         {
             removingError = ARCONTROLLER_FEATURE_MiniDrone_RemoveCallback (deviceController->miniDrone, ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -3544,6 +3630,11 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
                 
                 break;
             
+            case ARCONTROLLER_DICTIONARY_KEY_MAPPER:
+                elements = ARCONTROLLER_Mapper_GetCommandElements (deviceController->mapper, commandKey, &localError);
+                
+                break;
+            
             case ARCONTROLLER_DICTIONARY_KEY_MINIDRONE:
                 elements = ARCONTROLLER_MiniDrone_GetCommandElements (deviceController->miniDrone, commandKey, &localError);
                 
@@ -4156,6 +4247,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO; error :%s", ARCONTROLLER_Error_ToString (settingError));
+            }
+            
+        }
+        
+        if (deviceController->mapper != NULL)
+        {
+            settingError = ARCONTROLLER_FEATURE_Mapper_SetNetworkController (deviceController->mapper, deviceController->privatePart->networkController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_MAPPER; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }

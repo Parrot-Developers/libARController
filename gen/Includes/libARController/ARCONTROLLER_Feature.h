@@ -2521,6 +2521,167 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_JumpingSumo_SetNetworkController (ARCON
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_JumpingSumo_GetCommandElements (ARCONTROLLER_FEATURE_JumpingSumo_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /*******************************
+ * --- FEATURE mapper --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Mapper_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_Mapper_Private_t ARCONTROLLER_FEATURE_Mapper_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of mapper Feature.
+ * Key mapper for remote controllers
+ */
+typedef struct ARCONTROLLER_FEATURE_Mapper_t ARCONTROLLER_FEATURE_Mapper_t;
+
+/**
+ * @brief Create a new mapper Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_Mapper_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Mapper_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new mapper Feature Controller
+ * @see ARCONTROLLER_FEATURE_Mapper_Delete
+ */
+ARCONTROLLER_FEATURE_Mapper_t *ARCONTROLLER_FEATURE_Mapper_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the mapper Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_Mapper_New
+ */
+void ARCONTROLLER_FEATURE_Mapper_Delete (ARCONTROLLER_FEATURE_Mapper_t **feature);
+
+/**
+ * @brief Get the dictionay of the mapper Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Mapper_GetDictionary (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>Mapper</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_Mapper_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_AddCallback (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>Mapper</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_RemoveCallback (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_BUTTONS; /**< Key of the argument </code>buttons</code> of event <code>GrabState</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_AXES; /**< Key of the argument </code>axes</code> of event <code>GrabState</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE_BUTTONS_STATE; /**< Key of the argument </code>buttons_state</code> of event <code>GrabState</code> in feature <code>Mapper</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT_BUTTON; /**< Key of the argument </code>button</code> of event <code>GrabButtonEvent</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT_EVENT; /**< Key of the argument </code>event</code> of event <code>GrabButtonEvent</code> in feature <code>Mapper</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT_AXIS; /**< Key of the argument </code>axis</code> of event <code>GrabAxisEvent</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT_VALUE; /**< Key of the argument </code>value</code> of event <code>GrabAxisEvent</code> in feature <code>Mapper</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_UID; /**< Key of the argument </code>uid</code> of event <code>ButtonMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_PRODUCT; /**< Key of the argument </code>product</code> of event <code>ButtonMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_ACTION; /**< Key of the argument </code>action</code> of event <code>ButtonMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM_BUTTONS; /**< Key of the argument </code>buttons</code> of event <code>ButtonMappingItem</code> in feature <code>Mapper</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_UID; /**< Key of the argument </code>uid</code> of event <code>AxisMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_PRODUCT; /**< Key of the argument </code>product</code> of event <code>AxisMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_ACTION; /**< Key of the argument </code>action</code> of event <code>AxisMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_AXIS; /**< Key of the argument </code>axis</code> of event <code>AxisMappingItem</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM_BUTTONS; /**< Key of the argument </code>buttons</code> of event <code>AxisMappingItem</code> in feature <code>Mapper</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT_ACTION; /**< Key of the argument </code>action</code> of event <code>ApplicationAxisEvent</code> in feature <code>Mapper</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT_VALUE; /**< Key of the argument </code>value</code> of event <code>ApplicationAxisEvent</code> in feature <code>Mapper</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT_ACTION; /**< Key of the argument </code>action</code> of event <code>ApplicationButtonEvent</code> in feature <code>Mapper</code> */
+
+/**
+ * @brief Send a command <code>Grab</code> in feature <code>Mapper</code>
+ * Grabbed buttons are sent to the app and are not handled by the mapper
+ * @param feature feature owning the commands
+ * @param buttons Buttons to grab/ungrab (bitfield)
+ * @param axes Axes to grab/ungrab (bitfield)
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Mapper_SendGrab_t) (ARCONTROLLER_FEATURE_Mapper_t *feature, uint32_t buttons, uint32_t axes);
+
+/**
+ * @brief Send a command <code>MapButtonAction</code> in feature <code>Mapper</code>
+ * TODO
+ * @param feature feature owning the commands
+ * @param product Product (see libARDiscovery for list)
+ * @param action The action (mapped on a button)
+ * @param buttons Buttons combination mapped to the action (bitfield). Set 0 (no button) to unmap an action
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Mapper_SendMapButtonAction_t) (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product, eARCOMMANDS_MAPPER_BUTTON_ACTION action, uint32_t buttons);
+
+/**
+ * @brief Send a command <code>MapAxisAction</code> in feature <code>Mapper</code>
+ * TODO
+ * @param feature feature owning the commands
+ * @param product Product (see libARDiscovery for list)
+ * @param action The action (mapped on an axis)
+ * @param axis The axis number on which the action will be mapped. Set a negative value to unmap the action.
+ * @param buttons Buttons combination mapped to the action (bitfield). Can be zero if no buttons are required.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Mapper_SendMapAxisAction_t) (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product, eARCOMMANDS_MAPPER_AXIS_ACTION action, int32_t axis, uint32_t buttons);
+
+/**
+ * @brief Send a command <code>ResetMapping</code> in feature <code>Mapper</code>
+ * TODO
+ * @param feature feature owning the commands
+ * @param product The product to reset, or 0 to reset all products.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Mapper_SendResetMapping_t) (ARCONTROLLER_FEATURE_Mapper_t *feature, uint16_t product);
+
+/**
+ * @brief Feature controller allow to send command related of mapper Feature.
+ * Key mapper for remote controllers
+ */
+struct ARCONTROLLER_FEATURE_Mapper_t
+{
+    ARCONTROLLER_FEATURE_Mapper_SendGrab_t sendGrab;
+    ARCONTROLLER_FEATURE_Mapper_SendMapButtonAction_t sendMapButtonAction;
+    ARCONTROLLER_FEATURE_Mapper_SendMapAxisAction_t sendMapAxisAction;
+    ARCONTROLLER_FEATURE_Mapper_SendResetMapping_t sendResetMapping;
+    ARCONTROLLER_FEATURE_Mapper_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Mapper_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Mapper_SetNetworkController (ARCONTROLLER_FEATURE_Mapper_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Mapper_GetCommandElements (ARCONTROLLER_FEATURE_Mapper_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
  * --- FEATURE MiniDrone --- 
  ******************************/
 
