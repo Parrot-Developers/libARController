@@ -73,7 +73,6 @@ public class ARFeatureMiniDrone
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE = ""; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateClawState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID = ""; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE = ""; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS = ""; /**< Key of the argument </code>nb_photos</code> of event <code>MassStorageMediaStateNbPhotosChanged</code> in feature <code>MiniDrone</code> */
 
     private static native String nativeStaticGetKeyMiniDronePilotingStateFlyingStateChangedState ();
     private static native String nativeStaticGetKeyMiniDronePilotingStateAlertStateChangedState ();
@@ -125,7 +124,6 @@ public class ARFeatureMiniDrone
     private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateId ();
     private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateState ();
     private static native String nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateListflags ();
-    private static native String nativeStaticGetKeyMiniDroneMassStorageMediaStateNbPhotosChangedNbphotos ();
 
     private native int nativeSendPilotingFlatTrim (long jFeature);
     private native int nativeSendPilotingTakeOff (long jFeature);
@@ -214,7 +212,6 @@ public class ARFeatureMiniDrone
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE = nativeStaticGetKeyMiniDroneUsbAccessoryStateClawStateState ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID = nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateId ();
         ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE = nativeStaticGetKeyMiniDroneUsbAccessoryStateGunStateState ();
-        ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS = nativeStaticGetKeyMiniDroneMassStorageMediaStateNbPhotosChangedNbphotos ();
     }
     
     /**

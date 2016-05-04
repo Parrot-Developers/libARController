@@ -54,6 +54,11 @@ public class ARFeatureCommon
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL = ""; /**< Key of the argument </code>model</code> of event <code>CommonStateProductModel</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = ""; /**< Key of the argument </code>listFlags</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = ""; /**< Key of the argument </code>countryCodes</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_MASS_STORAGE_ID = ""; /**< Key of the argument </code>mass_storage_id</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBPHOTOS = ""; /**< Key of the argument </code>nbPhotos</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBVIDEOS = ""; /**< Key of the argument </code>nbVideos</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBPUDS = ""; /**< Key of the argument </code>nbPuds</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBCRASHLOGS = ""; /**< Key of the argument </code>nbCrashLogs</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = ""; /**< Key of the argument </code>regulationType</code> of event <code>OverHeatStateOverHeatRegulationChanged</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = ""; /**< Key of the argument </code>outdoor</code> of event <code>WifiSettingsStateOutdoorSettingsChanged</code> in feature <code>Common</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in feature <code>Common</code> */
@@ -126,6 +131,11 @@ public class ARFeatureCommon
     private static native String nativeStaticGetKeyCommonCommonStateProductModelModel ();
     private static native String nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags ();
     private static native String nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes ();
+    private static native String nativeStaticGetKeyCommonCommonStateMassStorageContentChangedMassstorageid ();
+    private static native String nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbPhotos ();
+    private static native String nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbVideos ();
+    private static native String nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbPuds ();
+    private static native String nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbCrashLogs ();
     private static native String nativeStaticGetKeyCommonOverHeatStateOverHeatRegulationChangedRegulationType ();
     private static native String nativeStaticGetKeyCommonWifiSettingsStateOutdoorSettingsChangedOutdoor ();
     private static native String nativeStaticGetKeyCommonMavlinkStateMavlinkFilePlayingStateChangedState ();
@@ -230,6 +240,11 @@ public class ARFeatureCommon
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL = nativeStaticGetKeyCommonCommonStateProductModelModel ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS = nativeStaticGetKeyCommonCommonStateCountryListKnownListFlags ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES = nativeStaticGetKeyCommonCommonStateCountryListKnownCountryCodes ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_MASS_STORAGE_ID = nativeStaticGetKeyCommonCommonStateMassStorageContentChangedMassstorageid ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBPHOTOS = nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbPhotos ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBVIDEOS = nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbVideos ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBPUDS = nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbPuds ();
+        ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBCRASHLOGS = nativeStaticGetKeyCommonCommonStateMassStorageContentChangedNbCrashLogs ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE = nativeStaticGetKeyCommonOverHeatStateOverHeatRegulationChangedRegulationType ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED_OUTDOOR = nativeStaticGetKeyCommonWifiSettingsStateOutdoorSettingsChangedOutdoor ();
         ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE = nativeStaticGetKeyCommonMavlinkStateMavlinkFilePlayingStateChangedState ();

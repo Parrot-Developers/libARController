@@ -1988,6 +1988,18 @@ void ARCONTROLLER_FEATURE_Common_CommonStateProductModelCallback (eARCOMMANDS_CO
 void ARCONTROLLER_FEATURE_Common_CommonStateCountryListKnownCallback (uint8_t _listFlags, char * _countryCodes, void *customData);
 
 /**
+ * @brief callback used when the command <code>CommonStateMassStorageContentChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param mass_storage_id Mass storage id (unique)
+ * @param nbPhotos Number of photos
+ * @param nbVideos Number of videos
+ * @param nbPuds Number of puds
+ * @param nbCrashLogs Number of crash logs
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_Common_CommonStateMassStorageContentChangedCallback (uint8_t _mass_storage_id, uint16_t _nbPhotos, uint16_t _nbVideos, uint16_t _nbPuds, uint16_t _nbCrashLogs, void *customData);
+
+/**
  * @brief callback used when the command <code>OverHeatStateOverHeatChanged</code> is decoded
  * @param feature The feature controller registred
  * @param customData customData set by the register
@@ -2265,6 +2277,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateS
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateProductModel (ARCONTROLLER_FEATURE_Common_t *feature, eARCOMMANDS_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL _model, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateCountryListKnown (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t _listFlags, char * _countryCodes, int listIndex, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementCommonStateMassStorageContentChanged (ARCONTROLLER_FEATURE_Common_t *feature, uint8_t _mass_storage_id, uint16_t _nbPhotos, uint16_t _nbVideos, uint16_t _nbPuds, uint16_t _nbCrashLogs, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Common_NewCmdElementOverHeatStateOverHeatChanged (ARCONTROLLER_FEATURE_Common_t *feature, eARCONTROLLER_ERROR *error);
 
@@ -4091,14 +4105,6 @@ void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateClawStateCallback (uint8_t 
  */
 void ARCONTROLLER_FEATURE_MiniDrone_UsbAccessoryStateGunStateCallback (uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE _state, uint8_t _list_flags, void *customData);
 
-/**
- * @brief callback used when the command <code>MassStorageMediaStateNbPhotosChanged</code> is decoded
- * @param feature The feature controller registred
- * @param nb_photos Number of photos
- * @param customData customData set by the register
- */
-void ARCONTROLLER_FEATURE_MiniDrone_MassStorageMediaStateNbPhotosChangedCallback (uint16_t _nb_photos, void *customData);
-
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingStateFlatTrimChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementPilotingStateFlyingStateChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCOMMANDS_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED_STATE _state, eARCONTROLLER_ERROR *error);
@@ -4144,8 +4150,6 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccess
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateClawState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE_STATE _state, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementUsbAccessoryStateGunState (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint8_t _id, eARCOMMANDS_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE _state, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
-
-ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_NewCmdElementMassStorageMediaStateNbPhotosChanged (ARCONTROLLER_FEATURE_MiniDrone_t *feature, uint16_t _nb_photos, eARCONTROLLER_ERROR *error);
 
 
 /*******************************

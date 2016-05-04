@@ -241,220 +241,220 @@ public enum ARCONTROLLER_DICTIONARY_KEY_ENUM {
     ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL (97, "Key used to define the event <code>CommonStateProductModel</code> in project <code>Common</code>"),
    /** Key used to define the event <code>CommonStateCountryListKnown</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN (98, "Key used to define the event <code>CommonStateCountryListKnown</code> in project <code>Common</code>"),
+   /** Key used to define the event <code>CommonStateMassStorageContentChanged</code> in project <code>Common</code> */
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED (99, "Key used to define the event <code>CommonStateMassStorageContentChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>OverHeatStateOverHeatChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATCHANGED (99, "Key used to define the event <code>OverHeatStateOverHeatChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATCHANGED (100, "Key used to define the event <code>OverHeatStateOverHeatChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>OverHeatStateOverHeatRegulationChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED (100, "Key used to define the event <code>OverHeatStateOverHeatRegulationChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED (101, "Key used to define the event <code>OverHeatStateOverHeatRegulationChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>WifiSettingsStateOutdoorSettingsChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED (101, "Key used to define the event <code>WifiSettingsStateOutdoorSettingsChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED (102, "Key used to define the event <code>WifiSettingsStateOutdoorSettingsChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED (102, "Key used to define the event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED (103, "Key used to define the event <code>MavlinkStateMavlinkFilePlayingStateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>MavlinkStateMavlinkPlayErrorStateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED (103, "Key used to define the event <code>MavlinkStateMavlinkPlayErrorStateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED (104, "Key used to define the event <code>MavlinkStateMavlinkPlayErrorStateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED (104, "Key used to define the event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED (105, "Key used to define the event <code>CalibrationStateMagnetoCalibrationStateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>CalibrationStateMagnetoCalibrationRequiredState</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE (105, "Key used to define the event <code>CalibrationStateMagnetoCalibrationRequiredState</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE (106, "Key used to define the event <code>CalibrationStateMagnetoCalibrationRequiredState</code> in project <code>Common</code>"),
    /** Key used to define the event <code>CalibrationStateMagnetoCalibrationAxisToCalibrateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED (106, "Key used to define the event <code>CalibrationStateMagnetoCalibrationAxisToCalibrateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED (107, "Key used to define the event <code>CalibrationStateMagnetoCalibrationAxisToCalibrateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>CalibrationStateMagnetoCalibrationStartedChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED (107, "Key used to define the event <code>CalibrationStateMagnetoCalibrationStartedChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED (108, "Key used to define the event <code>CalibrationStateMagnetoCalibrationStartedChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>CameraSettingsStateCameraSettingsChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED (108, "Key used to define the event <code>CameraSettingsStateCameraSettingsChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CAMERASETTINGSSTATE_CAMERASETTINGSCHANGED (109, "Key used to define the event <code>CameraSettingsStateCameraSettingsChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>FlightPlanStateAvailabilityStateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED (109, "Key used to define the event <code>FlightPlanStateAvailabilityStateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED (110, "Key used to define the event <code>FlightPlanStateAvailabilityStateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>FlightPlanStateComponentStateListChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED (110, "Key used to define the event <code>FlightPlanStateComponentStateListChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED (111, "Key used to define the event <code>FlightPlanStateComponentStateListChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>FlightPlanEventStartingErrorEvent</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANEVENT_STARTINGERROREVENT (111, "Key used to define the event <code>FlightPlanEventStartingErrorEvent</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANEVENT_STARTINGERROREVENT (112, "Key used to define the event <code>FlightPlanEventStartingErrorEvent</code> in project <code>Common</code>"),
    /** Key used to define the event <code>FlightPlanEventSpeedBridleEvent</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANEVENT_SPEEDBRIDLEEVENT (112, "Key used to define the event <code>FlightPlanEventSpeedBridleEvent</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANEVENT_SPEEDBRIDLEEVENT (113, "Key used to define the event <code>FlightPlanEventSpeedBridleEvent</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ARLibsVersionsStateControllerLibARCommandsVersion</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION (113, "Key used to define the event <code>ARLibsVersionsStateControllerLibARCommandsVersion</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION (114, "Key used to define the event <code>ARLibsVersionsStateControllerLibARCommandsVersion</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ARLibsVersionsStateSkyControllerLibARCommandsVersion</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION (114, "Key used to define the event <code>ARLibsVersionsStateSkyControllerLibARCommandsVersion</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION (115, "Key used to define the event <code>ARLibsVersionsStateSkyControllerLibARCommandsVersion</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ARLibsVersionsStateDeviceLibARCommandsVersion</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION (115, "Key used to define the event <code>ARLibsVersionsStateDeviceLibARCommandsVersion</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION (116, "Key used to define the event <code>ARLibsVersionsStateDeviceLibARCommandsVersion</code> in project <code>Common</code>"),
    /** Key used to define the event <code>AudioStateAudioStreamingRunning</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING (116, "Key used to define the event <code>AudioStateAudioStreamingRunning</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING (117, "Key used to define the event <code>AudioStateAudioStreamingRunning</code> in project <code>Common</code>"),
    /** Key used to define the event <code>HeadlightsStateIntensityChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED (117, "Key used to define the event <code>HeadlightsStateIntensityChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED (118, "Key used to define the event <code>HeadlightsStateIntensityChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>AnimationsStateList</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST (118, "Key used to define the event <code>AnimationsStateList</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST (119, "Key used to define the event <code>AnimationsStateList</code> in project <code>Common</code>"),
    /** Key used to define the event <code>AccessoryStateSupportedAccessoriesListChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED (119, "Key used to define the event <code>AccessoryStateSupportedAccessoriesListChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED (120, "Key used to define the event <code>AccessoryStateSupportedAccessoriesListChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>AccessoryStateAccessoryConfigChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED (120, "Key used to define the event <code>AccessoryStateAccessoryConfigChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED (121, "Key used to define the event <code>AccessoryStateAccessoryConfigChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>AccessoryStateAccessoryConfigModificationEnabled</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED (121, "Key used to define the event <code>AccessoryStateAccessoryConfigModificationEnabled</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED (122, "Key used to define the event <code>AccessoryStateAccessoryConfigModificationEnabled</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ChargerStateMaxChargeRateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED (122, "Key used to define the event <code>ChargerStateMaxChargeRateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED (123, "Key used to define the event <code>ChargerStateMaxChargeRateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ChargerStateCurrentChargeStateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED (123, "Key used to define the event <code>ChargerStateCurrentChargeStateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED (124, "Key used to define the event <code>ChargerStateCurrentChargeStateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ChargerStateLastChargeRateChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED (124, "Key used to define the event <code>ChargerStateLastChargeRateChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED (125, "Key used to define the event <code>ChargerStateLastChargeRateChanged</code> in project <code>Common</code>"),
    /** Key used to define the event <code>ChargerStateChargingInfo</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO (125, "Key used to define the event <code>ChargerStateChargingInfo</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO (126, "Key used to define the event <code>ChargerStateChargingInfo</code> in project <code>Common</code>"),
    /** Key used to define the event <code>RunStateRunIdChanged</code> in project <code>Common</code> */
-    ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED (126, "Key used to define the event <code>RunStateRunIdChanged</code> in project <code>Common</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED (127, "Key used to define the event <code>RunStateRunIdChanged</code> in project <code>Common</code>"),
    /** Key used to define the feature <code>Debug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_DEBUG (127, "Key used to define the feature <code>Debug</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_DEBUG (128, "Key used to define the feature <code>Debug</code>"),
    /** Key used to define the event <code>SettingsInfo</code> in project <code>Debug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO (128, "Key used to define the event <code>SettingsInfo</code> in project <code>Debug</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO (129, "Key used to define the event <code>SettingsInfo</code> in project <code>Debug</code>"),
    /** Key used to define the event <code>SettingsList</code> in project <code>Debug</code> */
-    ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST (129, "Key used to define the event <code>SettingsList</code> in project <code>Debug</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST (130, "Key used to define the event <code>SettingsList</code> in project <code>Debug</code>"),
    /** Key used to define the feature <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME (130, "Key used to define the feature <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME (131, "Key used to define the feature <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>Availability</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_AVAILABILITY (131, "Key used to define the event <code>Availability</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_AVAILABILITY (132, "Key used to define the event <code>Availability</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>Run</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_RUN (132, "Key used to define the event <code>Run</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_RUN (133, "Key used to define the event <code>Run</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>GeographicConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_GEOGRAPHICCONFIGCHANGED (133, "Key used to define the event <code>GeographicConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_GEOGRAPHICCONFIGCHANGED (134, "Key used to define the event <code>GeographicConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>RelativeConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_RELATIVECONFIGCHANGED (134, "Key used to define the event <code>RelativeConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_RELATIVECONFIGCHANGED (135, "Key used to define the event <code>RelativeConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>AnimRun</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_ANIMRUN (135, "Key used to define the event <code>AnimRun</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_ANIMRUN (136, "Key used to define the event <code>AnimRun</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>SpiralAnimConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_SPIRALANIMCONFIGCHANGED (136, "Key used to define the event <code>SpiralAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_SPIRALANIMCONFIGCHANGED (137, "Key used to define the event <code>SpiralAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>SwingAnimConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_SWINGANIMCONFIGCHANGED (137, "Key used to define the event <code>SwingAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_SWINGANIMCONFIGCHANGED (138, "Key used to define the event <code>SwingAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>BoomerangAnimConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_BOOMERANGANIMCONFIGCHANGED (138, "Key used to define the event <code>BoomerangAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_BOOMERANGANIMCONFIGCHANGED (139, "Key used to define the event <code>BoomerangAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>CandleAnimConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_CANDLEANIMCONFIGCHANGED (139, "Key used to define the event <code>CandleAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_CANDLEANIMCONFIGCHANGED (140, "Key used to define the event <code>CandleAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>DollySlideAnimConfigChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_DOLLYSLIDEANIMCONFIGCHANGED (140, "Key used to define the event <code>DollySlideAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_DOLLYSLIDEANIMCONFIGCHANGED (141, "Key used to define the event <code>DollySlideAnimConfigChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the event <code>UserFramingPositionChanged</code> in project <code>UnknownFeature_1</code> */
-    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_USERFRAMINGPOSITIONCHANGED (141, "Key used to define the event <code>UserFramingPositionChanged</code> in project <code>UnknownFeature_1</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_USERFRAMINGPOSITIONCHANGED (142, "Key used to define the event <code>UserFramingPositionChanged</code> in project <code>UnknownFeature_1</code>"),
    /** Key used to define the feature <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO (142, "Key used to define the feature <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO (143, "Key used to define the feature <code>JumpingSumo</code>"),
    /** Key used to define the event <code>PilotingStatePostureChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED (143, "Key used to define the event <code>PilotingStatePostureChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED (144, "Key used to define the event <code>PilotingStatePostureChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED (144, "Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED (145, "Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>PilotingStateSpeedChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED (145, "Key used to define the event <code>PilotingStateSpeedChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED (146, "Key used to define the event <code>PilotingStateSpeedChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED (146, "Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED (147, "Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>AnimationsStateJumpLoadChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED (147, "Key used to define the event <code>AnimationsStateJumpLoadChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED (148, "Key used to define the event <code>AnimationsStateJumpLoadChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>AnimationsStateJumpTypeChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED (148, "Key used to define the event <code>AnimationsStateJumpTypeChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED (149, "Key used to define the event <code>AnimationsStateJumpTypeChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>AnimationsStateJumpMotorProblemChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED (149, "Key used to define the event <code>AnimationsStateJumpMotorProblemChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED (150, "Key used to define the event <code>AnimationsStateJumpMotorProblemChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>SettingsStateProductGPSVersionChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED (150, "Key used to define the event <code>SettingsStateProductGPSVersionChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SETTINGSSTATE_PRODUCTGPSVERSIONCHANGED (151, "Key used to define the event <code>SettingsStateProductGPSVersionChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaRecordStatePictureStateChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGED (151, "Key used to define the event <code>MediaRecordStatePictureStateChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGED (152, "Key used to define the event <code>MediaRecordStatePictureStateChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaRecordStateVideoStateChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGED (152, "Key used to define the event <code>MediaRecordStateVideoStateChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGED (153, "Key used to define the event <code>MediaRecordStateVideoStateChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGEDV2 (153, "Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_PICTURESTATECHANGEDV2 (154, "Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaRecordStateVideoStateChangedV2</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2 (154, "Key used to define the event <code>MediaRecordStateVideoStateChangedV2</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2 (155, "Key used to define the event <code>MediaRecordStateVideoStateChangedV2</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED (155, "Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_PICTUREEVENTCHANGED (156, "Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaRecordEventVideoEventChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_VIDEOEVENTCHANGED (156, "Key used to define the event <code>MediaRecordEventVideoEventChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIARECORDEVENT_VIDEOEVENTCHANGED (157, "Key used to define the event <code>MediaRecordEventVideoEventChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>NetworkSettingsStateWifiSelectionChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED (157, "Key used to define the event <code>NetworkSettingsStateWifiSelectionChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED (158, "Key used to define the event <code>NetworkSettingsStateWifiSelectionChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>NetworkStateWifiScanListChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED (158, "Key used to define the event <code>NetworkStateWifiScanListChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFISCANLISTCHANGED (159, "Key used to define the event <code>NetworkStateWifiScanListChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>NetworkStateAllWifiScanChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_ALLWIFISCANCHANGED (159, "Key used to define the event <code>NetworkStateAllWifiScanChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_ALLWIFISCANCHANGED (160, "Key used to define the event <code>NetworkStateAllWifiScanChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>NetworkStateWifiAuthChannelListChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED (160, "Key used to define the event <code>NetworkStateWifiAuthChannelListChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED (161, "Key used to define the event <code>NetworkStateWifiAuthChannelListChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>NetworkStateAllWifiAuthChannelChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED (161, "Key used to define the event <code>NetworkStateAllWifiAuthChannelChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED (162, "Key used to define the event <code>NetworkStateAllWifiAuthChannelChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>NetworkStateLinkQualityChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_LINKQUALITYCHANGED (162, "Key used to define the event <code>NetworkStateLinkQualityChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_NETWORKSTATE_LINKQUALITYCHANGED (163, "Key used to define the event <code>NetworkStateLinkQualityChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>AudioSettingsStateMasterVolumeChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_MASTERVOLUMECHANGED (163, "Key used to define the event <code>AudioSettingsStateMasterVolumeChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_MASTERVOLUMECHANGED (164, "Key used to define the event <code>AudioSettingsStateMasterVolumeChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>AudioSettingsStateThemeChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_THEMECHANGED (164, "Key used to define the event <code>AudioSettingsStateThemeChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_AUDIOSETTINGSSTATE_THEMECHANGED (165, "Key used to define the event <code>AudioSettingsStateThemeChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>RoadPlanStateScriptMetadataListChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED (165, "Key used to define the event <code>RoadPlanStateScriptMetadataListChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTMETADATALISTCHANGED (166, "Key used to define the event <code>RoadPlanStateScriptMetadataListChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>RoadPlanStateAllScriptsMetadataChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_ALLSCRIPTSMETADATACHANGED (166, "Key used to define the event <code>RoadPlanStateAllScriptsMetadataChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_ALLSCRIPTSMETADATACHANGED (167, "Key used to define the event <code>RoadPlanStateAllScriptsMetadataChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>RoadPlanStateScriptUploadChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTUPLOADCHANGED (167, "Key used to define the event <code>RoadPlanStateScriptUploadChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTUPLOADCHANGED (168, "Key used to define the event <code>RoadPlanStateScriptUploadChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>RoadPlanStateScriptDeleteChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTDELETECHANGED (168, "Key used to define the event <code>RoadPlanStateScriptDeleteChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_SCRIPTDELETECHANGED (169, "Key used to define the event <code>RoadPlanStateScriptDeleteChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>RoadPlanStatePlayScriptChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_PLAYSCRIPTCHANGED (169, "Key used to define the event <code>RoadPlanStatePlayScriptChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ROADPLANSTATE_PLAYSCRIPTCHANGED (170, "Key used to define the event <code>RoadPlanStatePlayScriptChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>SpeedSettingsStateOutdoorChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SPEEDSETTINGSSTATE_OUTDOORCHANGED (170, "Key used to define the event <code>SpeedSettingsStateOutdoorChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_SPEEDSETTINGSSTATE_OUTDOORCHANGED (171, "Key used to define the event <code>SpeedSettingsStateOutdoorChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>MediaStreamingStateVideoEnableChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED (171, "Key used to define the event <code>MediaStreamingStateVideoEnableChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED (172, "Key used to define the event <code>MediaStreamingStateVideoEnableChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the event <code>VideoSettingsStateAutorecordChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED (172, "Key used to define the event <code>VideoSettingsStateAutorecordChanged</code> in project <code>JumpingSumo</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_VIDEOSETTINGSSTATE_AUTORECORDCHANGED (173, "Key used to define the event <code>VideoSettingsStateAutorecordChanged</code> in project <code>JumpingSumo</code>"),
    /** Key used to define the feature <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER (173, "Key used to define the feature <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER (174, "Key used to define the feature <code>Mapper</code>"),
    /** Key used to define the event <code>GrabState</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE (174, "Key used to define the event <code>GrabState</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABSTATE (175, "Key used to define the event <code>GrabState</code> in project <code>Mapper</code>"),
    /** Key used to define the event <code>GrabButtonEvent</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT (175, "Key used to define the event <code>GrabButtonEvent</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABBUTTONEVENT (176, "Key used to define the event <code>GrabButtonEvent</code> in project <code>Mapper</code>"),
    /** Key used to define the event <code>GrabAxisEvent</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT (176, "Key used to define the event <code>GrabAxisEvent</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_GRABAXISEVENT (177, "Key used to define the event <code>GrabAxisEvent</code> in project <code>Mapper</code>"),
    /** Key used to define the event <code>ButtonMappingItem</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM (177, "Key used to define the event <code>ButtonMappingItem</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_BUTTONMAPPINGITEM (178, "Key used to define the event <code>ButtonMappingItem</code> in project <code>Mapper</code>"),
    /** Key used to define the event <code>AxisMappingItem</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM (178, "Key used to define the event <code>AxisMappingItem</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_AXISMAPPINGITEM (179, "Key used to define the event <code>AxisMappingItem</code> in project <code>Mapper</code>"),
    /** Key used to define the event <code>ApplicationAxisEvent</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT (179, "Key used to define the event <code>ApplicationAxisEvent</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONAXISEVENT (180, "Key used to define the event <code>ApplicationAxisEvent</code> in project <code>Mapper</code>"),
    /** Key used to define the event <code>ApplicationButtonEvent</code> in project <code>Mapper</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT (180, "Key used to define the event <code>ApplicationButtonEvent</code> in project <code>Mapper</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MAPPER_APPLICATIONBUTTONEVENT (181, "Key used to define the event <code>ApplicationButtonEvent</code> in project <code>Mapper</code>"),
    /** Key used to define the feature <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE (181, "Key used to define the feature <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE (182, "Key used to define the feature <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingStateFlatTrimChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED (182, "Key used to define the event <code>PilotingStateFlatTrimChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLATTRIMCHANGED (183, "Key used to define the event <code>PilotingStateFlatTrimChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED (183, "Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGSTATECHANGED (184, "Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED (184, "Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_ALERTSTATECHANGED (185, "Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingStateAutoTakeOffModeChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED (185, "Key used to define the event <code>PilotingStateAutoTakeOffModeChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED (186, "Key used to define the event <code>PilotingStateAutoTakeOffModeChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingStateFlyingModeChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGMODECHANGED (186, "Key used to define the event <code>PilotingStateFlyingModeChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSTATE_FLYINGMODECHANGED (187, "Key used to define the event <code>PilotingStateFlyingModeChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>MediaRecordStatePictureStateChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED (187, "Key used to define the event <code>MediaRecordStatePictureStateChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGED (188, "Key used to define the event <code>MediaRecordStatePictureStateChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2 (188, "Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDSTATE_PICTURESTATECHANGEDV2 (189, "Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED (189, "Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MEDIARECORDEVENT_PICTUREEVENTCHANGED (190, "Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingSettingsStateMaxAltitudeChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED (190, "Key used to define the event <code>PilotingSettingsStateMaxAltitudeChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED (191, "Key used to define the event <code>PilotingSettingsStateMaxAltitudeChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingSettingsStateMaxTiltChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED (191, "Key used to define the event <code>PilotingSettingsStateMaxTiltChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_MAXTILTCHANGED (192, "Key used to define the event <code>PilotingSettingsStateMaxTiltChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>PilotingSettingsStatePlaneModePitchChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED (192, "Key used to define the event <code>PilotingSettingsStatePlaneModePitchChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_PILOTINGSETTINGSSTATE_PLANEMODEPITCHCHANGED (193, "Key used to define the event <code>PilotingSettingsStatePlaneModePitchChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED (193, "Key used to define the event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED (194, "Key used to define the event <code>SpeedSettingsStateMaxVerticalSpeedChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED (194, "Key used to define the event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED (195, "Key used to define the event <code>SpeedSettingsStateMaxRotationSpeedChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SpeedSettingsStateWheelsChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED (195, "Key used to define the event <code>SpeedSettingsStateWheelsChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_WHEELSCHANGED (196, "Key used to define the event <code>SpeedSettingsStateWheelsChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED (196, "Key used to define the event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXHORIZONTALSPEEDCHANGED (197, "Key used to define the event <code>SpeedSettingsStateMaxHorizontalSpeedChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED (197, "Key used to define the event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SPEEDSETTINGSSTATE_MAXPLANEMODEROTATIONSPEEDCHANGED (198, "Key used to define the event <code>SpeedSettingsStateMaxPlaneModeRotationSpeedChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SettingsStateProductMotorsVersionChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED (198, "Key used to define the event <code>SettingsStateProductMotorsVersionChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTMOTORSVERSIONCHANGED (199, "Key used to define the event <code>SettingsStateProductMotorsVersionChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SettingsStateProductInertialVersionChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED (199, "Key used to define the event <code>SettingsStateProductInertialVersionChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_PRODUCTINERTIALVERSIONCHANGED (200, "Key used to define the event <code>SettingsStateProductInertialVersionChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>SettingsStateCutOutModeChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED (200, "Key used to define the event <code>SettingsStateCutOutModeChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_SETTINGSSTATE_CUTOUTMODECHANGED (201, "Key used to define the event <code>SettingsStateCutOutModeChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>FloodControlStateFloodControlChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED (201, "Key used to define the event <code>FloodControlStateFloodControlChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_FLOODCONTROLSTATE_FLOODCONTROLCHANGED (202, "Key used to define the event <code>FloodControlStateFloodControlChanged</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE (202, "Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE (203, "Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE (203, "Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE (204, "Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code>"),
    /** Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE (204, "Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code>"),
-   /** Key used to define the event <code>MassStorageMediaStateNbPhotosChanged</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED (205, "Key used to define the event <code>MassStorageMediaStateNbPhotosChanged</code> in project <code>MiniDrone</code>"),
+    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE (205, "Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code>"),
    /** Key used to define the feature <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO (206, "Key used to define the feature <code>Pro</code>"),
    /** Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code> */
