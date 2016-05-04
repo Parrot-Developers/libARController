@@ -120,6 +120,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED, /**< Key used to define the event <code>CommonStateSensorsStatesListChanged</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL, /**< Key used to define the event <code>CommonStateProductModel</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN, /**< Key used to define the event <code>CommonStateCountryListKnown</code> in project <code>Common</code> */
+    ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED, /**< Key used to define the event <code>CommonStateMassStorageContentChanged</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATCHANGED, /**< Key used to define the event <code>OverHeatStateOverHeatChanged</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED, /**< Key used to define the event <code>OverHeatStateOverHeatRegulationChanged</code> in project <code>Common</code> */
     ARCONTROLLER_DICTIONARY_KEY_COMMON_WIFISETTINGSSTATE_OUTDOORSETTINGSCHANGED, /**< Key used to define the event <code>WifiSettingsStateOutdoorSettingsChanged</code> in project <code>Common</code> */
@@ -226,7 +227,6 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE, /**< Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE, /**< Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE, /**< Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code> */
-    ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED, /**< Key used to define the event <code>MassStorageMediaStateNbPhotosChanged</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO, /**< Key used to define the feature <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES, /**< Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED, /**< Key used to define the event <code>ProStateFeaturesActivated</code> in project <code>Pro</code> */

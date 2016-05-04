@@ -1241,6 +1241,12 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_M
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS; /**< Key of the argument </code>listFlags</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES; /**< Key of the argument </code>countryCodes</code> of event <code>CommonStateCountryListKnown</code> in feature <code>Common</code> */
 
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_MASS_STORAGE_ID; /**< Key of the argument </code>mass_storage_id</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBPHOTOS; /**< Key of the argument </code>nbPhotos</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBVIDEOS; /**< Key of the argument </code>nbVideos</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBPUDS; /**< Key of the argument </code>nbPuds</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTCHANGED_NBCRASHLOGS; /**< Key of the argument </code>nbCrashLogs</code> of event <code>CommonStateMassStorageContentChanged</code> in feature <code>Common</code> */
+
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED_REGULATIONTYPE; /**< Key of the argument </code>regulationType</code> of event <code>OverHeatStateOverHeatRegulationChanged</code> in feature <code>Common</code> */
 
@@ -2812,8 +2818,6 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWS
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_ID; /**< Key of the argument </code>id</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE_STATE; /**< Key of the argument </code>state</code> of event <code>UsbAccessoryStateGunState</code> in feature <code>MiniDrone</code> */
-
-extern const char *ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_MASSSTORAGEMEDIASTATE_NBPHOTOSCHANGED_NB_PHOTOS; /**< Key of the argument </code>nb_photos</code> of event <code>MassStorageMediaStateNbPhotosChanged</code> in feature <code>MiniDrone</code> */
 
 /**
  * @brief Send a command <code>PilotingFlatTrim</code> in feature <code>MiniDrone</code>
