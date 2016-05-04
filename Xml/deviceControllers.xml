@@ -109,7 +109,7 @@
         Power Up project
         
         <feature name="common"/>
-        <feature name="jpsumo"/>
+        <feature name="powerup"/>
         
     </ARController_Device>
     

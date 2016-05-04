@@ -2115,8 +2115,6 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTST
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED; /**< Key of the argument </code>speed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED; /**< Key of the argument </code>realSpeed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
 
-extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>JumpingSumo</code> */
-
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpLoadChanged</code> in feature <code>JumpingSumo</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpTypeChanged</code> in feature <code>JumpingSumo</code> */
@@ -2260,24 +2258,6 @@ typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingPostu
  * return executing error
  */
 typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingAddCapOffset_t) (ARCONTROLLER_FEATURE_JumpingSumo_t *feature, float offset);
-
-/**
- * @brief Send a command <code>PilotingUserTakeOff</code> in feature <code>JumpingSumo</code>
- * Set drone in user take off state
- * Only used for PowerUp product
- * @param feature feature owning the commands
- * @param state State of user take off mode - 1 to enter in user take off. - 0 to exit from user take off.
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingUserTakeOff_t) (ARCONTROLLER_FEATURE_JumpingSumo_t *feature, uint8_t state);
-
-/**
- * @brief Send a command <code>PilotingLand</code> in feature <code>JumpingSumo</code>
- * Ask the PowerUp to land
- * @param feature feature owning the commands
- * return executing error
- */
-typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingLand_t) (ARCONTROLLER_FEATURE_JumpingSumo_t *feature);
 
 /**
  * @brief Send a command <code>AnimationsJumpStop</code> in feature <code>JumpingSumo</code>
@@ -2482,8 +2462,6 @@ struct ARCONTROLLER_FEATURE_JumpingSumo_t
     ARCONTROLLER_FEATURE_JumpingSumo_SetPilotingPCMDTurn_t setPilotingPCMDTurn; /**< Send a command <code>PilotingPCMD</code> in feature <code>JumpingSumo</code>. */
     ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingPosture_t sendPilotingPosture;
     ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingAddCapOffset_t sendPilotingAddCapOffset;
-    ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingUserTakeOff_t sendPilotingUserTakeOff;
-    ARCONTROLLER_FEATURE_JumpingSumo_SendPilotingLand_t sendPilotingLand;
     ARCONTROLLER_FEATURE_JumpingSumo_SendAnimationsJumpStop_t sendAnimationsJumpStop;
     ARCONTROLLER_FEATURE_JumpingSumo_SendAnimationsJumpCancel_t sendAnimationsJumpCancel;
     ARCONTROLLER_FEATURE_JumpingSumo_SendAnimationsJumpLoad_t sendAnimationsJumpLoad;
@@ -3205,6 +3183,334 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_MiniDrone_SetNetworkController (ARCONTR
  * @return Element dictionary of the command ; Can be null if an error is occurred.
  */
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_MiniDrone_GetCommandElements (ARCONTROLLER_FEATURE_MiniDrone_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
+ * --- FEATURE powerup --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_Powerup_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_Powerup_Private_t ARCONTROLLER_FEATURE_Powerup_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of powerup Feature.
+ * All commands specific to the Power Up.
+ */
+typedef struct ARCONTROLLER_FEATURE_Powerup_t ARCONTROLLER_FEATURE_Powerup_t;
+
+/**
+ * @brief Create a new powerup Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_Powerup_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_Powerup_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new powerup Feature Controller
+ * @see ARCONTROLLER_FEATURE_Powerup_Delete
+ */
+ARCONTROLLER_FEATURE_Powerup_t *ARCONTROLLER_FEATURE_Powerup_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the powerup Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_Powerup_New
+ */
+void ARCONTROLLER_FEATURE_Powerup_Delete (ARCONTROLLER_FEATURE_Powerup_t **feature);
+
+/**
+ * @brief Get the dictionay of the powerup Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_Powerup_GetDictionary (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>Powerup</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_Powerup_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Powerup_AddCallback (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>Powerup</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Powerup_RemoveCallback (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ALERTSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_FLYINGSTATECHANGED_STATE; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_MOTORMODECHANGED_MODE; /**< Key of the argument </code>mode</code> of event <code>PilotingStateMotorModeChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ATTITUDECHANGED_ROLL; /**< Key of the argument </code>roll</code> of event <code>PilotingStateAttitudeChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ATTITUDECHANGED_PITCH; /**< Key of the argument </code>pitch</code> of event <code>PilotingStateAttitudeChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ATTITUDECHANGED_YAW; /**< Key of the argument </code>yaw</code> of event <code>PilotingStateAttitudeChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ALTITUDECHANGED_ALTITUDE; /**< Key of the argument </code>altitude</code> of event <code>PilotingStateAltitudeChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSETTINGSSTATE_SETTINGCHANGED_SETTING; /**< Key of the argument </code>setting</code> of event <code>PilotingSettingsStateSettingChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSETTINGSSTATE_SETTINGCHANGED_CURRENT; /**< Key of the argument </code>current</code> of event <code>PilotingSettingsStateSettingChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSETTINGSSTATE_SETTINGCHANGED_MIN; /**< Key of the argument </code>min</code> of event <code>PilotingSettingsStateSettingChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSETTINGSSTATE_SETTINGCHANGED_MAX; /**< Key of the argument </code>max</code> of event <code>PilotingSettingsStateSettingChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE; /**< Key of the argument </code>state</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR; /**< Key of the argument </code>error</code> of event <code>MediaRecordStatePictureStateChangedV2</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_STATE; /**< Key of the argument </code>state</code> of event <code>MediaRecordStateVideoStateChangedV2</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_ERROR; /**< Key of the argument </code>error</code> of event <code>MediaRecordStateVideoStateChangedV2</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDEVENT_PICTUREEVENTCHANGED_EVENT; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDEVENT_PICTUREEVENTCHANGED_ERROR; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventPictureEventChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDEVENT_VIDEOEVENTCHANGED_EVENT; /**< Key of the argument </code>event</code> of event <code>MediaRecordEventVideoEventChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDEVENT_VIDEOEVENTCHANGED_ERROR; /**< Key of the argument </code>error</code> of event <code>MediaRecordEventVideoEventChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE; /**< Key of the argument </code>type</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND; /**< Key of the argument </code>band</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of event <code>NetworkSettingsStateWifiSelectionChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFISCANLISTCHANGED_SSID; /**< Key of the argument </code>ssid</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFISCANLISTCHANGED_RSSI; /**< Key of the argument </code>rssi</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFISCANLISTCHANGED_BAND; /**< Key of the argument </code>band</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFISCANLISTCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of event <code>NetworkStateWifiScanListChanged</code> in feature <code>Powerup</code> */
+
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_BAND; /**< Key of the argument </code>band</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_CHANNEL; /**< Key of the argument </code>channel</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>Powerup</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_IN_OR_OUT; /**< Key of the argument </code>in_or_out</code> of event <code>NetworkStateWifiAuthChannelListChanged</code> in feature <code>Powerup</code> */
+
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_LINKQUALITYCHANGED_QUALITY; /**< Key of the argument </code>quality</code> of event <code>NetworkStateLinkQualityChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED; /**< Key of the argument </code>enabled</code> of event <code>MediaStreamingStateVideoEnableChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_VIDEOSETTINGSSTATE_AUTORECORDCHANGED_ENABLED; /**< Key of the argument </code>enabled</code> of event <code>VideoSettingsStateAutorecordChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_VIDEOSETTINGSSTATE_VIDEOMODECHANGED_MODE; /**< Key of the argument </code>mode</code> of event <code>VideoSettingsStateVideoModeChanged</code> in feature <code>Powerup</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_POWERUP_SOUNDSSTATE_BUZZCHANGED_ENABLED; /**< Key of the argument </code>enabled</code> of event <code>SoundsStateBuzzChanged</code> in feature <code>Powerup</code> */
+
+/**
+ * @brief Send a command <code>PilotingPCMD</code> in feature <code>Powerup</code>
+ * Ask the Power Up speed and turn ratio.
+ * @param feature feature owning the commands
+ * @param flag Boolean for "touch screen".
+ * @param throttle Throttle value [0:100].
+ * @param roll Yaw-roll value. [-100:100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendPilotingPCMD_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t flag, uint8_t throttle, int8_t roll);
+
+/**
+ * @brief Set the parameters to send through the command <code>PilotingPCMD</code> in project <code>Powerup</code>
+ * Ask the Power Up speed and turn ratio.
+ * @param feature feature owning the commands
+ * @param flag Boolean for "touch screen".
+ * @param throttle Throttle value [0:100].
+ * @param roll Yaw-roll value. [-100:100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMD_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t flag, uint8_t throttle, int8_t roll);
+
+/**
+ * @brief Send the a command <code>PilotingPCMD</code> in project <code>Powerup</code> with the parame set beforehand 
+ * Ask the Power Up speed and turn ratio.
+ * @param feature feature owning the commands
+ * @param cmdBuffer buffer to store the command
+ * @param cmdBufferSize size of the buffer
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Powerup_SendPilotingPCMDStruct (ARCONTROLLER_FEATURE_Powerup_t *feature, u_int8_t *cmdBuffer, int32_t cmdBufferSize);
+
+/**
+ * @brief Set flag sent through the command <code>PilotingPCMD</code> in project <code>Powerup</code>
+ * Ask the Power Up speed and turn ratio.
+ * @param feature feature owning the commands
+ * @param flag Boolean for "touch screen".
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMDFlag_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t flag);
+
+/**
+ * @brief Set throttle sent through the command <code>PilotingPCMD</code> in project <code>Powerup</code>
+ * Ask the Power Up speed and turn ratio.
+ * @param feature feature owning the commands
+ * @param throttle Throttle value [0:100].
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMDThrottle_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t throttle);
+
+/**
+ * @brief Set roll sent through the command <code>PilotingPCMD</code> in project <code>Powerup</code>
+ * Ask the Power Up speed and turn ratio.
+ * @param feature feature owning the commands
+ * @param roll Yaw-roll value. [-100:100]
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMDRoll_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, int8_t roll);
+
+/**
+ * @brief Send a command <code>PilotingUserTakeOff</code> in feature <code>Powerup</code>
+ * Set drone in user take off state
+ * @param feature feature owning the commands
+ * @param state State of user take off mode - 1 to enter in user take off. - 0 to exit from user take off.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendPilotingUserTakeOff_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t state);
+
+/**
+ * @brief Send a command <code>PilotingMotorMode</code> in feature <code>Powerup</code>
+ * Motor mode
+ * @param feature feature owning the commands
+ * @param mode 
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendPilotingMotorMode_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCOMMANDS_POWERUP_PILOTING_MOTORMODE_MODE mode);
+
+/**
+ * @brief Send a command <code>PilotingSettingsSet</code> in feature <code>Powerup</code>
+ * Set the given setting
+ * @param feature feature owning the commands
+ * @param setting Variety of setting that can be customized
+ * @param value value of the given setting
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendPilotingSettingsSet_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCOMMANDS_POWERUP_PILOTINGSETTINGS_SET_SETTING setting, float value);
+
+/**
+ * @brief Send a command <code>MediaRecordPictureV2</code> in feature <code>Powerup</code>
+ * Take picture
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendMediaRecordPictureV2_t) (ARCONTROLLER_FEATURE_Powerup_t *feature);
+
+/**
+ * @brief Send a command <code>MediaRecordVideoV2</code> in feature <code>Powerup</code>
+ * Video record
+ * @param feature feature owning the commands
+ * @param record Command to record video
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendMediaRecordVideoV2_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCOMMANDS_POWERUP_MEDIARECORD_VIDEOV2_RECORD record);
+
+/**
+ * @brief Send a command <code>NetworkSettingsWifiSelection</code> in feature <code>Powerup</code>
+ * Auto-select channel of choosen band
+ * @param feature feature owning the commands
+ * @param type The type of wifi selection (auto, manual)
+ * @param band The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
+ * @param channel The channel (not used in auto mode)
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendNetworkSettingsWifiSelection_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCOMMANDS_POWERUP_NETWORKSETTINGS_WIFISELECTION_TYPE type, eARCOMMANDS_POWERUP_NETWORKSETTINGS_WIFISELECTION_BAND band, uint8_t channel);
+
+/**
+ * @brief Send a command <code>NetworkWifiScan</code> in feature <code>Powerup</code>
+ * Launches wifi network scan
+ * @param feature feature owning the commands
+ * @param band The band(s) : 2.4 Ghz, 5 Ghz, or both
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendNetworkWifiScan_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCOMMANDS_POWERUP_NETWORK_WIFISCAN_BAND band);
+
+/**
+ * @brief Send a command <code>NetworkWifiAuthChannel</code> in feature <code>Powerup</code>
+ * Controller inquire the list of authorized wifi channels.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendNetworkWifiAuthChannel_t) (ARCONTROLLER_FEATURE_Powerup_t *feature);
+
+/**
+ * @brief Send a command <code>MediaStreamingVideoEnable</code> in feature <code>Powerup</code>
+ * Enable/disable video streaming.
+ * @param feature feature owning the commands
+ * @param enable 1 to enable, 0 to disable.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendMediaStreamingVideoEnable_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t enable);
+
+/**
+ * @brief Send a command <code>VideoSettingsAutorecord</code> in feature <code>Powerup</code>
+ * Set video automatic recording state.
+ * @param feature feature owning the commands
+ * @param enable 0: Disabled 1: Enabled.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendVideoSettingsAutorecord_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t enable);
+
+/**
+ * @brief Send a command <code>VideoSettingsVideoMode</code> in feature <code>Powerup</code>
+ * Set video mode
+ * @param feature feature owning the commands
+ * @param mode Video mode
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendVideoSettingsVideoMode_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCOMMANDS_POWERUP_VIDEOSETTINGS_VIDEOMODE_MODE mode);
+
+/**
+ * @brief Send a command <code>SoundsBuzz</code> in feature <code>Powerup</code>
+ * Enable/disable the buzzer sound
+ * @param feature feature owning the commands
+ * @param enable 0: Disabled 1: Enabled.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_Powerup_SendSoundsBuzz_t) (ARCONTROLLER_FEATURE_Powerup_t *feature, uint8_t enable);
+
+/**
+ * @brief Feature controller allow to send command related of powerup Feature.
+ * All commands specific to the Power Up.
+ */
+struct ARCONTROLLER_FEATURE_Powerup_t
+{
+    ARCONTROLLER_FEATURE_Powerup_SendPilotingPCMD_t sendPilotingPCMD;
+    ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMD_t setPilotingPCMD;
+    ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMDFlag_t setPilotingPCMDFlag; /**< Send a command <code>PilotingPCMD</code> in feature <code>Powerup</code>. */
+    ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMDThrottle_t setPilotingPCMDThrottle; /**< Send a command <code>PilotingPCMD</code> in feature <code>Powerup</code>. */
+    ARCONTROLLER_FEATURE_Powerup_SetPilotingPCMDRoll_t setPilotingPCMDRoll; /**< Send a command <code>PilotingPCMD</code> in feature <code>Powerup</code>. */
+    ARCONTROLLER_FEATURE_Powerup_SendPilotingUserTakeOff_t sendPilotingUserTakeOff;
+    ARCONTROLLER_FEATURE_Powerup_SendPilotingMotorMode_t sendPilotingMotorMode;
+    ARCONTROLLER_FEATURE_Powerup_SendPilotingSettingsSet_t sendPilotingSettingsSet;
+    ARCONTROLLER_FEATURE_Powerup_SendMediaRecordPictureV2_t sendMediaRecordPictureV2;
+    ARCONTROLLER_FEATURE_Powerup_SendMediaRecordVideoV2_t sendMediaRecordVideoV2;
+    ARCONTROLLER_FEATURE_Powerup_SendNetworkSettingsWifiSelection_t sendNetworkSettingsWifiSelection;
+    ARCONTROLLER_FEATURE_Powerup_SendNetworkWifiScan_t sendNetworkWifiScan;
+    ARCONTROLLER_FEATURE_Powerup_SendNetworkWifiAuthChannel_t sendNetworkWifiAuthChannel;
+    ARCONTROLLER_FEATURE_Powerup_SendMediaStreamingVideoEnable_t sendMediaStreamingVideoEnable;
+    ARCONTROLLER_FEATURE_Powerup_SendVideoSettingsAutorecord_t sendVideoSettingsAutorecord;
+    ARCONTROLLER_FEATURE_Powerup_SendVideoSettingsVideoMode_t sendVideoSettingsVideoMode;
+    ARCONTROLLER_FEATURE_Powerup_SendSoundsBuzz_t sendSoundsBuzz;
+    ARCONTROLLER_FEATURE_Powerup_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_Powerup_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Powerup_SetNetworkController (ARCONTROLLER_FEATURE_Powerup_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Powerup_GetCommandElements (ARCONTROLLER_FEATURE_Powerup_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /*******************************
  * --- FEATURE pro --- 

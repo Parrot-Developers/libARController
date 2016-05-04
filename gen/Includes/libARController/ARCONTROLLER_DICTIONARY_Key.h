@@ -168,7 +168,6 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_POSTURECHANGED, /**< Key used to define the event <code>PilotingStatePostureChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED, /**< Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED, /**< Key used to define the event <code>PilotingStateSpeedChanged</code> in project <code>JumpingSumo</code> */
-    ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED, /**< Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED, /**< Key used to define the event <code>AnimationsStateJumpLoadChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED, /**< Key used to define the event <code>AnimationsStateJumpTypeChanged</code> in project <code>JumpingSumo</code> */
     ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED, /**< Key used to define the event <code>AnimationsStateJumpMotorProblemChanged</code> in project <code>JumpingSumo</code> */
@@ -227,6 +226,27 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_LIGHTSTATE, /**< Key used to define the event <code>UsbAccessoryStateLightState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_CLAWSTATE, /**< Key used to define the event <code>UsbAccessoryStateClawState</code> in project <code>MiniDrone</code> */
     ARCONTROLLER_DICTIONARY_KEY_MINIDRONE_USBACCESSORYSTATE_GUNSTATE, /**< Key used to define the event <code>UsbAccessoryStateGunState</code> in project <code>MiniDrone</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP, /**< Key used to define the feature <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ALERTSTATECHANGED, /**< Key used to define the event <code>PilotingStateAlertStateChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_FLYINGSTATECHANGED, /**< Key used to define the event <code>PilotingStateFlyingStateChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_MOTORMODECHANGED, /**< Key used to define the event <code>PilotingStateMotorModeChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ATTITUDECHANGED, /**< Key used to define the event <code>PilotingStateAttitudeChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSTATE_ALTITUDECHANGED, /**< Key used to define the event <code>PilotingStateAltitudeChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_PILOTINGSETTINGSSTATE_SETTINGCHANGED, /**< Key used to define the event <code>PilotingSettingsStateSettingChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDSTATE_PICTURESTATECHANGEDV2, /**< Key used to define the event <code>MediaRecordStatePictureStateChangedV2</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2, /**< Key used to define the event <code>MediaRecordStateVideoStateChangedV2</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDEVENT_PICTUREEVENTCHANGED, /**< Key used to define the event <code>MediaRecordEventPictureEventChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIARECORDEVENT_VIDEOEVENTCHANGED, /**< Key used to define the event <code>MediaRecordEventVideoEventChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED, /**< Key used to define the event <code>NetworkSettingsStateWifiSelectionChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFISCANLISTCHANGED, /**< Key used to define the event <code>NetworkStateWifiScanListChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_ALLWIFISCANCHANGED, /**< Key used to define the event <code>NetworkStateAllWifiScanChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED, /**< Key used to define the event <code>NetworkStateWifiAuthChannelListChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED, /**< Key used to define the event <code>NetworkStateAllWifiAuthChannelChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_NETWORKSTATE_LINKQUALITYCHANGED, /**< Key used to define the event <code>NetworkStateLinkQualityChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED, /**< Key used to define the event <code>MediaStreamingStateVideoEnableChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_VIDEOSETTINGSSTATE_AUTORECORDCHANGED, /**< Key used to define the event <code>VideoSettingsStateAutorecordChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_VIDEOSETTINGSSTATE_VIDEOMODECHANGED, /**< Key used to define the event <code>VideoSettingsStateVideoModeChanged</code> in project <code>Powerup</code> */
+    ARCONTROLLER_DICTIONARY_KEY_POWERUP_SOUNDSSTATE_BUZZCHANGED, /**< Key used to define the event <code>SoundsStateBuzzChanged</code> in project <code>Powerup</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO, /**< Key used to define the feature <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_SUPPORTEDFEATURES, /**< Key used to define the event <code>ProStateSupportedFeatures</code> in project <code>Pro</code> */
     ARCONTROLLER_DICTIONARY_KEY_PRO_PROSTATE_FEATURESACTIVATED, /**< Key used to define the event <code>ProStateFeaturesActivated</code> in project <code>Pro</code> */

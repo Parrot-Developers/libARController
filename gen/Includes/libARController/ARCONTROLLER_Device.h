@@ -77,6 +77,7 @@ typedef struct
     ARCONTROLLER_FEATURE_JumpingSumo_t *jumpingSumo; /**< */
     ARCONTROLLER_FEATURE_Mapper_t *mapper; /**< */
     ARCONTROLLER_FEATURE_MiniDrone_t *miniDrone; /**< */
+    ARCONTROLLER_FEATURE_Powerup_t *powerup; /**< */
     ARCONTROLLER_FEATURE_Pro_t *pro; /**< */
     ARCONTROLLER_FEATURE_SkyController_t *skyController; /**< */
     ARCONTROLLER_FEATURE_Wifi_t *wifi; /**< */

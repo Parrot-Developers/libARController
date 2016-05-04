@@ -45,6 +45,7 @@ public class ARDeviceController
     private native long nativeGetFeatureJumpingSumo (long jDeviceController);
     private native long nativeGetFeatureMapper (long jDeviceController);
     private native long nativeGetFeatureMiniDrone (long jDeviceController);
+    private native long nativeGetFeaturePowerup (long jDeviceController);
     private native long nativeGetFeaturePro (long jDeviceController);
     private native long nativeGetFeatureSkyController (long jDeviceController);
     private native long nativeGetFeatureWifi (long jDeviceController);
@@ -67,6 +68,7 @@ public class ARDeviceController
     ARFeatureJumpingSumo featureJumpingSumo;
     ARFeatureMapper featureMapper;
     ARFeatureMiniDrone featureMiniDrone;
+    ARFeaturePowerup featurePowerup;
     ARFeaturePro featurePro;
     ARFeatureSkyController featureSkyController;
     ARFeatureWifi featureWifi;
@@ -168,6 +170,12 @@ public class ARDeviceController
                 {
                     featureMiniDrone.dispose();
                     featureMiniDrone = null;
+                }
+                
+                if (featurePowerup != null)
+                {
+                    featurePowerup.dispose();
+                    featurePowerup = null;
                 }
                 
                 if (featurePro != null)
@@ -287,6 +295,11 @@ public class ARDeviceController
     public ARFeatureMiniDrone getFeatureMiniDrone ()
     {
         return featureMiniDrone;
+    }
+    
+    public ARFeaturePowerup getFeaturePowerup ()
+    {
+        return featurePowerup;
     }
     
     public ARFeaturePro getFeaturePro ()
@@ -492,6 +505,16 @@ public class ARDeviceController
         else
         {
             featureMiniDrone = null;
+        }
+        
+        long nativeFeaturePowerup = nativeGetFeaturePowerup (jniDeviceController);
+        if ((featurePowerup == null) && (nativeFeaturePowerup != 0))
+        {
+            featurePowerup = new ARFeaturePowerup(nativeFeaturePowerup);
+        }
+        else
+        {
+            featurePowerup = null;
         }
         
         long nativeFeaturePro = nativeGetFeaturePro (jniDeviceController);

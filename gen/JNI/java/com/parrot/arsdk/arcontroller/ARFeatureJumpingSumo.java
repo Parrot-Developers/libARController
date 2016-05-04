@@ -30,7 +30,6 @@ public class ARFeatureJumpingSumo
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateAlertStateChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED = ""; /**< Key of the argument </code>speed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED = ""; /**< Key of the argument </code>realSpeed</code> of event <code>PilotingStateSpeedChanged</code> in feature <code>JumpingSumo</code> */
-    public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>PilotingStateFlyingStateChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpLoadChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = ""; /**< Key of the argument </code>state</code> of event <code>AnimationsStateJumpTypeChanged</code> in feature <code>JumpingSumo</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = ""; /**< Key of the argument </code>error</code> of event <code>AnimationsStateJumpMotorProblemChanged</code> in feature <code>JumpingSumo</code> */
@@ -77,7 +76,6 @@ public class ARFeatureJumpingSumo
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateAlertStateChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedSpeed ();
     private static native String nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedRealSpeed ();
-    private static native String nativeStaticGetKeyJumpingSumoPilotingStateFlyingStateChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoAnimationsStateJumpLoadChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoAnimationsStateJumpTypeChangedState ();
     private static native String nativeStaticGetKeyJumpingSumoAnimationsStateJumpMotorProblemChangedError ();
@@ -127,8 +125,6 @@ public class ARFeatureJumpingSumo
     private native int nativeSetPilotingPCMDTurn (long jFeature, byte turn);
     private native int nativeSendPilotingPosture (long jFeature, int type);
     private native int nativeSendPilotingAddCapOffset (long jFeature, float offset);
-    private native int nativeSendPilotingUserTakeOff (long jFeature, byte state);
-    private native int nativeSendPilotingLand (long jFeature);
     private native int nativeSendAnimationsJumpStop (long jFeature);
     private native int nativeSendAnimationsJumpCancel (long jFeature);
     private native int nativeSendAnimationsJumpLoad (long jFeature);
@@ -160,7 +156,6 @@ public class ARFeatureJumpingSumo
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_ALERTSTATECHANGED_STATE = nativeStaticGetKeyJumpingSumoPilotingStateAlertStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_SPEED = nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedSpeed ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_SPEEDCHANGED_REALSPEED = nativeStaticGetKeyJumpingSumoPilotingStateSpeedChangedRealSpeed ();
-        ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_PILOTINGSTATE_FLYINGSTATECHANGED_STATE = nativeStaticGetKeyJumpingSumoPilotingStateFlyingStateChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPLOADCHANGED_STATE = nativeStaticGetKeyJumpingSumoAnimationsStateJumpLoadChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPTYPECHANGED_STATE = nativeStaticGetKeyJumpingSumoAnimationsStateJumpTypeChangedState ();
         ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_ANIMATIONSSTATE_JUMPMOTORPROBLEMCHANGED_ERROR = nativeStaticGetKeyJumpingSumoAnimationsStateJumpMotorProblemChangedError ();
@@ -361,46 +356,6 @@ public class ARFeatureJumpingSumo
             if(initOk == true)
             {
                 int nativeError = nativeSendPilotingAddCapOffset (jniFeature, _offset);
-                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
-            }
-        }
-        return error;
-    }
-    
-    /**
-     * Send a command <code>PilotingUserTakeOff</code>
-     * Set drone in user take off state
-     * Only used for PowerUp product
-     * @param state State of user take off mode - 1 to enter in user take off. - 0 to exit from user take off.
-     * return executing error
-     */
-    public ARCONTROLLER_ERROR_ENUM sendPilotingUserTakeOff (byte _state)
-    {
-        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
-        synchronized (this)
-        {
-            if(initOk == true)
-            {
-                int nativeError = nativeSendPilotingUserTakeOff (jniFeature, _state);
-                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
-            }
-        }
-        return error;
-    }
-    
-    /**
-     * Send a command <code>PilotingLand</code>
-     * Ask the PowerUp to land
-     * return executing error
-     */
-    public ARCONTROLLER_ERROR_ENUM sendPilotingLand ()
-    {
-        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;
-        synchronized (this)
-        {
-            if(initOk == true)
-            {
-                int nativeError = nativeSendPilotingLand (jniFeature);
                 error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);
             }
         }

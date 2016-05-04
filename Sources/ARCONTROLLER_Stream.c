@@ -97,6 +97,7 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration
             case ARDISCOVERY_PRODUCT_JS:
             case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
             case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
+            case ARDISCOVERY_PRODUCT_POWER_UP:
                 codecType =  ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
                 break;
                 

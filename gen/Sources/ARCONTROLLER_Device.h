@@ -221,6 +221,13 @@ void ARCONTROLLER_Device_OnARDrone3VideoEnableChanged (ARCONTROLLER_Device_t *de
 void ARCONTROLLER_Device_OnJumpingSumoVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
 
 /**
+ * @brief Function called when the PowerUp video stream state has changed.
+ * @param deviceController The device controller.
+ * @param elementDictionary command element dictionary.
+ */
+void ARCONTROLLER_Device_OnPowerUpVideoEnableChanged (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);
+
+/**
  * @brief Callback used to receive a json part during the device connection.
  * @param jsonObj The json in which to read.
  * @param customData The device controller.

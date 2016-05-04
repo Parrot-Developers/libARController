@@ -6,6 +6,7 @@
 #include "ARCONTROLLER_JNI_FeatureJumpingSumo.c"
 #include "ARCONTROLLER_JNI_FeatureMapper.c"
 #include "ARCONTROLLER_JNI_FeatureMiniDrone.c"
+#include "ARCONTROLLER_JNI_FeaturePowerup.c"
 #include "ARCONTROLLER_JNI_FeaturePro.c"
 #include "ARCONTROLLER_JNI_FeatureSkyController.c"
 #include "ARCONTROLLER_JNI_FeatureWifi.c"

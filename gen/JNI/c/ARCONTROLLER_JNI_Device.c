@@ -312,6 +312,15 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureMiniDrone 
 }
 
 JNIEXPORT jlong JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeaturePowerup (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+
+    return (long) jniDeviceController->nativeDeviceController->powerup;
+}
+
+JNIEXPORT jlong JNICALL
 Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeaturePro (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations
