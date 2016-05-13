@@ -276,6 +276,15 @@ Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureDebug (JNI
 }
 
 JNIEXPORT jlong JNICALL
+Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureDroneManager (JNIEnv *env, jobject thizz, jlong jDeviceController)
+{
+    // local declarations
+    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;
+
+    return (long) jniDeviceController->nativeDeviceController->drone_manager;
+}
+
+JNIEXPORT jlong JNICALL
 Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetFeatureFollowMe (JNIEnv *env, jobject thizz, jlong jDeviceController)
 {
     // local declarations

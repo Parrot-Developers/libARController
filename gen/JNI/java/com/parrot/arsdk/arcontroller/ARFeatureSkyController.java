@@ -44,6 +44,8 @@ public class ARFeatureSkyController
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID = ""; /**< Key of the argument </code>deviceProductID</code> of event <code>DeviceStateConnexionChanged</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER = ""; /**< Key of the argument </code>serialNumber</code> of event <code>SettingsStateProductSerialChanged</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT = ""; /**< Key of the argument </code>variant</code> of event <code>SettingsStateProductVariantChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE = ""; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductVersionChanged</code> in feature <code>SkyController</code> */
+    public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE = ""; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductVersionChanged</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT = ""; /**< Key of the argument </code>percent</code> of event <code>SkyControllerStateBatteryChanged</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED = ""; /**< Key of the argument </code>fixed</code> of event <code>SkyControllerStateGpsFixChanged</code> in feature <code>SkyController</code> */
     public static String ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE = ""; /**< Key of the argument </code>latitude</code> of event <code>SkyControllerStateGpsPositionChanged</code> in feature <code>SkyController</code> */
@@ -95,6 +97,8 @@ public class ARFeatureSkyController
     private static native String nativeStaticGetKeySkyControllerDeviceStateConnexionChangedDeviceProductID ();
     private static native String nativeStaticGetKeySkyControllerSettingsStateProductSerialChangedSerialNumber ();
     private static native String nativeStaticGetKeySkyControllerSettingsStateProductVariantChangedVariant ();
+    private static native String nativeStaticGetKeySkyControllerSettingsStateProductVersionChangedSoftware ();
+    private static native String nativeStaticGetKeySkyControllerSettingsStateProductVersionChangedHardware ();
     private static native String nativeStaticGetKeySkyControllerSkyControllerStateBatteryChangedPercent ();
     private static native String nativeStaticGetKeySkyControllerSkyControllerStateGpsFixChangedFixed ();
     private static native String nativeStaticGetKeySkyControllerSkyControllerStateGpsPositionChangedLatitude ();
@@ -182,6 +186,8 @@ public class ARFeatureSkyController
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID = nativeStaticGetKeySkyControllerDeviceStateConnexionChangedDeviceProductID ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER = nativeStaticGetKeySkyControllerSettingsStateProductSerialChangedSerialNumber ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT = nativeStaticGetKeySkyControllerSettingsStateProductVariantChangedVariant ();
+        ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE = nativeStaticGetKeySkyControllerSettingsStateProductVersionChangedSoftware ();
+        ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE = nativeStaticGetKeySkyControllerSettingsStateProductVersionChangedHardware ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT = nativeStaticGetKeySkyControllerSkyControllerStateBatteryChangedPercent ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED_FIXED = nativeStaticGetKeySkyControllerSkyControllerStateGpsFixChangedFixed ();
         ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSPOSITIONCHANGED_LATITUDE = nativeStaticGetKeySkyControllerSkyControllerStateGpsPositionChangedLatitude ();

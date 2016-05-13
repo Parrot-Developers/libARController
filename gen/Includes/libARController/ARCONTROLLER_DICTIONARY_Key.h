@@ -152,6 +152,9 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_DEBUG, /**< Key used to define the feature <code>Debug</code> */
     ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSINFO, /**< Key used to define the event <code>SettingsInfo</code> in project <code>Debug</code> */
     ARCONTROLLER_DICTIONARY_KEY_DEBUG_SETTINGSLIST, /**< Key used to define the event <code>SettingsList</code> in project <code>Debug</code> */
+    ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER, /**< Key used to define the feature <code>DroneManager</code> */
+    ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM, /**< Key used to define the event <code>DroneListItem</code> in project <code>DroneManager</code> */
+    ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE, /**< Key used to define the event <code>ConnectionState</code> in project <code>DroneManager</code> */
     ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME, /**< Key used to define the feature <code>FollowMe</code> */
     ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_AVAILABILITY, /**< Key used to define the event <code>Availability</code> in project <code>FollowMe</code> */
     ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_RUN, /**< Key used to define the event <code>Run</code> in project <code>FollowMe</code> */
@@ -263,6 +266,7 @@ typedef enum
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_RESETCHANGED, /**< Key used to define the event <code>SettingsStateResetChanged</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED, /**< Key used to define the event <code>SettingsStateProductSerialChanged</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED, /**< Key used to define the event <code>SettingsStateProductVariantChanged</code> in project <code>SkyController</code> */
+    ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED, /**< Key used to define the event <code>SettingsStateProductVersionChanged</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED, /**< Key used to define the event <code>CommonStateAllStatesChanged</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED, /**< Key used to define the event <code>SkyControllerStateBatteryChanged</code> in project <code>SkyController</code> */
     ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_GPSFIXCHANGED, /**< Key used to define the event <code>SkyControllerStateGpsFixChanged</code> in project <code>SkyController</code> */

@@ -77,6 +77,7 @@ ARCONTROLLER_Device_t *ARCONTROLLER_Device_New (ARDISCOVERY_Device_t *discoveryD
         deviceController->aRDrone3 = NULL;
         deviceController->common = NULL;
         deviceController->debug = NULL;
+        deviceController->drone_manager = NULL;
         deviceController->follow_me = NULL;
         deviceController->jumpingSumo = NULL;
         deviceController->mapper = NULL;
@@ -1207,6 +1208,20 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         
     }
     
+    if ((deviceController->drone_manager != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->drone_manager)))
+    {
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_DroneManager_AddCallback (deviceController->drone_manager, ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_DroneManager_AddCallback (deviceController->drone_manager, ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+    }
+    
     if ((deviceController->follow_me != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->follow_me)))
     {
         if (error == ARCONTROLLER_OK)
@@ -1751,6 +1766,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_RegisterCallbacks (ARCONTROLLER_Device_t
         if (error == ARCONTROLLER_OK)
         {
             error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+        }
+        
+        if (error == ARCONTROLLER_OK)
+        {
+            error = ARCONTROLLER_FEATURE_SkyController_AddCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
         }
         
         if (error == ARCONTROLLER_OK)
@@ -2716,6 +2736,22 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
             
         }
         
+        if ((deviceController->drone_manager != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->drone_manager)))
+        {
+            removingError = ARCONTROLLER_FEATURE_DroneManager_RemoveCallback (deviceController->drone_manager, ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+            removingError = ARCONTROLLER_FEATURE_DroneManager_RemoveCallback (deviceController->drone_manager, ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
+        }
+        
         if ((deviceController->follow_me != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->follow_me)))
         {
             removingError = ARCONTROLLER_FEATURE_FollowMe_RemoveCallback (deviceController->follow_me, ARCONTROLLER_DICTIONARY_KEY_FOLLOW_ME_AVAILABILITY, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
@@ -3366,6 +3402,12 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_UnregisterCallbacks (ARCONTROLLER_Device
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
             }
             
+            removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring removing of the callback for ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED; error :%s", ARCONTROLLER_Error_ToString (removingError));
+            }
+            
             removingError = ARCONTROLLER_FEATURE_SkyController_RemoveCallback (deviceController->skyController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED, ARCONTROLLER_Device_DictionaryChangedCallback, deviceController);
             if (error != ARCONTROLLER_OK)
             {
@@ -3855,6 +3897,11 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Device_GetCommandElements (ARCON
             
             case ARCONTROLLER_DICTIONARY_KEY_DEBUG:
                 elements = ARCONTROLLER_Debug_GetCommandElements (deviceController->debug, commandKey, &localError);
+                
+                break;
+            
+            case ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER:
+                elements = ARCONTROLLER_DroneManager_GetCommandElements (deviceController->drone_manager, commandKey, &localError);
                 
                 break;
             
@@ -4470,6 +4517,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_Device_SetNetworkControllerToFeatures (ARCONTRO
             if (error != ARCONTROLLER_OK)
             {
                 ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_DEBUG; error :%s", ARCONTROLLER_Error_ToString (settingError));
+            }
+            
+        }
+        
+        if (deviceController->drone_manager != NULL)
+        {
+            settingError = ARCONTROLLER_FEATURE_DroneManager_SetNetworkController (deviceController->drone_manager, deviceController->privatePart->networkController);
+            if (error != ARCONTROLLER_OK)
+            {
+                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error occured durring setting the network Controller to the feature of the callback for ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER; error :%s", ARCONTROLLER_Error_ToString (settingError));
             }
             
         }

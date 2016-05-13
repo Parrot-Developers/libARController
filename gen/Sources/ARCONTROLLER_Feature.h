@@ -2415,6 +2415,94 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_NewCmdElementSettingsList 
 
 
 /*******************************
+ * --- FEATURE drone_manager --- 
+ ******************************/
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_DroneManager_t.
+ */
+struct ARCONTROLLER_FEATURE_DroneManager_Private_t
+{
+    ARCONTROLLER_Network_t *networkController; /**<the networkController to send commands */
+    ARCONTROLLER_DICTIONARY_COMMANDS_t *dictionary; /**< stores states and settings of the device */
+    ARCONTROLLER_Dictionary_t *commandCallbacks; /**< dictionary storing callbacks to use when the command is received. */
+    ARSAL_Mutex_t mutex; /**< Mutex for multihreading */
+};
+
+/**
+ * @brief Register the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to register
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_RegisterARCommands (ARCONTROLLER_FEATURE_DroneManager_t *feature);
+
+/**
+ * @brief Unegister the feature controller to be called when the commands are decoded.
+ * @param feature The feature controller to unregister
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_UnregisterARCommands (ARCONTROLLER_FEATURE_DroneManager_t *feature);
+
+/**
+ * @brief Send a command <code>DiscoverDrones</code> in project <code>DroneManager</code>
+ * Request the drone list.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_SendDiscoverDrones (ARCONTROLLER_FEATURE_DroneManager_t *feature);
+
+/**
+ * @brief Send a command <code>Connect</code> in project <code>DroneManager</code>
+ * Request connection to a specific drone. Override the auto-selected drone.
+ * @param feature feature owning the commands
+ * @param serial Serial number of the drone.
+ * @param key Security key to use. Ignored if drone security is none. If the drone manager has a saved key for the drone, pass an empty string to use it
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_SendConnect (ARCONTROLLER_FEATURE_DroneManager_t *feature, char * serial, char * key);
+
+/**
+ * @brief Send a command <code>Forget</code> in project <code>DroneManager</code>
+ * Forget the given drone. If the drone is the selected one, the auto-selection will run again.
+ * @param feature feature owning the commands
+ * @param serial Serial number to forget.
+ * return executing error
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_SendForget (ARCONTROLLER_FEATURE_DroneManager_t *feature, char * serial);
+
+/**
+ * @brief callback used when the command <code>DroneListItem</code> is decoded
+ * @param feature The feature controller registred
+ * @param serial Serial number of the drone.
+ * @param model Model of the drone.
+ * @param name Name (SSID) of the drone.
+ * @param connection_order 0 if the drone is unknwon (never connected). Else, order of last connection (1 = most recent)
+ * @param active 1 if the drone is active (the drone manager tries to connect or is connected to it) 0 if the drone is not the active one.
+ * @param visible 1 if the drone is currently visible, 0 otherwise.
+ * @param security The security of the drone network.
+ * @param has_saved_key 1 if the drone manager has a saved security key for the drone, 0 otherwise. If security is not none, and this value is 0, then the controller should prompt the user for a passphrase when sending a connect.
+ * @param rssi The drone rssi. The value is meaningless if the drone is not visible.
+ * @param list_flags Flags use by maps and lists
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_DroneManager_DroneListItemCallback (char * _serial, uint16_t _model, char * _name, uint8_t _connection_order, uint8_t _active, uint8_t _visible, eARCOMMANDS_DRONE_MANAGER_SECURITY _security, uint8_t _has_saved_key, int8_t _rssi, uint8_t _list_flags, void *customData);
+
+/**
+ * @brief callback used when the command <code>ConnectionState</code> is decoded
+ * @param feature The feature controller registred
+ * @param state The state of the connection to a drone.
+ * @param serial Serial number of the drone.
+ * @param model Model of the drone.
+ * @param name Name (SSID) of the drone.
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_DroneManager_ConnectionStateCallback (eARCOMMANDS_DRONE_MANAGER_CONNECTION_STATE _state, char * _serial, uint16_t _model, char * _name, void *customData);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_DroneManager_NewCmdElementDroneListItem (ARCONTROLLER_FEATURE_DroneManager_t *feature, char * _serial, uint16_t _model, char * _name, uint8_t _connection_order, uint8_t _active, uint8_t _visible, eARCOMMANDS_DRONE_MANAGER_SECURITY _security, uint8_t _has_saved_key, int8_t _rssi, uint8_t _list_flags, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_DroneManager_NewCmdElementConnectionState (ARCONTROLLER_FEATURE_DroneManager_t *feature, eARCOMMANDS_DRONE_MANAGER_CONNECTION_STATE _state, char * _serial, uint16_t _model, char * _name, eARCONTROLLER_ERROR *error);
+
+
+/*******************************
  * --- FEATURE follow_me --- 
  ******************************/
 /**
@@ -5014,6 +5102,15 @@ void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductSerialChangedCallbac
 void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductVariantChangedCallback (eARCOMMANDS_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT _variant, void *customData);
 
 /**
+ * @brief callback used when the command <code>SettingsStateProductVersionChanged</code> is decoded
+ * @param feature The feature controller registred
+ * @param software Product software version
+ * @param hardware Product hardware version
+ * @param customData customData set by the register
+ */
+void ARCONTROLLER_FEATURE_SkyController_SettingsStateProductVersionChangedCallback (char * _software, char * _hardware, void *customData);
+
+/**
  * @brief callback used when the command <code>CommonStateAllStatesChanged</code> is decoded
  * @param feature The feature controller registred
  * @param customData customData set by the register
@@ -5241,6 +5338,8 @@ ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSetti
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSettingsStateProductSerialChanged (ARCONTROLLER_FEATURE_SkyController_t *feature, char * _serialNumber, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSettingsStateProductVariantChanged (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCOMMANDS_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT _variant, eARCONTROLLER_ERROR *error);
+
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementSettingsStateProductVersionChanged (ARCONTROLLER_FEATURE_SkyController_t *feature, char * _software, char * _hardware, eARCONTROLLER_ERROR *error);
 
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_SkyController_NewCmdElementCommonStateAllStatesChanged (ARCONTROLLER_FEATURE_SkyController_t *feature, eARCONTROLLER_ERROR *error);
 

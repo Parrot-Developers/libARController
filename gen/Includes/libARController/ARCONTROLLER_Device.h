@@ -73,6 +73,7 @@ typedef struct
     ARCONTROLLER_FEATURE_ARDrone3_t *aRDrone3; /**< */
     ARCONTROLLER_FEATURE_Common_t *common; /**< */
     ARCONTROLLER_FEATURE_Debug_t *debug; /**< */
+    ARCONTROLLER_FEATURE_DroneManager_t *drone_manager; /**< */
     ARCONTROLLER_FEATURE_FollowMe_t *follow_me; /**< */
     ARCONTROLLER_FEATURE_JumpingSumo_t *jumpingSumo; /**< */
     ARCONTROLLER_FEATURE_Mapper_t *mapper; /**< */

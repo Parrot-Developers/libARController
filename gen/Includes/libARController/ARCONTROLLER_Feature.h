@@ -1727,6 +1727,140 @@ eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_Debug_SetNetworkController (ARCONTROLLE
 ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_Debug_GetCommandElements (ARCONTROLLER_FEATURE_Debug_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
 
 /*******************************
+ * --- FEATURE drone_manager --- 
+ ******************************/
+
+/**
+ * @brief Private part of ARCONTROLLER_FEATURE_DroneManager_t.
+ */
+typedef struct ARCONTROLLER_FEATURE_DroneManager_Private_t ARCONTROLLER_FEATURE_DroneManager_Private_t;
+
+/**
+ * @brief Feature controller allow to send command related of drone_manager Feature.
+ * Commands related to the drone_manager feature
+ */
+typedef struct ARCONTROLLER_FEATURE_DroneManager_t ARCONTROLLER_FEATURE_DroneManager_t;
+
+/**
+ * @brief Create a new drone_manager Feature Controller
+ * @warning This function allocate memory
+ * @post ARCONTROLLER_FEATURE_DroneManager_Delete() must be called to delete the Feature Controller and free the memory allocated.
+ * @param[in] networkController The networkController used to send commands ; can be NULL and defind later with ARCONTROLLER_FEATURE_DroneManager_SetNetworkController().
+ * @param[out] error executing error.
+ * @return the new drone_manager Feature Controller
+ * @see ARCONTROLLER_FEATURE_DroneManager_Delete
+ */
+ARCONTROLLER_FEATURE_DroneManager_t *ARCONTROLLER_FEATURE_DroneManager_New (ARCONTROLLER_Network_t *networkController, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Delete the drone_manager Feature Controller
+ * @warning This function free memory
+ * @param feature The feature controller to delete
+ * @see ARCONTROLLER_FEATURE_DroneManager_New
+ */
+void ARCONTROLLER_FEATURE_DroneManager_Delete (ARCONTROLLER_FEATURE_DroneManager_t **feature);
+
+/**
+ * @brief Get the dictionay of the drone_manager Feature Controller
+ * @param feature The feature controller owning the dictionary to get
+ * @param[out] error executing error.
+ */
+ARCONTROLLER_DICTIONARY_COMMANDS_t *ARCONTROLLER_FEATURE_DroneManager_GetDictionary (ARCONTROLLER_FEATURE_DroneManager_t *feature, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Add a callback to use when a command in project <code>DroneManager</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] callback the callback to add.
+ * @param[in] commandKey Key of the command which the callback must be associated.
+ * @param[out] error executing error.
+ * @param[int] customData custom data given as parameter to the callback.
+ * @see ARCONTROLLER_FEATURE_DroneManager_RemoveCallback.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_AddCallback (ARCONTROLLER_FEATURE_DroneManager_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+/**
+ * @brief Remove a callback used when a command in project <code>DroneManager</code> is received
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] callback the callback to remove.
+ * @param[int] customData The custom data given to the register.
+ * @param[out] error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_RemoveCallback (ARCONTROLLER_FEATURE_DroneManager_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_CALLBACK_t callback, void *customData);
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_SERIAL; /**< Key of the argument </code>serial</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_MODEL; /**< Key of the argument </code>model</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_NAME; /**< Key of the argument </code>name</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_CONNECTION_ORDER; /**< Key of the argument </code>connection_order</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_ACTIVE; /**< Key of the argument </code>active</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_VISIBLE; /**< Key of the argument </code>visible</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_SECURITY; /**< Key of the argument </code>security</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_HAS_SAVED_KEY; /**< Key of the argument </code>has_saved_key</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_DRONELISTITEM_RSSI; /**< Key of the argument </code>rssi</code> of event <code>DroneListItem</code> in feature <code>DroneManager</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE_STATE; /**< Key of the argument </code>state</code> of event <code>ConnectionState</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE_SERIAL; /**< Key of the argument </code>serial</code> of event <code>ConnectionState</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE_MODEL; /**< Key of the argument </code>model</code> of event <code>ConnectionState</code> in feature <code>DroneManager</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_DRONE_MANAGER_CONNECTIONSTATE_NAME; /**< Key of the argument </code>name</code> of event <code>ConnectionState</code> in feature <code>DroneManager</code> */
+
+/**
+ * @brief Send a command <code>DiscoverDrones</code> in feature <code>DroneManager</code>
+ * Request the drone list.
+ * @param feature feature owning the commands
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_DroneManager_SendDiscoverDrones_t) (ARCONTROLLER_FEATURE_DroneManager_t *feature);
+
+/**
+ * @brief Send a command <code>Connect</code> in feature <code>DroneManager</code>
+ * Request connection to a specific drone. Override the auto-selected drone.
+ * @param feature feature owning the commands
+ * @param serial Serial number of the drone.
+ * @param key Security key to use. Ignored if drone security is none. If the drone manager has a saved key for the drone, pass an empty string to use it
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_DroneManager_SendConnect_t) (ARCONTROLLER_FEATURE_DroneManager_t *feature, char * serial, char * key);
+
+/**
+ * @brief Send a command <code>Forget</code> in feature <code>DroneManager</code>
+ * Forget the given drone. If the drone is the selected one, the auto-selection will run again.
+ * @param feature feature owning the commands
+ * @param serial Serial number to forget.
+ * return executing error
+ */
+typedef eARCONTROLLER_ERROR (*ARCONTROLLER_FEATURE_DroneManager_SendForget_t) (ARCONTROLLER_FEATURE_DroneManager_t *feature, char * serial);
+
+/**
+ * @brief Feature controller allow to send command related of drone_manager Feature.
+ * Commands related to the drone_manager feature
+ */
+struct ARCONTROLLER_FEATURE_DroneManager_t
+{
+    ARCONTROLLER_FEATURE_DroneManager_SendDiscoverDrones_t sendDiscoverDrones;
+    ARCONTROLLER_FEATURE_DroneManager_SendConnect_t sendConnect;
+    ARCONTROLLER_FEATURE_DroneManager_SendForget_t sendForget;
+    ARCONTROLLER_FEATURE_DroneManager_Private_t *privatePart; /**< Private part of ARCONTROLLER_FEATURE_DroneManager_t */
+};
+
+/**
+ * @brief Set a NetworkController to use to send commands.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command which the callback must be unassociated.
+ * @param[in] networkController The networkController used to send commands ; must be not NULL.
+ * @return error executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_FEATURE_DroneManager_SetNetworkController (ARCONTROLLER_FEATURE_DroneManager_t *feature, ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Get the elements of a command received.
+ * @param feature The feature controller receiving the command.
+ * @param[in] commandKey Key of the command.
+ * @param[out] error executing error.
+ * @return Element dictionary of the command ; Can be null if an error is occurred.
+ */
+ARCONTROLLER_DICTIONARY_ELEMENT_t *ARCONTROLLER_DroneManager_GetCommandElements (ARCONTROLLER_FEATURE_DroneManager_t *feature, eARCONTROLLER_DICTIONARY_KEY commandKey, eARCONTROLLER_ERROR *error);
+
+/*******************************
  * --- FEATURE follow_me --- 
  ******************************/
 
@@ -3731,6 +3865,9 @@ extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXI
 extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTSERIALCHANGED_SERIALNUMBER; /**< Key of the argument </code>serialNumber</code> of event <code>SettingsStateProductSerialChanged</code> in feature <code>SkyController</code> */
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVARIANTCHANGED_VARIANT; /**< Key of the argument </code>variant</code> of event <code>SettingsStateProductVariantChanged</code> in feature <code>SkyController</code> */
+
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED_SOFTWARE; /**< Key of the argument </code>software</code> of event <code>SettingsStateProductVersionChanged</code> in feature <code>SkyController</code> */
+extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_PRODUCTVERSIONCHANGED_HARDWARE; /**< Key of the argument </code>hardware</code> of event <code>SettingsStateProductVersionChanged</code> in feature <code>SkyController</code> */
 
 
 extern const char *ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SKYCONTROLLERSTATE_BATTERYCHANGED_PERCENT; /**< Key of the argument </code>percent</code> of event <code>SkyControllerStateBatteryChanged</code> in feature <code>SkyController</code> */

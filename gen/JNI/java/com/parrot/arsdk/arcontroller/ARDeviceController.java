@@ -41,6 +41,7 @@ public class ARDeviceController
     private native long nativeGetFeatureARDrone3 (long jDeviceController);
     private native long nativeGetFeatureCommon (long jDeviceController);
     private native long nativeGetFeatureDebug (long jDeviceController);
+    private native long nativeGetFeatureDroneManager (long jDeviceController);
     private native long nativeGetFeatureFollowMe (long jDeviceController);
     private native long nativeGetFeatureJumpingSumo (long jDeviceController);
     private native long nativeGetFeatureMapper (long jDeviceController);
@@ -64,6 +65,7 @@ public class ARDeviceController
     ARFeatureARDrone3 featureARDrone3;
     ARFeatureCommon featureCommon;
     ARFeatureDebug featureDebug;
+    ARFeatureDroneManager featureDroneManager;
     ARFeatureFollowMe featureFollowMe;
     ARFeatureJumpingSumo featureJumpingSumo;
     ARFeatureMapper featureMapper;
@@ -146,6 +148,12 @@ public class ARDeviceController
                 {
                     featureDebug.dispose();
                     featureDebug = null;
+                }
+                
+                if (featureDroneManager != null)
+                {
+                    featureDroneManager.dispose();
+                    featureDroneManager = null;
                 }
                 
                 if (featureFollowMe != null)
@@ -275,6 +283,11 @@ public class ARDeviceController
     public ARFeatureDebug getFeatureDebug ()
     {
         return featureDebug;
+    }
+    
+    public ARFeatureDroneManager getFeatureDroneManager ()
+    {
+        return featureDroneManager;
     }
     
     public ARFeatureFollowMe getFeatureFollowMe ()
@@ -465,6 +478,16 @@ public class ARDeviceController
         else
         {
             featureDebug = null;
+        }
+        
+        long nativeFeatureDroneManager = nativeGetFeatureDroneManager (jniDeviceController);
+        if ((featureDroneManager == null) && (nativeFeatureDroneManager != 0))
+        {
+            featureDroneManager = new ARFeatureDroneManager(nativeFeatureDroneManager);
+        }
+        else
+        {
+            featureDroneManager = null;
         }
         
         long nativeFeatureFollowMe = nativeGetFeatureFollowMe (jniDeviceController);

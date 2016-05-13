@@ -2,6 +2,7 @@
 #include "ARCONTROLLER_JNI_FeatureARDrone3.c"
 #include "ARCONTROLLER_JNI_FeatureCommon.c"
 #include "ARCONTROLLER_JNI_FeatureDebug.c"
+#include "ARCONTROLLER_JNI_FeatureDroneManager.c"
 #include "ARCONTROLLER_JNI_FeatureFollowMe.c"
 #include "ARCONTROLLER_JNI_FeatureJumpingSumo.c"
 #include "ARCONTROLLER_JNI_FeatureMapper.c"
