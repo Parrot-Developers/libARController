@@ -195,7 +195,104 @@ def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     
     cFile.close ()
 
+def generateDictionaryKeyEnumJava (ctx, JNI_JAVA_DIR):
+    CLASS_NAME = ARJavaEnumType (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key')
+    JFILE_NAME =  JNI_JAVA_DIR + CLASS_NAME + '.java'
+    UNKNOWN_VALUE = 'e'+ARJavaEnumValDef(MODULE_ARCONTROLLER, 'DICTIONARY', 'Key', 'UNKNOWN_ENUM_VALUE', True)
+
+    jfile = open(JFILE_NAME, 'w')
+
+    jfile.write(LICENCE_HEADER)
+    jfile.write('\n')
+    jfile.write ('package com.parrot.arsdk.'+MODULE_ARCONTROLLER.lower()+';\n')
+    jfile.write('\n')
+    jfile.write('import java.util.HashMap;\n')
+    jfile.write('\n')
+    jfile.write('/**\n')
+    jfile.write(' * Java copy of the ' + AREnumName (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key') + ' enum\n')
+    jfile.write(' */\n')
+    jfile.write('public enum ' + CLASS_NAME + ' {\n')
+    jfile.write('    /** Dummy value for all unknown cases */\n')
+    jfile.write('    ' + UNKNOWN_VALUE + ' (Integer.MIN_VALUE, "Dummy value for all unknown cases"),\n')
+
+    val = 0
+    for feature in ctx.features:
+        
+        jfile.write('    /** Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
+        jfile.write('    '+defineNotification(feature)+ ' (' + str(val)+ ', "Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>"),\n')
+        val += 1
+
+
+        for evt in feature.evts:
+            jfile.write('    /** Key used to define the event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>*/\n')
+            jfile.write('    '+defineNotification(feature, evt)+' (' + str(val)+ ', "Key used to define the event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>"),\n')
+            val += 1
+    jfile.write('    /** Unused, iterator maximum value */\n')
+    jfile.write('    ARCONTROLLER_DICTIONARY_DICTIONARY_KEY_MAX (' + str(val)+ ', "Unused, iterator maximum value");\n')
+
+    jfile.write('\n')
+    jfile.write('    private final int value;\n')
+    jfile.write('    private final String comment;\n');
+    jfile.write('    static HashMap<Integer, ' + CLASS_NAME + '> valuesList;\n')
+    jfile.write('\n')
+    jfile.write('    ' + CLASS_NAME + ' (int value) {\n')
+    jfile.write('        this.value = value;\n')
+    jfile.write('        this.comment = null;\n')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    ' + CLASS_NAME + ' (int value, String comment) {\n')
+    jfile.write('        this.value = value;\n')
+    jfile.write('        this.comment = comment;\n')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    /**\n')
+    jfile.write('     * Gets the int value of the enum\n')
+    jfile.write('     * @return int value of the enum\n')
+    jfile.write('     */\n')
+    jfile.write('    public int getValue () {\n')
+    jfile.write('        return value;\n')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    /**\n')
+    jfile.write('     * Gets the ' + CLASS_NAME + ' instance from a C enum value\n')
+    jfile.write('     * @param value C value of the enum\n')
+    jfile.write('     * @return The ' + CLASS_NAME + ' instance, or null if the C enum value was not valid\n')
+    jfile.write('     */\n')
+    jfile.write('    public static ' + CLASS_NAME + ' getFromValue (int value) {\n')
+    jfile.write('        if (null == valuesList) {\n')
+    jfile.write('            ' + CLASS_NAME + ' [] valuesArray = ' + CLASS_NAME + '.values ();\n')
+    jfile.write('            valuesList = new HashMap<Integer, ' + CLASS_NAME + '> (valuesArray.length);\n')
+    jfile.write('            for (' + CLASS_NAME + ' entry : valuesArray) {\n')
+    jfile.write('                valuesList.put (entry.getValue (), entry);\n')
+    jfile.write('            }\n')
+    jfile.write('        }\n')
+    jfile.write('        ' + CLASS_NAME + ' retVal = valuesList.get (value);\n')
+    jfile.write('        if (retVal == null) {\n')
+    jfile.write('            retVal = ' + UNKNOWN_VALUE + ';\n')
+    jfile.write('        }\n')
+    jfile.write('        return retVal;')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    /**\n')
+    jfile.write('     * Returns the enum comment as a description string\n')
+    jfile.write('     * @return The enum description\n')
+    jfile.write('     */\n')
+    jfile.write('    public String toString () {\n')
+    jfile.write('        if (this.comment != null) {\n')
+    jfile.write('            return this.comment;\n')
+    jfile.write('        }\n')
+    jfile.write('        return super.toString ();\n')
+    jfile.write('    }\n')
+    jfile.write('}\n')
+    jfile.close()
+
 def list_files_dict_key (ctx, SRC_DIR, INC_DIR):
     ''' Print device dictionary key generated files '''
     print INC_DIR + CTRL_DICT_KEY_H_NAME
     print SRC_DIR + CTRL_DICT_KEY_C_NAME
+
+def list_files_dict_key_java (ctx, JNI_JAVA_DIR):
+    ''' Print device dictionary key generated files '''
+    CLASS_NAME = ARJavaEnumType (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key')
+    JFILE_NAME =  JNI_JAVA_DIR + CLASS_NAME + '.java'
+    print JFILE_NAME

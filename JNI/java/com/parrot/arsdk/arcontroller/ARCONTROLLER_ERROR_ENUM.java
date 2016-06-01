@@ -28,10 +28,6 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
-/*
- * GENERATED FILE
- *  Do not modify this file, it will be erased during the next configure run 
- */
 
 package com.parrot.arsdk.arcontroller;
 

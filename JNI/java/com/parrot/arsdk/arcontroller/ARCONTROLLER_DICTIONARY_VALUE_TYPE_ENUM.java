@@ -28,42 +28,43 @@
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 */
-/*
- * GENERATED FILE
- *  Do not modify this file, it will be erased during the next configure run 
- */
 
 package com.parrot.arsdk.arcontroller;
 
 import java.util.HashMap;
 
 /**
- * Java copy of the eARCONTROLLER_NETWORK_SENDING_DATA_TYPE enum
+ * Java copy of the eARCONTROLLER_DICTIONARY_VALUE_TYPE enum
  */
-public enum ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM {
+public enum ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM {
    /** Dummy value for all unknown cases */
-    eARCONTROLLER_NETWORK_SENDING_DATA_TYPE_UNKNOWN_ENUM_VALUE (Integer.MIN_VALUE, "Dummy value for all unknown cases"),
-   /** data NOT acknowledged */
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_NOT_ACK (0, "data NOT acknowledged"),
-   /** data acknowledged */
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK (1, "data acknowledged"),
-   /** high priority data */
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGH_PRIORITY (2, "high priority data"),
-   /** strem data */
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM (3, "strem data"),
+    eARCONTROLLER_DICTIONARY_VALUE_TYPE_UNKNOWN_ENUM_VALUE (Integer.MIN_VALUE, "Dummy value for all unknown cases"),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8 (0),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8 (1),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16 (2),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_I16 (3),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32 (4),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_I32 (5),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_U64 (6),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_I64 (7),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_FLOAT (8),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_DOUBLE (9),
+   ARCONTROLLER_DICTIONARY_VALUE_TYPE_STRING (10),
+   /** enumeration relative to the commands. must be read as I32 type. */
+    ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM (11, "enumeration relative to the commands. must be read as I32 type."),
    /** Max of the enumeration */
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_MAX (4, "Max of the enumeration");
+    ARCONTROLLER_DICTIONARY_VALUE_TYPE_MAX (12, "Max of the enumeration");
 
     private final int value;
     private final String comment;
-    static HashMap<Integer, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM> valuesList;
+    static HashMap<Integer, ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM> valuesList;
 
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM (int value) {
+    ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM (int value) {
         this.value = value;
         this.comment = null;
     }
 
-    ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM (int value, String comment) {
+    ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM (int value, String comment) {
         this.value = value;
         this.comment = comment;
     }
@@ -77,21 +78,21 @@ public enum ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM {
     }
 
     /**
-     * Gets the ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM instance from a C enum value
+     * Gets the ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM instance from a C enum value
      * @param value C value of the enum
-     * @return The ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM instance, or null if the C enum value was not valid
+     * @return The ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM instance, or null if the C enum value was not valid
      */
-    public static ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM getFromValue (int value) {
+    public static ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM getFromValue (int value) {
         if (null == valuesList) {
-            ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM [] valuesArray = ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM.values ();
-            valuesList = new HashMap<Integer, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM> (valuesArray.length);
-            for (ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM entry : valuesArray) {
+            ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM [] valuesArray = ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM.values ();
+            valuesList = new HashMap<Integer, ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM> (valuesArray.length);
+            for (ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM entry : valuesArray) {
                 valuesList.put (entry.getValue (), entry);
             }
         }
-        ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ENUM retVal = valuesList.get (value);
+        ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM retVal = valuesList.get (value);
         if (retVal == null) {
-            retVal = eARCONTROLLER_NETWORK_SENDING_DATA_TYPE_UNKNOWN_ENUM_VALUE;
+            retVal = eARCONTROLLER_DICTIONARY_VALUE_TYPE_UNKNOWN_ENUM_VALUE;
         }
         return retVal;    }
 
