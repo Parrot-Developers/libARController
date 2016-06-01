@@ -23,7 +23,7 @@ LOCAL_LIBRARIES := \
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/Includes \
-	$(LOCAL_PATH)/gen/Includes \
+	$(call local-get-build-dir)/gen/Includes \
 	$(LOCAL_PATH)/Sources
 
 LOCAL_CFLAGS := \
@@ -37,7 +37,9 @@ LOCAL_SRC_FILES := \
 	Sources/ARCONTROLLER_StreamPool.c \
 	Sources/ARCONTROLLER_StreamQueue.c \
 	Sources/ARCONTROLLER_Stream1.c \
-	Sources/ARCONTROLLER_Stream2.c \
+	Sources/ARCONTROLLER_Stream2.c
+
+LOCAL_GENERATED_SRC_FILES := \
 	gen/Sources/ARCONTROLLER_Device.c \
 	gen/Sources/ARCONTROLLER_DICTIONARY_Key.c \
 	gen/Sources/ARCONTROLLER_Error.c \
@@ -54,11 +56,11 @@ LOCAL_INSTALL_HEADERS := \
 	Includes/libARController/ARCONTROLLER_Stream2.h:usr/include/libARController/ \
 	Includes/libARController/ARCONTROLLER_StreamPool.h:usr/include/libARController/ \
 	Includes/libARController/ARCONTROLLER_StreamQueue.h:usr/include/libARController/ \
-	gen/Includes/libARController/ARCONTROLLER_Device.h:usr/include/libARController/ \
-	gen/Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h:usr/include/libARController/ \
-	gen/Includes/libARController/ARCONTROLLER_Feature.h:usr/include/libARController/
+	$(call local-get-build-dir)/gen/Includes/libARController/ARCONTROLLER_Device.h:usr/include/libARController/ \
+	$(call local-get-build-dir)/gen/Includes/libARController/ARCONTROLLER_DICTIONARY_Key.h:usr/include/libARController/ \
+	$(call local-get-build-dir)/gen/Includes/libARController/ARCONTROLLER_Feature.h:usr/include/libARController/
 
 LOCAL_CUSTOM_MACROS := \
-	arsdkgen-macro:$(LOCAL_PATH)/Python/generateControllersSources.py,$(LOCAL_PATH)/gen
+	arsdkgen-macro:$(LOCAL_PATH)/Python/generateControllersSources.py,$(call local-get-build-dir)/gen,native
 
 include $(BUILD_LIBRARY)

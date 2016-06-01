@@ -3311,7 +3311,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     
     cFile.close ()
 
-def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
+def generateControllersJava (ctx, JNI_JAVA_DIR):
     
     #########################################
     # Write Device controller header file   #
@@ -3733,11 +3733,11 @@ def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     
     jfile.close ()
     
+def generateControllersJNI (ctx, JNI_C_DIR):
     #################################################
     # Write Device controller JNI c file           #
     #################################################
-    
-    javaClassName = 'ARDeviceController'
+
     jniClassName = MODULE_ARCONTROLLER + '_JNI_Device'
     className = 'ARCONTROLLER_JNIDeviceController_t'
     classTag = 'ARCONTROLLER_JNIDEVICE_TAG'
@@ -4547,10 +4547,16 @@ def generateControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
 
-def list_files_deviceCtrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR):
+def list_files_deviceCtrls (ctx, SRC_DIR, INC_DIR):
     ''' Print device controllers generated files '''
     print INC_DIR + CTRL_DEVICE_H_NAME
     print SRC_DIR + CTRL_DEVICE_PRIV_H_NAME
     print SRC_DIR + CTRL_DEVICE_C_NAME
+
+def list_files_deviceCtrls_java (ctx, JNI_JAVA_DIR):
+    ''' Print device controllers generated files '''
     print JNI_JAVA_DIR + CTRL_DEVICE_JAVA_NAME
+
+def list_files_deviceCtrls_jni (ctx, JNI_C_DIR):
+    ''' Print device controllers generated files '''
     print JNI_C_DIR + CTRL_DEVICE_JNI_C_NAME

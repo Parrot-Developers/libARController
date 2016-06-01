@@ -36,6 +36,10 @@ import os
 import re
 import arsdkparser
 
+NATIVE="native" 
+JAVA="java"
+JNI="jni"
+
 MYDIR=os.path.abspath(os.path.dirname(__file__))
 LIBARCONTROLLER_DIR=os.path.realpath(os.path.join(MYDIR, ".."))
 PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
@@ -49,6 +53,8 @@ from generateDictionaryKeyEnum import *
 from arsdkparser import *
 
 genDebug = True
+
+PREBUILD_ACTION = PACKAGES_DIR+'/ARSDKBuildUtils/Utils/Python/ARSDK_PrebuildActions.py'
 
 class Paths:
     def __init__(self, outdir):
@@ -86,7 +92,7 @@ def createDir(path):
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
 
-def generate_ctrls(ctx, paths):
+def generate_ctrls(ctx, paths, extra):
     createDir(paths.INC_DIR)
     createDir(paths.JNI_C_DIR)
     createDir(paths.JNI_JAVA_DIR)
@@ -99,32 +105,58 @@ def generate_ctrls(ctx, paths):
     # of commands / classes         #
     #################################
 
-    # generate Feature Controllers
-    generateFeatureControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
-    generateFeatureControllersJNI (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR);
-
-    # generate Device Controllers
-    generateDeviceControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
-    generateControllersJNI (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
-
     # generate DictionaryKeyEnum
-    generateDictionaryKeyEnum (ctx, paths.SRC_DIR, paths.INC_DIR)
+    if extra == NATIVE:
+        # generate Feature Controllers
+        generateFeatureControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
+        # generate Device Controllers
+        generateDeviceControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
+        # generate DictionaryKeyEnum
+        generateDictionaryKeyEnum (ctx, paths.SRC_DIR, paths.INC_DIR)
+        os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR+ ' --disable-java')
+        #os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR)
+    elif extra == JAVA:
+        # generate Feature Controllers
+        generateFeatureControllersJava (ctx, paths.JNI_JAVA_DIR);
+        # generate Device Controllers
+        generateControllersJava (ctx, paths.JNI_JAVA_DIR)
+        # generate DictionaryKeyEnum
+        generateDictionaryKeyEnumJava (ctx, paths.JNI_JAVA_DIR)
+    elif extra == JNI:
+        # generate Feature Controllers
+        generateFeatureControllersJNI (ctx, paths.JNI_C_DIR);
+        # generate Device Controllers
+        generateControllersJNI (ctx, paths.JNI_C_DIR)
 
 #===============================================================================
 #===============================================================================
 def list_files(ctx, outdir, extra):
     paths = Paths(outdir)
 
+    # Print features controllers generated files
+    if extra == NATIVE:
+        list_files_ftr_ctrls (ctx, paths.SRC_DIR, paths.INC_DIR)
+    elif extra == JAVA:
+        list_files_ftr_ctrls_java (ctx,paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
+    elif extra == JNI:
+        list_files_ftr_ctrls_jni (ctx,paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
+
     # Print device controllers generated files
-    list_files_deviceCtrls (ctx, paths.SRC_DIR, paths.INC_DIR, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
+    if extra == NATIVE:
+        list_files_deviceCtrls (ctx, paths.SRC_DIR, paths.INC_DIR)
+    elif extra == JAVA:
+        list_files_deviceCtrls_java (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
+    elif extra == JNI:
+        list_files_deviceCtrls_jni (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
     # Print device dictionary key generated files
-    list_files_dict_key (ctx, paths.SRC_DIR, paths.INC_DIR)
+    if extra == NATIVE:
+        list_files_dict_key (ctx, paths.SRC_DIR, paths.INC_DIR)
+    elif extra == JAVA:
+        list_files_dict_key_java (ctx, paths.JNI_JAVA_DIR)
 
-    # Print features controllers generated files
-    list_files_ftr_ctrls (ctx, paths.SRC_DIR, paths.INC_DIR, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
-
-    print os.path.join(outdir, "Sources/ARCONTROLLER_Error.c")
+    if extra == NATIVE:
+        print os.path.join(outdir, "Sources/ARCONTROLLER_Error.c")
 
 #===============================================================================
 #===============================================================================
@@ -132,6 +164,4 @@ def generate_files(ctx, outdir, extra):
     paths = Paths(outdir)
 
     # Generation
-    generate_ctrls(ctx, paths)
-    PREBUILD_ACTION = PACKAGES_DIR+'/ARSDKBuildUtils/Utils/Python/ARSDK_PrebuildActions.py'
-    os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR)
+    generate_ctrls(ctx, paths, extra)

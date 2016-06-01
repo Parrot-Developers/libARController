@@ -1765,7 +1765,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
 
     cFile.close () # see automake all source of folder !!!!!!!!
     
-def generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
+def generateFeatureControllersJava (ctx, JNI_JAVA_DIR):
     
     #########################################
     # Write Device controller JNI java file #
@@ -1993,7 +1993,8 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
 
         jfile.write ('\n')
         
-        
+def generateFeatureControllersJNI (ctx, JNI_C_DIR):
+
     #################################################
     # Write Feature controller JNI c file           #
     #################################################
@@ -2186,16 +2187,20 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR, JNI_JAVA_DIR):
         cFile.write ('#include "'+jniFtrFileName+'"\n')
     cFile.close ()
 
-def list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR, JNI_C_DIR, JNI_JAVA_DIR):
+def list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR):
     ''' Print features controllers generated files '''
     print INC_DIR + CTRL_FTR_H_NAME
     print SRC_DIR + CTRL_FTR_PRIV_H_NAME
     print SRC_DIR + CTRL_FTR_C_NAME
 
+def list_files_ftr_ctrls_jni (ctx, JNI_JAVA_DIR):
+    ''' Print features controllers generated files '''
     # Print java feature class files
     for feature in ctx.features:
         print JNI_JAVA_DIR + 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature)) +'.java'
 
+def list_files_ftr_ctrls_jni (ctx, JNI_C_DIR):
+    ''' Print features controllers generated files '''
     # Print feature JNI c files
     for feature in ctx.features:
         print JNI_C_DIR + 'ARCONTROLLER_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature)) + '.c'

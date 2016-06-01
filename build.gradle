@@ -12,7 +12,7 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['JNI/java', 'gen/JNI/java']
+            java.srcDirs = ['JNI/java', "${project.buildDir}/generated/arsdk/gen/JNI/java"]
         }
     }
 }
@@ -22,3 +22,24 @@ dependencies {
     compile project(':libARDiscovery')
     compile project(':libARSAL')
 }
+
+/* Task to generate arsdk controller java code */
+task('generateController', type: Exec) {
+
+    def arsdkxmldir = "${rootProject.ext.root_dir}/packages/arsdk-xml/"
+    ext.srcFiles = file("${arsdkxmldir}/xml").listFiles().findAll {
+        it.name.endsWith('.xml')
+    }
+    ext.parser = new File(arsdkxmldir, 'arsdkgen.py')
+    ext.genrator = file("Python/generateControllersSources.py")
+    ext.destDir = file("${project.buildDir}/generated/arsdk/gen")
+    ext.srcFiles += ext.parser
+    ext.srcFiles += ext.genrator
+    inputs.files srcFiles
+    outputs.dir destDir
+    workingDir "."
+    def cmdline = ['python', ext.parser.absolutePath, ext.genrator.absolutePath, "-o", ext.destDir.absolutePath, "java"]
+    commandLine cmdline
+}
+
+preBuild.dependsOn(generateController)
