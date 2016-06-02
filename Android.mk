@@ -18,7 +18,13 @@ LOCAL_SRC_FILES := \
 	$(LOCAL_GEN_FILES)
 
 LOCAL_LDLIBS := -llog -lz
-LOCAL_SHARED_LIBRARIES := libARController-prebuilt libARSAL-prebuilt libARStream-prebuilt libARStream2-prebuilt libmux-prebuilt
+LOCAL_SHARED_LIBRARIES := \
+	libARController \
+	libARSAL \
+	libARStream \
+	libARStream2 \
+	libmux
+
 include $(BUILD_SHARED_LIBRARY)
 
 # Add rule to run jni controller generator.
