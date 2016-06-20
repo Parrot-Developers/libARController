@@ -66,17 +66,76 @@
  * Implementation
  *************************/
 
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_video_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
+{
+    // -- Create a new video Stream Controller --
+
+    //local declarations
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+    ARCONTROLLER_Stream_t *streamController =  NULL;
+    eARCONTROLLER_STREAM_CODEC_TYPE codecType = ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT;
+
+    // Check parameters
+    if (discoveryDevice == NULL)
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+
+    if (localError == ARCONTROLLER_OK)
+    {
+	// Get video codec
+	switch (discoveryDevice->productID)
+	{
+	    case ARDISCOVERY_PRODUCT_ARDRONE:
+	    case ARDISCOVERY_PRODUCT_BEBOP_2:
+	    case ARDISCOVERY_PRODUCT_SKYCONTROLLER:
+	    case ARDISCOVERY_PRODUCT_SKYCONTROLLER_2:
+		codecType = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
+		break;
+
+	    case ARDISCOVERY_PRODUCT_JS:
+	    case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
+	    case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
+	    case ARDISCOVERY_PRODUCT_POWER_UP:
+		codecType =  ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
+		break;
+
+	    default:
+		codecType = ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT;
+		break;
+	}
+
+        streamController = ARCONTROLLER_Stream_New (networkConfiguration, discoveryDevice, codecType, &localError);
+    }
+
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned
+
+    return streamController;
+}
+
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_audio_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
+{
+    // -- Create a new audio Stream Controller --
+
+    return ARCONTROLLER_Stream_New (networkConfiguration, discoveryDevice, ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE, error);
+
+}
+
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_STREAM_CODEC_TYPE codecType, eARCONTROLLER_ERROR *error)
 {
     // -- Create a new Stream Controller --
 
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Stream_t *streamController =  NULL;
-    eARCONTROLLER_STREAM_CODEC_TYPE codecType = ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT;
     
     // Check parameters
-    if (networkConfiguration == NULL)
+    if ((networkConfiguration == NULL) || (discoveryDevice == NULL))
     {
         localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
@@ -84,29 +143,6 @@ ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration
     
     if (localError == ARCONTROLLER_OK)
     {
-        // Get video codec
-        switch (discoveryDevice->productID)
-        {
-            case ARDISCOVERY_PRODUCT_ARDRONE:
-            case ARDISCOVERY_PRODUCT_BEBOP_2:
-            case ARDISCOVERY_PRODUCT_SKYCONTROLLER:
-            case ARDISCOVERY_PRODUCT_SKYCONTROLLER_2:
-                codecType = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
-                break;
-    
-            
-            case ARDISCOVERY_PRODUCT_JS:
-            case ARDISCOVERY_PRODUCT_JS_EVO_LIGHT:
-            case ARDISCOVERY_PRODUCT_JS_EVO_RACE:
-            case ARDISCOVERY_PRODUCT_POWER_UP:
-                codecType =  ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG;
-                break;
-                
-            default:
-                codecType = ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT;
-                break;
-        }
-        
         // Create the Network Controller
         streamController = malloc (sizeof (ARCONTROLLER_Stream_t));
         if (streamController != NULL)

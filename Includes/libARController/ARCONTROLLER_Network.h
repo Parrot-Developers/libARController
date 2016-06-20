@@ -161,6 +161,31 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StartVideoStream (ARCONTROLLER_Network_
 eARCONTROLLER_ERROR ARCONTROLLER_Network_StopVideoStream (ARCONTROLLER_Network_t *networkController);
 
 /**
+ * @brief Set the callbacks of the audio stream events.
+ * @param networkController The network Controller ; must be not NULL.
+ * @param[in] decoderConfigCallback decoder configuration callback function.
+ * @param[in] receiveFrameCallback Callback when a frame is received.
+ * @param[in] timeoutFrameCallback Callback when timeout in frame receiving.
+ * @param[in] customData Data to set as argument to the callbacks.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetAudioReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData);
+
+/**
+ * @brief Start Audio stream.
+ * @param networkController The network Controller ; must be not NULL.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StartAudioStream (ARCONTROLLER_Network_t *networkController);
+
+/**
+ * @brief Stop Audio stream.
+ * @param networkController The network Controller ; must be not NULL.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopAudioStream (ARCONTROLLER_Network_t *networkController);
+
+/**
  * @brief Send data through the network.
  * @param networkController The network Controller ; must be not NULL.
  * @param[in] data The data to send.
@@ -171,5 +196,14 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_StopVideoStream (ARCONTROLLER_Network_t
  * @return Executing error.
  */
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError);
+
+/**
+ * @brief Send audio stream frame through the network.
+ * @param networkController The network Controller ; must be not NULL.
+ * @param[in] data The data to send.
+ * @param[in] dataSize The data size.
+ * @return Executing error.
+ */
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SendAudioFrame (ARCONTROLLER_Network_t *networkController, uint8_t *data, int dataSize);
 
 #endif /* _ARCONTROLLER_NETWORK_H_ */

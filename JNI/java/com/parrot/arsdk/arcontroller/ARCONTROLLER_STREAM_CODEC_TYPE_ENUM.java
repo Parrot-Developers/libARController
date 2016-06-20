@@ -45,8 +45,10 @@ public enum ARCONTROLLER_STREAM_CODEC_TYPE_ENUM {
     ARCONTROLLER_STREAM_CODEC_TYPE_H264 (1, "h264 codec"),
    /** MJPEG codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG (2, "MJPEG codec"),
+   /** Audio codec */
+    ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE (3, "PCM16LE codec"),
    /** Max of the enumeration */
-    ARCONTROLLER_STREAM_CODEC_TYPE_MAX (3, "Max of the enumeration");
+    ARCONTROLLER_STREAM_CODEC_TYPE_MAX (4, "Max of the enumeration");
 
     private final int value;
     private final String comment;

@@ -80,6 +80,15 @@ public class ARControllerCodec
         return (Mjpeg) this;
     }
 
+    public PCM16LE getAsPCM16LE()
+    {
+        if (type != ARCONTROLLER_STREAM_CODEC_TYPE_ENUM.ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE){
+            throw new RuntimeException("Is not a ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE codec (type = " + type + ")");
+        }
+
+        return (PCM16LE) this;
+    }
+
     public static class H264 extends ARControllerCodec
     {
         private ARNativeData sps;
@@ -128,6 +137,30 @@ public class ARControllerCodec
         public Mjpeg()
         {
             super(ARCONTROLLER_STREAM_CODEC_TYPE_ENUM.ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG);
+        }
+    }
+
+    public static class PCM16LE extends ARControllerCodec
+    {
+        private int sampleRate;
+        private int channel;
+        public static int CHANNEL_MONO = 0;
+        public static int CHANNEL_STEREO = 1;
+
+        public PCM16LE(int sampleRate, int channel)
+        {
+            super(ARCONTROLLER_STREAM_CODEC_TYPE_ENUM.ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE);
+            this.sampleRate = sampleRate;
+            this.channel = channel;
+        }
+
+        public int getSampleRate()
+        {
+            return sampleRate;
+        }
+        public int getChannel()
+        {
+            return channel;
         }
     }
 }
