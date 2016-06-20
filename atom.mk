@@ -36,7 +36,8 @@ LOCAL_SRC_FILES := \
 	Sources/ARCONTROLLER_StreamPool.c \
 	Sources/ARCONTROLLER_StreamQueue.c \
 	Sources/ARCONTROLLER_Stream1.c \
-	Sources/ARCONTROLLER_Stream2.c
+	Sources/ARCONTROLLER_Stream2.c \
+	Sources/ARCONTROLLER_StreamSender.c
 
 LOCAL_GENERATED_SRC_FILES := \
 	gen/Sources/ARCONTROLLER_Device.c \

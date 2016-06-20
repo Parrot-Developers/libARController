@@ -49,6 +49,7 @@
 #include <libARController/ARCONTROLLER_Network.h>
 
 #include "ARCONTROLLER_Stream.h"
+#include "ARCONTROLLER_StreamSender.h"
 #include "ARCONTROLLER_Network.h"
 
 /*************************
@@ -95,6 +96,14 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
             networkController->hasVideo = 0;
             networkController->videoController = NULL;
             
+            //audio part
+            networkController->hasAudio = 0;
+            networkController->audioController = NULL;
+
+            //output audio part
+            networkController->hasOutputAudio = 0;
+            networkController->audioOutputController = NULL;
+
             //Connection callback
             networkController->sendJsonCallback = sendJsonCallback;
             networkController->receiveJsonCallback = receiveJsonCallback;
@@ -172,12 +181,36 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         if (networkController->networkConfig.deviceToControllerARStreamData != -1)
         {
             networkController->hasVideo = 1;
-            networkController->videoController = ARCONTROLLER_Stream_New (&(networkController->networkConfig), networkController->discoveryDevice, &localError);
+            networkController->videoController = ARCONTROLLER_Stream_video_New (&(networkController->networkConfig), networkController->discoveryDevice, &localError);
         }
         //NO else ; device has not video
     }
     // No else: skipped by an error
     
+    if (localError == ARCONTROLLER_OK)
+    {
+        // Check if the device has audio
+        if (networkController->networkConfig.deviceToControllerARStreamAudioData != -1)
+        {
+            networkController->hasAudio = 1;
+            networkController->audioController = ARCONTROLLER_Stream_audio_New (&(networkController->networkConfig), networkController->discoveryDevice, &localError);
+        }
+        //NO else ; device has not video
+    }
+    // No else: skipped by an error
+
+    if (localError == ARCONTROLLER_OK)
+    {
+        // Check if the device has output audio
+        if (networkController->networkConfig.deviceToControllerARStreamAudioAck != -1)
+        {
+            networkController->hasOutputAudio = 1;
+            networkController->audioOutputController = ARCONTROLLER_StreamSender_New (&(networkController->networkConfig), &localError);
+        }
+        //NO else ; device has not video
+    }
+    // No else: skipped by an error
+
     if (localError == ARCONTROLLER_OK)
     {
         // Create the NetworkAL
@@ -248,7 +281,7 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
             (*networkController)->state = ARCONTROLLER_NETWORK_STATE_STOPPED;
             
             ARSAL_Mutex_Destroy (&((*networkController)->mutex));
-                        
+
             // Check if the device has video
             if ((*networkController)->hasVideo)
             {
@@ -256,6 +289,20 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
             }
             //NO else ; device has not video
             
+            // Check if the device has audio
+            if ((*networkController)->hasAudio)
+            {
+                ARCONTROLLER_Stream_Delete (&((*networkController)->audioController));
+            }
+            //NO else ; device has not audio
+
+            // Check if the device has output audio
+            if ((*networkController)->hasOutputAudio)
+            {
+                ARCONTROLLER_StreamSender_Delete (&((*networkController)->audioOutputController));
+            }
+            //NO else ; device has not audio
+
             ARCONTROLLER_Network_StopReaderThreads (*networkController); //TODO read error !!!!!!!!!!
             
             ARCONTROLLER_Network_StopNetworkThreads (*networkController); //TODO  read error  !!!!!!!!!!
@@ -546,6 +593,164 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SetVideoStreamMP4Compliant (ARCONTROLLE
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SetAudioReceiveCallback (ARCONTROLLER_Network_t *networkController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)
+{
+    // -- Set Audio Receive Callback --
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+
+    // Check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+        else
+        {
+            locked = 1;
+        }
+    }
+
+    if (error == ARCONTROLLER_OK)
+    {
+        if (networkController->audioController != NULL)
+        {
+            error = ARCONTROLLER_Stream_SetReceiveFrameCallback (networkController->audioController, decoderConfigCallback, receiveFrameCallback, timeoutFrameCallback, customData);
+        }
+        else
+        {
+            error = ARCONTROLLER_ERROR_NO_AUDIO;
+        }
+    }
+
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StartAudioStream (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Start Audio stream --
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+
+    // Check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+        else
+        {
+            locked = 1;
+        }
+    }
+
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has audio
+        if (networkController->hasAudio)
+        {
+            error = ARCONTROLLER_Stream_Start (networkController->audioController, networkController->networkManager);
+        }
+        //NO else ; device has not audio
+    }
+    // No else: skipped by an error
+
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has output audio
+        if (networkController->hasOutputAudio)
+        {
+            error = ARCONTROLLER_StreamSender_Start (networkController->audioOutputController, networkController->networkManager);
+        }
+        //NO else ; device has not output audio
+    }
+    // No else: skipped by an error
+
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+
+    return error;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_Network_StopAudioStream (ARCONTROLLER_Network_t *networkController)
+{
+    // -- Stop Audio stream --
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    int locked = 0;
+
+    // Check parameters
+    if (networkController == NULL)
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+
+    if (error == ARCONTROLLER_OK)
+    {
+        if (ARSAL_Mutex_Lock (&(networkController->mutex)) != 0)
+        {
+            error = ARCONTROLLER_ERROR_MUTEX;
+        }
+        else
+        {
+            locked = 1;
+        }
+    }
+
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has audio
+        if (networkController->hasAudio)
+        {
+            error = ARCONTROLLER_Stream_Stop (networkController->audioController);
+        }
+        //NO else ; device has not audio
+    }
+    // No else: skipped by an error
+
+    if (error == ARCONTROLLER_OK)
+    {
+            // Check if the device has output audio
+        if (networkController->hasOutputAudio)
+        {
+            error = ARCONTROLLER_StreamSender_Stop (networkController->audioOutputController);
+        }
+        //NO else ; device has not output audio
+    }
+    // No else: skipped by an error
+
+    if (locked)
+    {
+        ARSAL_Mutex_Unlock (&(networkController->mutex));
+    }
+
+    return error;
+}
+
 eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *networkController, void *data, int dataSize, eARCONTROLLER_NETWORK_SENDING_DATA_TYPE dataType, eARNETWORK_MANAGER_CALLBACK_RETURN timeoutPolicy, eARNETWORK_ERROR *netError)
 {
     // -- Send data through the Network --
@@ -628,6 +833,34 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
     return error;
 }
 
+eARCONTROLLER_ERROR ARCONTROLLER_Network_SendAudioFrame (ARCONTROLLER_Network_t *networkController, uint8_t *data, int dataSize)
+{
+    // -- Send Audio stream frame --
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+
+    // Check parameters
+    if ((networkController == NULL) || (networkController->audioOutputController == NULL) ||
+            (data == NULL))
+    {
+        error = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+
+    if (error == ARCONTROLLER_OK)
+    {
+        // Check if the device has output audio
+        if (networkController->hasOutputAudio)
+        {
+            error = ARCONTROLLER_StreamSender_SendAudioFrame(networkController->audioOutputController, data, dataSize);
+        }
+        //NO else ; device has not output audio
+    }
+    // No else: skipped by an error
+
+    return error;
+}
+
 eARDISCOVERY_ERROR ARCONTROLLER_Network_OnSendJson (json_object *jsonObj, void *customData)
 {
     // -- Connection callback to receive the Json --
@@ -683,7 +916,23 @@ eARDISCOVERY_ERROR ARCONTROLLER_Network_OnReceiveJson (json_object *jsonObj, voi
             error = ARCONTROLLER_Stream_OnReceiveJson (networkController->videoController, jsonObj);
         }
     }
+
+    if (error == ARDISCOVERY_OK)
+    {
+        if (networkController->audioController != NULL)
+        {
+            error = ARCONTROLLER_Stream_OnReceiveJson (networkController->audioController, jsonObj);
+        }
+    }
     
+    if (error == ARDISCOVERY_OK)
+    {
+        if (networkController->audioController != NULL)
+        {
+            error = ARCONTROLLER_StreamSender_OnReceiveJson (networkController->audioOutputController, jsonObj);
+        }
+    }
+
     if (error == ARDISCOVERY_OK)
     {
         if (networkController->receiveJsonCallback != NULL)

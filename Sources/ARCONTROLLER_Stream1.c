@@ -50,6 +50,7 @@
 #include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_StreamQueue.h>
 
+#include "ARCONTROLLER_AudioHeader.h"
 #include "ARCONTROLLER_Stream.h"
 
 #include <libARController/ARCONTROLLER_Stream1.h>
@@ -62,14 +63,17 @@
 
 #define ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE 4
 
+#define ARCONTROLLER_STREAM1_SAMPLERATE_8000 8000
+#define ARCONTROLLER_STREAM1_SAMPLERATE_11025 11025
+
 int ARCONTROLLER_Stream1_IdToIndex (ARNETWORK_IOBufferParam_t *parameters, int numberOfParameters, int id);
 int ARCONTROLLER_Stream1_GetSpsPpsFromIFrame(ARCONTROLLER_Frame_t *frame, uint8_t **spsBuffer, int *spsSize, uint8_t **ppsBuffer, int *ppsSize);
 
 void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data);
-int ARCONTROLLER_Stream1_useStream1V2 (ARCONTROLLER_Stream1_t *stream1Controller);
 
 static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
 static void ARCONTROLLER_Stream1_ReadMJPEGFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
+static void ARCONTROLLER_Stream1_ReadPcm16leFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
 static void ARCONTROLLER_Stream1_ReadDefaultFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
 
 /*************************
@@ -101,7 +105,7 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->networkConfiguration = networkConfiguration;
             
             stream1Controller->fragmentSize = ARCONTROLLER_STREAM1_DEFAULT_VIDEO_FRAGMENT_SIZE;
-            stream1Controller->maxNumberOfFragement = ARCONTROLLER_STREAM1_DEFAULT_VIDEO_FRAGMENT_MAXIMUM_NUMBER;
+            stream1Controller->maxNumberOfFragment = ARCONTROLLER_STREAM1_DEFAULT_VIDEO_FRAGMENT_MAXIMUM_NUMBER;
             stream1Controller->maxAckInterval = ARSTREAM_READER_MAX_ACK_INTERVAL_DEFAULT;
             stream1Controller->dataThread = NULL;
             stream1Controller->ackThread = NULL;
@@ -111,10 +115,13 @@ ARCONTROLLER_Stream1_t *ARCONTROLLER_Stream1_New (ARDISCOVERY_NetworkConfigurati
             stream1Controller->readyQueue = NULL;
             stream1Controller->receiveFrameCallback = NULL;
             stream1Controller->timeoutFrameCallback = NULL;
-            stream1Controller->codecType = codecType;
-            stream1Controller->isMP4Compliant = 0;
+            //stream1Controller->codecType = codecType;
+            //stream1Controller->isMP4Compliant = 0;
             stream1Controller->callbackCustomData = NULL;
             stream1Controller->decoderConfigCalled = 0;
+
+            stream1Controller->codec.type = codecType;
+            memset(&stream1Controller->codec.parameters, 0, sizeof(stream1Controller->codec.parameters));
         }
         else
         {
@@ -180,6 +187,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_Start (ARCONTROLLER_Stream1_t *stream1C
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     eARSTREAM_ERROR streamError = ARSTREAM_OK;
     ARCONTROLLER_Frame_t *firstFrame = NULL;
+    int d2cStreamData = -1;
+    int c2dStreamAck = -1;
     
     // Check parameters
     if (stream1Controller == NULL)
@@ -190,13 +199,28 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_Start (ARCONTROLLER_Stream1_t *stream1C
     
     if ((error == ARCONTROLLER_OK) && (!stream1Controller->isRunning))
     {
+        switch (stream1Controller->codec.type)
+        {
+            case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
+            case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:
+                    d2cStreamData = stream1Controller->networkConfiguration->deviceToControllerARStreamData;
+                    c2dStreamAck = stream1Controller->networkConfiguration->controllerToDeviceARStreamAck;
+                    break;
+            case ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE:
+                    d2cStreamData = stream1Controller->networkConfiguration->deviceToControllerARStreamAudioData;
+                    c2dStreamAck = stream1Controller->networkConfiguration->controllerToDeviceARStreamAudioAck;
+                break;
+            default:
+                break;
+        }
+
         stream1Controller->isRunning = 1;
 
         firstFrame = ARCONTROLLER_StreamPool_GetNextFreeFrame (stream1Controller->framePool, &error);
         
         if (error == ARCONTROLLER_OK)
         {
-            stream1Controller->streamReader = ARSTREAM_Reader_New (networkManager, stream1Controller->networkConfiguration->deviceToControllerARStreamData, stream1Controller->networkConfiguration->controllerToDeviceARStreamAck, ARCONTROLLER_Stream1_FrameCompleteCallback, firstFrame->data, firstFrame->capacity, stream1Controller->fragmentSize, stream1Controller->maxAckInterval, stream1Controller, &streamError);
+            stream1Controller->streamReader = ARSTREAM_Reader_New (networkManager, d2cStreamData, c2dStreamAck, ARCONTROLLER_Stream1_FrameCompleteCallback, firstFrame->data, firstFrame->capacity, stream1Controller->fragmentSize, stream1Controller->maxAckInterval, stream1Controller, &streamError);
         
             if (streamError != ARSTREAM_OK)
             {
@@ -342,20 +366,21 @@ int ARCONTROLLER_Stream1_IsRunning (ARCONTROLLER_Stream1_t *stream1Controller, e
 eARCONTROLLER_ERROR ARCONTROLLER_Stream1_SetMP4Compliant (ARCONTROLLER_Stream1_t *stream1Controller, int isMP4Compliant)
 {
     // -- Set stream compliant with the mp4 format. --
-    
+
     // local declarations
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
-    
-    if (stream1Controller == NULL)
+
+    if ((stream1Controller == NULL) ||
+        (stream1Controller->codec.type != ARCONTROLLER_STREAM_CODEC_TYPE_H264))
     {
         error = ARCONTROLLER_ERROR_BAD_PARAMETER;
     }
-    
+
     if (error == ARCONTROLLER_OK)
     {
-        stream1Controller->isMP4Compliant = isMP4Compliant;
+        stream1Controller->codec.parameters.h264parameters.isMP4Compliant = isMP4Compliant;
     }
-    
+
     return error;
 }
 
@@ -481,7 +506,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson (ARCONTROLLER_Stream1_t *s
         valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY);
         if (valueJsonObj != NULL)
         {
-            stream1Controller->maxNumberOfFragement = json_object_get_int(valueJsonObj);
+            stream1Controller->maxNumberOfFragment = json_object_get_int(valueJsonObj);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY
@@ -513,6 +538,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_InitStream1Buffers (ARCONTROLLER_Stream
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     int streamAckBufferIndex = -1;
     int streamDataBufferIndex = -1;
+    int streamAckBufferId = -1;
+    int streamDataBufferId = -1;
     
     // Check parameters
     if (stream1Controller == NULL)
@@ -523,14 +550,30 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_InitStream1Buffers (ARCONTROLLER_Stream
     
     if (error == ARCONTROLLER_OK)
     {
-        streamAckBufferIndex = ARCONTROLLER_Stream1_IdToIndex (stream1Controller->networkConfiguration->controllerToDeviceParams, stream1Controller->networkConfiguration->numberOfControllerToDeviceParam, stream1Controller->networkConfiguration->controllerToDeviceARStreamAck);
-        streamDataBufferIndex = ARCONTROLLER_Stream1_IdToIndex (stream1Controller->networkConfiguration->deviceToControllerParams, stream1Controller->networkConfiguration->numberOfDeviceToControllerParam, stream1Controller->networkConfiguration->deviceToControllerARStreamData);
-                
+    switch (stream1Controller->codec.type)
+    {
+        case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
+        case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:
+            streamAckBufferIndex = ARCONTROLLER_Stream1_IdToIndex (stream1Controller->networkConfiguration->controllerToDeviceParams, stream1Controller->networkConfiguration->numberOfControllerToDeviceParam, stream1Controller->networkConfiguration->controllerToDeviceARStreamAck);
+            streamDataBufferIndex = ARCONTROLLER_Stream1_IdToIndex (stream1Controller->networkConfiguration->deviceToControllerParams, stream1Controller->networkConfiguration->numberOfDeviceToControllerParam, stream1Controller->networkConfiguration->deviceToControllerARStreamData);
+            streamAckBufferId = stream1Controller->networkConfiguration->controllerToDeviceARStreamAck;
+            streamDataBufferId = stream1Controller->networkConfiguration->deviceToControllerARStreamData;
+            break;
+        case ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE:
+            streamAckBufferIndex = ARCONTROLLER_Stream1_IdToIndex (stream1Controller->networkConfiguration->controllerToDeviceParams, stream1Controller->networkConfiguration->numberOfControllerToDeviceParam, stream1Controller->networkConfiguration->controllerToDeviceARStreamAudioAck);
+            streamDataBufferIndex = ARCONTROLLER_Stream1_IdToIndex (stream1Controller->networkConfiguration->deviceToControllerParams, stream1Controller->networkConfiguration->numberOfDeviceToControllerParam, stream1Controller->networkConfiguration->deviceToControllerARStreamAudioData);
+            streamAckBufferId = stream1Controller->networkConfiguration->controllerToDeviceARStreamAudioAck;
+            streamDataBufferId = stream1Controller->networkConfiguration->deviceToControllerARStreamAudioData;
+            break;
+        default:
+            break;
+    }
+
         if ((streamAckBufferIndex != -1) &&
            (streamDataBufferIndex != -1))
         {
-            ARSTREAM_Reader_InitStreamAckBuffer (&(stream1Controller->networkConfiguration->controllerToDeviceParams[streamAckBufferIndex]), stream1Controller->networkConfiguration->controllerToDeviceARStreamAck);
-            ARSTREAM_Reader_InitStreamDataBuffer (&(stream1Controller->networkConfiguration->deviceToControllerParams[streamDataBufferIndex]), stream1Controller->networkConfiguration->deviceToControllerARStreamData, stream1Controller->fragmentSize, stream1Controller->maxNumberOfFragement);
+            ARSTREAM_Reader_InitStreamAckBuffer (&(stream1Controller->networkConfiguration->controllerToDeviceParams[streamAckBufferIndex]), streamAckBufferId);
+            ARSTREAM_Reader_InitStreamDataBuffer (&(stream1Controller->networkConfiguration->deviceToControllerParams[streamDataBufferIndex]), streamDataBufferId, stream1Controller->fragmentSize, stream1Controller->maxNumberOfFragment);
         }
         //NO ELSE ; device has not streaming
     }
@@ -692,7 +735,7 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
             
             if (frame != NULL)
             {
-                switch (stream1Controller->codecType)
+                switch (stream1Controller->codec.type)
                 {
                     case ARCONTROLLER_STREAM_CODEC_TYPE_H264:
                         ARCONTROLLER_Stream1_ReadH264Frame (stream1Controller, frame);
@@ -702,8 +745,12 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
                         ARCONTROLLER_Stream1_ReadMJPEGFrame (stream1Controller, frame);
                         break;
 
+                    case ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE:
+                        ARCONTROLLER_Stream1_ReadPcm16leFrame (stream1Controller, frame);
+                        break;
+
                     default:
-                        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "codec %d not known", stream1Controller->codecType);
+                        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM1_TAG, "codec %d not known", stream1Controller->codec.type);
                         ARCONTROLLER_Stream1_ReadDefaultFrame (stream1Controller, frame);
                         break;
                 }
@@ -728,7 +775,6 @@ void* ARCONTROLLER_Stream1_ReaderThreadRun (void *data)
 
 static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame)
 {
-    ARCONTROLLER_Stream_Codec_t codec;
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
 
@@ -748,17 +794,15 @@ static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1C
             frame->used = frame->used - spsSize - ppsSize;
 
             //Set Codec
-            codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264;
-            codec.parameters.h264parameters.spsBuffer = spsBuffer;
-            codec.parameters.h264parameters.spsSize = spsSize;
-            codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
-            codec.parameters.h264parameters.ppsSize = ppsSize;
-            codec.parameters.h264parameters.isMP4Compliant = stream1Controller->isMP4Compliant;
+            stream1Controller->codec.parameters.h264parameters.spsBuffer = spsBuffer;
+            stream1Controller->codec.parameters.h264parameters.spsSize = spsSize;
+            stream1Controller->codec.parameters.h264parameters.ppsBuffer = ppsBuffer;
+            stream1Controller->codec.parameters.h264parameters.ppsSize = ppsSize;
 
             //Configuration decoder callback
             if ((!stream1Controller->decoderConfigCalled) && (stream1Controller->decoderConfigCallback != NULL))
             {
-                stream1Controller->decoderConfigCallback (codec, stream1Controller->callbackCustomData);
+                stream1Controller->decoderConfigCallback (stream1Controller->codec, stream1Controller->callbackCustomData);
                 stream1Controller->decoderConfigCalled = 1;
             }
         }
@@ -772,7 +816,7 @@ static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1C
     if ((error == ARCONTROLLER_OK) && (stream1Controller->decoderConfigCalled == 1))
     {
         //reformat H264 for mp4 format
-        if (stream1Controller->isMP4Compliant)
+        if (stream1Controller->codec.parameters.h264parameters.isMP4Compliant)
         {
             // replace nalu header by nalu size
             uint32_t naluSize = htonl (frame->used - ARCONTROLLER_STREAM1_H264_NAL_HEADER_SIZE);
@@ -818,6 +862,91 @@ static void ARCONTROLLER_Stream1_ReadMJPEGFrame (ARCONTROLLER_Stream1_t *stream1
         }
     }
     // NO ELSE ; no callback registered
+}
+
+static int getSampleRate(ARCONTROLLER_Frame_t *frame, eARCONTROLLER_ERROR *error)
+{
+    int sampleFormat = 0;
+    int sampleShift = 0;
+    int sampleRate = 0;
+    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
+
+    // Check parameters
+    if ((frame == NULL) ||
+        (frame->data == NULL) ||
+        (frame->used <= 10))
+    {
+        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;
+    }
+    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing
+
+    if (localError == ARCONTROLLER_OK)
+    {
+        sampleFormat = (frame->data[9] << 8) + frame->data[10];
+
+        if (((sampleFormat >> ARCONTROLLER_AUDIO_HEADER_FMT_BASE_RATE_SHIFT) & 0x1) == 1)
+        {
+            sampleRate = ARCONTROLLER_STREAM1_SAMPLERATE_11025;
+        }
+        else
+        {
+            sampleRate = ARCONTROLLER_STREAM1_SAMPLERATE_8000;
+        }
+        sampleShift = (sampleFormat >> ARCONTROLLER_AUDIO_HEADER_FMT_RATE_SHIFT_SHIFT) & 0x3;
+        sampleRate <<= sampleShift;
+    }
+
+    // Return the error
+    if (error != NULL)
+    {
+        *error = localError;
+    }
+    // No else: error is not returned
+
+    return sampleRate;
+}
+
+static void ARCONTROLLER_Stream1_ReadPcm16leFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame)
+{
+
+    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
+    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;
+    int sampleRate = 0;
+
+    sampleRate = getSampleRate(frame, &error);
+
+    if (error == ARCONTROLLER_OK)
+    {
+        //Remove header of the frame data
+        frame->data = frame->data + ARCONTROLLER_AUDIO_HEADER_SIZE;
+        frame->used = frame->used - ARCONTROLLER_AUDIO_HEADER_SIZE;
+
+        //Callback if not called or sample rate has changed
+        if (((!stream1Controller->decoderConfigCalled) ||
+            (sampleRate != stream1Controller->codec.parameters.pcm16leParameters.sampleRate)) &&
+            (stream1Controller->decoderConfigCallback != NULL))
+        {
+            //Set Codec
+            stream1Controller->codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE;
+            stream1Controller->codec.parameters.pcm16leParameters.sampleRate = sampleRate;
+            stream1Controller->codec.parameters.pcm16leParameters.channel = ARCONTROLLER_STREAM_AUDIO_CHANNEL_MONO;
+
+            stream1Controller->decoderConfigCallback (stream1Controller->codec, stream1Controller->callbackCustomData);
+            stream1Controller->decoderConfigCalled = 1;
+        }
+
+        if ((stream1Controller->receiveFrameCallback != NULL) &&
+            stream1Controller->decoderConfigCalled)
+        {
+            callbackError = stream1Controller->receiveFrameCallback (frame, stream1Controller->callbackCustomData);
+            if (callbackError != ARCONTROLLER_OK)
+            {
+                //Recall decoderConfigCallback
+                stream1Controller->decoderConfigCalled = 0;
+            }
+        }
+        // NO ELSE ; no callback registered
+    }
 }
 
 static void ARCONTROLLER_Stream1_ReadDefaultFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame)

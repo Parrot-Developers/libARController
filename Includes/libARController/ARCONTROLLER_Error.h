@@ -67,6 +67,7 @@ typedef enum
     ARCONTROLLER_ERROR_INIT_SEMAPHORE, /**< Error during the initialization of a semaphore */
     ARCONTROLLER_ERROR_NOT_SENT, /**< Error data not sent */
     ARCONTROLLER_ERROR_NO_VIDEO, /**< Error the device has no video */
+    ARCONTROLLER_ERROR_NO_AUDIO, /**< Error the device has no audio */
     ARCONTROLLER_ERROR_NO_ELEMENT, /**< No element saved for this command */
     ARCONTROLLER_ERROR_NO_ARGUMENTS, /**< No argument saved for this command */
     ARCONTROLLER_ERROR_CANCELED, /**< start canceled*/
