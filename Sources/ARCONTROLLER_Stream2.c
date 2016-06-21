@@ -336,6 +336,10 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnSendJson (ARCONTROLLER_Stream2_t *stre
         // add ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_CLIENT_CONTROL_PORT_KEY
         valueJsonObj = json_object_new_int (stream2Controller->clientControlPort);
         json_object_object_add (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_CLIENT_CONTROL_PORT_KEY, valueJsonObj);
+
+        // add ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SUPPORTED_METADATA_VERSION_KEY
+        valueJsonObj = json_object_new_int (1);
+        json_object_object_add (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SUPPORTED_METADATA_VERSION_KEY, valueJsonObj);
     }
     
     return error;
@@ -666,7 +670,14 @@ static eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, 
 
         //set frame type
         frame->isIFrame = (auSyncType == ARSTREAM2_H264_FILTER_AU_SYNC_TYPE_IFRAME) ? 1 : 0;
-        
+
+        //set timestamp
+        frame->timestamp = auTimestamp;
+
+        //set metadata
+        frame->metadata = auMetadata;
+        frame->metadataSize = auMetadataSize;
+
         error = stream2Controller->receiveFrameCallback(frame, stream2Controller->callbackData);
         
         //Manage Error
