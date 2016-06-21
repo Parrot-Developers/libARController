@@ -79,9 +79,12 @@ ARCONTROLLER_Frame_t *ARCONTROLLER_Frame_NewWithCapacity (uint32_t defaultCapaci
             frame->missed = 0;
             frame->width = 0;
             frame->height = 0;
+            frame->timestamp = 0;
             frame->isIFrame = 0;
             frame->available = 1;
             frame->base = NULL;
+            frame->metadata = NULL;
+            frame->metadataSize = 0;
         }
         else
         {
@@ -204,8 +207,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_Frame_SetFree (ARCONTROLLER_Frame_t *frame)
         frame->missed = 0;
         frame->width = 0;
         frame->height = 0;
+        frame->timestamp = 0;
         frame->isIFrame = 0;
         frame->available = 1;
+        frame->metadata = NULL;
+        frame->metadataSize = 0;
     }
 
     return error;
