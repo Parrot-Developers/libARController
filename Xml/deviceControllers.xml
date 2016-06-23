@@ -133,6 +133,7 @@
         
         <feature name="common"/>
         <feature name="ardrone3"/>
+        <feature name="rc"/>
         
     </ARController_Device>
 
