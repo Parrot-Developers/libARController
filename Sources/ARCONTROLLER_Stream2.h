@@ -47,7 +47,8 @@
 #include <libARController/ARCONTROLLER_StreamPool.h>
 #include <libARController/ARCONTROLLER_Stream.h>
 #include <libARController/ARCONTROLLER_Stream2.h>
-#include <libmux.h>
+
+struct mux_ctx;
 
 #define ARCONTROLLER_STREAM2_TAG "ARCONTROLLER_Stream2"
 

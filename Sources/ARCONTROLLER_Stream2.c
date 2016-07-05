@@ -52,7 +52,9 @@
 
 #include "ARCONTROLLER_Stream2.h"
 #include <libARController/ARCONTROLLER_Stream2.h>
+#if defined BUILD_LIBMUX
 #include <libmux.h>
+#endif
 
 /*************************
  * Private header
@@ -98,8 +100,12 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
                 ARDISCOVERY_DEVICE_WifiGetIpAddress (discoveryDevice, stream2Controller->serverAddress, ARCONTROLLER_STREAM2_IP_SIZE);
                 stream2Controller->mux = NULL;
             } else if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_USBSERVICE) {
+#if defined BUILD_LIBMUX
                 ARDISCOVERY_Device_UsbGetMux(discoveryDevice, &stream2Controller->mux);
                 mux_ref(stream2Controller->mux);
+#else
+                localError = ARCONTROLLER_ERROR_NOT_IMPLEMENTED;
+#endif
             }
             
             stream2Controller->clientStreamPort = ARCONTROLLER_STREAM2_CLIENT_STREAM_PORT;
@@ -152,9 +158,10 @@ void ARCONTROLLER_Stream2_Delete (ARCONTROLLER_Stream2_t **stream2Controller)
         {
             ARCONTROLLER_Stream2_Stop (*stream2Controller);
 
+#if defined BUILD_LIBMUX
             if ((*stream2Controller)->mux)
                 mux_unref((*stream2Controller)->mux);
-
+#endif
             free ((*stream2Controller)->parmeterSets);
             (*stream2Controller)->parmeterSets = NULL;
             

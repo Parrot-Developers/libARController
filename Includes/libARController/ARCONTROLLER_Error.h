@@ -45,6 +45,7 @@ typedef enum
 {
     ARCONTROLLER_OK = 0, /**< No error */
     ARCONTROLLER_ERROR = -1000, /**< Unknown generic error */
+    ARCONTROLLER_ERROR_NOT_IMPLEMENTED, /**< Function not implemented */
     
     ARCONTROLLER_ERROR_ALLOC, /**< Memory allocation error */
     ARCONTROLLER_ERROR_BAD_PARAMETER, /**< Bad parameters */
