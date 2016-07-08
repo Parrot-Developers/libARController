@@ -1126,8 +1126,6 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP'
             elif cmd.timeoutPolicy == ArCmdTimeoutPolicy.RETRY:
                 timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_RETRY'
-            elif cmd.timeoutPolicy == ArCmdTimeoutPolicy.FLUSH:
-                timeoutPolicy = 'ARNETWORK_MANAGER_CALLBACK_RETURN_FLUSH'
 
             cFile.write ('        error = ARCONTROLLER_Network_SendData (feature->privatePart->networkController, cmdBuffer, cmdSize, '+bufferType+', '+timeoutPolicy+', &netError);\n')
             
