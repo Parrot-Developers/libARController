@@ -35,6 +35,11 @@ task('generateController', type: Exec) {
     ext.destDir = file("${project.buildDir}/generated/arsdk/gen")
     ext.srcFiles += ext.parser
     ext.srcFiles += ext.genrator
+    ext.srcFiles += file("Python/generateDeviceControllers.py")
+    ext.srcFiles += file("Python/generateFeatureControllers.py")
+    ext.srcFiles += file("Python/generateDictionaryKeyEnum.py")
+    ext.srcFiles += file("Python/ARControllerUtils.py")
+
     inputs.files srcFiles
     outputs.dir destDir
     workingDir "."
