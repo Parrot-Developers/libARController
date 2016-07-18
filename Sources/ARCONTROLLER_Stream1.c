@@ -306,6 +306,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_Stream1_Stop (ARCONTROLLER_Stream1_t *stream1Co
         }
         
         ARSTREAM_Reader_Delete (&(stream1Controller->streamReader));
+
+        // Force to re-call the configure callback
+        stream1Controller->decoderConfigCalled = 0;
     }
     
     return error;
