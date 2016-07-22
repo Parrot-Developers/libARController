@@ -116,6 +116,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->maxLatency = 0;
             stream2Controller->maxNetworkLatency = 0;
             stream2Controller->maxBiterate = 0;
+            stream2Controller->qos_level = 0;
             stream2Controller->parmeterSets = NULL;
             
             stream2Controller->errorCount = 0;
@@ -402,6 +403,13 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnReceiveJson (ARCONTROLLER_Stream2_t *s
             stream2Controller->maxBiterate = json_object_get_int(valueJsonObj);
         }
         
+        // get ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY
+        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY);
+        if (valueJsonObj != NULL)
+        {
+            stream2Controller->qos_level = json_object_get_int(valueJsonObj);
+        }
+        
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_PARAMETER_SETS_KEY
         valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_PARAMETER_SETS_KEY);
         if (valueJsonObj != NULL)
@@ -490,6 +498,14 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
             net_config.serverControlPort = stream2Controller->serverControlPort;
             net_config.clientStreamPort = stream2Controller->clientStreamPort;
             net_config.clientControlPort = stream2Controller->clientControlPort;
+            if (stream2Controller->qos_level == 1)
+            {
+                net_config.classSelector = ARSAL_SOCKET_CLASS_SELECTOR_CS4;
+            }
+            else
+            {
+                net_config.classSelector = ARSAL_SOCKET_CLASS_SELECTOR_UNSPECIFIED;
+            }
             stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, &net_config, NULL);
         }
 

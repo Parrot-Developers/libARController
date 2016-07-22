@@ -85,6 +85,7 @@ struct ARCONTROLLER_Stream2_t
     int maxNetworkLatency; /**< Maximum acceptable network latency in milliseconds */
     int maxBiterate; /**< Maximum streaming bitrate in bit/s */
     char *parmeterSets; /**< */
+    int qos_level;
     
     int errorCount;
     int replaceStartCodesWithNaluSize; /**< if 1, replace the NAL units start code with the NALU size */
