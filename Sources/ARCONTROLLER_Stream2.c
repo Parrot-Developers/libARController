@@ -319,6 +319,10 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnSendJson (ARCONTROLLER_Stream2_t *stre
         // add ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_CLIENT_CONTROL_PORT_KEY
         valueJsonObj = json_object_new_int (stream2Controller->clientControlPort);
         json_object_object_add (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_CLIENT_CONTROL_PORT_KEY, valueJsonObj);
+
+        // add ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SUPPORTED_METADATA_VERSION_KEY
+        valueJsonObj = json_object_new_int (1);
+        json_object_object_add (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SUPPORTED_METADATA_VERSION_KEY, valueJsonObj);
     }
     
     return error;
@@ -429,6 +433,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
 {
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARSTREAM2_StreamReceiver_Config_t config;
+    ARSTREAM2_StreamReceiver_NetConfig_t net_config;
     eARSTREAM2_ERROR stream2Error = ARSTREAM2_OK;
     
     // Check parameters
@@ -441,14 +446,15 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
     if (error == ARCONTROLLER_OK)
     {
         memset(&config, 0, sizeof(ARSTREAM2_StreamReceiver_Config_t));
+        memset(&net_config, 0, sizeof(ARSTREAM2_StreamReceiver_NetConfig_t));
         
-        config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
-        config.mcastAddr = NULL;
-        config.mcastIfaceAddr = NULL;
-        config.serverStreamPort = stream2Controller->serverStreamPort;
-        config.serverControlPort = stream2Controller->serverControlPort;
-        config.clientStreamPort = stream2Controller->clientStreamPort;
-        config.clientControlPort = stream2Controller->clientControlPort;
+        net_config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
+        net_config.mcastAddr = NULL;
+        net_config.mcastIfaceAddr = NULL;
+        net_config.serverStreamPort = stream2Controller->serverStreamPort;
+        net_config.serverControlPort = stream2Controller->serverControlPort;
+        net_config.clientStreamPort = stream2Controller->clientStreamPort;
+        net_config.clientControlPort = stream2Controller->clientControlPort;
         config.maxPacketSize = stream2Controller->maxPaquetSize;
         config.maxBitrate = stream2Controller->maxBiterate;
         config.maxLatencyMs = stream2Controller->maxLatency;
@@ -464,7 +470,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
 
     if (error == ARCONTROLLER_OK)
     {
-        stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config);
+        stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, &net_config, NULL);
         if (stream2Error != ARSTREAM2_OK)
         {
             error = ARCONTROLLER_ERROR_INIT_STREAM;
@@ -642,7 +648,14 @@ static eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, 
 
         //set frame type
         frame->isIFrame = (auSyncType == ARSTREAM2_H264_FILTER_AU_SYNC_TYPE_IFRAME) ? 1 : 0;
-        
+
+        //set timestamp
+        frame->timestamp = auTimestamp;
+
+        //set metadata
+        frame->metadata = auMetadata;
+        frame->metadataSize = auMetadataSize;
+
         error = stream2Controller->receiveFrameCallback(frame, stream2Controller->callbackData);
         
         //Manage Error

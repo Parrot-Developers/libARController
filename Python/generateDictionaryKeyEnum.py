@@ -34,41 +34,42 @@
 import sys
 import os
 import re
+import arsdkparser
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
-
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
-
-DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
-DEVICE_CONTROLLER_FILE = MYDIR+'/../Xml/'+DEVICE_CONTROLLER_FILE_NAME
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
+from libARCommandsgen import *
 from ARControllerUtils import *
+from arsdkparser import *
 
-def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
+DEVICE_CONTROLLER_FILE_NAME = 'deviceControllers.xml'
+DEVICE_CONTROLLER_FILE = PACKAGES_DIR+'/libARController/Xml/'+DEVICE_CONTROLLER_FILE_NAME
+
+CTRL_DICT_KEY_H_NAME = 'ARCONTROLLER_DICTIONARY_Key.h'
+CTRL_DICT_KEY_C_NAME = 'ARCONTROLLER_DICTIONARY_Key.c'
+
+def generateDictionaryKeyEnum (ctx, SRC_DIR, INC_DIR):
     
-    deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, allFeatures)
+    deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, ctx)
     
     #check deviceController list
     if not deviceControllers:
         exit (1)
-        
-    for d in deviceControllers:
-        ARPrint ('    name: ' + d.name)
-    
+
     ARPrint ('generateDictionaryKeyEnum ...')
-    
+
     #########################################
     # Write Feature controller header file  #
     #########################################
 
     includeDefine = '_' + MODULE_DICTIONARY + '_KEY_H_'
 
-    headerFileName = 'ARCONTROLLER_DICTIONARY_Key.h'
     bref = '.h'
+    headerFileName = CTRL_DICT_KEY_H_NAME
     filepath = INC_DIR + headerFileName
     hFile = open (filepath, 'w')
 
@@ -99,16 +100,16 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     hFile.write ('typedef enum \n')
     hFile.write ('{\n')
     first = True
-    for feature in allFeatures:
+    for feature in ctx.features:
         if first:
-            hFile.write ('    '+defineNotification(feature)+' = 0, /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature)+' = 0, /**< Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
             first = False
         else:
-            hFile.write ('    '+defineNotification(feature)+', /**< Key used to define the feature <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature)+', /**< Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
         
         
         for evt in feature.evts:
-            hFile.write ('    '+defineNotification(feature, evt)+', /**< Key used to define the event <code>' + ARCapitalize (evt.formattedName()) + '</code> in project <code>' + ARCapitalize (feature.name) + '</code> */\n')
+            hFile.write ('    '+defineNotification(feature, evt)+', /**< Key used to define the event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
     hFile.write ('    '+AREnumValue(MODULE_DICTIONARY, 'DICTIONARY', 'KEY','MAX')+', /**< Unused, iterator maximum value */\n')
     hFile.write ('}'+defineNotificationDef()+';\n')
     hFile.write ('\n')
@@ -127,7 +128,7 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     
     classTag = 'ARCONTROLLER_Device'
     
-    cFileName = 'ARCONTROLLER_DICTIONARY_Key.c'
+    cFileName = CTRL_DICT_KEY_C_NAME
     filepath = SRC_DIR + cFileName
     cFile = open (filepath, 'w')
 
@@ -164,10 +165,10 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     
     cFile.write ('    // find feature parameters\n')
     first = True
-    for index in range(len(allFeatures)-1):
+    for index in range(len(ctx.features)-1):
     
-        feature = allFeatures[index]
-        featureNext = allFeatures[index+1]
+        feature = ctx.features[index]
+        featureNext = ctx.features[index+1]
         
         ifOrElse = 'if'
         if first:
@@ -177,7 +178,7 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
             ifOrElse = 'else if'
         
         nextKey = ''
-        if index != (len(allFeatures)-1):
+        if index != (len(ctx.features)-1):
             nextKey = defineNotification(featureNext)
         else:
             nextKey = AREnumValue(MODULE_DICTIONARY, 'DICTIONARY', 'KEY','MAX')
@@ -193,3 +194,105 @@ def generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR):
     cFile.write ('\n')
     
     cFile.close ()
+
+def generateDictionaryKeyEnumJava (ctx, JNI_JAVA_DIR):
+    CLASS_NAME = ARJavaEnumType (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key')
+    JFILE_NAME =  JNI_JAVA_DIR + CLASS_NAME + '.java'
+    UNKNOWN_VALUE = 'e'+ARJavaEnumValDef(MODULE_ARCONTROLLER, 'DICTIONARY', 'Key', 'UNKNOWN_ENUM_VALUE', True)
+
+    jfile = open(JFILE_NAME, 'w')
+
+    jfile.write(LICENCE_HEADER)
+    jfile.write('\n')
+    jfile.write ('package com.parrot.arsdk.'+MODULE_ARCONTROLLER.lower()+';\n')
+    jfile.write('\n')
+    jfile.write('import java.util.HashMap;\n')
+    jfile.write('\n')
+    jfile.write('/**\n')
+    jfile.write(' * Java copy of the ' + AREnumName (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key') + ' enum\n')
+    jfile.write(' */\n')
+    jfile.write('public enum ' + CLASS_NAME + ' {\n')
+    jfile.write('    /** Dummy value for all unknown cases */\n')
+    jfile.write('    ' + UNKNOWN_VALUE + ' (Integer.MIN_VALUE, "Dummy value for all unknown cases"),\n')
+
+    val = 0
+    for feature in ctx.features:
+        
+        jfile.write('    /** Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> */\n')
+        jfile.write('    '+defineNotification(feature)+ ' (' + str(val)+ ', "Key used to define the feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>"),\n')
+        val += 1
+
+
+        for evt in feature.evts:
+            jfile.write('    /** Key used to define the event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>*/\n')
+            jfile.write('    '+defineNotification(feature, evt)+' (' + str(val)+ ', "Key used to define the event <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>"),\n')
+            val += 1
+    jfile.write('    /** Unused, iterator maximum value */\n')
+    jfile.write('    ARCONTROLLER_DICTIONARY_DICTIONARY_KEY_MAX (' + str(val)+ ', "Unused, iterator maximum value");\n')
+
+    jfile.write('\n')
+    jfile.write('    private final int value;\n')
+    jfile.write('    private final String comment;\n');
+    jfile.write('    static HashMap<Integer, ' + CLASS_NAME + '> valuesList;\n')
+    jfile.write('\n')
+    jfile.write('    ' + CLASS_NAME + ' (int value) {\n')
+    jfile.write('        this.value = value;\n')
+    jfile.write('        this.comment = null;\n')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    ' + CLASS_NAME + ' (int value, String comment) {\n')
+    jfile.write('        this.value = value;\n')
+    jfile.write('        this.comment = comment;\n')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    /**\n')
+    jfile.write('     * Gets the int value of the enum\n')
+    jfile.write('     * @return int value of the enum\n')
+    jfile.write('     */\n')
+    jfile.write('    public int getValue () {\n')
+    jfile.write('        return value;\n')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    /**\n')
+    jfile.write('     * Gets the ' + CLASS_NAME + ' instance from a C enum value\n')
+    jfile.write('     * @param value C value of the enum\n')
+    jfile.write('     * @return The ' + CLASS_NAME + ' instance, or null if the C enum value was not valid\n')
+    jfile.write('     */\n')
+    jfile.write('    public static ' + CLASS_NAME + ' getFromValue (int value) {\n')
+    jfile.write('        if (null == valuesList) {\n')
+    jfile.write('            ' + CLASS_NAME + ' [] valuesArray = ' + CLASS_NAME + '.values ();\n')
+    jfile.write('            valuesList = new HashMap<Integer, ' + CLASS_NAME + '> (valuesArray.length);\n')
+    jfile.write('            for (' + CLASS_NAME + ' entry : valuesArray) {\n')
+    jfile.write('                valuesList.put (entry.getValue (), entry);\n')
+    jfile.write('            }\n')
+    jfile.write('        }\n')
+    jfile.write('        ' + CLASS_NAME + ' retVal = valuesList.get (value);\n')
+    jfile.write('        if (retVal == null) {\n')
+    jfile.write('            retVal = ' + UNKNOWN_VALUE + ';\n')
+    jfile.write('        }\n')
+    jfile.write('        return retVal;')
+    jfile.write('    }\n')
+    jfile.write('\n')
+    jfile.write('    /**\n')
+    jfile.write('     * Returns the enum comment as a description string\n')
+    jfile.write('     * @return The enum description\n')
+    jfile.write('     */\n')
+    jfile.write('    public String toString () {\n')
+    jfile.write('        if (this.comment != null) {\n')
+    jfile.write('            return this.comment;\n')
+    jfile.write('        }\n')
+    jfile.write('        return super.toString ();\n')
+    jfile.write('    }\n')
+    jfile.write('}\n')
+    jfile.close()
+
+def list_files_dict_key (ctx, SRC_DIR, INC_DIR):
+    ''' Print device dictionary key generated files '''
+    print INC_DIR + CTRL_DICT_KEY_H_NAME
+    print SRC_DIR + CTRL_DICT_KEY_C_NAME
+
+def list_files_dict_key_java (ctx, JNI_JAVA_DIR):
+    ''' Print device dictionary key generated files '''
+    CLASS_NAME = ARJavaEnumType (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key')
+    JFILE_NAME =  JNI_JAVA_DIR + CLASS_NAME + '.java'
+    print JFILE_NAME

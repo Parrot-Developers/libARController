@@ -34,15 +34,18 @@
 import sys
 import os
 import re
+import arsdkparser
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
+from xml.dom.minidom import parseString
 
-sys.path.append('%(MYDIR)s/../../ARBuildUtils/Utils/Python' % locals())
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
+sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
+from arsdkparser import *
+from libARCommandsgen import *
 
 MODULE_ARCONTROLLER='ARCONTROLLER'
 MODULE_NETWORK=MODULE_ARCONTROLLER+'_NETWORK'
@@ -60,6 +63,14 @@ FEATURE_CONTROLLER_EVENTS_SUBSTR = ['Event']
 FEATURE_CONTROLLER_STATES_SUBSTR = ['State']
 FEATURE_CONTROLLER_LISTS_SUBSTR = ['List']
 
+# Equivalent format types
+FORMATTYPES  = ['"%"PRIu8',    '"%"PRIi8',
+             '"%"PRIu16',   '"%"PRIi16',
+             '"%"PRIu32',     '"%"PRIi32',
+             '"%"PRIu64',    '"%"PRIi64',
+             '"%f"',   '"%f"',
+             '"%s"']
+
 def isEvent(cl):
     found = False
     for clname in FEATURE_CONTROLLER_EVENTS_SUBSTR:
@@ -75,43 +86,43 @@ def isState(cl):
     return found
 
 def sendingFunctionType(module, feature, cmd):
-    return ARTypeName (module, feature.name, 'Send' + ARCapitalize(cmd.formattedName()))
+    return ARTypeName (module, get_ftr_old_name(feature), 'Send' + ARCapitalize(format_cmd_name(cmd)))
     
 def sendingFunctionName(module, feature, cmd):
-    return ARFunctionName (module, feature.name, 'Send' + ARCapitalize(cmd.formattedName()))
+    return ARFunctionName (module, get_ftr_old_name(feature), 'Send' + ARCapitalize(format_cmd_name(cmd)))
     
 def sendingFunction (cmd):
-    return 'send'+ ARCapitalize(cmd.formattedName())
+    return 'send'+ ARCapitalize(format_cmd_name(cmd))
 
 def nativeSendingFunction (cmd):
-    return 'nativeSend' + ARCapitalize(cmd.formattedName())
+    return 'nativeSend' + ARCapitalize(format_cmd_name(cmd))
     
 def setNAckFunctionType( feature, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return ARTypeName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cmd.formattedName()) + argPart)
+    return ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), 'Set' + ARCapitalize(format_cmd_name(cmd)) + argPart)
     
 def setNAckFunctionName( feature, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return ARFunctionName (MODULE_FEATURE, feature.name, 'Set' + ARCapitalize(cmd.formattedName()) + argPart)
+    return ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'Set' + ARCapitalize(format_cmd_name(cmd)) + argPart)
 
 def setNAckFunction (cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return 'set' + ARCapitalize(cmd.formattedName()) + argPart
+    return 'set' + ARCapitalize(format_cmd_name(cmd)) + argPart
     
 def sendNAckFunctionName (feature, cmd):
-    return ARFunctionName (MODULE_ARCONTROLLER, feature.name, 'Send' + ARCapitalize(cmd.formattedName()) +'Struct')
+    return ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'Send' + ARCapitalize(format_cmd_name(cmd)) +'Struct')
     
 def structNAckName(cmd):
-    return ARCapitalize(cmd.formattedName()) + 'Parameters'
+    return ARCapitalize(format_cmd_name(cmd)) + 'Parameters'
     
 def structNAckType(feature, cmd):
-    return ARTypeName (MODULE_ARCONTROLLER, feature.name, ARCapitalize(cmd.formattedName()) + 'Parameters')
+    return ARTypeName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), ARCapitalize(format_cmd_name(cmd)) + 'Parameters')
     
 def defineNotificationDef():
     return AREnumName(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY');
@@ -119,154 +130,110 @@ def defineNotificationDef():
 def defineNotification(feature, cmd=None, arg=None):
     cmdPart = ''
     if cmd :
-        cmdPart = '_' + cmd.formattedName(underscore=True)
+        cmdPart = '_' + format_cmd_name(cmd, underscore=True)
     argPart = ''
     if arg :
         argPart = '_' + arg.name
-    return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', feature.name + cmdPart + argPart);
+    return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', get_ftr_old_name(feature) + cmdPart + argPart);
     
 def nativeGetNotificationVal(feature, cmd=None, arg=None):
     cmdPart = ''
     if cmd :
-        cmdPart = cmd.formattedName()
+        cmdPart = format_cmd_name(cmd)
     argPart = ''
     if arg :
         argPart = '' + arg.name.replace("_", "");
-    return 'nativeStaticGetKey'+ARCapitalize(feature.name) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
+    return 'nativeStaticGetKey'+ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
 
 def arcommandsSetDecode(feature, cmd):
-    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(feature.name) + ARCapitalize(cmd.formattedName()) + 'Callback'
+    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + 'Callback'
 
 def decodeCallback(feature, cmd):
-    return ARFunctionName (MODULE_FEATURE, feature.name, ARCapitalize(cmd.formattedName()) + 'Callback')
+    return ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), ARCapitalize(format_cmd_name(cmd)) + 'Callback')
     
 def discoveryProduct (productName):
     return 'ARDISCOVERY_PRODUCT_' + productName.upper ();
     
 def javaFeatureClassName (feature):
-    return 'ARFeature'+ ARCapitalize(feature.name)
+    return 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature))
     
 def javaFeatureName (feature):
-    return 'feature'+ ARCapitalize(feature.name)
+    return 'feature'+ ARCapitalize(get_ftr_old_name(feature))
     
 def nativeFeatureName (feature):
-    return 'nativeFeature'+ ARCapitalize(feature.name)
+    return 'nativeFeature'+ ARCapitalize(get_ftr_old_name(feature))
     
 def nativeGetFeature (feature):
-    return 'nativeGetFeature'+ ARCapitalize(feature.name)
+    return 'nativeGetFeature'+ ARCapitalize(get_ftr_old_name(feature))
     
 def javaSetNAckFunction(cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return 'set' + ARCapitalize(cmd.formattedName()) + argPart
+    return 'set' + ARCapitalize(format_cmd_name(cmd)) + argPart
     
 def nativeSetNAckFunction (cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
-    return 'nativeSet' + ARCapitalize(cmd.formattedName()) + argPart
+    return 'nativeSet' + ARCapitalize(format_cmd_name(cmd)) + argPart
 
-XMLTYPES = ['u8',       'i8',
-            'u16',      'i16',
-            'u32',      'i32',
-            'u64',      'i64',
-            'float',    'double',
-            'string']
-# Equivalent C types
-CTYPES   = ['uint8_t',  'int8_t',
-            'uint16_t', 'int16_t',
-            'uint32_t', 'int32_t',
-            'uint64_t', 'int64_t',
-            'float',    'double',
-            'char *']
-
-OBJCTYPES = ['UnsignedChar',  'Char',
-            'UnsignedShort', 'Short',
-            'UnsignedInt', 'Int',
-            'UnsignedLong', 'Long',
-            'Float',    'Double',
-            '']
-            
-# Equivalent JAVA Types
-# No unsigned types in java, so use signed types everywhere
-JAVATYPES = ['byte',    'byte',
-             'short',   'short',
-             'int',     'int',
-             'long',    'long',
-             'float',   'double',
-             'String']
-# Equivalent JNI Signatures
-JAVASIG   = ['B',        'B',
-             'S',        'S',
-             'I',        'I',
-             'J',        'J',
-             'F',        'D',
-             'Ljava/lang/String;']
-# Equivalent JNI types
-JNITYPES  = ['jbyte',    'jbyte',
-             'jshort',   'jshort',
-             'jint',     'jint',
-             'jlong',    'jlong',
-             'jfloat',   'jdouble',
-             'jstring']
-
-# Equivalent format types
-FORMATTYPES  = ['"%"PRIu8',    '"%"PRIi8',
-             '"%"PRIu16',   '"%"PRIi16',
-             '"%"PRIu32',     '"%"PRIi32',
-             '"%"PRIu64',    '"%"PRIi64',
-             '"%f"',   '"%f"',
-             '"%s"']
-
-def xmlToC (module, proj, cmd, arg):
-    if isinstance(arg.type, AREnum):
-        return AREnumName(module, proj.name, arg.type.name)
-    if isinstance(arg.type, ARBitfield):
-        xmlIndex = XMLTYPES.index (arg.type.type)
-    else:
-        xmlIndex = XMLTYPES.index (arg.type)
-    return CTYPES [xmlIndex]
-
-def xmlToObjC (proj, cmd, arg):
-    if isinstance(arg.type, AREnum):
-        return '[NSNumber numberWithInt:' + arg.name + ']'
-    if 'string' == arg.type:
-        return '[NSString stringWithCString:' + arg.name + ' encoding:NSUTF8StringEncoding]'
-
-    if isinstance(arg.type, ARBitfield):
-        xmlIndex = XMLTYPES.index (arg.type.type)
-    else:
-        xmlIndex = XMLTYPES.index (arg.type)
-    return '[NSNumber numberWith' + OBJCTYPES [xmlIndex] + ':' + arg.name + ']'
-
-def xmlToJava (module, proj, cmd, arg):
-    if isinstance(arg.type, AREnum):
-        return ARJavaEnumType(module, proj.name, arg.type.name)
-    if isinstance(arg.type, ARBitfield):
-        xmlIndex = XMLTYPES.index (arg.type.type)
-    else:
-        xmlIndex = XMLTYPES.index (arg.type)
-    return JAVATYPES [xmlIndex]
-    
 def xmlToFormat (arg):
-    if isinstance(arg.type, AREnum):
+    if isinstance(arg.argType, ArEnum):
         return '"%d"';
-    if isinstance(arg.type, ARBitfield):
-        xmlIndex = XMLTYPES.index (arg.type.type)
+    if isinstance(arg.argType, ArBitfield):
+        xmlIndex = XMLTYPES.index (arg.argType.btfType)
     else:
-        xmlIndex = XMLTYPES.index (arg.type)
+        xmlIndex = XMLTYPES.index (arg.argType)
     return FORMATTYPES [xmlIndex]
-    
-def xmlToJNI (arg):
-    if isinstance(arg.type, AREnum):
-        return 'jint';
-    if isinstance(arg.type, ARBitfield):
-        xmlIndex = XMLTYPES.index (arg.type.type)
-    else:
-        xmlIndex = XMLTYPES.index (arg.type)
-    return JNITYPES [xmlIndex]
 
+def format_cmd_name(msg, underscore=False):#project only
+    if underscore:
+        return ARCapitalize(msg.name) if msg.cls is None else ARCapitalize(msg.cls.name) + '_'+  ARCapitalize(msg.name)
+    else:
+        return msg.name if msg.cls is None else msg.cls.name + ARCapitalize(msg.name)
+
+def get_arg_doc(arg):
+    doc = ''
+    if arg.argType in ArArgType.TO_STRING:
+        doc = arg.doc
+    else:
+        if arg.doc:
+            doc = arg.doc + '\n'
+
+        if isinstance(arg.argType, ArEnum):
+            doc = doc + arg.argType.doc
+        elif isinstance(arg.argType, ArBitfield):
+            doc = doc + arg.argType.enum.doc
+
+    return doc
+
+def get_arg_doc(arg):
+    doc = ''
+    if arg.argType in ArArgType.TO_STRING:
+        doc = arg.doc
+    else:
+        if arg.doc:
+            doc = arg.doc + '\n'
+
+        if isinstance(arg.argType, ArEnum):
+            doc = doc + arg.argType.doc
+        elif isinstance(arg.argType, ArBitfield):
+            doc = doc + arg.argType.enum.doc
+
+    return doc
+
+def ftr_new_to_old_name(newName):
+    FROM_NEW_NAME = {'ardrone3':'ARDrone3', 'common_dbg':'commonDebug',
+                        'jpsumo':'JumpingSumo', 'minidrone':'MiniDrone',
+                        'skyctrl':'SkyController'}
+    if newName in FROM_NEW_NAME:
+        return FROM_NEW_NAME[newName]
+    else:
+        return newName
+
+def get_ftr_old_name(ftr):
+    return ftr_new_to_old_name(ftr.name)
 
 class ARControllerDevice:
     "Represents a ARController_device, used to generate the device controller associated"
@@ -289,7 +256,7 @@ class ARControllerDevice:
             EXIT (1)
     
 
-def parseDeviceControllerXml (xmlDeviceController, allFeatures):
+def parseDeviceControllerXml (xmlDeviceController, ctx):
     "Parses DeviceController tag"
     
     deviceController = ARControllerDevice (xmlDeviceController.attributes["name"].nodeValue, xmlDeviceController.attributes["product"].nodeValue);
@@ -304,15 +271,15 @@ def parseDeviceControllerXml (xmlDeviceController, allFeatures):
         featureName = cmdFeature.attributes["name"].nodeValue
         
         # check if the feature exists
-        if [feature for feature in allFeatures if feature.name == featureName]:
+        if [feature for feature in ctx.features if feature.name == featureName]:
             deviceController.features.append(featureName)
         else:
-            ARPrint ('in the device Controller:'+deviceController.name+' the feature:'+featureName+'does not exists')
+            ARPrint ('in the device Controller:'+deviceController.name+' the feature:'+featureName+' does not exists')
             EXIT (1)
     
     return deviceController
 
-def parseDeviceControllersXml (fileName, allFeatures):
+def parseDeviceControllersXml (fileName, ctx):
     "Parses the file containing the deviceController list"
     
     deviceControllers = []
@@ -334,10 +301,8 @@ def parseDeviceControllersXml (fileName, allFeatures):
     xmlDeviceControllerList = cmdDeviceControllers[0].getElementsByTagName ('ARController_Device')
     for xmlDeviceController in xmlDeviceControllerList:
         
-        deviceController = parseDeviceControllerXml (xmlDeviceController, allFeatures)
+        deviceController = parseDeviceControllerXml (xmlDeviceController, ctx)
         if deviceController:
             deviceControllers.append(deviceController)
-            ARPrint ('append:'+deviceController.name)
-    
-    return deviceControllers
 
+    return deviceControllers

@@ -59,7 +59,7 @@ struct ARCONTROLLER_Stream1_t
     ARDISCOVERY_NetworkConfiguration_t *networkConfiguration; /**< the networkConfiguration of the device*/
     ARSTREAM_Reader_t *streamReader; /**< reader of the stream */
     int fragmentSize; /**< Size maximum of the stream fragment */
-    int maxNumberOfFragement; /**< Number maximum of stream fragment */
+    int maxNumberOfFragment; /**< Number maximum of stream fragment */
     int maxAckInterval; /**< Maximum of acknowledge interval on the stream */
     ARSAL_Thread_t dataThread; /**< video receiver thread */
     ARSAL_Thread_t ackThread; /**< acknowledge send thread */
@@ -70,8 +70,7 @@ struct ARCONTROLLER_Stream1_t
     ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback; /**< callback when a frame is received */
     ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback;
     ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback; /**< callback when timeout */
-    eARCONTROLLER_STREAM_CODEC_TYPE codecType;
-    int isMP4Compliant;
+    ARCONTROLLER_Stream_Codec_t codec;
     void *callbackCustomData;  /**< custom data to send to callbacks */
     int decoderConfigCalled;  /**< different of 0 if the decoderConfigCallback has been called; */
 };

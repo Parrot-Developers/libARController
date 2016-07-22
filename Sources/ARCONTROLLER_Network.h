@@ -63,9 +63,17 @@ struct ARCONTROLLER_Network_t
     eARCONTROLLER_NETWORK_STATE state; /**< State of the networkController*/
     
     //video part
-    int hasVideo; /**< 0 if the device has not Video stream ; otherwide 1 */
+    int hasVideo; /**< 0 if the device has not Video stream ; otherwise 1 */
     ARCONTROLLER_Stream_t *videoController; /**< Manage input video stream  */
     
+    //audio part
+    int hasAudio; /**< 0 if the device has not Audio stream ; otherwise 1 */
+    ARCONTROLLER_Stream_t *audioController; /**< Manage input audio stream  */
+
+    //output audio part
+    int hasOutputAudio; /**< 0 if the device has not output Audio stream ; otherwise 1 */
+    ARCONTROLLER_StreamSender_t *audioOutputController; /**< Manage output audio stream  */
+
     //Connection callback
     ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback; /**< Callback of json sending part of the connection.*/
     ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback; /**< Callback of json reception part of the connection.*/

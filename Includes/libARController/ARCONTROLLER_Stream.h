@@ -62,6 +62,7 @@ typedef enum
     ARCONTROLLER_STREAM_CODEC_TYPE_DEFAULT = 0, /**< default value */
     ARCONTROLLER_STREAM_CODEC_TYPE_H264, /**< h264 codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG, /**< MJPEG codec */
+    ARCONTROLLER_STREAM_CODEC_TYPE_PCM16LE, /**< pcm 16 bits little endian audio codec */
     ARCONTROLLER_STREAM_CODEC_TYPE_MAX, /**< Max of the enumeration */
 } eARCONTROLLER_STREAM_CODEC_TYPE;
 
@@ -77,18 +78,41 @@ typedef struct
     int isMP4Compliant; /**< 1 if the stream is compliant with the mp4 format; the NAL units start code are replaced by the NALU size */
 }ARCONTROLLER_Stream_CodecH264_t;
 
+
+#define ARCONTROLLER_AUDIO_HEADER_FMT_MONO (0)
+#define ARCONTROLLER_AUDIO_HEADER_FMT_STEREO (1)
+
+/**
+ * @brief Type of codec
+ */
+typedef enum
+{
+    ARCONTROLLER_STREAM_AUDIO_CHANNEL_MONO = 0,
+    ARCONTROLLER_STREAM_AUDIO_CHANNEL_STEREO,
+} eARCONTROLLER_STREAM_AUDIO_CHANNEL;
+
+/**
+ * @brief PCM16LE Parameters.
+ */
+typedef struct
+{
+    int sampleRate; /**< audio sample rate */
+    eARCONTROLLER_STREAM_AUDIO_CHANNEL channel; /**< audio channel configuration */
+}ARCONTROLLER_Stream_CodecPCM16LE_t;
+
 /**
  * @brief Codec parameters.
  */
-typedef union 
+typedef union
 {
     ARCONTROLLER_Stream_CodecH264_t h264parameters; /**< H264 Parameters. */
+    ARCONTROLLER_Stream_CodecPCM16LE_t pcm16leParameters; /**< PCM16LE Parameters. */
 }ARCONTROLLER_Stream_CodecParameters_t;
 
 /**
  * @brief Codec description.
  */
-typedef struct 
+typedef struct
 {
     eARCONTROLLER_STREAM_CODEC_TYPE type; /**< Codec type. */
     ARCONTROLLER_Stream_CodecParameters_t parameters; /**< Parameters of the codec. */
@@ -117,12 +141,35 @@ typedef struct ARCONTROLLER_Stream_t ARCONTROLLER_Stream_t;
  * @brief Create a new Stream Controller.
  * @warning This function allocate memory.
  * @post ARCONTROLLER_Stream_Delete() must be called to delete the Stream Controller and free the memory allocated.
- * @param[in] networkConfiguration The configuration of the network carring the stream.
+ * @param[in] networkConfiguration The configuration of the network carrying the stream.
+ * @param[in] codecType Type of codec.
  * @param[out] error Executing error.
  * @return The new Stream Controller.
  * @see ARCONTROLLER_Stream_Delete.
  */
-ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_STREAM_CODEC_TYPE codecType, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Create a new video Stream Controller.
+ * @warning This function allocate memory.
+ * @post ARCONTROLLER_Stream_Delete() must be called to delete the Stream Controller and free the memory allocated.
+ * @param[in] networkConfiguration The configuration of the network carrying the stream.
+ * @param[out] error Executing error.
+ * @return The new Stream Controller.
+ * @see ARCONTROLLER_Stream_Delete.
+ */
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_video_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
+
+/**
+ * @brief Create a new audio Stream Controller.
+ * @warning This function allocate memory.
+ * @post ARCONTROLLER_Stream_Delete() must be called to delete the Stream Controller and free the memory allocated.
+ * @param[in] networkConfiguration The configuration of the network carrying the stream.
+ * @param[out] error Executing error.
+ * @return The new Stream Controller.
+ * @see ARCONTROLLER_Stream_Delete.
+ */
+ARCONTROLLER_Stream_t *ARCONTROLLER_Stream_audio_New (ARDISCOVERY_NetworkConfiguration_t *networkConfiguration, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);
 
 /**
  * @brief Delete the Stream Controller.

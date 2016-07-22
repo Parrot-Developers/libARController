@@ -34,235 +34,134 @@
 import sys
 import os
 import re
+import arsdkparser
 
-MYDIR=os.path.abspath(os.path.dirname(sys.argv[0]))
-if '' == MYDIR:
-    MYDIR=os.getcwd()
+NATIVE="native" 
+JAVA="java"
+JNI="jni"
 
-sys.path.append('%(MYDIR)s/../../ARSDKBuildUtils/Utils/Python' % locals())
+MYDIR=os.path.abspath(os.path.dirname(__file__))
+LIBARCONTROLLER_DIR=os.path.realpath(os.path.join(MYDIR, ".."))
+PACKAGES_DIR=os.path.realpath(os.path.join(MYDIR, "../.."))
+
+sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
 
 from ARFuncs import *
-from ARCommandsParser import *
 from generateFeatureControllers import *
 from generateDeviceControllers import *
 from generateDictionaryKeyEnum import *
+from arsdkparser import *
 
-# Default project name
-DEFAULT_FEATURE_NAME='common'
-
-noGen = False
 genDebug = True
-features = [DEFAULT_FEATURE_NAME]
-args = sys.argv
-args.pop (0)
-libARCommandsDir=MYDIR+'/../../libARCommands/'
-outputDir='.'
 
-MY_GEN_DIR = MYDIR + '/../gen/'
+PREBUILD_ACTION = PACKAGES_DIR+'/ARSDKBuildUtils/Utils/Python/ARSDK_PrebuildActions.py'
 
-#Relative path of SOURCE dir
-SRC_DIR = MY_GEN_DIR + '/Sources/'
+class Paths:
+    def __init__(self, outdir):
+        self.MY_GEN_DIR = outdir
 
-#Relative path of INCLUDES dir
-INC_DIR = MY_GEN_DIR + '/Includes/libARController/'
+        #Relative path of SOURCE dir
+        self.SRC_DIR = self.MY_GEN_DIR + '/Sources/'
 
-#Relative path of INCLUDES dir
-JNI_DIR = MY_GEN_DIR + '/JNI/'
-JNI_C_DIR = JNI_DIR + '/c/'
-JNI_JAVA_DIR = JNI_DIR + '/java/com/parrot/arsdk/arcontroller/'
+        #Relative path of INCLUDES dir
+        self.INC_DIR = self.MY_GEN_DIR + '/Includes/libARController/'
 
-# Create array of generated files (so we can cleanup only our files)
-GENERATED_FILES = []
-GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Device.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Device.c')
-GENERATED_FILES.append (JNI_C_DIR + 'ARCONTROLLER_JNI_Device.c')
-GENERATED_FILES.append (JNI_JAVA_DIR + 'ARDeviceController.java')
+        #Relative path of INCLUDES dir
+        self.JNI_DIR = self.MY_GEN_DIR + '/JNI/'
+        self.JNI_C_DIR = self.JNI_DIR + '/c/'
+        self.JNI_JAVA_DIR = self.JNI_DIR + '/java/com/parrot/arsdk/arcontroller/'
 
-GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_Feature.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_Feature.c')
-GENERATED_FILES.append (JNI_C_DIR + 'ARCONTROLLER_JNI_Feature*.c')
-GENERATED_FILES.append (JNI_JAVA_DIR + 'ARFeature*.java')
+        # Create array of generated files (so we can cleanup only our files)
+        self.GENERATED_FILES = []
+        self.GENERATED_FILES.append (self.INC_DIR + 'ARCONTROLLER_Device.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Device.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Device.c')
+        self.GENERATED_FILES.append (self.JNI_C_DIR + 'ARCONTROLLER_JNI_Device.c')
+        self.GENERATED_FILES.append (self.JNI_JAVA_DIR + 'ARDeviceController.java')
 
-GENERATED_FILES.append (INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
-GENERATED_FILES.append (SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
+        self.GENERATED_FILES.append (self.INC_DIR + 'ARCONTROLLER_Feature.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Feature.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_Feature.c')
+        self.GENERATED_FILES.append (self.JNI_C_DIR + 'ARCONTROLLER_JNI_Feature*.c')
+        self.GENERATED_FILES.append (self.JNI_JAVA_DIR + 'ARFeature*.java')
+
+        self.GENERATED_FILES.append (self.INC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c.h')
+        self.GENERATED_FILES.append (self.SRC_DIR + 'ARCONTROLLER_DICTIONARY_Key.c')
 
 def createDir(path):
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
 
-createDir(INC_DIR)
-createDir(JNI_C_DIR)
-createDir(JNI_JAVA_DIR)
-createDir(SRC_DIR)
+def generate_ctrls(ctx, paths, extra):
+    createDir(paths.INC_DIR)
+    createDir(paths.JNI_C_DIR)
+    createDir(paths.JNI_JAVA_DIR)
+    createDir(paths.SRC_DIR)
 
-while len(args) > 0:
-    a = args.pop (0)
-    
     #################################
-    # If "-fname" is passed as an   #
-    # argument, just output the     #
-    # name of the generated files   #
+    # 1ST PART :                    #
     #################################
-    if a == "-fname":
-        for fil in GENERATED_FILES:
-            ARPrint (fil + ' ', True)
-        ARPrint ('')
-        EXIT (0)
-        
+    # Read XML file to local arrays #
+    # of commands / classes         #
     #################################
-    # If "-dname" is passed as an   #
-    # argument, just output the     #
-    # name of the generated dirs    #
-    #################################
-    elif a == "-dname":
-        EXIT (0)
-    
-    ####################################
-    # If "-libARCommandsDir" is passed #
-    # as an argument, we get Xml files #
-    # in this directory otherwise '.'  #
-    ####################################
-    if a == "-libARCommandsDir":
-        val = args.pop(0)
-        libARCommandsDir=val
-    ####################################
-    # If "-outputDir" is passed        #
-    # as an argument, we put output    #
-    # filesin this directory,          #
-    # otherwise '.'                    #
-    ####################################
-    #elif a == "-outputDir":
-    #    val = args.pop(0)
-    #    outputDir=val
-    #################################
-    # If "-nogen" is passed as an   #
-    # argument, don't generate any  #
-    # file                          #
-    #################################
-    elif a == "-nogen":
-        noGen=True
-    #################################
-    # If -projectname is specified, #
-    # use its value to set the      #
-    # project name instead of the   #
-    # default one.                  #
-    #################################
-    elif a == "-feature":
-        featuresList = args.pop(0)
-        for feature in featuresList.split(','):
-            features.append (feature)
-    else:
-        ARPrint ('Invalid parameter ' + a)
-        EXIT(1)
 
-ARPrint ('libARCommandsDir = ' + libARCommandsDir)
-#ARPrint ('outputDir = ' + outputDir)
+    # generate DictionaryKeyEnum
+    if extra == NATIVE:
+        # generate Feature Controllers
+        generateFeatureControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
+        # generate Device Controllers
+        generateDeviceControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
+        # generate DictionaryKeyEnum
+        generateDictionaryKeyEnum (ctx, paths.SRC_DIR, paths.INC_DIR)
+        os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR+ ' --disable-java')
+        #os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR)
+    elif extra == JAVA:
+        # generate Feature Controllers
+        generateFeatureControllersJava (ctx, paths.JNI_JAVA_DIR);
+        # generate Device Controllers
+        generateControllersJava (ctx, paths.JNI_JAVA_DIR)
+        # generate DictionaryKeyEnum
+        generateDictionaryKeyEnumJava (ctx, paths.JNI_JAVA_DIR)
+    elif extra == JNI:
+        # generate Feature Controllers
+        generateFeatureControllersJNI (ctx, paths.JNI_C_DIR);
+        # generate Device Controllers
+        generateControllersJNI (ctx, paths.JNI_C_DIR)
 
+#===============================================================================
+#===============================================================================
+def list_files(ctx, outdir, extra):
+    paths = Paths(outdir)
 
-#################################
-# Read configure.ac             #
-#################################
+    # Print features controllers generated files
+    if extra == NATIVE:
+        list_files_ftr_ctrls (ctx, paths.SRC_DIR, paths.INC_DIR)
+    elif extra == JAVA:
+        list_files_ftr_ctrls_java (ctx,paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
+    elif extra == JNI:
+        list_files_ftr_ctrls_jni (ctx,paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
-#configureAcFile = open (libARCommandsDir + '/Build/configure.ac', 'rb')
-#AC_INIT_LINE=configureAcFile.readline ()
-#while (not AC_INIT_LINE.startswith ('AC_INIT')) and ('' != AC_INIT_LINE):
-#    AC_INIT_LINE=configureAcFile.readline ()
-#if '' == AC_INIT_LINE:
-#    ARPrint ('Unable to read from configure.ac file !')
-#    EXIT (1)
-#
-#AC_ARGS=re.findall(r'\[[^]]*\]', AC_INIT_LINE)
-#LIB_NAME=AC_ARGS[0].replace ('[', '').replace (']', '')
-#LIB_MODULE=LIB_NAME.replace ('lib', '')
-#LIB_VERSION=AC_ARGS[1].replace ('[', '').replace (']', '')
+    # Print device controllers generated files
+    if extra == NATIVE:
+        list_files_deviceCtrls (ctx, paths.SRC_DIR, paths.INC_DIR)
+    elif extra == JAVA:
+        list_files_deviceCtrls_java (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
+    elif extra == JNI:
+        list_files_deviceCtrls_jni (ctx, paths.JNI_C_DIR, paths.JNI_JAVA_DIR)
 
+    # Print device dictionary key generated files
+    if extra == NATIVE:
+        list_files_dict_key (ctx, paths.SRC_DIR, paths.INC_DIR)
+    elif extra == JAVA:
+        list_files_dict_key_java (ctx, paths.JNI_JAVA_DIR)
 
-#################################
-# 1ST PART :                    #
-#################################
-# Read XML file to local arrays #
-# of commands / classes         #
-#################################
+    if extra == NATIVE:
+        print os.path.join(outdir, "Sources/ARCONTROLLER_Error.c")
 
-allFeatures = parseAllFeatures(features, '%(libARCommandsDir)s' % locals(), genDebug)
+#===============================================================================
+#===============================================================================
+def generate_files(ctx, outdir, extra):
+    paths = Paths(outdir)
 
-# Check all
-err = ''
-for feature in allFeatures:
-    err = err + feature.check ()
-if len (err) > 0:
-    ARPrint ('Your XML Files contain errors:', True)
-    ARPrint (err)
-    EXIT (1)
-
-if noGen: # called with "-nogen"
-    ARPrint ('Commands parsed:')
-    for ftr in allFeatures:
-        ARPrint ('Feature ' + ftr.name)
-        ARPrint ('/*')
-        for comment in ftr.comments:
-            ARPrint (' * ' + comment)
-        ARPrint (' */')
-        for enum in ftr.enums:
-            ARPrint (' --> enum:' + enum.name)
-            ARPrint ('     /* ')
-            for comment in enum.comments:
-                ARPrint ('      * ' + comment)
-            ARPrint ('      */')
-            for val in enum.values:
-                ARPrint ('     --> ' + val.name)
-                ARPrint ('     /* ')
-                for comment in val.comments:
-                    ARPrint ('      * ' + comment)
-                ARPrint ('      */ ')
-        for cmd in ftr.cmds:
-            ARPrint (' --> cmd:' + cmd.name)
-            ARPrint ('     buffer:  ' + ARCommandBuffer.toString(cmd.buf))
-            ARPrint ('     timeout: ' + ARCommandTimeoutPolicy.toString(cmd.timeout))
-            ARPrint ('     list:    ' + ARCommandListType.toString(cmd.listtype))
-            ARPrint ('     /* ')
-            for comment in cmd.comments:
-                ARPrint ('      * ' + comment)
-            ARPrint ('      */')
-            for arg in cmd.args:
-                if isinstance (arg.type, AREnum):
-                    ARPrint ('     (' + arg.type.name + ' ' + arg.name + ')')
-                else:
-                    ARPrint ('     (' + arg.type + ' ' + arg.name + ')')
-                ARPrint ('     /* ')
-                for comment in arg.comments:
-                    ARPrint ('      * ' + comment)
-                ARPrint ('      */')
-        for evt in ftr.evts:
-            ARPrint (' --> evt:' + evt.name)
-            ARPrint ('     buffer:  ' + ARCommandBuffer.toString(evt.buf))
-            ARPrint ('     timeout: ' + ARCommandTimeoutPolicy.toString(evt.timeout))
-            ARPrint ('     list:    ' + ARCommandListType.toString(evt.listtype))
-            ARPrint ('     /* ')
-            for comment in evt.comments:
-                ARPrint ('      * ' + comment)
-            ARPrint ('      */')
-            for arg in evt.args:
-                if isinstance (arg.type, AREnum):
-                    ARPrint ('     (' + arg.type.name + ' ' + arg.name + ')')
-                else:
-                    ARPrint ('     (' + arg.type + ' ' + arg.name + ')')
-                ARPrint ('     /* ')
-                for comment in arg.comments:
-                    ARPrint ('      * ' + comment)
-                ARPrint ('      */')
-
-    EXIT (0)
-
-# generate Feature Controllers
-generateFeatureControllers (allFeatures, SRC_DIR, INC_DIR)
-generateFeatureControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR);
-
-# generate Device Controllers
-generateDeviceControllers (allFeatures, SRC_DIR, INC_DIR)
-generateControllersJNI (allFeatures, JNI_C_DIR, JNI_JAVA_DIR)
-
-# generate DictionaryKeyEnum
-generateDictionaryKeyEnum (allFeatures, SRC_DIR, INC_DIR)
+    # Generation
+    generate_ctrls(ctx, paths, extra)
