@@ -1,6 +1,7 @@
 package com.parrot.arsdk.arcontroller;
 
 import com.parrot.arsdk.arsal.ARNativeData;
+import com.parrot.arsdk.arsal.ARSALPrint;
 
 public class ARFrame extends ARNativeData
 {
@@ -46,7 +47,14 @@ public class ARFrame extends ARNativeData
         this.isIFrame = false;
         this.available = true;
     }
-    
+
+    public void dispose () {
+        if (this.metadata != null) {
+            this.metadata.dispose();
+        }
+        super.dispose();
+    }
+
     public int getMissed()
     {
         return missed;
