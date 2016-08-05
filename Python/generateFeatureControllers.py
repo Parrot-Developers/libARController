@@ -203,7 +203,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         for cmd in feature.cmds:
             hfile.write ('/**\n')
             hfile.write (' * @brief Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-            hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+            if cmd.isDeprecated:
+                hfile.write (' * @deprecated\n')
+            hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
             hfile.write (' * @param feature feature owning the commands\n')
             for arg in cmd.args:
                 hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -218,7 +220,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hfile.write ('/**\n')
                 hfile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                if cmd.isDeprecated:
+                    hfile.write (' * @deprecated\n')
+                hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                 hfile.write (' * @param feature feature owning the commands\n')
                 for arg in cmd.args:
                     hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -232,7 +236,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 
                 hfile.write ('/**\n')
                 hfile.write (' * @brief Send the a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> with the parame set beforehand \n')
-                hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                if cmd.isDeprecated:
+                    hfile.write (' * @deprecated\n')
+                hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                 hfile.write (' * @param feature feature owning the commands\n')
                 hfile.write (' * @param cmdBuffer buffer to store the command\n')
                 hfile.write (' * @param cmdBufferSize size of the buffer\n')
@@ -244,7 +250,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 for arg in cmd.args:
                     hfile.write ('/**\n')
                     hfile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                    hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                    if cmd.isDeprecated:
+                        hfile.write (' * @deprecated\n')
+                    hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                     hfile.write (' * @param feature feature owning the commands\n')
                     hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                     hfile.write (' * return executing error\n')
@@ -398,7 +406,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         for cmd in feature.cmds:
             hPrivFile.write ('/**\n')
             hPrivFile.write (' * @brief Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-            hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+            if cmd.isDeprecated:
+                hPrivFile.write (' * @deprecated\n')
+            hPrivFile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
             hPrivFile.write (' * @param feature feature owning the commands\n')
             for arg in cmd.args:
                 hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -413,7 +423,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hPrivFile.write ('/**\n')
                 hPrivFile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                if cmd.isDeprecated:
+                    hPrivFile.write (' * @deprecated\n')
+                hPrivFile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                 hPrivFile.write (' * @param feature feature owning the commands\n')
                 for arg in cmd.args:
                     hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -428,7 +440,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 for arg in cmd.args:
                     hPrivFile.write ('/**\n')
                     hPrivFile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                    hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                    if cmd.isDeprecated:
+                        hPrivFile.write (' * @deprecated\n')
+                    hPrivFile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                     hPrivFile.write (' * @param feature feature owning the commands\n')
                     hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                     hPrivFile.write (' * return executing error\n')
@@ -1898,7 +1912,9 @@ def generateFeatureControllersJava (ctx, JNI_JAVA_DIR):
         for cmd in feature.cmds:
             jfile.write ('    /**\n')
             jfile.write ('     * Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code>\n')
-            jfile.write ('     * ' + cmd.doc.replace('\n', '\n     * ')+'\n')
+            if cmd.isDeprecated:
+                jfile.write ('     * @deprecated\n')
+            jfile.write ('     * ' + cmd.doc.desc.replace('\n', '\n     * ')+'\n')
             for arg in cmd.args:
                 jfile.write ('     * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
             jfile.write ('     * return executing error\n')

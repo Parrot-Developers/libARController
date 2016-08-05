@@ -1,4 +1,5 @@
 /Build/
 /build/
 /Python/*.pyc
+/Python/documentation
 libARController.iml
