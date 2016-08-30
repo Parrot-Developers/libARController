@@ -133,6 +133,11 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
             {
                 localError = ARCONTROLLER_ERROR_INIT_MUTEX;
             }
+
+            networkController->decoder = ARCOMMANDS_Decoder_NewDecoder (NULL);
+            if (!networkController->decoder)
+                localError = ARCONTROLLER_ERROR_ALLOC;
+
         }
         else
         {
@@ -318,6 +323,8 @@ void ARCONTROLLER_Network_Delete (ARCONTROLLER_Network_t **networkController)
             
             ARCONTROLLER_Network_StopNetworkThreads (*networkController); //TODO  read error  !!!!!!!!!!
             
+            ARCOMMANDS_Decoder_DeleteDecoder(&(*networkController)->decoder);
+
             ARNETWORK_Manager_Delete(&((*networkController)->networkManager));
             
             ARDISCOVERY_Device_DeleteARNetworkAL ((*networkController)->discoveryDevice, &((*networkController)->networkALManager)); //TODO  read error  !!!!!!!!!!
@@ -1192,7 +1199,7 @@ void *ARCONTROLLER_Network_ReaderRun (void *data)
                 {
                     // Forward data to the CommandsManager
                     eARCOMMANDS_DECODER_ERROR cmdError = ARCOMMANDS_DECODER_OK;
-                    cmdError = ARCOMMANDS_Decoder_DecodeBuffer ((uint8_t *)readData, length);
+                    cmdError = ARCOMMANDS_Decoder_DecodeCommand (networkController->decoder, (uint8_t *)readData, length);
                     if ((cmdError != ARCOMMANDS_DECODER_OK) && (cmdError != ARCOMMANDS_DECODER_ERROR_NO_CALLBACK))
                     {
                         char msg[128];

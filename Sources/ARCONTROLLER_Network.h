@@ -40,6 +40,7 @@
 
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Mutex.h>
+#include <libARCommands/ARCOMMANDS_Decoder.h>
 
 #define ARCONTROLLER_NETWORK_TAG "ARCONTROLLER_Network"
 #define ARCONTROLLER_NETWORK_READING_TIMEOUT_MS 1000
@@ -51,6 +52,7 @@ typedef struct ARCONTROLLER_NETWORK_THREAD_DATA_t ARCONTROLLER_NETWORK_THREAD_DA
  */
 struct ARCONTROLLER_Network_t
 {
+    ARCOMMANDS_Decoder_t *decoder;
     ARDISCOVERY_Device_t *discoveryDevice; /**< The device to drive */
     ARDISCOVERY_NetworkConfiguration_t networkConfig; /**< The network configuration ; get from the device */
     ARNETWORKAL_Manager_t *networkALManager; /**< The networkALManager ; get from the device  */

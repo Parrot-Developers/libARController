@@ -958,7 +958,6 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            {\n')
     cFile.write ('                localError = ARCONTROLLER_ERROR_INIT_MUTEX;\n')
     cFile.write ('            }\n')
-    
     cFile.write ('        }\n')
     cFile.write ('        else\n')
     cFile.write ('        {\n')
@@ -2115,12 +2114,6 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' (deviceController);\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
-    cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+' (deviceController);\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
@@ -2315,6 +2308,23 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    // No else: skipped by an error\n')
     cFile.write ('    \n')
     
+    cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
+    cFile.write ('    {\n')
+    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' (deviceController);\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+
+    for feature in ctx.features:
+        cFile.write ('        if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
+        cFile.write ('        {\n')
+        cFile.write ('            error = '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+');\n')
+        cFile.write ('            if (error != ARCONTROLLER_OK)\n')
+        cFile.write ('            {\n')
+        cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring registering ARCommands to the feature '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (error));\n')
+        cFile.write ('            }\n')
+        cFile.write ('        }\n')
+        cFile.write ('        \n')
+        
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // If device has video\n')
@@ -2362,6 +2372,17 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
+    
+    for feature in ctx.features:
+        cFile.write ('        if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
+        cFile.write ('        {\n')
+        cFile.write ('            error = '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+');\n')
+        cFile.write ('            if (error != ARCONTROLLER_OK)\n')
+        cFile.write ('            {\n')
+        cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring unregistering ARCommands to the feature '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (error));\n')
+        cFile.write ('            }\n')
+        cFile.write ('        }\n')
+        cFile.write ('        \n')
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')

@@ -146,7 +146,7 @@ def nativeGetNotificationVal(feature, cmd=None, arg=None):
     return 'nativeStaticGetKey'+ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
 
 def arcommandsSetDecode(feature, cmd):
-    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + 'Callback'
+    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + 'Cb'
 
 def decodeCallback(feature, cmd):
     return ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), ARCapitalize(format_cmd_name(cmd)) + 'Callback')
