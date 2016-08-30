@@ -77,7 +77,9 @@ struct ARCONTROLLER_Stream2_t
     char serverAddress[ARCONTROLLER_STREAM2_IP_SIZE]; /**< Server address */
     struct mux_ctx *mux;
     int clientStreamPort; /**< Client stream port */
+    int clientStreamFd; /**< Client stream fd */
     int clientControlPort; /**< Client control port */
+    int clientControlFd; /**< Client control fd */
     int serverStreamPort; /**< Server stream port */
     int serverControlPort; /**< Server control port */
     int maxPaquetSize; /**< Maximum network packet size in bytes */
