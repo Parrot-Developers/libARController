@@ -35,9 +35,12 @@
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
- 
-#include <stdlib.h>
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <libARSAL/ARSAL_Print.h>
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Mutex.h>
@@ -59,6 +62,57 @@
 /*************************
  * Implementation
  *************************/
+
+static int ARCONTROLLER_Network_GetAvailableSocketPort(void)
+{
+    int fd, ret;
+    socklen_t addrlen;
+    struct sockaddr_in addr;
+    int yes;
+
+    fd = ARSAL_Socket_Create (AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0)
+        goto error;
+
+    ret = fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK);
+    if (ret < 0)
+        goto error;
+
+    /*  bind to a OS-assigned random port */
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons (0);
+    ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
+    if (ret < 0) {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG,
+                    "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(errno));
+        goto error;
+    }
+
+    /* get selected port */
+    addrlen = sizeof(addr);
+    ret = ARSAL_Socket_Getsockname(fd, (struct sockaddr *)&addr, &addrlen);
+    if (ret < 0) {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "getsockname fd=%d, error='%s'", fd, strerror(errno));
+        goto error;
+    }
+
+    yes = 1;
+    ret = ARSAL_Socket_Setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    if (ret < 0) {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", errno, strerror(errno));
+        goto error;
+    }
+
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "d2c_port port: %d", htons(addr.sin_port));
+    ARSAL_Socket_Close(fd);
+    return htons(addr.sin_port);
+error:
+    if (fd >= 0)
+        ARSAL_Socket_Close(fd);
+    return -1;
+}
 
 ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discoveryDevice, ARCONTROLLER_Network_DisconnectionCallback_t disconnectionCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t sendJsonCallback, ARDISCOVERY_Device_ConnectionJsonCallback_t receiveJsonCallback, void *customData, eARCONTROLLER_ERROR *error)
 {
@@ -161,6 +215,13 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     if ((localError == ARCONTROLLER_OK) && 
         (ARDISCOVERY_getProductService (networkController->discoveryDevice->productID) == ARDISCOVERY_PRODUCT_NSNETSERVICE))
     {
+        // Override d2c_port
+        dicoveryError = ARDISCOVERY_Device_WifiSetDeviceToControllerPort(networkController->discoveryDevice, ARCONTROLLER_Network_GetAvailableSocketPort());
+        if (dicoveryError != ARDISCOVERY_OK)
+        {
+            localError = ARCONTROLLER_ERROR_INIT_DEVICE_JSON_CALLBACK;
+        }
+
         // Add callbacks for the connection json part
         dicoveryError = ARDISCOVERY_Device_WifiAddConnectionCallbacks (networkController->discoveryDevice, ARCONTROLLER_Network_OnSendJson, ARCONTROLLER_Network_OnReceiveJson, networkController);
         if (dicoveryError != ARDISCOVERY_OK)
