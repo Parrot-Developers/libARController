@@ -44,6 +44,14 @@ DEVICE_TO_STRING = {
     '0910': 'Swing',
 }
 
+BG_BLUE = '\033[00;44m'
+BLUE =    '\033[00;94m'
+GREEN =   '\033[00;92m'
+PURPLE =  '\033[00;95m'
+RED =     '\033[00;91m'
+WHITE =   '\033[00;0m'
+YELLOW =  '\033[00;93m'
+
 
 ##########################################################
 #   Utils functions
@@ -187,6 +195,23 @@ def write_commands_doc(docfile, feature):
 
         docfile.write('<br/>\n\n')
 
+        if warning_mode:
+            warning_str = ""
+            if not cmd.doc.support and not cmd.isDeprecated:
+                warning_str += '{}{}{}'.format(RED, "- Support list is missing\n", WHITE)
+
+            if not cmd.doc.result and not cmd.isDeprecated:
+                warning_str += '{}{}{}'.format(RED, "- Result is missing\n", WHITE)
+
+            if len(cmd.doc.title) > 35:
+                warning_str += '{}{}{}'.format(BLUE, "- Title too long\n", WHITE)
+
+            if cmd.doc.support == 'none':
+                warning_str += '{}{}{}'.format(BLUE, "- Support is none\n", WHITE)
+
+            if warning_str:
+                print(format_message_name(feature, cmd) + ":\n" + warning_str)
+
 def write_command_c_code(docfile, feature, cmd):
     docfile.write('```c\n')
     docfile.write('deviceController->' + ARUncapitalize(get_ftr_old_name(feature)) + '->' + 'send' + ARCapitalize(format_cmd_name(cmd)) + '(deviceController->' + ARUncapitalize(get_ftr_old_name(feature)))
@@ -250,6 +275,23 @@ def write_events_doc(docfile, feature):
         write_event_triggered(docfile, evt.doc.triggered)
 
         docfile.write('<br/>\n\n')
+
+        if warning_mode:
+            warning_str = ""
+            if not evt.doc.support and not evt.isDeprecated:
+                warning_str += '{}{}{}'.format(RED, "- Support list is missing\n", WHITE)
+
+            if not evt.doc.result and not evt.isDeprecated:
+                warning_str += '{}{}{}'.format(RED, "- Result is missing\n", WHITE)
+
+            if len(evt.doc.title) > 35:
+                warning_str += '{}{}{}'.format(BLUE, "- Title too long\n", WHITE)
+
+            if evt.doc.support == 'none':
+                warning_str += '{}{}{}'.format(BLUE, "- Support is none\n", WHITE)
+
+            if warning_str:
+                print(format_message_name(feature, evt) + ":\n" + warning_str)
 
 def write_event_list_c_code(docfile, feature, evt):
     docfile.write('```c\n')
@@ -448,12 +490,16 @@ def write_event_triggered(docfile, triggered):
 parser = argparse.ArgumentParser(description='Generate the documentation of messages.')
 parser.add_argument('-f', '--features', nargs='*', type=str, metavar='feature',
                     help='List of features to generate the documentation. All features will be generated if missing.')
+parser.add_argument('-w', '--warning', action='store_true',
+                    help='Also generates warning logs if the feature does not contain new description or title too long or missing some tags.')
 
 args = parser.parse_args()
 
 ##########################################################
 #   Main
 ##########################################################
+warning_mode = args.warning
+
 ctx = ArParserCtx()
 parse_features(ctx, MESSAGE_PATH)
 
