@@ -17,12 +17,6 @@ from generateFeatureControllers import *
 from generateDeviceControllers import *
 from generateDictionaryKeyEnum import *
 
-MYDIR=os.path.abspath(os.path.dirname(__file__))
-DOC_DIR = os.path.join(MYDIR, 'documentation')
-REF_DIR = os.path.join(MYDIR, 'reference')
-
-MESSAGE_PATH = os.path.join(MYDIR, '..', '..', 'arsdk-xml', 'xml')
-
 # Matches 111-22 or 111-222-3 between r'(#' and r')'
 LINK_PATTERN = r'(?<=\(#)\d+(?:-\d+){1,2}(?=\))'
 
@@ -61,7 +55,13 @@ YELLOW =  '\033[00;93m'
 ##########################################################
 #   Utils functions
 ##########################################################
-def parse_features(ctx, xmlFolder):
+def _event_doc_file_name(feature):
+    return '_events_' + feature.name + '.md'
+
+def _command_doc_file_name(feature):
+    return '_commands_' + feature.name + '.md'
+
+def _parse_features(ctx, xmlFolder):
     # first load generic.xml
     parse_xml(ctx, os.path.join(xmlFolder, 'generic.xml'))
     for f in sorted(os.listdir(xmlFolder)):
@@ -69,14 +69,14 @@ def parse_features(ctx, xmlFolder):
             continue
         parse_xml(ctx, os.path.join(xmlFolder, f))
 
-def format_message_name(feature, msg):
+def _format_message_name(feature, msg):
     msgName = get_ftr_old_name(feature) + '-'
     if msg.cls:
         msgName += msg.cls.name + '-'
     msgName += msg.name
     return msgName
 
-def is_command_supported(cmd, product):
+def _is_command_supported(cmd, product):
     if product is None:
         return True
     try:
@@ -97,24 +97,26 @@ def is_command_supported(cmd, product):
 # formatted_id: the message id as entered in the comments.
 #            for example 1-2-9 for messages from projects
 #            or 134-2 for messages from features
-def get_msg_name_from_formatted_id(formatted_id):
-    part = formatted_id.group(0).split('-')
-    project_id = int(part[0])
-    feature = ctx.featuresById[int(project_id)]
-    if len(part) == 2:
-        message_id = int(part[1])
-        msg = feature.getMsgsById()[message_id]
-    elif len(part) == 3:
-        class_id = int(part[1])
-        message_id = int(part[2])
-        project_class = feature.classesById[class_id]
-        msg = project_class.cmdsById[message_id]
-    return format_message_name(feature, msg)
+def _get_msg_name_from_formatted_id(ctx):
+    def replace_id(formatted_id):
+        part = formatted_id.group(0).split('-')
+        project_id = int(part[0])
+        feature = ctx.featuresById[int(project_id)]
+        if len(part) == 2:
+            message_id = int(part[1])
+            msg = feature.getMsgsById()[message_id]
+        elif len(part) == 3:
+            class_id = int(part[1])
+            message_id = int(part[2])
+            project_class = feature.classesById[class_id]
+            msg = project_class.cmdsById[message_id]
+        return _format_message_name(feature, msg)
+    return replace_id
 
 # Get the support list as a formatted string
 # supportStr: The support string as entered in the comments.
 #             For example 0901;0902:3.2.0;090f
-def getSupportListFormatted(supportStr):
+def _get_support_list_formatted(supportStr):
     supportListFormatted = ''
     deviceList = supportStr.split(';')
     for device in deviceList:
@@ -130,35 +132,35 @@ def getSupportListFormatted(supportStr):
     return supportListFormatted
 
 # Return the given string where each id link (for example 134-2) is replaced by a link name
-def replace_links(text):
-    return re.sub(LINK_PATTERN, get_msg_name_from_formatted_id, text)
+def _replace_links(ctx, text):
+    return re.sub(LINK_PATTERN, _get_msg_name_from_formatted_id(ctx), text)
 
 ##########################################################
 #   Write common doc functions
 ##########################################################
 
-def write_message_header(docfile, feature, msg):
-    docfile.write('<!-- ' + format_message_name(feature, msg) + '-->\n')
-    docfile.write('### <a name="' + format_message_name(feature, msg) + '">')
+def _write_message_header(docfile, feature, msg):
+    docfile.write('<!-- ' + _format_message_name(feature, msg) + '-->\n')
+    docfile.write('### <a name="' + _format_message_name(feature, msg) + '">')
     docfile.write(msg.doc.title)
     if msg.isDeprecated:
         docfile.write(' (deprecated)')
     docfile.write('</a><br/>\n')
 
-def write_message_code_header(docfile, msg):
+def _write_message_code_header(docfile, msg):
     docfile.write('> ' + msg.doc.title)
     if msg.isDeprecated:
         docfile.write(' (deprecated)')
     docfile.write(':\n\n')
 
-def write_message_comment(docfile, msg, comment):
+def _write_message_comment(ctx, docfile, msg, comment):
     if msg.isDeprecated:
         docfile.write('*This message is deprecated.*<br/>\n\n')
     for comment_line in comment.split('\n'):
-        docfile.write(replace_links(comment_line) + '<br/>\n')
+        docfile.write(_replace_links(ctx, comment_line) + '<br/>\n')
     docfile.write('\n\n')
 
-def write_message_args(docfile, args):
+def _write_message_args(docfile, args):
     for arg in args:
         if isinstance(arg.argType, ArEnum):
             docfile.write ('* ' + arg.name + ' (' + 'enum' + '): ')
@@ -183,44 +185,46 @@ def write_message_args(docfile, args):
             for comm in arg.doc.split('\n'):
                 docfile.write (comm + '<br/>\n')
 
-def write_message_support(docfile, support):
+def _write_message_support(docfile, support):
     if support:
         docfile.write('\n\n')
         docfile.write('*Supported by <br/>*\n\n')
-        docfile.write(getSupportListFormatted(support))
+        docfile.write(_get_support_list_formatted(support))
 
 ##########################################################
 #   Write commands doc functions
 ##########################################################
 
 # write the documentation of all commands of the given feature
-def write_commands_doc(docfile, feature, product=None):
+def _write_commands_doc(ctx, docfile, feature, args, product=None):
     ARPrint ('Feature ' + feature.name)
 
+    nb_cmd = 0
 
     for cmd in feature.cmds:
-        if not is_command_supported(cmd, product):
+        if not _is_command_supported(cmd, product):
             continue
+        nb_cmd += 1
 
-        write_message_header(docfile, feature, cmd)
+        _write_message_header(docfile, feature, cmd)
 
-        write_message_code_header(docfile, cmd)
+        _write_message_code_header(docfile, cmd)
 
-        write_command_c_code(docfile, feature, cmd)
-        write_command_objc_code(docfile, feature, cmd)
-        write_command_java_code(docfile, feature, cmd)
+        _write_command_c_code(docfile, feature, cmd)
+        _write_command_objc_code(docfile, feature, cmd)
+        _write_command_java_code(docfile, feature, cmd)
 
-        write_message_comment(docfile, cmd, cmd.doc.desc)
+        _write_message_comment(ctx, docfile, cmd, cmd.doc.desc)
 
-        write_message_args(docfile, cmd.args)
+        _write_message_args(docfile, cmd.args)
 
-        write_command_result(docfile, cmd.doc.result)
+        _write_command_result(ctx, docfile, cmd.doc.result)
 
-        write_message_support(docfile, cmd.doc.support)
+        _write_message_support(docfile, cmd.doc.support)
 
         docfile.write('<br/>\n\n')
 
-        if warning_mode:
+        if args.warning:
             warning_str = ""
             if not cmd.doc.support and not cmd.isDeprecated:
                 warning_str += '{}{}{}'.format(RED, "- Support list is missing\n", WHITE)
@@ -235,9 +239,10 @@ def write_commands_doc(docfile, feature, product=None):
                 warning_str += '{}{}{}'.format(BLUE, "- Support is none\n", WHITE)
 
             if warning_str:
-                print(format_message_name(feature, cmd) + ":\n" + warning_str)
+                print(_format_message_name(feature, cmd) + ":\n" + warning_str)
+    return nb_cmd
 
-def write_command_c_code(docfile, feature, cmd):
+def _write_command_c_code(docfile, feature, cmd):
     docfile.write('```c\n')
     docfile.write('deviceController->' + ARUncapitalize(get_ftr_old_name(feature)) + '->' + 'send' + ARCapitalize(format_cmd_name(cmd)) + '(deviceController->' + ARUncapitalize(get_ftr_old_name(feature)))
     for arg in cmd.args:
@@ -245,7 +250,7 @@ def write_command_c_code(docfile, feature, cmd):
     docfile.write(');\n')
     docfile.write('```\n\n')
 
-def write_command_objc_code(docfile, feature, cmd):
+def _write_command_objc_code(docfile, feature, cmd):
     docfile.write('```objective_c\n')
     docfile.write('deviceController->' + ARUncapitalize(get_ftr_old_name(feature)) + '->' + 'send' + ARCapitalize(format_cmd_name(cmd)) + '(deviceController->' + ARUncapitalize(get_ftr_old_name(feature)))
     for arg in cmd.args:
@@ -253,7 +258,7 @@ def write_command_objc_code(docfile, feature, cmd):
     docfile.write(');\n')
     docfile.write('```\n\n')
 
-def write_command_java_code(docfile, feature, cmd):
+def _write_command_java_code(docfile, feature, cmd):
     docfile.write('```java\n')
     docfile.write('deviceController.getFeature'+ ARCapitalize(get_ftr_old_name(feature)) + '().' + 'send' + ARCapitalize(format_cmd_name(cmd)) + '(')
     first = True
@@ -267,44 +272,47 @@ def write_command_java_code(docfile, feature, cmd):
     docfile.write('```\n')
     docfile.write('\n')
 
-def write_command_result(docfile, result):
+def _write_command_result(ctx, docfile, result):
     if result:
         docfile.write ('\n\nResult:<br/>\n')
         for result_line in result.split('\n'):
-            docfile.write(replace_links(result_line) + '<br/>\n')
+            docfile.write(_replace_links(ctx, result_line) + '<br/>\n')
 
 ##########################################################
 #   Write events doc functions
 ##########################################################
 
 # write the documentation of all events of the given feature
-def write_events_doc(docfile, feature, product=None):
+def _write_events_doc(ctx, docfile, feature, args, product=None):
+    nb_evt = 0
+
     for evt in feature.evts:
-        if not is_command_supported(evt, product):
+        if not _is_command_supported(evt, product):
             continue
+        nb_evt += 1
 
-        write_message_header(docfile, feature, evt)
+        _write_message_header(docfile, feature, evt)
 
-        write_message_code_header(docfile, evt)
+        _write_message_code_header(docfile, evt)
 
         if evt.listType == ArCmdListType.LIST or evt.listType == ArCmdListType.MAP:
-            write_event_list_c_code(docfile, feature, evt)
-            write_event_list_objc_code(docfile, feature, evt)
-            write_event_list_java_code(docfile, feature, evt)
+            _write_event_list_c_code(docfile, feature, evt)
+            _write_event_list_objc_code(docfile, feature, evt)
+            _write_event_list_java_code(docfile, feature, evt)
         else:
-            write_event_c_code(docfile, feature, evt)
-            write_event_objc_code(docfile, feature, evt)
-            write_event_java_code(docfile, feature, evt)
+            _write_event_c_code(docfile, feature, evt)
+            _write_event_objc_code(docfile, feature, evt)
+            _write_event_java_code(docfile, feature, evt)
 
-        write_message_comment(docfile, evt, evt.doc.desc)
+        _write_message_comment(ctx, docfile, evt, evt.doc.desc)
 
-        write_message_args(docfile, evt.args)
+        _write_message_args(docfile, evt.args)
 
-        write_event_triggered(docfile, evt.doc.triggered)
+        _write_event_triggered(ctx, docfile, evt.doc.triggered)
 
         docfile.write('<br/>\n\n')
 
-        if warning_mode:
+        if args.warning:
             warning_str = ""
             if not evt.doc.support and not evt.isDeprecated:
                 warning_str += '{}{}{}'.format(RED, "- Support list is missing\n", WHITE)
@@ -319,9 +327,10 @@ def write_events_doc(docfile, feature, product=None):
                 warning_str += '{}{}{}'.format(BLUE, "- Support is none\n", WHITE)
 
             if warning_str:
-                print(format_message_name(feature, evt) + ":\n" + warning_str)
+                print(_format_message_name(feature, evt) + ":\n" + warning_str)
+    return nb_evt
 
-def write_event_list_c_code(docfile, feature, evt):
+def _write_event_list_c_code(docfile, feature, evt):
     docfile.write('```c\n')
     docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
@@ -353,7 +362,7 @@ def write_event_list_c_code(docfile, feature, evt):
     docfile.write('}\n')
     docfile.write('```\n\n')
 
-def write_event_list_objc_code(docfile, feature, evt):
+def _write_event_list_objc_code(docfile, feature, evt):
     docfile.write('```objective_c\n')
     docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
@@ -385,7 +394,7 @@ def write_event_list_objc_code(docfile, feature, evt):
     docfile.write('}\n')
     docfile.write('```\n\n')
 
-def write_event_list_java_code(docfile, feature, evt):
+def _write_event_list_java_code(docfile, feature, evt):
     docfile.write('```java\n')
     docfile.write('@Override\n')
     docfile.write('public void onCommandReceived (ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {\n')
@@ -414,7 +423,7 @@ def write_event_list_java_code(docfile, feature, evt):
     docfile.write('}\n')
     docfile.write('```\n\n')
 
-def write_event_c_code(docfile, feature, evt):
+def _write_event_c_code(docfile, feature, evt):
     docfile.write('```c\n')
     docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
@@ -447,7 +456,7 @@ def write_event_c_code(docfile, feature, evt):
     docfile.write('```\n\n')
 
 
-def write_event_objc_code(docfile, feature, evt):
+def _write_event_objc_code(docfile, feature, evt):
     docfile.write('```objective_c\n')
     docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
@@ -479,7 +488,7 @@ def write_event_objc_code(docfile, feature, evt):
     docfile.write('}\n')
     docfile.write('```\n\n')
 
-def write_event_java_code(docfile, feature, evt):
+def _write_event_java_code(docfile, feature, evt):
     docfile.write('```java\n')
     docfile.write('@Override\n')
     docfile.write('public void onCommandReceived (ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {\n')
@@ -505,41 +514,13 @@ def write_event_java_code(docfile, feature, evt):
     docfile.write('}\n')
     docfile.write('```\n\n')
 
-def write_event_triggered(docfile, triggered):
+def _write_event_triggered(ctx, docfile, triggered):
     if triggered:
         docfile.write ('\n\nTriggered ')
         for triggered_line in triggered.split('\n'):
-            docfile.write(replace_links(triggered_line) + '<br/>\n\n')
+            docfile.write(_replace_links(ctx, triggered_line) + '<br/>\n\n')
 
-
-##########################################################
-#   Arg parsing
-##########################################################
-parser = argparse.ArgumentParser(description='Generate the documentation of messages.')
-parser.add_argument('-f', '--features', nargs='*', type=str, metavar='feature',
-                    help='List of features to generate the documentation. All features will be generated if missing.')
-parser.add_argument('-w', '--warning', action='store_true',
-                    help='Also generates warning logs if the feature does not contain new description or title too long or missing some tags.')
-parser.add_argument('-r', '--reference', action='store_true',
-                    help='Generate reference documentation for all products.')
-
-args = parser.parse_args()
-
-##########################################################
-#   Main
-##########################################################
-warning_mode = args.warning
-
-ctx = ArParserCtx()
-parse_features(ctx, MESSAGE_PATH)
-
-def _is_not_empty(path):
-    try:
-        return os.stat(path).st_size != 0
-    except:
-        return False
-
-def _generate_doc(rootdir, features, product=None):
+def _generate_doc(ctx, rootdir, features, args, product=None):
     if not os.path.exists(rootdir):
         os.makedirs(rootdir)
 
@@ -547,15 +528,19 @@ def _generate_doc(rootdir, features, product=None):
     has_commands = dict()
 
     for feature in features:
-        cmd_name = os.path.join(rootdir, '_commands_'+feature.name+'.md')
+        cmd_name = os.path.join(rootdir, _command_doc_file_name(feature))
         with open(cmd_name, 'w') as f:
-            write_commands_doc(f, feature, product=product)
-        has_commands[feature.name] = _is_not_empty(cmd_name)
+            nb_cmd = _write_commands_doc(ctx, f, feature, args, product=product)
+        has_commands[feature.name] = nb_cmd > 0
+        if nb_cmd <= 0:
+            os.unlink(cmd_name)
 
-        evt_name = os.path.join(rootdir, '_events_'+feature.name+'.md')
+        evt_name = os.path.join(rootdir, _event_doc_file_name(feature))
         with open(evt_name, 'w') as f:
-            write_events_doc(f, feature, product=product)
-        has_events[feature.name] = _is_not_empty(evt_name)
+            nb_evt = _write_events_doc(ctx, f, feature, args, product=product)
+        has_events[feature.name] = nb_evt > 0
+        if nb_evt <= 0:
+            os.unlink(evt_name)
 
     return (has_commands, has_events)
 
@@ -594,23 +579,55 @@ def _generate_toc(rootdir, cmds, evts, product):
         f.write('search: true\n')
         f.write('---\n')
 
+def _do_generate_files(ctx, outdir, args_as_arr=None):
+    #parse args
+    parser = argparse.ArgumentParser(description='Generate the documentation of messages.')
+    parser.add_argument('-f', '--features', nargs='*', type=str, metavar='feature',
+                    help='List of features to generate the documentation. All features will be generated if missing.')
+    parser.add_argument('-w', '--warning', action='store_true',
+                    help='Also generates warning logs if the feature does not contain new description or title too long or missing some tags.')
+    parser.add_argument('-r', '--reference', action='store_true',
+                    help='Generate reference documentation for all products.')
 
-features = ctx.features if not args.features else [f for f in ctx.features if f.name in args.features]
+    # if args_as_arr is None, parse the args given in the command line
+    args = parser.parse_args(args_as_arr)
+
+    features = ctx.features if not args.features else [f for f in ctx.features if f.name in args.features]
+
+    if args.reference:
+        ref_dir = os.path.join(outdir, 'reference')
+        products = ( x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL) )
+
+        for p in products:
+            name = DEVICE_TO_STRING[p].replace(' ', '_').lower()
+            directory = os.path.join(ref_dir, name)
+            (cmds, evts) = _generate_doc(ctx, directory, features, args, product=p)
+            _generate_toc(directory, cmds, evts, p)
+        directory = os.path.join(ref_dir, 'all')
+        (cmds, evts) = _generate_doc(ctx, directory, features, args)
+        _generate_toc(directory, cmds, evts, 'all products')
+
+    else:
+        doc_dir = os.path.join(outdir, 'documentation')
+        _generate_doc(ctx, doc_dir, features, args)
 
 
-if args.reference:
-    products = ( x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL) )
+def list_files(ctx, outdir, extra):
+    for feature in ctx.features:
+        print os.path.join(outdir, _command_doc_file_name(feature))
+        print os.path.join(outdir, _event_doc_file_name(feature))
 
-    for p in products:
-        name = DEVICE_TO_STRING[p].replace(' ', '_').lower()
-        directory = os.path.join(REF_DIR, name)
-        (cmds, evts) = _generate_doc(directory, features, product=p)
-        _generate_toc(directory, cmds, evts, p)
-    directory = os.path.join(REF_DIR, 'all')
-    (cmds, evts) = _generate_doc(directory, features)
-    _generate_toc(directory, cmds, evts, 'all products')
+def generate_files(ctx, outdir, extra):
+    args_as_arr = extra.split(' ')[1:]
 
-else:
-    _generate_doc(DOC_DIR, features)
+    _do_generate_files(ctx, outdir, args_as_arr)
 
-ARPrint('Done')
+# if this script is called directly from the command line
+if __name__ == '__main__':
+    my_dir=os.path.abspath(os.path.dirname(__file__))
+    message_path = os.path.join(my_dir, '..', '..', 'arsdk-xml', 'xml')
+
+    ctx = ArParserCtx()
+    _parse_features(ctx, message_path)
+
+    _do_generate_files(ctx, my_dir)

@@ -67,3 +67,18 @@ LOCAL_CUSTOM_MACROS := \
 	arsdkgen-macro:$(LOCAL_PATH)/Python/generateControllersSources.py,$(call local-get-build-dir)/gen,native
 
 include $(BUILD_LIBRARY)
+
+###############################################################################
+#  Messages documentation generation
+###############################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libARController_doc
+LOCAL_DESCRIPTION := ARSDK Controller
+LOCAL_CATEGORY_PATH := dragon/libs
+
+LOCAL_CUSTOM_MACROS := \
+	arsdkgen-macro:$(LOCAL_PATH)/Python/generateCommandsDoc.py,$(call local-get-build-dir)/gen,native:-r
+
+include $(BUILD_CUSTOM)
