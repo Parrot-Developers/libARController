@@ -2163,12 +2163,12 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('{\n')
     cFile.write ('    // -- Thread Run of Stop --\n')
     cFile.write ('    \n')
-    
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = ('+className+' *) data;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    \n')
-    
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
@@ -2176,40 +2176,29 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'UnregisterCallbacks')+' (deviceController, NULL);\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+' (deviceController);\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' (deviceController);\n')
-    cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
-    cFile.write ('    {\n')
-    cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED, ARCONTROLLER_OK);\n')
-    cFile.write ('    }\n')
-    cFile.write ('    //else // TODO see what to do\n')
-    cFile.write ('    //{\n')
-    cFile.write ('    //    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE ???? , ARCONTROLLER_OK;\n')
-    cFile.write ('    //}\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    // Print error\n')
+
+    cFile.write ('    error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'UnregisterCallbacks')+' (deviceController, NULL);\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Stop fail error :%s", ARCONTROLLER_Error_ToString (error));\n')
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "UnregisterCallback failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
+    cFile.write ('    \n')
+
+    cFile.write ('    error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+' (deviceController);\n')
+    cFile.write ('    if (error != ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "StopControllerLooperThread failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+
+    cFile.write ('    error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' (deviceController);\n')
+    cFile.write ('    if (error != ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "StopNetwork failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
+
+    cFile.write ('    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED, ARCONTROLLER_OK);\n')
     cFile.write ('    \n')
     
     cFile.write ('    return NULL;\n')
@@ -2314,6 +2303,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    \n')
 
+    cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
+    cFile.write ('    {\n')
     for feature in ctx.features:
         cFile.write ('        if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
         cFile.write ('        {\n')
@@ -2324,6 +2315,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('            }\n')
         cFile.write ('        }\n')
         cFile.write ('        \n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
         
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
@@ -2373,6 +2366,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
     
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
     for feature in ctx.features:
         cFile.write ('        if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
         cFile.write ('        {\n')
@@ -2383,6 +2378,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('            }\n')
         cFile.write ('        }\n')
         cFile.write ('        \n')
+    cFile.write ('    }\n')
+    cFile.write ('    \n')
     
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
