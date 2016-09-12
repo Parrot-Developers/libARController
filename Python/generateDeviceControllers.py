@@ -511,9 +511,10 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Set the network controller of the device controller to its features.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
+    hPrivFile.write (' * @param[in] specificFeature The feature on which the network will be set. If null, set network on all features.\n')
     hPrivFile.write (' * @return executing error.\n')
     hPrivFile.write (' */\n')
-    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController);\n')
+    hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController, void* specificFeature);\n')
     hPrivFile.write ('\n')
     
     hPrivFile.write ('/**\n')
@@ -2231,7 +2232,12 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                {\n')
     cFile.write ('                    error = ARCONTROLLER_Device_UnregisterCallbacks (deviceController, deviceController->aRDrone3);\n')
     cFile.write ('                }\n')
+    cFile.write ('                if (error == ARCONTROLLER_OK && deviceController->aRDrone3 != NULL)\n')
+    cFile.write ('                {\n')
+    cFile.write ('                    error = ARCONTROLLER_FEATURE_ARDrone3_UnregisterARCommands(deviceController->aRDrone3);\n')
+    cFile.write ('                }\n')
     cFile.write ('                \n')
+
     cFile.write ('                if (error == ARCONTROLLER_OK)\n')
     cFile.write ('                {\n')
     cFile.write ('                    ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
@@ -2299,7 +2305,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
-    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' (deviceController);\n')
+    cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' (deviceController, NULL);\n')
     cFile.write ('    }\n')
     cFile.write ('    \n')
 
@@ -2394,7 +2400,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('}\n')
     cFile.write ('\n')
     
-    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController)\n')
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController, void* specificFeature)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set the Network Controoler to the Features --\n')
     cFile.write ('    \n')
@@ -2414,7 +2420,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     
     for feature in ctx.features:
-        cFile.write ('        if (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL)\n')
+        cFile.write ('        if ((deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+')))\n')
         cFile.write ('        {\n')
         cFile.write ('            settingError = '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'SetNetworkController')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', deviceController->privatePart->networkController);\n')
         cFile.write ('            if (error != ARCONTROLLER_OK)\n')
@@ -2983,6 +2989,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            // TODO: see how to automate this (product AND features)\n')
     cFile.write ('            ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('            deviceController->aRDrone3 = ARCONTROLLER_FEATURE_ARDrone3_New (deviceController->privatePart->networkController, &error);\n')
+    cFile.write ('            if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('            {\n')
+    cFile.write ('                error = ARCONTROLLER_Device_SetNetworkControllerToFeatures(deviceController, deviceController->aRDrone3);\n')
+    cFile.write ('            }\n')
+    cFile.write ('            if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('            {\n')
+    cFile.write ('                error = ARCONTROLLER_FEATURE_ARDrone3_RegisterARCommands (deviceController->aRDrone3);\n')
+    cFile.write ('            }\n')
+
     cFile.write ('            if (error == ARCONTROLLER_OK)\n')
     cFile.write ('            {\n')
     cFile.write ('                error = ARCONTROLLER_Device_RegisterCallbacks (deviceController, deviceController->aRDrone3);\n')
