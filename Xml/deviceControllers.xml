@@ -36,6 +36,7 @@
         Bebop Drone project
         <feature name="common"/>
         <feature name="ardrone3"/>
+        <feature name="generic"/>
     </ARController_Device>
 
     <ARController_Device name="JumpingSumo" product="JS">
@@ -114,6 +115,7 @@
         Bebop 2 project
         <feature name="common"/>
         <feature name="ardrone3"/>
+        <feature name="generic"/>
     </ARController_Device>
 
     <ARController_Device name="Disco" product="EVINRUDE" flags="can_be_extension">
