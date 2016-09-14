@@ -35,9 +35,12 @@
  * @date 02/03/2015
  * @author maxime.maitre@parrot.com
  */
- 
-#include <stdlib.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <json/json.h>
 #include <libARSAL/ARSAL_Print.h>
 #include <libARSAL/ARSAL_Socket.h>
@@ -52,6 +55,9 @@
 
 #include "ARCONTROLLER_Stream2.h"
 #include <libARController/ARCONTROLLER_Stream2.h>
+#if defined BUILD_LIBMUX
+#include <libmux.h>
+#endif
 
 /*************************
  * Private header
@@ -65,9 +71,64 @@ static eARSTREAM2_ERROR ARCONTROLLER_Stream2_GetAuBufferCallback(uint8_t **auBuf
 static eARSTREAM2_ERROR ARCONTROLLER_Stream2_AuReadyCallback(uint8_t *auBuffer, int auSize, uint64_t auTimestamp, uint64_t auTimestampShifted, eARSTREAM2_H264_FILTER_AU_SYNC_TYPE auSyncType, void *auMetadata, int auMetadataSize, void *auUserData, int auUserDataSize, void *auBufferUserPtr, void *userPtr);
 static void *ARCONTROLLER_Stream2_RestartRun (void *data);
 
+#define ARCONTROLLER_STREAM2_TAG "ARCONTROLLER_Stream2"
+
 /*************************
  * Implementation
  *************************/
+
+static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int *sockfd, int *port)
+{
+    int fd, ret;
+    socklen_t addrlen;
+    struct sockaddr_in addr;
+    int yes;
+
+    fd = ARSAL_Socket_Create (AF_INET, SOCK_DGRAM, 0);
+    if (fd < 0)
+        goto error;
+
+    ret = fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK);
+    if (ret < 0)
+        goto error;
+
+    /*  bind to a OS-assigned random port */
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons (0);
+    ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
+    if (ret < 0) {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG,
+                    "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(errno));
+        goto error;
+    }
+
+    /* get selected port */
+    addrlen = sizeof(addr);
+    ret = ARSAL_Socket_Getsockname(fd, (struct sockaddr *)&addr, &addrlen);
+    if (ret < 0) {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "getsockname fd=%d, error='%s'", fd, strerror(errno));
+        goto error;
+    }
+
+    yes = 1;
+    ret = ARSAL_Socket_Setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    if (ret < 0) {
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", errno, strerror(errno));
+        goto error;
+    }
+
+    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM2_TAG, "udp local port %s: %d", name, htons(addr.sin_port));
+    *port = htons(addr.sin_port);
+    *sockfd = fd;
+    return 0;
+error:
+    if (fd >= 0)
+        ARSAL_Socket_Close(fd);
+
+    return -1;
+}
 
 ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)
 {
@@ -76,6 +137,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
     //local declarations
     eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;
     ARCONTROLLER_Stream2_t *stream2Controller =  NULL;
+    int ret;
     
     // Check parameters
     if (discoveryDevice == NULL)
@@ -93,16 +155,33 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->isRunning = 0;
             
             stream2Controller->serverAddress[0] = '\0';
-            ARDISCOVERY_DEVICE_WifiGetIpAddress (discoveryDevice, stream2Controller->serverAddress, ARCONTROLLER_STREAM2_IP_SIZE);
+            if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_NSNETSERVICE) {
+                ARDISCOVERY_DEVICE_WifiGetIpAddress (discoveryDevice, stream2Controller->serverAddress, ARCONTROLLER_STREAM2_IP_SIZE);
+                stream2Controller->mux = NULL;
+            } else if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_USBSERVICE) {
+#if defined BUILD_LIBMUX
+                ARDISCOVERY_Device_UsbGetMux(discoveryDevice, &stream2Controller->mux);
+                mux_ref(stream2Controller->mux);
+#else
+                localError = ARCONTROLLER_ERROR_NOT_IMPLEMENTED;
+#endif
+            }
             
-            stream2Controller->clientStreamPort = ARCONTROLLER_STREAM2_CLIENT_STREAM_PORT;
-            stream2Controller->clientControlPort = ARCONTROLLER_STREAM2_CLIENT_CONTROL_PORT;
+            ret = ARCONTROLLER_Stream2_Open_Socket("stream", &stream2Controller->clientStreamFd, &stream2Controller->clientStreamPort);
+            if (ret < 0)
+                localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
+
+            ret = ARCONTROLLER_Stream2_Open_Socket("control", &stream2Controller->clientControlFd, &stream2Controller->clientControlPort);
+            if (ret < 0)
+                localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
+
             stream2Controller->serverStreamPort = 0;
             stream2Controller->serverControlPort = 0;
             stream2Controller->maxPaquetSize = 0;
             stream2Controller->maxLatency = 0;
             stream2Controller->maxNetworkLatency = 0;
             stream2Controller->maxBiterate = 0;
+            stream2Controller->qos_level = 0;
             stream2Controller->parmeterSets = NULL;
             
             stream2Controller->errorCount = 0;
@@ -145,9 +224,19 @@ void ARCONTROLLER_Stream2_Delete (ARCONTROLLER_Stream2_t **stream2Controller)
         {
             ARCONTROLLER_Stream2_Stop (*stream2Controller);
 
+#if defined BUILD_LIBMUX
+            if ((*stream2Controller)->mux)
+                mux_unref((*stream2Controller)->mux);
+#endif
             free ((*stream2Controller)->parmeterSets);
             (*stream2Controller)->parmeterSets = NULL;
             
+            if ((*stream2Controller)->clientStreamFd >= 0)
+                ARSAL_Socket_Close((*stream2Controller)->clientStreamFd);
+
+            if ((*stream2Controller)->clientControlFd >= 0)
+                ARSAL_Socket_Close((*stream2Controller)->clientControlFd);
+
             free (*stream2Controller);
             (*stream2Controller) = NULL;
         }
@@ -385,6 +474,13 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnReceiveJson (ARCONTROLLER_Stream2_t *s
             stream2Controller->maxBiterate = json_object_get_int(valueJsonObj);
         }
         
+        // get ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY
+        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY);
+        if (valueJsonObj != NULL)
+        {
+            stream2Controller->qos_level = json_object_get_int(valueJsonObj);
+        }
+        
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_PARAMETER_SETS_KEY
         valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_PARAMETER_SETS_KEY);
         if (valueJsonObj != NULL)
@@ -434,6 +530,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
     eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
     ARSTREAM2_StreamReceiver_Config_t config;
     ARSTREAM2_StreamReceiver_NetConfig_t net_config;
+    ARSTREAM2_StreamReceiver_MuxConfig_t mux_config;
     eARSTREAM2_ERROR stream2Error = ARSTREAM2_OK;
     
     // Check parameters
@@ -447,14 +544,8 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
     {
         memset(&config, 0, sizeof(ARSTREAM2_StreamReceiver_Config_t));
         memset(&net_config, 0, sizeof(ARSTREAM2_StreamReceiver_NetConfig_t));
-        
-        net_config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
-        net_config.mcastAddr = NULL;
-        net_config.mcastIfaceAddr = NULL;
-        net_config.serverStreamPort = stream2Controller->serverStreamPort;
-        net_config.serverControlPort = stream2Controller->serverControlPort;
-        net_config.clientStreamPort = stream2Controller->clientStreamPort;
-        net_config.clientControlPort = stream2Controller->clientControlPort;
+        memset(&mux_config, 0, sizeof(ARSTREAM2_StreamReceiver_MuxConfig_t));
+
         config.maxPacketSize = stream2Controller->maxPaquetSize;
         config.maxBitrate = stream2Controller->maxBiterate;
         config.maxLatencyMs = stream2Controller->maxLatency;
@@ -466,11 +557,40 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
         config.replaceStartCodesWithNaluSize = stream2Controller->replaceStartCodesWithNaluSize;
         config.generateSkippedPSlices = 1;
         config.generateFirstGrayIFrame = 1;
-    }
 
-    if (error == ARCONTROLLER_OK)
-    {
-        stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, &net_config, NULL);
+        if (stream2Controller->mux) {
+            mux_config.mux = stream2Controller->mux;
+            stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, NULL, &mux_config);
+        } else {
+            net_config.serverAddr = stream2Controller->serverAddress; //TODO get from discovery device 
+            net_config.mcastAddr = NULL;
+            net_config.mcastIfaceAddr = NULL;
+            net_config.serverStreamPort = stream2Controller->serverStreamPort;
+            net_config.serverControlPort = stream2Controller->serverControlPort;
+            net_config.clientStreamPort = stream2Controller->clientStreamPort;
+            net_config.clientControlPort = stream2Controller->clientControlPort;
+
+            if (stream2Controller->clientStreamFd >= 0) {
+                ARSAL_Socket_Close(stream2Controller->clientStreamFd);
+                stream2Controller->clientStreamFd = -1;
+            }
+
+            if (stream2Controller->clientControlPort >= 0) {
+                ARSAL_Socket_Close(stream2Controller->clientControlPort);
+                stream2Controller->clientControlPort = -1;
+            }
+
+            if (stream2Controller->qos_level == 1)
+            {
+                net_config.classSelector = ARSAL_SOCKET_CLASS_SELECTOR_CS4;
+            }
+            else
+            {
+                net_config.classSelector = ARSAL_SOCKET_CLASS_SELECTOR_UNSPECIFIED;
+            }
+            stream2Error = ARSTREAM2_StreamReceiver_Init(&(stream2Controller->readerFilterHandle), &config, &net_config, NULL);
+        }
+
         if (stream2Error != ARSTREAM2_OK)
         {
             error = ARCONTROLLER_ERROR_INIT_STREAM;

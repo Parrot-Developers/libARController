@@ -1,6 +1,7 @@
 package com.parrot.arsdk.arcontroller;
 
 import com.parrot.arsdk.arsal.ARNativeData;
+import com.parrot.arsdk.arsal.ARSALPrint;
 
 public class ARFrame extends ARNativeData
 {
@@ -9,7 +10,7 @@ public class ARFrame extends ARNativeData
     private int missed;
     private boolean isIFrame;
     private boolean available;
-    private int timestamp;
+    private long timestamp;
     private ARNativeData metadata;
     
     public ARFrame ()
@@ -25,7 +26,7 @@ public class ARFrame extends ARNativeData
     }
     
     public ARFrame (long data, int dataCapacity, int dataSize, boolean isIFrame, int missed,
-                    int timestamp, long metadata, int metadataSize)
+                    long timestamp, long metadata, int metadataSize)
     {
         super(data, dataCapacity);
         initialize ();
@@ -84,7 +85,7 @@ public class ARFrame extends ARNativeData
         this.available = available;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

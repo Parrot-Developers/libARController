@@ -149,6 +149,22 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         hfile.write ('\n')
         
         hfile.write ('/**\n')
+        hfile.write (' * @brief Register the feature controller to be called when the commands are decoded.\n')
+        hfile.write (' * @param feature The feature controller to register\n')
+        hfile.write (' * return executing error\n')
+        hfile.write (' */\n')
+        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' ('+className+' *feature);\n')
+        hfile.write ('\n')
+        
+        hfile.write ('/**\n')
+        hfile.write (' * @brief Unegister the feature controller to be called when the commands are decoded.\n')
+        hfile.write (' * @param feature The feature controller to unregister\n')
+        hfile.write (' * return executing error\n')
+        hfile.write (' */\n')
+        hfile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' ('+className+' *feature);\n')
+        hfile.write ('\n')
+        
+        hfile.write ('/**\n')
         hfile.write (' * @brief Get the dictionay of the '+get_ftr_old_name(feature)+' Feature Controller\n')
         hfile.write (' * @param feature The feature controller owning the dictionary to get\n')
         hfile.write (' * @param[out] error executing error.\n')
@@ -187,7 +203,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         for cmd in feature.cmds:
             hfile.write ('/**\n')
             hfile.write (' * @brief Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in feature <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-            hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+            if cmd.isDeprecated:
+                hfile.write (' * @deprecated\n')
+            hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
             hfile.write (' * @param feature feature owning the commands\n')
             for arg in cmd.args:
                 hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -202,7 +220,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hfile.write ('/**\n')
                 hfile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                if cmd.isDeprecated:
+                    hfile.write (' * @deprecated\n')
+                hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                 hfile.write (' * @param feature feature owning the commands\n')
                 for arg in cmd.args:
                     hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -216,7 +236,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 
                 hfile.write ('/**\n')
                 hfile.write (' * @brief Send the a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> with the parame set beforehand \n')
-                hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                if cmd.isDeprecated:
+                    hfile.write (' * @deprecated\n')
+                hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                 hfile.write (' * @param feature feature owning the commands\n')
                 hfile.write (' * @param cmdBuffer buffer to store the command\n')
                 hfile.write (' * @param cmdBufferSize size of the buffer\n')
@@ -228,7 +250,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 for arg in cmd.args:
                     hfile.write ('/**\n')
                     hfile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                    hfile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                    if cmd.isDeprecated:
+                        hfile.write (' * @deprecated\n')
+                    hfile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                     hfile.write (' * @param feature feature owning the commands\n')
                     hfile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                     hfile.write (' * return executing error\n')
@@ -359,7 +383,8 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     hPrivFile.write ('    ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' '+arg.name+'; /**< */\n')
                 hPrivFile.write ('}'+structNAckType (feature, cmd)+';\n')
                 hPrivFile.write ('\n')
-                    
+
+        
         
         hPrivFile.write ('/**\n')
         hPrivFile.write (' * @brief Private part of '+className+'.\n')
@@ -377,27 +402,13 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     
         hPrivFile.write ('};\n')
         hPrivFile.write ('\n')
-        
-        hPrivFile.write ('/**\n')
-        hPrivFile.write (' * @brief Register the feature controller to be called when the commands are decoded.\n')
-        hPrivFile.write (' * @param feature The feature controller to register\n')
-        hPrivFile.write (' * return executing error\n')
-        hPrivFile.write (' */\n')
-        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' ('+className+' *feature);\n')
-        hPrivFile.write ('\n')
-        
-        hPrivFile.write ('/**\n')
-        hPrivFile.write (' * @brief Unegister the feature controller to be called when the commands are decoded.\n')
-        hPrivFile.write (' * @param feature The feature controller to unregister\n')
-        hPrivFile.write (' * return executing error\n')
-        hPrivFile.write (' */\n')
-        hPrivFile.write ('eARCONTROLLER_ERROR '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' ('+className+' *feature);\n')
-        hPrivFile.write ('\n')
-        
+
         for cmd in feature.cmds:
             hPrivFile.write ('/**\n')
             hPrivFile.write (' * @brief Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-            hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+            if cmd.isDeprecated:
+                hPrivFile.write (' * @deprecated\n')
+            hPrivFile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
             hPrivFile.write (' * @param feature feature owning the commands\n')
             for arg in cmd.args:
                 hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -412,7 +423,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hPrivFile.write ('/**\n')
                 hPrivFile.write (' * @brief Set the parameters to send through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                if cmd.isDeprecated:
+                    hPrivFile.write (' * @deprecated\n')
+                hPrivFile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                 hPrivFile.write (' * @param feature feature owning the commands\n')
                 for arg in cmd.args:
                     hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
@@ -427,7 +440,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 for arg in cmd.args:
                     hPrivFile.write ('/**\n')
                     hPrivFile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
-                    hPrivFile.write (' * ' + cmd.doc.replace('\n', '\n * ')+'\n')
+                    if cmd.isDeprecated:
+                        hPrivFile.write (' * @deprecated\n')
+                    hPrivFile.write (' * ' + cmd.doc.desc.replace('\n', '\n * ')+'\n')
                     hPrivFile.write (' * @param feature feature owning the commands\n')
                     hPrivFile.write (' * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
                     hPrivFile.write (' * return executing error\n')
@@ -502,8 +517,13 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('#include <libARCommands/ARCommands.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Network.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
+    cFile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
     cFile.write ('\n')
+
+    cFile.write ('#include "ARCONTROLLER_Stream.h"\n')
+    cFile.write ('#include "ARCONTROLLER_StreamSender.h"\n')
     cFile.write ('#include "ARCONTROLLER_Feature.h"\n')
+    cFile.write ('#include "ARCONTROLLER_Network.h"\n')
     cFile.write ('\n')
     cFile.write ('#define '+MODULE_FEATURE+'_TAG "'+classTag+'"\n')
     cFile.write ('\n')
@@ -849,15 +869,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('    }\n')
                 cFile.write ('    // No else: skipped by an error \n')
                 cFile.write ('    \n')
-                    
-        
-        cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
-        cFile.write ('    {\n')
-        cFile.write ('        localError = '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'RegisterARCommands')+' (featureController);\n')
-        cFile.write ('    }\n')
-        cFile.write ('    // No else: skipped by an error \n')
-        cFile.write ('    \n')
-        
+
         cFile.write ('    // delete the feature Controller if an error occurred\n')
         cFile.write ('    if (localError != ARCONTROLLER_OK)\n')
         cFile.write ('    {\n')
@@ -888,9 +900,6 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('    {\n')
         cFile.write ('        if ((*feature) != NULL)\n')
         cFile.write ('        {\n')
-        
-        cFile.write ('            '+ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), 'UnregisterARCommands')+' ((*feature));\n')
-        cFile.write ('            \n')
         
         cFile.write ('            if ((*feature)->privatePart != NULL)\n')
         cFile.write ('            {\n')
@@ -1028,7 +1037,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('    \n')
         
         cFile.write ('    // Check parameters\n')
-        cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
+        cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL) || (feature->privatePart->networkController == NULL) || (feature->privatePart->networkController->decoder == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
         cFile.write ('    }\n')
@@ -1039,7 +1048,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('    {\n')
         
         for evt in feature.evts:
-            cFile.write ('        '+arcommandsSetDecode(feature, evt)+' (&'+decodeCallback(feature, evt)+', feature);\n')
+            cFile.write ('        '+arcommandsSetDecode(feature, evt)+' (feature->privatePart->networkController->decoder, &'+decodeCallback(feature, evt)+', feature);\n')
         cFile.write ('    }\n')
         cFile.write ('    \n')
         cFile.write ('    return error;\n')
@@ -1055,7 +1064,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('    \n')
         
         cFile.write ('    // Check parameters\n')
-        cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
+        cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL) || (feature->privatePart->networkController == NULL) || (feature->privatePart->networkController->decoder == NULL))\n')
         cFile.write ('    {\n')
         cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
         cFile.write ('    }\n')
@@ -1066,7 +1075,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('    {\n')
         
         for evt in feature.evts:
-            cFile.write ('        '+arcommandsSetDecode(feature, evt)+' (NULL, NULL);\n')
+            cFile.write ('        '+arcommandsSetDecode(feature, evt)+' (feature->privatePart->networkController->decoder, NULL, NULL);\n')
         cFile.write ('    }\n')
         cFile.write ('    \n')
         cFile.write ('    return error;\n')
@@ -1903,7 +1912,9 @@ def generateFeatureControllersJava (ctx, JNI_JAVA_DIR):
         for cmd in feature.cmds:
             jfile.write ('    /**\n')
             jfile.write ('     * Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code>\n')
-            jfile.write ('     * ' + cmd.doc.replace('\n', '\n     * ')+'\n')
+            if cmd.isDeprecated:
+                jfile.write ('     * @deprecated\n')
+            jfile.write ('     * ' + cmd.doc.desc.replace('\n', '\n     * ')+'\n')
             for arg in cmd.args:
                 jfile.write ('     * @param ' + arg.name + ' ' + get_arg_doc(arg).replace('\n', ' ') + '\n')
             jfile.write ('     * return executing error\n')

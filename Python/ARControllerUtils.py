@@ -146,7 +146,7 @@ def nativeGetNotificationVal(feature, cmd=None, arg=None):
     return 'nativeStaticGetKey'+ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(cmdPart) + ARCapitalize(argPart);
 
 def arcommandsSetDecode(feature, cmd):
-    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + 'Callback'
+    return 'ARCOMMANDS_Decoder_Set' + ARCapitalize(get_ftr_old_name(feature)) + ARCapitalize(format_cmd_name(cmd)) + 'Cb'
 
 def decodeCallback(feature, cmd):
     return ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), ARCapitalize(format_cmd_name(cmd)) + 'Callback')
@@ -240,6 +240,7 @@ class ARControllerDevice:
     def __init__(self, name, product):
         self.name     = name
         self.product  = product
+        self.flags    = None
         self.comments = []
         self.features = []
         
@@ -254,13 +255,36 @@ class ARControllerDevice:
         else:
             ARPrint ('all DeviceController must have a product')
             EXIT (1)
-    
+
+class ARFlags:
+    "Represents all flags that can be associated to a device controller"
+    def __init__(self, flags):
+        self.can_be_extension = False
+        self.can_have_extension = False
+
+        if flags:
+            flag_list = flags.split("|")
+
+            for flag in flag_list:
+                if flag == 'can_be_extension':
+                   self.can_be_extension = True
+                elif flag == 'can_have_extension':
+                   self.can_have_extension = True
+                else:
+                   ARPrint ('Flag ' + flag + ' not know')
+                   EXIT (1)
 
 def parseDeviceControllerXml (xmlDeviceController, ctx):
     "Parses DeviceController tag"
     
-    deviceController = ARControllerDevice (xmlDeviceController.attributes["name"].nodeValue, xmlDeviceController.attributes["product"].nodeValue);
-    
+    deviceController = ARControllerDevice (xmlDeviceController.attributes["name"].nodeValue,
+        xmlDeviceController.attributes["product"].nodeValue);
+
+    flags_str = None
+    if xmlDeviceController.hasAttribute("flags"):
+        flags_str = xmlDeviceController.attributes["flags"].nodeValue
+    deviceController.flags = ARFlags(flags_str)
+
     xmlFeatures = xmlDeviceController.getElementsByTagName ('feature')
     # check xmlFeatures
     if len (xmlFeatures) == 0:

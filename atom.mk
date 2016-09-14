@@ -20,6 +20,9 @@ LOCAL_LIBRARIES := \
 	uthash \
 	json
 
+LOCAL_CONDITIONAL_LIBRARIES := \
+	OPTIONAL:libmux
+
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/Includes \
 	$(call local-get-build-dir)/gen/Includes \

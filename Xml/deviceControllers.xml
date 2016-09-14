@@ -32,100 +32,95 @@
 
 <deviceControllers>
     list of all ARController_Device
-    
-    <ARController_Device name="BebopDrone" product="ARDRONE">
+    <ARController_Device name="BebopDrone" product="ARDRONE" flags="can_be_extension">
         Bebop Drone project
-        
         <feature name="common"/>
         <feature name="ardrone3"/>
-        
     </ARController_Device>
 
     <ARController_Device name="JumpingSumo" product="JS">
         Jumping Sumo project
-        
         <feature name="common"/>
         <feature name="jpsumo"/>
-        
     </ARController_Device>
-    
+
     <ARController_Device name="JumpingSumoEvoLight" product="JS_EVO_LIGHT">
         Jumping Sumo Evo light project
-        
         <feature name="common"/>
         <feature name="jpsumo"/>
-        
     </ARController_Device>
-    
+
     <ARController_Device name="JumpingSumoEvoRace" product="JS_EVO_RACE">
         Jumping Sumo Evo race project
-        
         <feature name="common"/>
         <feature name="jpsumo"/>
-        
     </ARController_Device>
-    
+
     <ARController_Device name="RollingSpider" product="MINIDRONE">
         Rolling Spider project
-        
         <feature name="common"/>
         <feature name="minidrone"/>
-        
     </ARController_Device>
-    
+
     <ARController_Device name="AirborneNight" product="MINIDRONE_EVO_LIGHT">
         Airborne night project
-        
         <feature name="common"/>
         <feature name="minidrone"/>
-        
     </ARController_Device>
-    
+
     <ARController_Device name="AirborneCargo" product="MINIDRONE_EVO_BRICK">
         Airborne brick project
-        
         <feature name="common"/>
         <feature name="minidrone"/>
-        
     </ARController_Device>
-    
-    <ARController_Device name="RollingSpider" product="MINIDRONE_EVO_HYDROFOIL">
+
+    <ARController_Device name="Swing" product="MINIDRONE_WINGX">
+        WingX project
+        <feature name="common"/>
+        <feature name="minidrone"/>
+    </ARController_Device>
+
+    <ARController_Device name="Mambo" product="MINIDRONE_DELOS3">
+        Delos3 project
+        <feature name="common"/>
+        <feature name="minidrone"/>
+    </ARController_Device>
+
+    <ARController_Device name="Hydrofoil" product="MINIDRONE_EVO_HYDROFOIL">
         Hydrofoil project
-        
         <feature name="common"/>
         <feature name="minidrone"/>
-        
     </ARController_Device>
-    
-    <ARController_Device name="SkyController" product="SKYCONTROLLER">
+
+    <ARController_Device name="SkyController" product="SKYCONTROLLER" flags="can_have_extension">
         Sky Controller project
-        
         <feature name="common"/>
         <feature name="skyctrl"/>
-        
     </ARController_Device>
-    
-    <ARController_Device name="Unknown_PRODUCT_1" product="UNKNOWN_PRODUCT_1">
-        Unknown Product 1 project
-        
+
+    <ARController_Device name="SkyController2" product="SKYCONTROLLER_2" flags="can_have_extension">
+        Sky Controller 2 project
         <feature name="common"/>
-        <feature name="jpsumo"/>
-        
+        <feature name="skyctrl"/>
     </ARController_Device>
-    
-    <ARController_Device name="Bebop2" product="BEBOP_2">
+
+    <ARController_Device name="PowerUP" product="POWER_UP">
+        Power Up project
+        <feature name="common"/>
+        <feature name="powerup"/>
+    </ARController_Device>
+
+    <ARController_Device name="Bebop2" product="BEBOP_2" flags="can_be_extension">
         Bebop 2 project
-        
         <feature name="common"/>
         <feature name="ardrone3"/>
-        
     </ARController_Device>
-    <ARController_Device name="Disco" product="EVINRUDE">
+
+    <ARController_Device name="Disco" product="EVINRUDE" flags="can_be_extension">
         Disco project
-        
         <feature name="common"/>
         <feature name="ardrone3"/>
-        
+        <feature name="rc"/>
     </ARController_Device>
 
 </deviceControllers>

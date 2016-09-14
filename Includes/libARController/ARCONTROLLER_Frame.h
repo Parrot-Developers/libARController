@@ -54,7 +54,7 @@ typedef struct
     uint32_t missed;
     uint32_t width;
     uint32_t height;
-    uint32_t timestamp;
+    uint64_t timestamp;
     int isIFrame; /**< Flag to inform if the frame is an IFrame ; '1' is an IFrame ; '0' is not an IFrame */
     int available; /**< Flag to inform if the frame is available ; '1' the frame is free ; '0' the frame is not available */
     uint8_t *base; /**< Data not modified */

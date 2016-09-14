@@ -48,6 +48,8 @@
 #include <libARController/ARCONTROLLER_Stream.h>
 #include <libARController/ARCONTROLLER_Stream2.h>
 
+struct mux_ctx;
+
 #define ARCONTROLLER_STREAM2_TAG "ARCONTROLLER_Stream2"
 
 #define ARCONTROLLER_STREAM2_CLIENT_STREAM_PORT 55004
@@ -73,8 +75,11 @@ struct ARCONTROLLER_Stream2_t
     ARSAL_Thread_t runControllerThread; /**< Stream2 ReaderFilter control thread */
     
     char serverAddress[ARCONTROLLER_STREAM2_IP_SIZE]; /**< Server address */
+    struct mux_ctx *mux;
     int clientStreamPort; /**< Client stream port */
+    int clientStreamFd; /**< Client stream fd */
     int clientControlPort; /**< Client control port */
+    int clientControlFd; /**< Client control fd */
     int serverStreamPort; /**< Server stream port */
     int serverControlPort; /**< Server control port */
     int maxPaquetSize; /**< Maximum network packet size in bytes */
@@ -82,6 +87,7 @@ struct ARCONTROLLER_Stream2_t
     int maxNetworkLatency; /**< Maximum acceptable network latency in milliseconds */
     int maxBiterate; /**< Maximum streaming bitrate in bit/s */
     char *parmeterSets; /**< */
+    int qos_level;
     
     int errorCount;
     int replaceStartCodesWithNaluSize; /**< if 1, replace the NAL units start code with the NALU size */

@@ -18,12 +18,12 @@ LOCAL_SRC_FILES := \
 	$(LOCAL_GEN_FILES)
 
 LOCAL_LDLIBS := -llog -lz
-
 LOCAL_SHARED_LIBRARIES := \
 	libARController \
 	libARSAL \
 	libARStream \
-	libARStream2
+	libARStream2 \
+	libmux
 
 include $(BUILD_SHARED_LIBRARY)
 

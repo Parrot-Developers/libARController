@@ -76,10 +76,6 @@ static void ARCONTROLLER_Stream1_ReadMJPEGFrame (ARCONTROLLER_Stream1_t *stream1
 static void ARCONTROLLER_Stream1_ReadPcm16leFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
 static void ARCONTROLLER_Stream1_ReadDefaultFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
 
-static void ARCONTROLLER_Stream1_ReadH264Frame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
-static void ARCONTROLLER_Stream1_ReadMJPEGFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
-static void ARCONTROLLER_Stream1_ReadDefaultFrame (ARCONTROLLER_Stream1_t *stream1Controller, ARCONTROLLER_Frame_t *frame);
-
 /*************************
  * Implementation
  *************************/
@@ -491,7 +487,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson (ARCONTROLLER_Stream1_t *s
     // local declarations
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
     eARCONTROLLER_ERROR controllerError = ARCONTROLLER_OK;
-    
+
     json_object *valueJsonObj = NULL;
     
     if ((jsonObj == NULL) ||
