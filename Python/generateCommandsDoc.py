@@ -5,7 +5,7 @@ import os
 import re
 import argparse
 
-PACKAGES_DIR=os.path.realpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../..'))
+PACKAGES_DIR=os.path.realpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '..'))
 sys.path.append('%(PACKAGES_DIR)s/ARSDKBuildUtils/Utils/Python' % locals())
 sys.path.append('%(PACKAGES_DIR)s/libARCommands/Tools' % locals())
 sys.path.append('%(PACKAGES_DIR)s/arsdk-xml' % locals())
@@ -18,31 +18,36 @@ from generateDeviceControllers import *
 from generateDictionaryKeyEnum import *
 
 MYDIR=os.path.abspath(os.path.dirname(__file__))
-DOC_DIR = MYDIR + '/documentation'
+DOC_DIR = os.path.join(MYDIR, 'documentation')
+REF_DIR = os.path.join(MYDIR, 'reference')
 
-MESSAGE_PATH = MYDIR+'/../../arsdk-xml/xml'
+MESSAGE_PATH = os.path.join(MYDIR, '..', '..', 'arsdk-xml', 'xml')
 
 # Matches 111-22 or 111-222-3 between r'(#' and r')'
 LINK_PATTERN = r'(?<=\(#)\d+(?:-\d+){1,2}(?=\))'
 
 DEVICE_TO_STRING = {
-    'all':  'all products',
-    'none': 'no product',
-    '0900': 'Rolling Spider',
-    '0901': 'Bebop',
-    '0902': 'Jumping Sumo',
-    '0903': 'SkyController',
-    '0905': 'Jumping Night',
-    '0906': 'Jumping Race',
-    '0907': 'Airborne Night',
-    '0909': 'Airborne Cargo',
-    '090a': 'Hydrofoil',
-    '090b': 'Mambo',
-    '090c': 'Bebop 2',
-    '090e': 'Disco',
-    '090f': 'SkyController 2',
-    '0910': 'Swing',
+    'drones': 'all drones',
+    'rc':     'all remote controllers',
+    'none':   'no product',
+    '0900':   'Rolling Spider',
+    '0901':   'Bebop',
+    '0902':   'Jumping Sumo',
+    '0903':   'SkyController',
+    '0905':   'Jumping Night',
+    '0906':   'Jumping Race',
+    '0907':   'Airborne Night',
+    '0909':   'Airborne Cargo',
+    '090a':   'Hydrofoil',
+    '090b':   'Mambo',
+    '090c':   'Bebop 2',
+    '090e':   'Disco',
+    '090f':   'SkyController 2',
+    '0910':   'Swing',
 }
+DEVICES_GLOBAL = [ 'drones', 'rc', 'none' ]
+DEVICES_RC     = [ '0903', '090f' ]
+DEVICES_DRONE  = [ x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL+DEVICES_RC) ]
 
 BG_BLUE = '\033[00;44m'
 BLUE =    '\033[00;94m'
@@ -70,6 +75,22 @@ def format_message_name(feature, msg):
         msgName += msg.cls.name + '-'
     msgName += msg.name
     return msgName
+
+def is_command_supported(cmd, product):
+    if product is None:
+        return True
+    try:
+        devices = [x.partition(':')[0] for x in cmd.doc.support.split(';')]
+        if 'drones' in devices:
+            return product in DEVICES_DRONE
+        elif 'rc' in devices:
+            return product in DEVICES_RC
+        elif 'none' in devices:
+            return False
+        else:
+            return product in devices
+    except:
+        return False
 
 
 # Get the message link name (for example ARDrone3-Piloting-FlatTrim)
@@ -173,10 +194,14 @@ def write_message_support(docfile, support):
 ##########################################################
 
 # write the documentation of all commands of the given feature
-def write_commands_doc(docfile, feature):
+def write_commands_doc(docfile, feature, product=None):
     ARPrint ('Feature ' + feature.name)
 
+
     for cmd in feature.cmds:
+        if not is_command_supported(cmd, product):
+            continue
+
         write_message_header(docfile, feature, cmd)
 
         write_message_code_header(docfile, cmd)
@@ -253,8 +278,11 @@ def write_command_result(docfile, result):
 ##########################################################
 
 # write the documentation of all events of the given feature
-def write_events_doc(docfile, feature):
+def write_events_doc(docfile, feature, product=None):
     for evt in feature.evts:
+        if not is_command_supported(evt, product):
+            continue
+
         write_message_header(docfile, feature, evt)
 
         write_message_code_header(docfile, evt)
@@ -492,6 +520,8 @@ parser.add_argument('-f', '--features', nargs='*', type=str, metavar='feature',
                     help='List of features to generate the documentation. All features will be generated if missing.')
 parser.add_argument('-w', '--warning', action='store_true',
                     help='Also generates warning logs if the feature does not contain new description or title too long or missing some tags.')
+parser.add_argument('-r', '--reference', action='store_true',
+                    help='Generate reference documentation for all products.')
 
 args = parser.parse_args()
 
@@ -503,19 +533,84 @@ warning_mode = args.warning
 ctx = ArParserCtx()
 parse_features(ctx, MESSAGE_PATH)
 
-if not os.path.exists(DOC_DIR):
-    os.makedirs(DOC_DIR)
+def _is_not_empty(path):
+    try:
+        return os.stat(path).st_size != 0
+    except:
+        return False
 
-# Write the documentation of all features included in FEATURES_TO_WRITE
-for feature in ctx.features:
-    if args.features and feature.name not in args.features:
-        continue
+def _generate_doc(rootdir, features, product=None):
+    if not os.path.exists(rootdir):
+        os.makedirs(rootdir)
 
-    with open(DOC_DIR + '/_commands_' + feature.name + '.md', 'w') as f:
-        write_commands_doc(f, feature)
+    has_events = dict()
+    has_commands = dict()
 
-    with open(DOC_DIR + '/_events_' + feature.name + '.md', 'w') as f:
-        write_events_doc(f, feature)
+    for feature in features:
+        cmd_name = os.path.join(rootdir, '_commands_'+feature.name+'.md')
+        with open(cmd_name, 'w') as f:
+            write_commands_doc(f, feature, product=product)
+        has_commands[feature.name] = _is_not_empty(cmd_name)
 
+        evt_name = os.path.join(rootdir, '_events_'+feature.name+'.md')
+        with open(evt_name, 'w') as f:
+            write_events_doc(f, feature, product=product)
+        has_events[feature.name] = _is_not_empty(evt_name)
+
+    return (has_commands, has_events)
+
+def _generate_toc(rootdir, cmds, evts, product):
+    if not os.path.exists(rootdir):
+        os.makedirs(rootdir)
+
+    fname = os.path.join(rootdir, 'index.md')
+    with open(fname, 'w') as f:
+        f.write('---\n')
+        try:
+            f.write('title: libARController reference for %s\n' % DEVICE_TO_STRING[product])
+        except KeyError:
+            f.write('title: libARController reference for %s\n' % product)
+        f.write('\n')
+        f.write('language_tabs:\n')
+        f.write('  - objective_c: Objective C\n')
+        f.write('  - java: Java\n')
+        f.write('  - c: C\n')
+        f.write('\n')
+        f.write('toc_footers:\n')
+        f.write('  - <a href=\'http://forum.developer.parrot.com\'>Developer Forum</a>\n')
+        f.write('  - <a href=\'https://github.com/Parrot-Developers/arsdk_manifest\'>See SDK sources</a>\n')
+        f.write('  - <a href=\'http://github.com/tripit/slate\'>Documentation Powered by Slate</a>\n')
+        f.write('\n')
+        f.write('includes:\n')
+        f.write('  - commands\n')
+        for c in cmds:
+            if cmds[c]:
+                f.write('  - commands_' + c + '\n')
+        f.write('  - events\n')
+        for e in evts:
+            if evts[e]:
+                f.write('  - events_' + e + '\n')
+        f.write('\n')
+        f.write('search: true\n')
+        f.write('---\n')
+
+
+features = ctx.features if not args.features else [f for f in ctx.features if f.name in args.features]
+
+
+if args.reference:
+    products = ( x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL) )
+
+    for p in products:
+        name = DEVICE_TO_STRING[p].replace(' ', '_').lower()
+        directory = os.path.join(REF_DIR, name)
+        (cmds, evts) = _generate_doc(directory, features, product=p)
+        _generate_toc(directory, cmds, evts, p)
+    directory = os.path.join(REF_DIR, 'all')
+    (cmds, evts) = _generate_doc(directory, features)
+    _generate_toc(directory, cmds, evts, 'all products')
+
+else:
+    _generate_doc(DOC_DIR, features)
 
 ARPrint('Done')
