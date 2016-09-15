@@ -26,7 +26,7 @@ dependencies {
 /* Task to generate arsdk controller java code */
 task('generateController', type: Exec) {
 
-    def arsdkxmldir = "${rootProject.ext.root_dir}/packages/arsdk-xml/"
+    def arsdkxmldir = "${projectDir}/../arsdk-xml/"
     ext.srcFiles = file("${arsdkxmldir}/xml").listFiles().findAll {
         it.name.endsWith('.xml')
     }
