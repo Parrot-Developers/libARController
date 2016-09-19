@@ -309,8 +309,8 @@ def write_events_doc(docfile, feature, product=None):
             if not evt.doc.support and not evt.isDeprecated:
                 warning_str += '{}{}{}'.format(RED, "- Support list is missing\n", WHITE)
 
-            if not evt.doc.result and not evt.isDeprecated:
-                warning_str += '{}{}{}'.format(RED, "- Result is missing\n", WHITE)
+            if not evt.doc.triggered and not evt.isDeprecated:
+                warning_str += '{}{}{}'.format(RED, "- Triggered is missing\n", WHITE)
 
             if len(evt.doc.title) > 35:
                 warning_str += '{}{}{}'.format(BLUE, "- Title too long\n", WHITE)
