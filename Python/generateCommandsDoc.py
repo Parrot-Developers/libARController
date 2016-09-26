@@ -374,6 +374,7 @@ def _write_event_list_c_code(docfile, feature, evt):
 
 def _write_event_list_objc_code(docfile, feature, evt):
     docfile.write('```objective_c\n')
+    docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
     docfile.write('    if (commandKey == '+defineNotification(feature, evt)+')\n')
     docfile.write('    {\n')
