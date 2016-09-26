@@ -53,6 +53,10 @@ CTRL_FTR_PRIV_H_NAME = 'ARCONTROLLER_Feature.h'
 CTRL_FTR_C_NAME = 'ARCONTROLLER_Feature.c'
 CTRL_FTR_JNI_C_NAME = 'ARCONTROLLER_JNI_Features.c'
 
+def getGenericListFlagsEnum(ctx):
+    ftr_gen = ctx.featuresByName['generic']
+    return ftr_gen.enumsByName[_LIST_FLAG]
+
 def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     allFeatures = ctx.features
 
@@ -573,7 +577,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                    dictElement = NULL;\n')
     cFile.write ('                }\n')
     cFile.write ('                \n')
-    
+
     cFile.write ('                HASH_DEL ((*dictionary), dictCmdElement);\n')
     cFile.write ('                free (dictCmdElement);\n')
     cFile.write ('                dictCmdElement = NULL;\n')
@@ -753,7 +757,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     
     cFile.write ('    // Find if the element already exist\n')
     cFile.write ('    HASH_FIND_STR ((*elementDict), newElement->key, oldElement);\n')
-        
+
     cFile.write ('    if (oldElement != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        HASH_REPLACE_STR ((*elementDict), key, newElement, oldElement);\n')
@@ -1266,8 +1270,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     cFile.write ('    return error;\n')
                     cFile.write ('}\n')
                     cFile.write ('\n')
-                    
-            
+
         for evt in feature.evts:
             cFile.write ('void '+decodeCallback (feature, evt)+' (')
             for arg in evt.args:
@@ -1289,11 +1292,20 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             if evt.listType == ArCmdListType.LIST:
                 cFile.write ('    int listIndex = 0;\n')
             if _LIST_FLAG in evt.argsByName:
-                cFile.write ('    int remove = (_'+evt.argsByName[_LIST_FLAG].name+' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'remove')+');\n')
-                cFile.write ('    int clear = (_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'first') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'empty')+'));\n')
-                cFile.write ('    int notify = (_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'last') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'empty')+'));\n')
-                cFile.write ('    int add = !(_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'remove') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', evt.argsByName[_LIST_FLAG].argType.enum.name, 'empty')+'));\n')
-                
+                list_flags = getGenericListFlagsEnum(ctx)
+                if _LIST_FLAG in evt.argsByName and evt.listType == ArCmdListType.MAP:
+                    cFile.write ('    int remove = (_'+evt.argsByName[_LIST_FLAG].name+' & ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'remove')+');\n')
+                cFile.write ('    int clear = (_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'first') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'empty')+'));\n')
+                cFile.write ('    int notify = (_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'last') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'empty')+'));\n')
+                cFile.write ('    int add = !(_'+evt.argsByName[_LIST_FLAG].name+' & (' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'remove') +' | ' + ARFlagValue (MODULE_ARCOMMANDS, 'generic', list_flags.name, 'empty')+'));\n')
+                cFile.write ('\n')
+                if evt.listType == ArCmdListType.MAP:
+                    cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *dictElement = NULL;\n')
+                    if not evt.mapKey.argType == ArArgType.STRING:
+                        cFile.write ('    int elementKeyLength = 0;\n')
+                        cFile.write ('    char *elementKey = NULL;\n')
+                        cFile.write ('\n')
+
             cFile.write ('    // Check parameters\n')
             cFile.write ('    if ((feature == NULL) || (feature->privatePart == NULL))\n')
             cFile.write ('    {\n')
@@ -1315,17 +1327,42 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('    if ((error == ARCONTROLLER_OK) && (dictCmdElement != NULL) && (clear))\n')
                 cFile.write ('    {\n')
                 cFile.write ('        //Delete the command\n')
+                cFile.write ('        HASH_DEL (feature->privatePart->dictionary, dictCmdElement);\n')
                 cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteCommandsElement')+'(&dictCmdElement);\n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
                 
                 cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
-                cFile.write ('        if (remove)\n')
-                cFile.write ('        {\n')
-                cFile.write ('            //remove\n')
-                cFile.write ('        }\n')
-                cFile.write ('\n')
+                if evt.listType == ArCmdListType.MAP:
+                    cFile.write ('        if (remove)\n')
+                    cFile.write ('        {\n')
+                    cFile.write ('            //remove element\n')
+                    cFile.write ('            ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+                    if not evt.mapKey.argType == ArArgType.STRING:
+                        cFile.write ('            elementKeyLength = snprintf (NULL, 0, '+xmlToFormat(evt.mapKey)+', _'+evt.mapKey.name+');\n')
+                        cFile.write ('            elementKey = malloc (elementKeyLength + 1);\n')
+                        cFile.write ('            if (elementKey != NULL)\n')
+                        cFile.write ('            {\n')
+                        cFile.write ('                snprintf (elementKey, (elementKeyLength + 1), '+xmlToFormat(evt.mapKey)+', _'+evt.mapKey.name+');\n')
+                        cFile.write ('                HASH_FIND_STR (dictCmdElement->elements, elementKey, dictElement);\n')
+                        cFile.write ('            }\n')
+                    else:
+                        cFile.write ('            HASH_FIND_STR (dictCmdElement->elements, _'+evt.mapKey.name+', dictElement);\n')
+
+                    cFile.write ('            if (dictElement != NULL)\n')
+                    cFile.write ('            {\n')
+                    cFile.write ('                HASH_DEL (dictCmdElement->elements, dictElement);\n')
+                    cFile.write ('                ARCONTROLLER_Feature_DeleteElement (&dictElement);\n')
+                    if not evt.mapKey.argType == ArArgType.STRING:
+                        cFile.write ('                free (elementKey);\n')
+                        cFile.write ('                elementKey = NULL;\n')
+                    cFile.write ('            }\n')
+                    cFile.write ('            ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
+                    cFile.write ('            // force notifying when removing because the Mambo does not send last when removing a usbAccessory\n')
+                    cFile.write ('            notify = 1;\n')
+                    cFile.write ('        }\n')
+                    cFile.write ('\n')
                 
                 cFile.write ('        if (add)\n')
                 cFile.write ('        {\n')
@@ -1344,7 +1381,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 if evt.listType == ArCmdListType.LIST:
                     cFile.write ('            if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('            {\n')
+                    cFile.write ('                ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
                     cFile.write ('                listIndex = HASH_COUNT (dictCmdElement->elements);\n')
+                    cFile.write ('                ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                     cFile.write ('            }\n')
                     cFile.write ('            \n')
                 
@@ -1387,7 +1426,11 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('    if ((error == ARCONTROLLER_OK) && (notify))\n')
                 cFile.write ('    {\n')
                 cFile.write ('        // Notification Callback\n')
-                cFile.write ('        error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);\n')
+                cFile.write ('        if (dictCmdElement != NULL) {\n')
+                cFile.write ('            error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, dictCmdElement->command, dictCmdElement->elements);\n')
+                cFile.write ('        } else {\n')
+                cFile.write ('            error = ARCONTROLLER_Dictionary_Notify (feature->privatePart->commandCallbacks, commandKey, NULL);\n')
+                cFile.write ('        }\n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
             else:
