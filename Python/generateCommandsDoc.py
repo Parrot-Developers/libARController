@@ -20,6 +20,8 @@ from generateDictionaryKeyEnum import *
 # Matches 111-22 or 111-222-3 between r'(#' and r')'
 LINK_PATTERN = r'(?<=\(#)\d+(?:-\d+){1,2}(?=\))'
 
+_LIST_FLAG = 'list_flags'
+
 DEVICE_TO_STRING = {
     'drones': 'all drones',
     'rc':     'all remote controllers',
@@ -334,19 +336,22 @@ def _write_event_list_c_code(docfile, feature, evt):
     docfile.write('```c\n')
     docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
-    docfile.write('    if ((commandKey == '+defineNotification(feature, evt)+') && (elementDictionary != NULL))\n')
+    docfile.write('    if (commandKey == '+defineNotification(feature, evt)+')\n')
     docfile.write('    {\n')
+    docfile.write('        if (elementDictionary != NULL)\n')
+    docfile.write('        {\n')
     if evt.args:
-        docfile.write('        ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
-        docfile.write('        ARCONTROLLER_DICTIONARY_ELEMENT_t *dictElement = NULL;\n')
-        docfile.write('        ARCONTROLLER_DICTIONARY_ELEMENT_t *dictTmp = NULL;\n')
-        docfile.write('        HASH_ITER(hh, elementDictionary, dictElement, dictTmp)\n')
-        docfile.write('        {\n')
-        for arg in evt.args:
-            docfile.write('            HASH_FIND_STR (dictElement->arguments, '+defineNotification(feature, evt, arg)+', arg);\n')
-            docfile.write('            if (arg != NULL)\n')
-            docfile.write('            {\n')
-            docfile.write('                '+xmlToC(MODULE_ARCOMMANDS, feature, evt, arg)+' '+arg.name+' = arg->value.')
+        docfile.write('            ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
+        docfile.write('            ARCONTROLLER_DICTIONARY_ELEMENT_t *dictElement = NULL;\n')
+        docfile.write('            ARCONTROLLER_DICTIONARY_ELEMENT_t *dictTmp = NULL;\n')
+        docfile.write('            HASH_ITER(hh, elementDictionary, dictElement, dictTmp)\n')
+        docfile.write('            {\n')
+        # print all args except the list flags
+        for arg in [arg_tmp for arg_tmp in evt.args if not arg_tmp.name == _LIST_FLAG]:
+            docfile.write('                HASH_FIND_STR (dictElement->arguments, '+defineNotification(feature, evt, arg)+', arg);\n')
+            docfile.write('                if (arg != NULL)\n')
+            docfile.write('                {\n')
+            docfile.write('                    '+xmlToC(MODULE_ARCOMMANDS, feature, evt, arg)+' '+arg.name+' = arg->value.')
             if isinstance(arg.argType, ArEnum):
                 docfile.write (ARCapitalize('i32'))
             elif isinstance(arg.argType, ArBitfield):
@@ -354,31 +359,38 @@ def _write_event_list_c_code(docfile, feature, evt):
             else:
                 docfile.write (ARCapitalize(ArArgType.TO_STRING[arg.argType]))
             docfile.write(';\n')
-            docfile.write('            }\n')
-        docfile.write('        }\n')
+            docfile.write('                }\n')
+        docfile.write('            }\n')
     else:
         docfile.write('\n')
+    docfile.write('        }\n')
+    docfile.write('        else\n')
+    docfile.write('        {\n')
+    docfile.write('            // list is empty\n')
+    docfile.write('        }\n')
     docfile.write('    }\n')
     docfile.write('}\n')
     docfile.write('```\n\n')
 
 def _write_event_list_objc_code(docfile, feature, evt):
     docfile.write('```objective_c\n')
-    docfile.write('void onCommandReceived (eARCONTROLLER_DICTIONARY_KEY commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     docfile.write('{\n')
-    docfile.write('    if ((commandKey == '+defineNotification(feature, evt)+') && (elementDictionary != NULL))\n')
+    docfile.write('    if (commandKey == '+defineNotification(feature, evt)+')\n')
     docfile.write('    {\n')
+    docfile.write('        if (elementDictionary != NULL)\n')
+    docfile.write('        {\n')
     if evt.args:
-        docfile.write('        ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
-        docfile.write('        ARCONTROLLER_DICTIONARY_ELEMENT_t *dictElement = NULL;\n')
-        docfile.write('        ARCONTROLLER_DICTIONARY_ELEMENT_t *dictTmp = NULL;\n')
-        docfile.write('        HASH_ITER(hh, elementDictionary, dictElement, dictTmp)\n')
-        docfile.write('        {\n')
-        for arg in evt.args:
-            docfile.write('            HASH_FIND_STR (dictElement->arguments, '+defineNotification(feature, evt, arg)+', arg);\n')
-            docfile.write('            if (arg != NULL)\n')
-            docfile.write('            {\n')
-            docfile.write('                '+xmlToC(MODULE_ARCOMMANDS, feature, evt, arg)+' '+arg.name+' = arg->value.')
+        docfile.write('            ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
+        docfile.write('            ARCONTROLLER_DICTIONARY_ELEMENT_t *dictElement = NULL;\n')
+        docfile.write('            ARCONTROLLER_DICTIONARY_ELEMENT_t *dictTmp = NULL;\n')
+        docfile.write('            HASH_ITER(hh, elementDictionary, dictElement, dictTmp)\n')
+        docfile.write('            {\n')
+        # print all args except the list flags
+        for arg in [arg_tmp for arg_tmp in evt.args if not arg_tmp.name == _LIST_FLAG]:
+            docfile.write('                HASH_FIND_STR (dictElement->arguments, '+defineNotification(feature, evt, arg)+', arg);\n')
+            docfile.write('                if (arg != NULL)\n')
+            docfile.write('                {\n')
+            docfile.write('                    '+xmlToC(MODULE_ARCOMMANDS, feature, evt, arg)+' '+arg.name+' = arg->value.')
             if isinstance(arg.argType, ArEnum):
                 docfile.write (ARCapitalize('i32'))
             elif isinstance(arg.argType, ArBitfield):
@@ -386,10 +398,15 @@ def _write_event_list_objc_code(docfile, feature, evt):
             else:
                 docfile.write (ARCapitalize(ArArgType.TO_STRING[arg.argType]))
             docfile.write(';\n')
-            docfile.write('            }\n')
-        docfile.write('        }\n')
+            docfile.write('                }\n')
+        docfile.write('            }\n')
     else:
         docfile.write('\n')
+    docfile.write('        }\n')
+    docfile.write('        else\n')
+    docfile.write('        {\n')
+    docfile.write('            // list is empty\n')
+    docfile.write('        }\n')
     docfile.write('    }\n')
     docfile.write('}\n')
     docfile.write('```\n\n')
@@ -398,27 +415,31 @@ def _write_event_list_java_code(docfile, feature, evt):
     docfile.write('```java\n')
     docfile.write('@Override\n')
     docfile.write('public void onCommandReceived (ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {\n')
-    docfile.write('    if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + ') && (elementDictionary != null)){\n')
+    docfile.write('    if (commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.' + defineNotification(feature, evt) + '){\n')
+    docfile.write('        if ((elementDictionary != null) && (elementDictionary.size() > 0) {\n')
     if evt.args:
         docfile.write('        Iterator<ARControllerArgumentDictionary<Object>> itr = elementDictionary.values().iterator();\n')
         docfile.write('        while (itr.hasNext()) {\n')
         docfile.write('            ARControllerArgumentDictionary<Object> args = itr.next();\n')
         docfile.write('            if (args != null) {\n')
-        for arg in evt.args:
+        for arg in [arg_tmp for arg_tmp in evt.args if not arg_tmp.name == _LIST_FLAG]:
             if isinstance(arg.argType, ArEnum):
-                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = ' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + '.getFromValue((Integer)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ '));\n')
+                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = ' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + '.getFromValue((Integer)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ '));\n')
             elif isinstance(arg.argType, ArBitfield):
-                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ')).intValue();\n')
+                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ')).intValue();\n')
             elif arg.argType == ArArgType.U8 or arg.argType == ArArgType.I8 or arg.argType == ArArgType.U16 or arg.argType == ArArgType.I16:
-                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ')).intValue();\n')
+                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ')).intValue();\n')
             elif arg.argType == ArArgType.FLOAT:
-                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Double)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ')).doubleValue();\n')
+                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Double)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ')).doubleValue();\n')
             else:
-                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ');\n')
+                docfile.write('                '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ');\n')
+        docfile.write('            } else {\n')
+        docfile.write('                // list is empty\n')
         docfile.write('            }\n')
         docfile.write('        }\n')
     else:
         docfile.write('\n')
+    docfile.write('        }\n')
     docfile.write('    }\n')
     docfile.write('}\n')
     docfile.write('```\n\n')
@@ -492,21 +513,21 @@ def _write_event_java_code(docfile, feature, evt):
     docfile.write('```java\n')
     docfile.write('@Override\n')
     docfile.write('public void onCommandReceived (ARDeviceController deviceController, ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey, ARControllerDictionary elementDictionary) {\n')
-    docfile.write('    if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + ') && (elementDictionary != null)){\n')
+    docfile.write('    if ((commandKey == ARCONTROLLER_DICTIONARY_KEY_ENUM.' + defineNotification(feature, evt) + ') && (elementDictionary != null)){\n')
     if evt.args:
         docfile.write('        ARControllerArgumentDictionary<Object> args = elementDictionary.get(ARControllerDictionary.ARCONTROLLER_DICTIONARY_SINGLE_KEY);\n')
         docfile.write('        if (args != null) {\n')
         for arg in evt.args:
             if isinstance(arg.argType, ArEnum):
-                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = ' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + '.getFromValue((Integer)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ '));\n')
+                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = ' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + '.getFromValue((Integer)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg) + '));\n')
             elif isinstance(arg.argType, ArBitfield):
-                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ')).intValue();\n')
+                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg) + ')).intValue();\n')
             elif arg.argType == ArArgType.U8 or arg.argType == ArArgType.I8 or arg.argType == ArArgType.U16 or arg.argType == ArArgType.I16:
-                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ')).intValue();\n')
+                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Integer)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ')).intValue();\n')
             elif arg.argType == ArArgType.FLOAT:
-                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Double)args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ')).doubleValue();\n')
+                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')((Double)args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ')).doubleValue();\n')
             else:
-                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')args.get(' + javaFeatureClassName(feature) +'.ARCONTROLLER_DICTIONARY_KEY_' + get_ftr_old_name(feature).upper() + '_' + format_cmd_name(evt).upper() + '_' + arg.name.upper()+ ');\n')
+                docfile.write('            '+ xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) +' ' + arg.name + ' = (' + xmlToJava(MODULE_ARCOMMANDS, feature, evt, arg) + ')args.get(' + javaFeatureClassName(feature) +'.' + defineNotification(feature, evt, arg)+ ');\n')
         docfile.write('        }\n')
     else:
         docfile.write('\n')
