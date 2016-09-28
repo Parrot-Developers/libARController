@@ -312,6 +312,8 @@ def _write_events_doc(ctx, docfile, feature, args, product=None):
 
         _write_event_triggered(ctx, docfile, evt.doc.triggered)
 
+        _write_message_support(docfile, evt.doc.support)
+
         docfile.write('<br/>\n\n')
 
         if args.warning:
@@ -570,13 +572,15 @@ def _generate_toc(rootdir, cmds, evts, product):
     if not os.path.exists(rootdir):
         os.makedirs(rootdir)
 
+    try:
+        str_pr = DEVICE_TO_STRING[product]
+    except KeyError:
+        str_pr = product
+
     fname = os.path.join(rootdir, 'index.md')
     with open(fname, 'w') as f:
         f.write('---\n')
-        try:
-            f.write('title: libARController reference for %s\n' % DEVICE_TO_STRING[product])
-        except KeyError:
-            f.write('title: libARController reference for %s\n' % product)
+        f.write('title: libARController reference for %s\n' % str_pr)
         f.write('\n')
         f.write('language_tabs:\n')
         f.write('  - objective_c: Objective C\n')
@@ -600,6 +604,17 @@ def _generate_toc(rootdir, cmds, evts, product):
         f.write('\n')
         f.write('search: true\n')
         f.write('---\n')
+
+    fname = os.path.join(rootdir, '_commands.md')
+    with open(fname, 'w') as f:
+        f.write('# libARController reference for %s\n' % str_pr)
+        f.write('\n')
+        f.write('## %s commands' % str_pr)
+        f.write('\n')
+    fname = os.path.join(rootdir, '_events.md')
+    with open(fname, 'w') as f:
+        f.write('## %s events' % str_pr)
+        f.write('\n')
 
 def _do_generate_files(ctx, outdir, args_as_arr=None):
     #parse args
