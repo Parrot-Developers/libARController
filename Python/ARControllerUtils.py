@@ -10,7 +10,7 @@
       notice, this list of conditions and the following disclaimer.
     * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the 
+      the documentation and/or other materials provided with the
       distribution.
     * Neither the name of Parrot nor the names
       of its contributors may be used to endorse or promote products
@@ -24,7 +24,7 @@
     COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
     INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
     BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
     AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
@@ -87,22 +87,22 @@ def isState(cl):
 
 def sendingFunctionType(module, feature, cmd):
     return ARTypeName (module, get_ftr_old_name(feature), 'Send' + ARCapitalize(format_cmd_name(cmd)))
-    
+
 def sendingFunctionName(module, feature, cmd):
     return ARFunctionName (module, get_ftr_old_name(feature), 'Send' + ARCapitalize(format_cmd_name(cmd)))
-    
+
 def sendingFunction (cmd):
     return 'send'+ ARCapitalize(format_cmd_name(cmd))
 
 def nativeSendingFunction (cmd):
     return 'nativeSend' + ARCapitalize(format_cmd_name(cmd))
-    
+
 def setNAckFunctionType( feature, cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
     return ARTypeName (MODULE_FEATURE, get_ftr_old_name(feature), 'Set' + ARCapitalize(format_cmd_name(cmd)) + argPart)
-    
+
 def setNAckFunctionName( feature, cmd, arg=None):
     argPart = ''
     if arg:
@@ -114,16 +114,28 @@ def setNAckFunction (cmd, arg=None):
     if arg:
         argPart = ARCapitalize(arg.name)
     return 'set' + ARCapitalize(format_cmd_name(cmd)) + argPart
-    
+
 def sendNAckFunctionName (feature, cmd):
     return ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'Send' + ARCapitalize(format_cmd_name(cmd)) +'Struct')
-    
+
 def structNAckName(cmd):
     return ARCapitalize(format_cmd_name(cmd)) + 'Parameters'
-    
+
 def structNAckType(feature, cmd):
     return ARTypeName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), ARCapitalize(format_cmd_name(cmd)) + 'Parameters')
-    
+
+def nAckCbInit(feature, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, 'NAckCbs', get_ftr_old_name(feature) + ARCapitalize(format_cmd_name(cmd))  + 'Init')
+
+def nAckCbDeInit(feature, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, 'NAckCbs', get_ftr_old_name(feature) + ARCapitalize(format_cmd_name(cmd)) + 'DeInit')
+
+def nAckCbMustBeSent(feature, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, 'NAckCbs', get_ftr_old_name(feature) + ARCapitalize(format_cmd_name(cmd)) + 'MustBeSent')
+
+def nAckCbChange(feature, cmd):
+    return ARFunctionName (MODULE_ARCONTROLLER, 'NAckCbs', get_ftr_old_name(feature) + ARCapitalize(format_cmd_name(cmd)) + 'Changed')
+
 def defineNotificationDef():
     return AREnumName(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY');
 
@@ -135,7 +147,7 @@ def defineNotification(feature, cmd=None, arg=None):
     if arg :
         argPart = '_' + arg.name
     return AREnumValue(MODULE_ARCONTROLLER,  'DICTIONARY', 'KEY', get_ftr_old_name(feature) + cmdPart + argPart);
-    
+
 def nativeGetNotificationVal(feature, cmd=None, arg=None):
     cmdPart = ''
     if cmd :
@@ -150,28 +162,28 @@ def arcommandsSetDecode(feature, cmd):
 
 def decodeCallback(feature, cmd):
     return ARFunctionName (MODULE_FEATURE, get_ftr_old_name(feature), ARCapitalize(format_cmd_name(cmd)) + 'Callback')
-    
+
 def discoveryProduct (productName):
     return 'ARDISCOVERY_PRODUCT_' + productName.upper ();
-    
+
 def javaFeatureClassName (feature):
     return 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature))
-    
+
 def javaFeatureName (feature):
     return 'feature'+ ARCapitalize(get_ftr_old_name(feature))
-    
+
 def nativeFeatureName (feature):
     return 'nativeFeature'+ ARCapitalize(get_ftr_old_name(feature))
-    
+
 def nativeGetFeature (feature):
     return 'nativeGetFeature'+ ARCapitalize(get_ftr_old_name(feature))
-    
+
 def javaSetNAckFunction(cmd, arg=None):
     argPart = ''
     if arg:
         argPart = ARCapitalize(arg.name)
     return 'set' + ARCapitalize(format_cmd_name(cmd)) + argPart
-    
+
 def nativeSetNAckFunction (cmd, arg=None):
     argPart = ''
     if arg:
@@ -243,12 +255,12 @@ class ARControllerDevice:
         self.flags    = None
         self.comments = []
         self.features = []
-        
+
         # check name
         if not self.name:
             ARPrint ('all DeviceController must have a name')
             EXIT (1)
-        
+
         # check device
         if self.product:
             None #TODO !!!!!
@@ -276,7 +288,7 @@ class ARFlags:
 
 def parseDeviceControllerXml (xmlDeviceController, ctx):
     "Parses DeviceController tag"
-    
+
     deviceController = ARControllerDevice (xmlDeviceController.attributes["name"].nodeValue,
         xmlDeviceController.attributes["product"].nodeValue);
 
@@ -290,24 +302,24 @@ def parseDeviceControllerXml (xmlDeviceController, ctx):
     if len (xmlFeatures) == 0:
         ARPrint ('the device Controller:'+deviceController.name+' must have at least one feature')
         EXIT (1)
-    
+
     for cmdFeature in xmlFeatures:
         featureName = cmdFeature.attributes["name"].nodeValue
-        
+
         # check if the feature exists
         if [feature for feature in ctx.features if feature.name == featureName]:
             deviceController.features.append(featureName)
         else:
             ARPrint ('in the device Controller:'+deviceController.name+' the feature:'+featureName+' does not exists')
             EXIT (1)
-    
+
     return deviceController
 
 def parseDeviceControllersXml (fileName, ctx):
     "Parses the file containing the deviceController list"
-    
+
     deviceControllers = []
-    
+
     if not os.path.exists(fileName):
         ARPrint ('file ' + fileName +' not exists')
         return None
@@ -315,16 +327,16 @@ def parseDeviceControllersXml (fileName, ctx):
     data = file.read ()
     file.close ()
     xmlfile = parseString (data)
-    
+
     # Check if the XMLFile only contains ONE project (not zero, nor more)
     cmdDeviceControllers = xmlfile.getElementsByTagName ('deviceControllers')
     if len (cmdDeviceControllers) != 1:
         ARPrint (fileName + ' should contain exactly ONE deviceControllers tag.')
         EXIT (1)
-    
+
     xmlDeviceControllerList = cmdDeviceControllers[0].getElementsByTagName ('ARController_Device')
     for xmlDeviceController in xmlDeviceControllerList:
-        
+
         deviceController = parseDeviceControllerXml (xmlDeviceController, ctx)
         if deviceController:
             deviceControllers.append(deviceController)

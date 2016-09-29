@@ -260,7 +260,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 hfile.write (' */\n')
                 hfile.write ('eARCONTROLLER_ERROR '+ sendNAckFunctionName (feature, cmd)+' ('+className+' *feature, u_int8_t *cmdBuffer, int32_t cmdBufferSize);\n')
                 hfile.write ('\n')
-                
+
                 for arg in cmd.args:
                     hfile.write ('/**\n')
                     hfile.write (' * @brief Set '+arg.name+' sent through the command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code>\n')
@@ -385,7 +385,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         hPrivFile.write ('/*******************************\n') # see automake all source of folder !!!!!!!!
         hPrivFile.write (' * --- FEATURE '+get_ftr_old_name(feature)+' --- \n') # see automake all source of folder !!!!!!!!
         hPrivFile.write (' ******************************/\n') # see automake all source of folder !!!!!!!!
-        
+
         for cmd in feature.cmds:
             if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 hPrivFile.write ('/**\n')
@@ -395,11 +395,10 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 hPrivFile.write ('{\n')
                 for arg in cmd.args:
                     hPrivFile.write ('    ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' '+arg.name+'; /**< */\n')
+                hPrivFile.write ('    void  *data; /**< Custom data used to manage the sending of unacknowledged commands. */\n')
                 hPrivFile.write ('}'+structNAckType (feature, cmd)+';\n')
                 hPrivFile.write ('\n')
 
-        
-        
         hPrivFile.write ('/**\n')
         hPrivFile.write (' * @brief Private part of '+className+'.\n')
         hPrivFile.write (' */\n')
@@ -463,7 +462,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     hPrivFile.write (' */\n')
                     hPrivFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cmd, arg)+' ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name +');\n')
                     hPrivFile.write ('\n')
-                    
+
         for evt in feature.evts:
             hPrivFile.write ('/**\n')
             hPrivFile.write (' * @brief callback used when the command <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> is decoded\n')
@@ -486,10 +485,9 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 hPrivFile.write ('int listIndex, ')
             hPrivFile.write ('eARCONTROLLER_ERROR *error);\n')
             hPrivFile.write ('\n')
-        
-        
+
         hPrivFile.write ('\n')
-        
+
     hPrivFile.write ('#endif /* '+includeDefine+' */\n')
     hPrivFile.write ('\n')
     hPrivFile.write ('// END GENERATED CODE\n')
@@ -534,10 +532,11 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
     cFile.write ('\n')
 
-    cFile.write ('#include "ARCONTROLLER_Stream.h"\n')
-    cFile.write ('#include "ARCONTROLLER_StreamSender.h"\n')
+    cFile.write ('#include <ARCONTROLLER_Stream.h>\n')
+    cFile.write ('#include <ARCONTROLLER_StreamSender.h>\n')
+    cFile.write ('#include <ARCONTROLLER_Network.h>\n')
+    cFile.write ('#include <ARCONTROLLER_NAckCbs.h>\n')
     cFile.write ('#include "ARCONTROLLER_Feature.h"\n')
-    cFile.write ('#include "ARCONTROLLER_Network.h"\n')
     cFile.write ('\n')
     cFile.write ('#define '+MODULE_FEATURE+'_TAG "'+classTag+'"\n')
     cFile.write ('\n')
@@ -882,7 +881,12 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('        }\n')
                 cFile.write ('    }\n')
                 cFile.write ('    // No else: skipped by an error \n')
-                cFile.write ('    \n')
+                cFile.write ('\n')
+                cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
+                cFile.write ('    {\n')
+                cFile.write ('        localError = '+nAckCbInit(feature, cmd)+' (featureController);\n')
+                cFile.write ('    }\n')
+                cFile.write ('\n')
 
         cFile.write ('    // delete the feature Controller if an error occurred\n')
         cFile.write ('    if (localError != ARCONTROLLER_OK)\n')
@@ -932,11 +936,13 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('                    ARCONTROLLER_Dictionary_DeleteDictionary (&((*feature)->privatePart->commandCallbacks));\n')
         cFile.write ('                }\n')
         cFile.write ('                \n')
-        
+
         for cmd in feature.cmds:
             if cmd.bufferType == ArCmdBufferType.NON_ACK:
                 cFile.write ('                if ((*feature)->privatePart->'+structNAckName (cmd)+' != NULL)\n')
                 cFile.write ('                {\n')
+                cFile.write ('                    '+nAckCbDeInit(feature, cmd)+' (*feature);\n')
+                cFile.write ('\n')
                 cFile.write ('                    free ((*feature)->privatePart->'+structNAckName (cmd)+');\n')
                 cFile.write ('                    (*feature)->privatePart->'+structNAckName (cmd)+' = NULL;\n')
                 cFile.write ('                }\n')
@@ -1191,14 +1197,16 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('    }\n')
                 cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                 cFile.write ('    \n')
-                
+
                 cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 for arg in cmd.args:
                     cFile.write ('        feature->privatePart->'+structNAckName(cmd)+'->' + arg.name + ' = _'+arg.name+';\n')
+                cFile.write ('\n')
+                cFile.write ('            '+nAckCbChange(feature, cmd)+' (feature);\n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
-                
+
                 cFile.write ('    return error;\n')
                 cFile.write ('}\n')
                 cFile.write ('\n')
@@ -1254,7 +1262,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('    return error;\n')
                 cFile.write ('}\n')
                 cFile.write ('\n')
-                
+
                 for arg in cmd.args:
                     cFile.write ('eARCONTROLLER_ERROR ' + setNAckFunctionName (feature, cmd, arg)+' ('+className+' *feature, ' + xmlToC (MODULE_ARCOMMANDS, feature, cmd, arg) + ' _'+ arg.name +')\n')
                     cFile.write ('{\n')
@@ -1273,13 +1281,15 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     cFile.write ('    }\n')
                     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
                     cFile.write ('    \n')
-                    
+
                     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                     cFile.write ('    {\n')
                     cFile.write ('        feature->privatePart->'+structNAckName(cmd)+'->' + arg.name + ' = _'+arg.name+';\n')
+                    cFile.write ('\n')
+                    cFile.write ('        '+nAckCbChange(feature, cmd)+' (feature);\n')
                     cFile.write ('    }\n')
                     cFile.write ('    \n')
-                    
+
                     cFile.write ('    return error;\n')
                     cFile.write ('}\n')
                     cFile.write ('\n')

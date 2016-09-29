@@ -404,7 +404,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('#ifndef '+includeDefine+'\n')
     hPrivFile.write ('#define '+includeDefine+'\n')
     hPrivFile.write ('\n')
-    hPrivFile.write ('#include <libARSAL/ARSAL_Mutex.h>\n')
+    hPrivFile.write ('#include <libARSAL/ARSAL.h>\n')
     hPrivFile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
     hPrivFile.write ('#include <libARCommands/ARCommands.h>\n')
     hPrivFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
@@ -858,6 +858,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('#include <libARController/ARCONTROLLER_Frame.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
     cFile.write ('#include <libARController/ARCONTROLLER_Device.h>\n')
+    cFile.write ('#include <ARCONTROLLER_NAckCbs.h>\n')
     cFile.write ('\n')
     cFile.write ('#include "ARCONTROLLER_Device.h"\n')
     cFile.write ('\n')
@@ -1040,7 +1041,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
     cFile.write ('    \n')
-    
+
     cFile.write ('    // delete the Device Controller if an error occurred\n')
     cFile.write ('    if (localError != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
@@ -3439,13 +3440,14 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('{\n')
     cFile.write ('    // -- Sending Looper Thread --\n')
     cFile.write ('    \n')
-    
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+className+' *deviceController = data;\n')
     cFile.write ('    u_int8_t cmdBuffer['+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+'];\n')
     cFile.write ('    int controllerLoopIntervalUs = 0;\n')
+    cFile.write ('    int mustBeSent = 0;\n')
     cFile.write ('    \n')
-    
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
@@ -3470,11 +3472,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('               (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_STARTING) ||\n')
     cFile.write ('               (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_PAUSED))\n')
     cFile.write ('        {\n')
-    cFile.write ('            //TODO manager pause !!!!!!!!!!!!!!!!!!!!!!!!!\n')
     cFile.write ('            usleep (controllerLoopIntervalUs);\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
+    cFile.write ('            if (deviceController->privatePart->state != ARCONTROLLER_DEVICE_STATE_RUNNING)\n')
+    cFile.write ('                continue;\n')
+    cFile.write ('\n')
     cFile.write ('            ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
 
     for feature in ctx.features:
         #if there are NON_ACK cmd
@@ -3483,17 +3487,22 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
             cFile.write ('            {\n')
             for cmd in feature.cmds:
                 if cmd.bufferType == ArCmdBufferType.NON_ACK:
-                    cFile.write ('                error = '+ sendNAckFunctionName (feature, cmd)+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
-                    cFile.write ('                if (error != ARCONTROLLER_OK)\n')
+                    cFile.write ('                mustBeSent = '+nAckCbMustBeSent (feature, cmd)+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+');\n')
+                    cFile.write ('                if (mustBeSent)\n')
                     cFile.write ('                {\n')
-                    cFile.write ('                    ARSAL_PRINT (ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured while send '+cmd.name+' : %s", ARCONTROLLER_Error_ToString (error));\n')
+                    cFile.write ('                    error = '+ sendNAckFunctionName (feature, cmd)+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', cmdBuffer, '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+');\n')
+                    cFile.write ('                    if (error != ARCONTROLLER_OK)\n')
+                    cFile.write ('                    {\n')
+                    cFile.write ('                        ARSAL_PRINT (ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured while send '+cmd.name+' : %s", ARCONTROLLER_Error_ToString (error));\n')
+                    cFile.write ('                    }\n')
                     cFile.write ('                }\n')
+                    cFile.write ('\n')
             cFile.write ('            }\n')
-            cFile.write ('            \n')
+            cFile.write ('\n')
     cFile.write ('            ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')

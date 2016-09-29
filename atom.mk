@@ -26,7 +26,8 @@ LOCAL_CONDITIONAL_LIBRARIES := \
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/Includes \
 	$(call local-get-build-dir)/gen/Includes \
-	$(LOCAL_PATH)/Sources
+	$(LOCAL_PATH)/Sources \
+	$(call local-get-build-dir)/gen/Sources
 
 LOCAL_CFLAGS := \
 	-DHAVE_CONFIG_H
@@ -40,7 +41,8 @@ LOCAL_SRC_FILES := \
 	Sources/ARCONTROLLER_StreamQueue.c \
 	Sources/ARCONTROLLER_Stream1.c \
 	Sources/ARCONTROLLER_Stream2.c \
-	Sources/ARCONTROLLER_StreamSender.c
+	Sources/ARCONTROLLER_StreamSender.c \
+	Sources/ARCONTROLLER_NAckCbs.c
 
 LOCAL_GENERATED_SRC_FILES := \
 	gen/Sources/ARCONTROLLER_Device.c \
