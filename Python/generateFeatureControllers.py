@@ -1898,6 +1898,11 @@ def generateFeatureControllersJava (ctx, JNI_JAVA_DIR):
             for arg in cmd.args:
                 if isinstance(arg.argType, ArEnum):
                     jfile.write (', int ' + arg.name + '')
+                elif isinstance(arg.argType, ArMultiSetting):
+                    for multiset_msg in arg.argType.msgs:
+                        jfile.write (', int '+ARCapitalize(multiset_msg.ftr.name)+ARCapitalize(multiset_msg.name)+'IsSet')
+                        for multiset_msg_arg in multiset_msg.args:
+                            jfile.write (', ' + xmlToJava (LIB_MODULE, multiset_msg.ftr, multiset_msg, multiset_msg_arg) + ' '+ARUncapitalize(multiset_msg.ftr.name)+ARCapitalize(multiset_msg.name)+ARCapitalize(multiset_msg_arg.name)+'')
                 else:
                     jfile.write (', ' + xmlToJava (MODULE_ARCOMMANDS, feature, cmd, arg) + ' ' + arg.name + '')
             jfile.write (');\n')
@@ -2003,9 +2008,15 @@ def generateFeatureControllersJava (ctx, JNI_JAVA_DIR):
             jfile.write ('            {\n')
             jfile.write ('                int nativeError = '+nativeSendingFunction(cmd)+' (jniFeature')
             for arg in cmd.args:
-                jfile.write (', _' + arg.name)
                 if isinstance(arg.argType, ArEnum):
-                    jfile.write ('.getValue()')
+                    jfile.write (', _' + arg.name + '.getValue()')
+                elif isinstance(arg.argType, ArMultiSetting):
+                    for multiset_msg in arg.argType.msgs:
+                        jfile.write (', _' + arg.name + '.get'+ARCapitalize(multiset_msg.ftr.name)+ARCapitalize(multiset_msg.name)+'IsSet()')
+                        for multiset_msg_arg in multiset_msg.args:
+                            jfile.write (', _' + arg.name + '.get'+ARCapitalize(multiset_msg.ftr.name)+ARCapitalize(multiset_msg.name)+ARCapitalize(multiset_msg_arg.name)+'()')
+                else:
+                    jfile.write (', _' + arg.name)
             jfile.write (');\n')
             jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
             jfile.write ('            }\n')
@@ -2151,7 +2162,13 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR):
             cFile.write ('JNIEXPORT jint JNICALL\n')
             cFile.write ('Java_com_parrot_arsdk_arcontroller_'+javaClassName+'_'+nativeSendingFunction(cmd)+' (JNIEnv *env, jobject thizz, jlong jFeature')
             for arg in cmd.args:
-                cFile.write (', ' + xmlToJni (feature, cmd, arg) + ' _' + arg.name + '')
+                if isinstance(arg.argType, ArMultiSetting):
+                    for multiset_msg in arg.argType.msgs:
+                        cFile.write (', jint '+multiset_msg.ftr.name+ multiset_msg.name+'IsSet')
+                        for multiset_msg_arg in multiset_msg.args:
+                            cFile.write (', ' + xmlToJni (multiset_msg.ftr, multiset_msg, multiset_msg_arg) + ' ' +multiset_msg.ftr.name+ multiset_msg.name+ multiset_msg_arg.name)
+                else:
+                    cFile.write (', ' + xmlToJni (feature, cmd, arg) + ' _' + arg.name + '')
             cFile.write (')\n')
             cFile.write ('{\n')
             cFile.write ('    // local declarations\n')
@@ -2162,11 +2179,20 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR):
                 if (arg.argType == ArArgType.STRING):
                     hasArgString = True
                     cFile.write ('    const char *native'+ARCapitalize(arg.name)+' = (*env)->GetStringUTFChars(env, _'+arg.name+', 0);\n')
+                elif isinstance(arg.argType, ArMultiSetting):
+                    cFile.write ('    ' + xmlToC (LIB_MODULE, feature, cmd, arg) + ' c_' + arg.name + ' = {\n')
+                    for multiset_msg in arg.argType.msgs:
+                        cFile.write ('        .'+multiset_msg.name+'.isSet = '+multiset_msg.ftr.name+ multiset_msg.name+'IsSet,\n')
+                        for multiset_msg_arg in multiset_msg.args:
+                            cFile.write ('        .'+multiset_msg.name+'.'+multiset_msg_arg.name+' = ' +multiset_msg.ftr.name+ multiset_msg.name+ multiset_msg_arg.name+',\n')
+                    cFile.write ('};\n')
             cFile.write ('    \n')
             cFile.write ('    error = nativeFeature->'+sendingFunction(cmd)+' (nativeFeature')
             for arg in cmd.args:
                 if (arg.argType == ArArgType.STRING):
                     cFile.write (', (char *)native'+ARCapitalize(arg.name))
+                elif isinstance(arg.argType, ArMultiSetting):
+                    cFile.write (', &c_' + arg.name)
                 else:
                     cFile.write (', _' + arg.name)
             cFile.write (');\n')
