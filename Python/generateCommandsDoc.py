@@ -137,6 +137,16 @@ def _get_support_list_formatted(supportStr):
 def _replace_links(ctx, text):
     return re.sub(LINK_PATTERN, _get_msg_name_from_formatted_id(ctx), text)
 
+def _get_args_multiset(args):
+    for arg in args:
+        if isinstance(arg.argType, arsdkparser.ArMultiSetting):
+            yield arg
+
+def _get_msgs_without_multiset(msgs):
+    for msg in msgs:
+        if not list(_get_args_multiset(msg.args)):
+            yield msg
+
 ##########################################################
 #   Write common doc functions
 ##########################################################
@@ -182,6 +192,14 @@ def _write_message_args(docfile, args):
                 docfile.write ('   * ' + enum.name + ': ')
                 for enumCom in enum.doc.split('\n'):
                     docfile.write (enumCom + '<br/>\n')
+        elif isinstance(arg.argType, ArMultiSetting):
+            docfile.write ('* ' + arg.name + ' (multi setting): ')
+            for comm in arg.argType.doc.split('\n'):
+                docfile.write (comm + '<br/>\n')
+
+            for msg in arg.argType.msgs:
+                docfile.write ('   * [' + _format_message_name(msg.ftr, msg) + '](#' + _format_message_name(msg.ftr, msg) + '): ')
+                docfile.write (msg.doc.title + '<br/>\n')
         else:
             docfile.write ('* ' + arg.name + ' (' + ArArgType.TO_STRING[arg.argType] + '): ')
             for comm in arg.doc.split('\n'):
@@ -288,7 +306,7 @@ def _write_command_result(ctx, docfile, result):
 def _write_events_doc(ctx, docfile, feature, args, product=None):
     nb_evt = 0
 
-    for evt in feature.evts:
+    for evt in _get_msgs_without_multiset(feature.evts):
         if not _is_command_supported(evt, product):
             continue
         nb_evt += 1
