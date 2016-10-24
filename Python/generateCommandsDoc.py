@@ -611,6 +611,8 @@ def _generate_toc(rootdir, cmds, evts, product):
         f.write('  - <a href=\'http://github.com/tripit/slate\'>Documentation Powered by Slate</a>\n')
         f.write('\n')
         f.write('includes:\n')
+        f.write('  - title\n')
+        f.write('  - description\n')
         f.write('  - commands\n')
         for c in cmds:
             if cmds[c]:
@@ -623,10 +625,13 @@ def _generate_toc(rootdir, cmds, evts, product):
         f.write('search: true\n')
         f.write('---\n')
 
+
+    fname = os.path.join(rootdir, '_title.md')
+    with open(fname, 'w') as f:
+        f.write('# %s reference\n' % str_pr)
+        f.write('\n')
     fname = os.path.join(rootdir, '_commands.md')
     with open(fname, 'w') as f:
-        f.write('# libARController reference for %s\n' % str_pr)
-        f.write('\n')
         f.write('## %s commands' % str_pr)
         f.write('\n')
     fname = os.path.join(rootdir, '_events.md')
