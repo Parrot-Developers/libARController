@@ -1336,15 +1336,17 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
-                
+
                 cFile.write ('    if ((error == ARCONTROLLER_OK) && (dictCmdElement != NULL) && (clear))\n')
                 cFile.write ('    {\n')
                 cFile.write ('        //Delete the command\n')
+                cFile.write ('        ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
                 cFile.write ('        HASH_DEL (feature->privatePart->dictionary, dictCmdElement);\n')
                 cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'feature', 'DeleteCommandsElement')+'(&dictCmdElement);\n')
+                cFile.write ('        ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
-                
+
                 cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 if evt.listType == ArCmdListType.MAP:
