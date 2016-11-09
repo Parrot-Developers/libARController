@@ -1353,7 +1353,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     cFile.write ('        if ((remove) && (dictCmdElement != NULL))\n')
                     cFile.write ('        {\n')
                     cFile.write ('            //remove element\n')
-                    cFile.write ('            ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
+                    cFile.write ('            ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n\n')
                     if not evt.mapKey.argType == ArArgType.STRING:
                         cFile.write ('            elementKeyLength = snprintf (NULL, 0, '+xmlToFormat(evt.mapKey)+', _'+evt.mapKey.name+');\n')
                         cFile.write ('            elementKey = malloc (elementKeyLength + 1);\n')
@@ -1369,10 +1369,11 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                     cFile.write ('            {\n')
                     cFile.write ('                HASH_DEL (dictCmdElement->elements, dictElement);\n')
                     cFile.write ('                ARCONTROLLER_Feature_DeleteElement (&dictElement);\n')
-                    if not evt.mapKey.argType == ArArgType.STRING:
-                        cFile.write ('                free (elementKey);\n')
-                        cFile.write ('                elementKey = NULL;\n')
                     cFile.write ('            }\n')
+                    if not evt.mapKey.argType == ArArgType.STRING:
+                        cFile.write ('            /* cleanup */\n')
+                        cFile.write ('            free (elementKey);\n')
+                        cFile.write ('            elementKey = NULL;\n\n')
                     cFile.write ('            ARSAL_Mutex_Unlock (&(feature->privatePart->mutex));\n')
                     cFile.write ('            // force notifying when removing because the Mambo does not send last when removing a usbAccessory\n')
                     cFile.write ('            notify = 1;\n')
