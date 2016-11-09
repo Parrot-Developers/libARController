@@ -1348,7 +1348,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('    if (error == ARCONTROLLER_OK)\n')
                 cFile.write ('    {\n')
                 if evt.listType == ArCmdListType.MAP:
-                    cFile.write ('        if (remove)\n')
+                    cFile.write ('        if ((remove) && (dictCmdElement != NULL))\n')
                     cFile.write ('        {\n')
                     cFile.write ('            //remove element\n')
                     cFile.write ('            ARSAL_Mutex_Lock (&(feature->privatePart->mutex));\n')
@@ -1432,7 +1432,6 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
                 cFile.write ('            }\n')
                 
                 cFile.write ('        }\n')
-                cFile.write ('        \n')
                 cFile.write ('    }\n')
                 cFile.write ('    \n')
                 
