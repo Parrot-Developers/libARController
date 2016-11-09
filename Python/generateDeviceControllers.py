@@ -2184,12 +2184,11 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    \n')
 
     cFile.write ('    // Check parameters\n')
-    cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
-    cFile.write ('    {\n')
+    cFile.write ('    if (deviceController == NULL) {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
-    cFile.write ('    }\n')
-    cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "'+ ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopRun')+' failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
+    cFile.write ('        return NULL;\n')
+    cFile.write ('    }\n\n')
 
     cFile.write ('    error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'UnregisterCallbacks')+' (deviceController, NULL);\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
