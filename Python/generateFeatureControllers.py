@@ -1105,7 +1105,10 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             cFile.write ('    // -- Send a command <code>' + ARCapitalize (format_cmd_name(cmd)) + '</code> in project <code>' + ARCapitalize (get_ftr_old_name(feature)) + '</code> --\n')
             cFile.write ('    \n')
             cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-            cFile.write ('    u_int8_t cmdBuffer[4096];\n')
+            if [arg for arg in cmd.args if isinstance(arg.argType, ArMultiSetting)]:
+                cFile.write ('    u_int8_t cmdBuffer[4096];\n')
+            else:
+                cFile.write ('    u_int8_t cmdBuffer[512];\n')
             cFile.write ('    int32_t cmdSize = 0;\n')
             cFile.write ('    eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_GENERATOR_OK;\n')
             cFile.write ('    eARNETWORK_ERROR netError = ARNETWORK_OK;\n')
