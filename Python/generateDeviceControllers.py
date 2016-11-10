@@ -2230,6 +2230,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Stop fail error :%s", ARCONTROLLER_Error_ToString (error));\n')
+    cFile.write ('        return NULL;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
     cFile.write ('    \n')
