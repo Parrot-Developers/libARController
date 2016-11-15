@@ -149,7 +149,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
     if (localError == ARCONTROLLER_OK)
     {
         // Create the Stream 2 Controller
-        stream2Controller = malloc (sizeof (ARCONTROLLER_Stream2_t));
+        stream2Controller = calloc (1, sizeof (ARCONTROLLER_Stream2_t));
         if (stream2Controller != NULL)
         {
             stream2Controller->isRunning = 0;
