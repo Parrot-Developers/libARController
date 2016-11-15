@@ -510,6 +510,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
         config.replaceStartCodesWithNaluSize = stream2Controller->replaceStartCodesWithNaluSize;
         config.generateSkippedPSlices = 1;
         config.generateFirstGrayIFrame = 1;
+        config.canonicalName = "DEFAULT_SDK_CONTROLLER";
 
         if (stream2Controller->mux) {
             mux_config.mux = stream2Controller->mux;
@@ -529,7 +530,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
             }
 
             if (stream2Controller->clientControlPort >= 0) {
-                ARSAL_Socket_Close(stream2Controller->clientControlPort);
+                ARSAL_Socket_Close(stream2Controller->clientControlFd);
                 stream2Controller->clientControlPort = -1;
             }
 
