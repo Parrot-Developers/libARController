@@ -151,4 +151,24 @@ uint8_t ARCONTROLLER_NAckCbs_PowerupPilotingPCMDMustBeSent(
 	return 1;
 };
 
+/* ARDrone3 CameraVelocity */
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityInit(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityDeInit(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+void ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityChanged(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityMustBeSent(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+
+/* ARDrone3 CameraOrientationV2 */
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Init(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2DeInit(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+void ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Changed(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2MustBeSent(
+		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
+
 #endif /* _ARCONTROLLER_NACK_CBS_PRIVATE_H_ */
