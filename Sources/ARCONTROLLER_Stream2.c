@@ -99,8 +99,9 @@ static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int *sockfd, int *
     addr.sin_port = htons (0);
     ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
     if (ret < 0) {
+        ret = errno;
         ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG,
-                    "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(errno));
+                    "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(ret));
         goto error;
     }
 
@@ -108,14 +109,16 @@ static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int *sockfd, int *
     addrlen = sizeof(addr);
     ret = ARSAL_Socket_Getsockname(fd, (struct sockaddr *)&addr, &addrlen);
     if (ret < 0) {
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "getsockname fd=%d, error='%s'", fd, strerror(errno));
+        ret = errno;
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "getsockname fd=%d, error='%s'", fd, strerror(ret));
         goto error;
     }
 
     yes = 1;
     ret = ARSAL_Socket_Setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
     if (ret < 0) {
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", errno, strerror(errno));
+        ret = errno;
+        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", ret, strerror(ret));
         goto error;
     }
 
@@ -761,4 +764,3 @@ static void *ARCONTROLLER_Stream2_RestartRun (void *data)
     
     return NULL;
 }
-
