@@ -115,7 +115,7 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationMustBeSent(
 }
 
 /* ARDrone3 CameraOrientationV2 */
-static void cameraStateOrientationCb (eARCONTROLLER_DICTIONARY_KEY commandKey,
+static void cameraStateDefaultOrientationCb (eARCONTROLLER_DICTIONARY_KEY commandKey,
 		ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)
 {
 	struct ARDrone3CameraOrientationData *data = customData;
@@ -124,11 +124,11 @@ static void cameraStateOrientationCb (eARCONTROLLER_DICTIONARY_KEY commandKey,
 		return;
 
 	switch(commandKey) {
-	case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION:
+	case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION:
 		if (data->cmd_version < 1)
 			data->cmd_version = 1;
 		break;
-	case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2:
+	case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2:
 		if (data->cmd_version < 2)
 			data->cmd_version = 2;
 		break;
@@ -153,16 +153,16 @@ eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Init(
 
 	feature->privatePart->CameraOrientationV2Parameters->data = data;
 
-	/* Set CameraOrientation callbacks */
+	/* Set DefaultCameraOrientation callbacks to know which orientation we should send */
 	error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (feature,
-			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION,
-			&cameraStateOrientationCb, data);
+			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION,
+			&cameraStateDefaultOrientationCb, data);
 	if (error != ARCONTROLLER_OK)
 		return error;
 
 	error = ARCONTROLLER_FEATURE_ARDrone3_AddCallback (feature,
-			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2,
-			&cameraStateOrientationCb, data);
+			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2,
+			&cameraStateDefaultOrientationCb, data);
 	if (error != ARCONTROLLER_OK)
 		return error;
 
@@ -182,11 +182,11 @@ eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2DeInit(
 
 	/* Remove CameraOrientation callbacks */
 	ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (feature,
-			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION,
-			&cameraStateOrientationCb, data);
+			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION,
+			&cameraStateDefaultOrientationCb, data);
 	ARCONTROLLER_FEATURE_ARDrone3_RemoveCallback (feature,
-			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2,
-			&cameraStateOrientationCb, data);
+			ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2,
+			&cameraStateDefaultOrientationCb, data);
 
 	free(feature->privatePart->CameraOrientationV2Parameters->data);
 	feature->privatePart->CameraOrientationV2Parameters->data = NULL;
