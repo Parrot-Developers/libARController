@@ -115,8 +115,7 @@ static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int *sockfd, int *
     yes = 1;
     ret = ARSAL_Socket_Setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
     if (ret < 0) {
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", errno, strerror(errno));
-        goto error;
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_STREAM2_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", errno, strerror(errno));
     }
 
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM2_TAG, "udp local port %s: %d", name, htons(addr.sin_port));
