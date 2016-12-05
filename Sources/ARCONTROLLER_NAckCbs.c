@@ -51,6 +51,7 @@
 struct ARDrone3CameraOrientationData {
 	uint32_t sending_count;
 	uint8_t cmd_version;
+	uint8_t used;               /**< Orientation has been set by user. */
 };
 
 /* ARDrone3 CameraOrientation */
@@ -80,6 +81,7 @@ void ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationChanged(
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
 	data->sending_count = 0;
+	data->used = 1;
 
 	if (data->cmd_version > 1) {
 		/* Copy values in command CameraOrientation v2 */
@@ -106,7 +108,7 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationMustBeSent(
 	if (data->cmd_version != 1)
 		return 0;
 
-	if (data->sending_count < 10) {
+	if ((data->used) && (data->sending_count < 10)) {
 		data->sending_count++;
 		return 1;
 	}
@@ -208,6 +210,7 @@ void ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Changed(
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
 	data->sending_count = 0;
+	data->used = 1;
 
 	if (data->cmd_version < 2) {
 		/* Copy values in command CameraOrientation v1 */
@@ -233,7 +236,7 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2MustBeSent(
 	if (data->cmd_version != 2)
 		return 0;
 
-	if (data->sending_count < 10) {
+	if ((data->used) && (data->sending_count < 10)) {
 		data->sending_count++;
 		return 1;
 	}
