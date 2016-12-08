@@ -68,11 +68,10 @@ struct ARCONTROLLER_Stream2_t
 {
     int isRunning; /**< 0 if the stream is stopped ; otherwide the stream is running */
     
-    ARSTREAM2_StreamReceiver_Handle readerFilterHandle;
+    ARSTREAM2_StreamReceiver_Handle streamReceiverHandle;
     
-    ARSAL_Thread_t runFilterThread; /**< Stream2 ReaderFilter filter thread */
-    ARSAL_Thread_t runStreamThread; /**< Stream2 ReaderFilter stream thread */
-    ARSAL_Thread_t runControllerThread; /**< Stream2 ReaderFilter control thread */
+    ARSAL_Thread_t networkThread; /**< Stream2 StreamReceiver network thread */
+    ARSAL_Thread_t appOutputThread; /**< Stream2 StreamReceiver app output thread */
     
     char serverAddress[ARCONTROLLER_STREAM2_IP_SIZE]; /**< Server address */
     struct mux_ctx *mux;
@@ -82,11 +81,7 @@ struct ARCONTROLLER_Stream2_t
     int clientControlFd; /**< Client control fd */
     int serverStreamPort; /**< Server stream port */
     int serverControlPort; /**< Server control port */
-    int maxPaquetSize; /**< Maximum network packet size in bytes */
-    int maxLatency; /**< Maximum acceptable total latency in milliseconds */
-    int maxNetworkLatency; /**< Maximum acceptable network latency in milliseconds */
-    int maxBiterate; /**< Maximum streaming bitrate in bit/s */
-    char *parmeterSets; /**< */
+    int maxPacketSize; /**< Maximum network packet size in bytes */
     int qos_level;
     
     int errorCount;
