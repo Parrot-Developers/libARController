@@ -104,8 +104,7 @@ static int ARCONTROLLER_Network_GetAvailableSocketPort(void)
     ret = ARSAL_Socket_Setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
     if (ret < 0) {
         ret = errno;
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", ret, strerror(ret));
-        goto error;
+        ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_NETWORK_TAG, "Failed to set socket option SO_REUSEADDR: error=%d (%s)", ret, strerror(ret));
     }
 
     ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG, "d2c_port port: %d", htons(addr.sin_port));
