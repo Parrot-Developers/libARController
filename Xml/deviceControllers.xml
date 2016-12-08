@@ -118,6 +118,8 @@
         <feature name="common"/>
         <feature name="ardrone3"/>
         <feature name="generic"/>
+        <feature name="follow_me"/>
+        <feature name="controller_info"/>
     </ARController_Device>
 
     <ARController_Device name="Disco" product="EVINRUDE" flags="can_be_extension">
