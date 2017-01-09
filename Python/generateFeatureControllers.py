@@ -473,14 +473,14 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
             hPrivFile.write (' */\n')
             hPrivFile.write ('void '+decodeCallback (feature, evt)+' (')
             for arg in evt.args:
-                hPrivFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
+                hPrivFile.write (xmlToCcharAreConst (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
             hPrivFile.write ('void *customData);\n')
             hPrivFile.write ('\n')
 
         for evt in msgs_without_multiset(feature.evts):
             hPrivFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *'+ ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'newCmdElement'+ARCapitalize(format_cmd_name(evt)))+' ('+className+' *feature, ')
             for arg in evt.args:
-                hPrivFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
+                hPrivFile.write (xmlToCcharAreConst (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
             if evt.listType == ArCmdListType.LIST:
                 hPrivFile.write ('int listIndex, ')
             hPrivFile.write ('eARCONTROLLER_ERROR *error);\n')
@@ -1297,7 +1297,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         for evt in msgs_without_multiset(feature.evts):
             cFile.write ('void '+decodeCallback (feature, evt)+' (')
             for arg in evt.args:
-                cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
+                cFile.write (xmlToCcharAreConst (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
             cFile.write ('void *customData)\n')
             cFile.write ('{\n')
             cFile.write ('    // -- callback used when the command <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> is decoded -- \n')
@@ -1556,7 +1556,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         for evt in msgs_with_multiset(feature.evts):
             cFile.write ('void '+decodeCallback (feature, evt)+' (')
             for arg in evt.args:
-                cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
+                cFile.write (xmlToCcharAreConst (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
             cFile.write ('void *customData)\n')
             cFile.write ('{\n')
             cFile.write ('    // -- callback used when the command <code>' + ARCapitalize (format_cmd_name(evt)) + '</code> is decoded -- \n')
@@ -1571,7 +1571,7 @@ def generateFeatureControllers (ctx, SRC_DIR, INC_DIR):
         for evt in msgs_without_multiset(feature.evts):
             cFile.write (''+ARTypeName(MODULE_ARCONTROLLER, 'DICTIONARY', 'ELEMENT')+' *'+ ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'newCmdElement'+ARCapitalize(format_cmd_name(evt)))+' ('+className+' *feature, ')
             for arg in evt.args:
-                cFile.write (xmlToC (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
+                cFile.write (xmlToCcharAreConst (MODULE_ARCOMMANDS, feature, evt, arg, True) + ' _' + arg.name + ', ')
             if evt.listType == ArCmdListType.LIST:
                 cFile.write ('int listIndex, ')
             cFile.write ('eARCONTROLLER_ERROR *error)\n')
