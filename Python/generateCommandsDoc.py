@@ -40,9 +40,10 @@ DEVICE_TO_STRING = {
     '090e':   'Disco',
     '090f':   'SkyController 2',
     '0910':   'Swing',
+    '0913':   'SkyController 1 v2.x',
 }
 DEVICES_GLOBAL = [ 'drones', 'rc', 'none' ]
-DEVICES_RC     = [ '0903', '090f' ]
+DEVICES_RC     = [ '0903', '090f', '0913' ]
 DEVICES_DRONE  = [ x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL+DEVICES_RC) ]
 
 BG_BLUE = '\033[00;44m'
