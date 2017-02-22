@@ -251,6 +251,8 @@ struct ARDrone3CameraVelocityData {
 	uint32_t sending_count;
 };
 
+#define ARCONTROLLER_ARDRONE3_CAMERA_VELOCITY_SEND_MAX_COUNT 10
+
 eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityInit(
 		ARCONTROLLER_FEATURE_ARDrone3_t *feature)
 {
@@ -264,6 +266,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityInit(
 	if (data == NULL)
 		return ARCONTROLLER_ERROR_ALLOC;
 
+    data->val_is_null = 1;
+    data->sending_count = ARCONTROLLER_ARDRONE3_CAMERA_VELOCITY_SEND_MAX_COUNT;
 	feature->privatePart->CameraVelocityParameters->data = data;
 
 	return ARCONTROLLER_OK;
@@ -317,7 +321,7 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityMustBeSent(
 	if (!data->val_is_null)
 		return 1;
 
-	if (data->sending_count < 10) {
+	if (data->sending_count < ARCONTROLLER_ARDRONE3_CAMERA_VELOCITY_SEND_MAX_COUNT) {
 		data->sending_count++;
 		return 1;
 	}
