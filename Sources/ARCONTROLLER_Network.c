@@ -214,8 +214,8 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
     }
     
     // Check if it is a wifi device
-    if ((localError == ARCONTROLLER_OK) && 
-        (ARDISCOVERY_getProductService (networkController->discoveryDevice->productID) == ARDISCOVERY_PRODUCT_NSNETSERVICE))
+    if ((localError == ARCONTROLLER_OK) &&
+        (networkController->discoveryDevice->networkType == ARDISCOVERY_NETWORK_TYPE_NET))
     {
         // Override d2c_port
         dicoveryError = ARDISCOVERY_Device_WifiSetDeviceToControllerPort(networkController->discoveryDevice, ARCONTROLLER_Network_GetAvailableSocketPort());
@@ -232,8 +232,8 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         }
     }
     // or an usb device
-    else if ((localError == ARCONTROLLER_OK) && 
-             (ARDISCOVERY_getProductService (networkController->discoveryDevice->productID) == ARDISCOVERY_PRODUCT_USBSERVICE))
+    else if ((localError == ARCONTROLLER_OK) &&
+             (networkController->discoveryDevice->networkType == ARDISCOVERY_NETWORK_TYPE_USBMUX))
     {
         // Add callbacks for the connection json part
         dicoveryError = ARDISCOVERY_Device_UsbAddConnectionCallbacks (networkController->discoveryDevice, ARCONTROLLER_Network_OnSendJson, ARCONTROLLER_Network_OnReceiveJson, networkController);

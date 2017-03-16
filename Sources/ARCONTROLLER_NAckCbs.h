@@ -171,4 +171,24 @@ void ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Changed(
 uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2MustBeSent(
 		ARCONTROLLER_FEATURE_ARDrone3_t *feature);
 
+/* ControllerInfo gps */
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoGpsInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoGpsDeInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+void ARCONTROLLER_NAckCbs_ControllerInfoGpsChanged(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+uint8_t ARCONTROLLER_NAckCbs_ControllerInfoGpsMustBeSent(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+
+/* ControllerInfo barometer */
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoBarometerInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoBarometerDeInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+void ARCONTROLLER_NAckCbs_ControllerInfoBarometerChanged(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+uint8_t ARCONTROLLER_NAckCbs_ControllerInfoBarometerMustBeSent(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature);
+
 #endif /* _ARCONTROLLER_NACK_CBS_PRIVATE_H_ */

@@ -73,10 +73,10 @@ void ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationChanged(
 	struct ARDrone3CameraOrientationData *data = NULL;
 
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraOrientationParameters == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraOrientationParameters == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
 		return;
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
@@ -98,9 +98,9 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationMustBeSent(
 	struct ARDrone3CameraOrientationData *data = NULL;
 
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
 		return 0;
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
@@ -145,8 +145,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Init(
 	struct ARDrone3CameraOrientationData *data = NULL;
 	eARCONTROLLER_ERROR error = ARCONTROLLER_OK;
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters == NULL))
 		return ARCONTROLLER_ERROR_BAD_PARAMETER;
 
 	data = calloc(1, sizeof(*data));
@@ -176,8 +176,8 @@ eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2DeInit(
 	struct ARDrone3CameraOrientationData *data = NULL;
 
 	if ((feature == NULL)||
-	    (feature->privatePart == NULL) ||
-	    (feature->privatePart->CameraOrientationV2Parameters == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters == NULL))
 		return ARCONTROLLER_ERROR_BAD_PARAMETER;
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
@@ -201,11 +201,11 @@ void ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2Changed(
 {
 	struct ARDrone3CameraOrientationData *data = NULL;
 
-	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraOrientationParameters == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
+	if ((feature == NULL) ||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraOrientationParameters == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
 		return;
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
@@ -226,9 +226,9 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraOrientationV2MustBeSent(
 	struct ARDrone3CameraOrientationData *data = NULL;
 
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
-		(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters == NULL) ||
+			(feature->privatePart->CameraOrientationV2Parameters->data == NULL))
 		return 0;
 
 	data = feature->privatePart->CameraOrientationV2Parameters->data;
@@ -251,19 +251,23 @@ struct ARDrone3CameraVelocityData {
 	uint32_t sending_count;
 };
 
+#define ARCONTROLLER_ARDRONE3_CAMERA_VELOCITY_SEND_MAX_COUNT 10
+
 eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityInit(
 		ARCONTROLLER_FEATURE_ARDrone3_t *feature)
 {
 	struct ARDrone3CameraVelocityData *data = NULL;
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraVelocityParameters == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraVelocityParameters == NULL))
 		return ARCONTROLLER_ERROR_BAD_PARAMETER;
 
 	data = calloc(1, sizeof(*data));
 	if (data == NULL)
 		return ARCONTROLLER_ERROR_ALLOC;
 
+    data->val_is_null = 1;
+    data->sending_count = ARCONTROLLER_ARDRONE3_CAMERA_VELOCITY_SEND_MAX_COUNT;
 	feature->privatePart->CameraVelocityParameters->data = data;
 
 	return ARCONTROLLER_OK;
@@ -272,9 +276,9 @@ eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityDeInit(
 		ARCONTROLLER_FEATURE_ARDrone3_t *feature)
 {
 	if ((feature == NULL)||
-	(feature->privatePart == NULL) ||
-	(feature->privatePart->CameraVelocityParameters == NULL))
-	return ARCONTROLLER_ERROR_BAD_PARAMETER;
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraVelocityParameters == NULL))
+		return ARCONTROLLER_ERROR_BAD_PARAMETER;
 
 	free(feature->privatePart->CameraVelocityParameters->data);
 	feature->privatePart->CameraVelocityParameters->data = NULL;
@@ -287,14 +291,14 @@ void ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityChanged(
 	struct ARDrone3CameraVelocityData *data = NULL;
 
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraVelocityParameters == NULL) ||
-		(feature->privatePart->CameraVelocityParameters->data == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraVelocityParameters == NULL) ||
+			(feature->privatePart->CameraVelocityParameters->data == NULL))
 		return;
 
 	data = feature->privatePart->CameraVelocityParameters->data;
 	if ((feature->privatePart->CameraVelocityParameters->tilt == 0) &&
-	    (feature->privatePart->CameraVelocityParameters->pan == 0)) {
+			(feature->privatePart->CameraVelocityParameters->pan == 0)) {
 		data->val_is_null = 1;
 		data->sending_count = 0;
 	} else {
@@ -307,9 +311,9 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityMustBeSent(
 	struct ARDrone3CameraVelocityData *data = NULL;
 
 	if ((feature == NULL)||
-		(feature->privatePart == NULL) ||
-		(feature->privatePart->CameraVelocityParameters == NULL) ||
-		(feature->privatePart->CameraVelocityParameters->data == NULL))
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->CameraVelocityParameters == NULL) ||
+			(feature->privatePart->CameraVelocityParameters->data == NULL))
 		return 0;
 
 	data = feature->privatePart->CameraVelocityParameters->data;
@@ -317,10 +321,143 @@ uint8_t ARCONTROLLER_NAckCbs_ARDrone3CameraVelocityMustBeSent(
 	if (!data->val_is_null)
 		return 1;
 
-	if (data->sending_count < 10) {
+	if (data->sending_count < ARCONTROLLER_ARDRONE3_CAMERA_VELOCITY_SEND_MAX_COUNT) {
 		data->sending_count++;
 		return 1;
 	}
 
 	return 0;
+}
+
+/* ControllerInfo gps */
+struct ControllerInfoGpsData {
+	uint8_t val_is_new;
+};
+
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoGpsInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	struct ControllerInfoGpsData *data = NULL;
+	if ((feature == NULL) ||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->GpsParameters == NULL))
+		return ARCONTROLLER_ERROR_BAD_PARAMETER;
+
+	data = calloc(1, sizeof(*data));
+	if (data == NULL)
+		return ARCONTROLLER_ERROR_ALLOC;
+
+	feature->privatePart->GpsParameters->data = data;
+
+	return ARCONTROLLER_OK;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoGpsDeInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	if ((feature == NULL) ||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->GpsParameters == NULL))
+		return ARCONTROLLER_ERROR_BAD_PARAMETER;
+
+	free(feature->privatePart->GpsParameters->data);
+	feature->privatePart->GpsParameters->data = NULL;
+
+	return ARCONTROLLER_OK;
+}
+
+void ARCONTROLLER_NAckCbs_ControllerInfoGpsChanged(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	struct ControllerInfoGpsData *data = NULL;
+
+	if ((feature == NULL)||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->GpsParameters == NULL) ||
+			(feature->privatePart->GpsParameters->data == NULL))
+		return;
+
+	data = feature->privatePart->GpsParameters->data;
+	data->val_is_new = 1;
+}
+
+uint8_t ARCONTROLLER_NAckCbs_ControllerInfoGpsMustBeSent(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	struct ControllerInfoGpsData *data = NULL;
+	int must_be_sent = 0;
+
+	if ((feature == NULL)||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->GpsParameters == NULL) ||
+			(feature->privatePart->GpsParameters->data == NULL))
+		return 0;
+
+	data = feature->privatePart->GpsParameters->data;
+	must_be_sent = data->val_is_new;
+
+	data->val_is_new = 0;
+	return must_be_sent;
+}
+
+/* ControllerInfo barometer */
+struct ControllerInfoBarometerData {
+	uint8_t val_is_new;
+};
+
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoBarometerInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	struct ControllerInfoBarometerData *data = NULL;
+	if ((feature == NULL) ||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->BarometerParameters == NULL))
+		return ARCONTROLLER_ERROR_BAD_PARAMETER;
+
+	data = calloc(1, sizeof(*data));
+	if (data == NULL)
+		return ARCONTROLLER_ERROR_ALLOC;
+
+	feature->privatePart->BarometerParameters->data = data;
+
+	return ARCONTROLLER_OK;
+}
+
+eARCONTROLLER_ERROR ARCONTROLLER_NAckCbs_ControllerInfoBarometerDeInit(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	if ((feature == NULL) ||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->BarometerParameters == NULL))
+		return ARCONTROLLER_ERROR_BAD_PARAMETER;
+
+	free(feature->privatePart->BarometerParameters->data);
+	feature->privatePart->BarometerParameters->data = NULL;
+
+	return ARCONTROLLER_OK;
+}
+
+void ARCONTROLLER_NAckCbs_ControllerInfoBarometerChanged(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	struct ControllerInfoBarometerData *data = NULL;
+	if ((feature == NULL)||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->BarometerParameters == NULL) ||
+			(feature->privatePart->BarometerParameters->data == NULL))
+		return;
+
+	data = feature->privatePart->BarometerParameters->data;
+	data->val_is_new = 1;
+}
+
+uint8_t ARCONTROLLER_NAckCbs_ControllerInfoBarometerMustBeSent(
+		ARCONTROLLER_FEATURE_ControllerInfo_t *feature) {
+	struct ControllerInfoBarometerData *data = NULL;
+	int must_be_sent = 0;
+
+	if ((feature == NULL)||
+			(feature->privatePart == NULL) ||
+			(feature->privatePart->BarometerParameters == NULL) ||
+			(feature->privatePart->BarometerParameters->data == NULL))
+		return 0;
+
+	data = feature->privatePart->BarometerParameters->data;
+	must_be_sent = data->val_is_new;
+
+	data->val_is_new = 0;
+	return must_be_sent;
 }

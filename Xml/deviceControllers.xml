@@ -107,6 +107,14 @@
         <feature name="drone_manager"/>
     </ARController_Device>
 
+    <ARController_Device name="SkyControllerNG" product="SKYCONTROLLER_NG" flags="can_have_extension">
+        Sky Controller NG project
+        <feature name="common"/>
+        <feature name="skyctrl"/>
+        <feature name="mapper"/>
+        <feature name="drone_manager"/>
+    </ARController_Device>
+
     <ARController_Device name="PowerUP" product="POWER_UP">
         Power Up project
         <feature name="common"/>

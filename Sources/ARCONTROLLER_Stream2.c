@@ -157,10 +157,10 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             stream2Controller->isRunning = 0;
             
             stream2Controller->serverAddress[0] = '\0';
-            if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_NSNETSERVICE) {
+            if (discoveryDevice->networkType == ARDISCOVERY_NETWORK_TYPE_NET) {
                 ARDISCOVERY_DEVICE_WifiGetIpAddress (discoveryDevice, stream2Controller->serverAddress, ARCONTROLLER_STREAM2_IP_SIZE);
                 stream2Controller->mux = NULL;
-            } else if (ARDISCOVERY_getProductService (discoveryDevice->productID) == ARDISCOVERY_PRODUCT_USBSERVICE) {
+            } else if (discoveryDevice->networkType == ARDISCOVERY_NETWORK_TYPE_USBMUX) {
 #if defined BUILD_LIBMUX
                 ARDISCOVERY_Device_UsbGetMux(discoveryDevice, &stream2Controller->mux);
                 mux_ref(stream2Controller->mux);
