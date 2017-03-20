@@ -45,6 +45,8 @@ DEVICE_TO_STRING = {
 DEVICES_GLOBAL = [ 'drones', 'rc', 'none' ]
 DEVICES_RC     = [ '0903', '090f', '0913' ]
 DEVICES_DRONE  = [ x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL+DEVICES_RC) ]
+# List of devices for which the doc should not be generated
+DEVICES_IGNORED = [ '0913' ]
 
 BG_BLUE = '\033[00;44m'
 BLUE =    '\033[00;94m'
@@ -124,6 +126,8 @@ def _get_support_list_formatted(supportStr):
     deviceList = supportStr.split(';')
     for device in deviceList:
         deviceDesc = device.split(':')
+        if deviceDesc[0] in DEVICES_IGNORED:
+            continue
         supportListFormatted += '- *' + DEVICE_TO_STRING[deviceDesc[0]]
         if len(deviceDesc) > 1:
             supportListFormatted += ' since ' + deviceDesc[1]
@@ -588,6 +592,9 @@ def _generate_doc(ctx, rootdir, features, args, product=None):
     return (has_commands, has_events)
 
 def _generate_toc(rootdir, cmds, evts, product):
+    if product in DEVICES_IGNORED:
+        return
+
     if not os.path.exists(rootdir):
         os.makedirs(rootdir)
 
@@ -657,7 +664,7 @@ def _do_generate_files(ctx, outdir, args_as_arr=None):
 
     if args.reference:
         ref_dir = os.path.join(outdir, 'reference')
-        products = ( x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL) )
+        products = ( x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL+DEVICES_IGNORED) )
 
         for p in products:
             name = DEVICE_TO_STRING[p].replace(' ', '_').lower()
