@@ -165,30 +165,30 @@ Java_com_parrot_arsdk_arcontroller_ARControllerArgumentDictionary_nativeGetArgVa
 {
     // local declarations
     ARCONTROLLER_DICTIONARY_ARG_t *nativeArg = (ARCONTROLLER_DICTIONARY_ARG_t*) (intptr_t) jniArg;
-    int value = 0;
+    jint value = 0;
     
     if (nativeArg != NULL)
     {
         switch (nativeArg->valueType)
         {
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8:
-                value = (int) nativeArg->value.U8;
+                value = (jint) nativeArg->value.U8;
                 break;
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8:
-                value = (int) nativeArg->value.I8;
+                value = (jint) nativeArg->value.I8;
                 break;
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16:
-                value = (int) nativeArg->value.U16;
+                value = (jint) nativeArg->value.U16;
                 break;
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I16:
-                value = (int) nativeArg->value.I16;
+                value = (jint) nativeArg->value.I16;
                 break;
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U32:
-                value = (int) nativeArg->value.U32;
+                value = (jint) nativeArg->value.U32;
                 break;
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_ENUM:
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I32:
-                value = (int) nativeArg->value.I32;
+                value = (jint) nativeArg->value.I32;
                 break;
             
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U64:
@@ -211,23 +211,21 @@ Java_com_parrot_arsdk_arcontroller_ARControllerArgumentDictionary_nativeGetArgVa
 JNIEXPORT jlong JNICALL
 Java_com_parrot_arsdk_arcontroller_ARControllerArgumentDictionary_nativeGetArgValueLong (JNIEnv *env, jobject thizz, jlong jniArg)
 {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_JNIDICTIONARY_TAG, "nativeGetArgValueLong ...");
-    
     // local declarations
     ARCONTROLLER_DICTIONARY_ARG_t *nativeArg = (ARCONTROLLER_DICTIONARY_ARG_t*) (intptr_t) jniArg;
-    long value = 0;
-    
+    jlong value = 0;
+
     if (nativeArg != NULL)
     {
         switch (nativeArg->valueType)
         {
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U64:
-                value = (long) nativeArg->value.U64;
+                value = (jlong) nativeArg->value.U64;
                 break;
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I64:
-                value = (long) nativeArg->value.I64;
+                value = (jlong) nativeArg->value.I64;
                 break;
-            
+
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U8:
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_I8:
             case ARCONTROLLER_DICTIONARY_VALUE_TYPE_U16:
@@ -246,7 +244,7 @@ Java_com_parrot_arsdk_arcontroller_ARControllerArgumentDictionary_nativeGetArgVa
                 break;
         }
     }
-    
+
     return value;
 }
 
