@@ -59,6 +59,9 @@
 #include <libmux.h>
 #endif
 
+#define DEFAULT_VIDEO_STREAM_PORT 55004
+#define DEFAULT_VIDEO_CONTROL_PORT 55005
+
 /*************************
  * Private header
  *************************/
@@ -77,7 +80,7 @@ static void *ARCONTROLLER_Stream2_RestartRun (void *data);
  * Implementation
  *************************/
 
-static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int *sockfd, int *port)
+static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int defaultPort, int *sockfd, int *port)
 {
     int fd, ret;
     socklen_t addrlen;
@@ -92,17 +95,33 @@ static int ARCONTROLLER_Stream2_Open_Socket(const char *name, int *sockfd, int *
     if (ret < 0)
         goto error;
 
-    /*  bind to a OS-assigned random port */
+    /*  try to bind to the default port */
     memset(&addr, 0, sizeof(addr));
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
     addr.sin_family = AF_INET;
-    addr.sin_port = htons (0);
+    addr.sin_port = htons (defaultPort);
     ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
     if (ret < 0) {
-        ret = errno;
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG,
-                    "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(ret));
-        goto error;
+        if (errno != EADDRINUSE) {
+            ret = errno;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG,
+                        "bind fd=%d, addr='0.0.0.0', port=%d: error='%s'", fd, defaultPort, strerror(ret));
+            goto error;
+        }
+
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_STREAM2_TAG,
+                    "bind fd=%d, addr='0.0.0.0', port=%d: error='%s'. Will try a random port.", fd, defaultPort,
+                    strerror(ret));
+
+        /*  bind to a OS-assigned random port */
+        addr.sin_port = htons (0);
+        ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
+        if (ret < 0) {
+            ret = errno;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_STREAM2_TAG,
+                        "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(ret));
+            goto error;
+        }
     }
 
     /* get selected port */
@@ -169,11 +188,15 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
 #endif
             }
             
-            ret = ARCONTROLLER_Stream2_Open_Socket("stream", &stream2Controller->clientStreamFd, &stream2Controller->clientStreamPort);
+            ret = ARCONTROLLER_Stream2_Open_Socket("stream", DEFAULT_VIDEO_STREAM_PORT,
+                                                   &stream2Controller->clientStreamFd,
+                                                   &stream2Controller->clientStreamPort);
             if (ret < 0)
                 localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
 
-            ret = ARCONTROLLER_Stream2_Open_Socket("control", &stream2Controller->clientControlFd, &stream2Controller->clientControlPort);
+            ret = ARCONTROLLER_Stream2_Open_Socket("control", DEFAULT_VIDEO_CONTROL_PORT,
+                                                   &stream2Controller->clientControlFd,
+                                                   &stream2Controller->clientControlPort);
             if (ret < 0)
                 localError = ARCONTROLLER_ERROR_INIT_NETWORK_CONFIG;
 

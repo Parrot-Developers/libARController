@@ -59,11 +59,13 @@
  * Private header
  *************************/
 
+#define DEFAULT_DEVICE_TO_CONTROLLER_PORT 43210
+
 /*************************
  * Implementation
  *************************/
 
-static int ARCONTROLLER_Network_GetAvailableSocketPort(void)
+static int ARCONTROLLER_Network_GetAvailableSocketPort(int defaultPort)
 {
     int fd, ret;
     socklen_t addrlen;
@@ -78,17 +80,33 @@ static int ARCONTROLLER_Network_GetAvailableSocketPort(void)
     if (ret < 0)
         goto error;
 
-    /*  bind to a OS-assigned random port */
+    /*  try to bind to the default port */
     memset(&addr, 0, sizeof(addr));
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
     addr.sin_family = AF_INET;
-    addr.sin_port = htons (0);
+    addr.sin_port = htons (defaultPort);
     ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
     if (ret < 0) {
-        ret = errno;
-        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG,
-                    "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(ret));
-        goto error;
+        if (errno != EADDRINUSE) {
+            ret = errno;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG,
+                        "bind fd=%d, addr='0.0.0.0', port=%d: error='%s'", fd, defaultPort, strerror(ret));
+            goto error;
+        }
+
+        ARSAL_PRINT(ARSAL_PRINT_INFO, ARCONTROLLER_NETWORK_TAG,
+                    "bind fd=%d, addr='0.0.0.0', port=%d: error='%s'. Will try a random port.", fd, defaultPort,
+                    strerror(ret));
+
+        /*  bind to a OS-assigned random port */
+        addr.sin_port = htons (0);
+        ret = ARSAL_Socket_Bind(fd, (struct sockaddr *)&addr, sizeof(addr));
+        if (ret < 0) {
+            ret = errno;
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_NETWORK_TAG,
+                        "bind fd=%d, addr='0.0.0.0', port=0: error='%s'", fd, strerror(ret));
+            goto error;
+        }
     }
 
     /* get selected port */
@@ -218,7 +236,7 @@ ARCONTROLLER_Network_t *ARCONTROLLER_Network_New (ARDISCOVERY_Device_t *discover
         (networkController->discoveryDevice->networkType == ARDISCOVERY_NETWORK_TYPE_NET))
     {
         // Override d2c_port
-        dicoveryError = ARDISCOVERY_Device_WifiSetDeviceToControllerPort(networkController->discoveryDevice, ARCONTROLLER_Network_GetAvailableSocketPort());
+        dicoveryError = ARDISCOVERY_Device_WifiSetDeviceToControllerPort(networkController->discoveryDevice, ARCONTROLLER_Network_GetAvailableSocketPort(DEFAULT_DEVICE_TO_CONTROLLER_PORT));
         if (dicoveryError != ARDISCOVERY_OK)
         {
             localError = ARCONTROLLER_ERROR_INIT_DEVICE_JSON_CALLBACK;
