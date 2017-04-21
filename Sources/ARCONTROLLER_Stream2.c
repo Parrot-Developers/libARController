@@ -531,9 +531,9 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
                 stream2Controller->clientStreamFd = -1;
             }
 
-            if (stream2Controller->clientControlPort >= 0) {
+            if (stream2Controller->clientControlFd >= 0) {
                 ARSAL_Socket_Close(stream2Controller->clientControlFd);
-                stream2Controller->clientControlPort = -1;
+                stream2Controller->clientControlFd = -1;
             }
 
             if (stream2Controller->qos_level == 1)
