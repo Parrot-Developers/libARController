@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 '''
     Copyright (C) 2014 Parrot SA
 
@@ -156,7 +154,7 @@ def list_files(ctx, outdir, extra):
         list_files_dict_key_java (ctx, paths.JNI_JAVA_DIR)
 
     if extra == NATIVE:
-        print os.path.join(outdir, "Sources/ARCONTROLLER_Error.c")
+        print(os.path.join(outdir, "Sources/ARCONTROLLER_Error.c"))
 
 #===============================================================================
 #===============================================================================

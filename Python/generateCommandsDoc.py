@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import sys
 import os
 import re
@@ -264,7 +262,7 @@ def _write_commands_doc(ctx, docfile, feature, args, product=None):
                 warning_str += '{}{}{}'.format(BLUE, "- Support is none\n", WHITE)
 
             if warning_str:
-                print(_format_message_name(feature, cmd) + ":\n" + warning_str)
+                print((_format_message_name(feature, cmd) + ":\n" + warning_str))
     return nb_cmd
 
 def _write_command_c_code(docfile, feature, cmd):
@@ -354,7 +352,7 @@ def _write_events_doc(ctx, docfile, feature, args, product=None):
                 warning_str += '{}{}{}'.format(BLUE, "- Support is none\n", WHITE)
 
             if warning_str:
-                print(_format_message_name(feature, evt) + ":\n" + warning_str)
+                print((_format_message_name(feature, evt) + ":\n" + warning_str))
     return nb_evt
 
 def _write_event_list_c_code(docfile, feature, evt):
@@ -682,8 +680,8 @@ def _do_generate_files(ctx, outdir, args_as_arr=None):
 
 def list_files(ctx, outdir, extra):
     for feature in ctx.features:
-        print os.path.join(outdir, _command_doc_file_name(feature))
-        print os.path.join(outdir, _event_doc_file_name(feature))
+        print(os.path.join(outdir, _command_doc_file_name(feature)))
+        print(os.path.join(outdir, _event_doc_file_name(feature)))
 
 def generate_files(ctx, outdir, extra):
     args_as_arr = extra.split(' ')[1:]
