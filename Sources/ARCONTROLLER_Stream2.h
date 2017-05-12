@@ -39,7 +39,7 @@
 #ifndef _ARCONTROLLER_STREAM2_PRIVATE_H_
 #define _ARCONTROLLER_STREAM2_PRIVATE_H_
 
-#include <json/json.h>
+#include <json-c/json.h>
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Thread.h>
 #include <libARController/ARCONTROLLER_Error.h>

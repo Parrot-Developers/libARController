@@ -843,7 +843,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
 
     cFile.write ('#include <stdio.h>\n')
     cFile.write ('#include <time.h>\n')
-    cFile.write ('#include <json/json.h>\n')
+    cFile.write ('#include <json-c/json.h>\n')
     cFile.write ('\n')
     
     cFile.write ('#include <libARSAL/ARSAL_Mutex.h>\n')
