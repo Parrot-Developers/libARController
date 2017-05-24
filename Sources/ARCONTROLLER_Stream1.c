@@ -38,7 +38,7 @@
  
 #include <stdlib.h>
 
-#include <json/json.h>
+#include <json-c/json.h>
 #include <libARSAL/ARSAL_Print.h>
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARStream/ARStream.h>
@@ -489,6 +489,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson (ARCONTROLLER_Stream1_t *s
     eARCONTROLLER_ERROR controllerError = ARCONTROLLER_OK;
 
     json_object *valueJsonObj = NULL;
+    json_bool res;
     
     if ((jsonObj == NULL) ||
         (stream1Controller == NULL))
@@ -499,22 +500,22 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream1_OnReceiveJson (ARCONTROLLER_Stream1_t *s
     if (error == ARDISCOVERY_OK)
     {
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream1Controller->fragmentSize = json_object_get_int(valueJsonObj);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream1Controller->maxNumberOfFragment = json_object_get_int(valueJsonObj);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream1Controller->maxAckInterval = json_object_get_int(valueJsonObj);
         }

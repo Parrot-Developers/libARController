@@ -313,6 +313,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_StreamSender_OnReceiveJson (ARCONTROLLER_StreamS
     int streamDataBufferId = -1;
 
     json_object *valueJsonObj = NULL;
+    json_bool res;
 
     if ((jsonObj == NULL) ||
         (streamController == NULL))
@@ -324,22 +325,22 @@ eARDISCOVERY_ERROR ARCONTROLLER_StreamSender_OnReceiveJson (ARCONTROLLER_StreamS
     {
 
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_SIZE_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             streamController->fragmentSize = json_object_get_int(valueJsonObj);
         }
 
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_FRAGMENT_MAXIMUM_NUMBER_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             streamController->maxNumberOfFragment = json_object_get_int(valueJsonObj);
         }
 
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             streamController->maxAckInterval = json_object_get_int(valueJsonObj);
         }

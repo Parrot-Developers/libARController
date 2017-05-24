@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 '''
     Copyright (C) 2014 Parrot SA
 
@@ -288,11 +286,11 @@ def generateDictionaryKeyEnumJava (ctx, JNI_JAVA_DIR):
 
 def list_files_dict_key (ctx, SRC_DIR, INC_DIR):
     ''' Print device dictionary key generated files '''
-    print INC_DIR + CTRL_DICT_KEY_H_NAME
-    print SRC_DIR + CTRL_DICT_KEY_C_NAME
+    print(INC_DIR + CTRL_DICT_KEY_H_NAME)
+    print(SRC_DIR + CTRL_DICT_KEY_C_NAME)
 
 def list_files_dict_key_java (ctx, JNI_JAVA_DIR):
     ''' Print device dictionary key generated files '''
     CLASS_NAME = ARJavaEnumType (MODULE_ARCONTROLLER, 'DICTIONARY', 'Key')
     JFILE_NAME =  JNI_JAVA_DIR + CLASS_NAME + '.java'
-    print JFILE_NAME
+    print(JFILE_NAME)

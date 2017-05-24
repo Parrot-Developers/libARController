@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 '''
     Copyright (C) 2014 Parrot SA
 
@@ -845,7 +843,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
 
     cFile.write ('#include <stdio.h>\n')
     cFile.write ('#include <time.h>\n')
-    cFile.write ('#include <json/json.h>\n')
+    cFile.write ('#include <json-c/json.h>\n')
     cFile.write ('\n')
     
     cFile.write ('#include <libARSAL/ARSAL_Mutex.h>\n')
@@ -5458,14 +5456,14 @@ def generateControllersJNI (ctx, JNI_C_DIR):
 
 def list_files_deviceCtrls (ctx, SRC_DIR, INC_DIR):
     ''' Print device controllers generated files '''
-    print INC_DIR + CTRL_DEVICE_H_NAME
-    print SRC_DIR + CTRL_DEVICE_PRIV_H_NAME
-    print SRC_DIR + CTRL_DEVICE_C_NAME
+    print(INC_DIR + CTRL_DEVICE_H_NAME)
+    print(SRC_DIR + CTRL_DEVICE_PRIV_H_NAME)
+    print(SRC_DIR + CTRL_DEVICE_C_NAME)
 
 def list_files_deviceCtrls_java (ctx, JNI_JAVA_DIR):
     ''' Print device controllers generated files '''
-    print JNI_JAVA_DIR + CTRL_DEVICE_JAVA_NAME
+    print(JNI_JAVA_DIR + CTRL_DEVICE_JAVA_NAME)
 
 def list_files_deviceCtrls_jni (ctx, JNI_C_DIR):
     ''' Print device controllers generated files '''
-    print JNI_C_DIR + CTRL_DEVICE_JNI_C_NAME
+    print(JNI_C_DIR + CTRL_DEVICE_JNI_C_NAME)

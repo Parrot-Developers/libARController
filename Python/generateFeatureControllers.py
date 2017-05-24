@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 '''
     Copyright (C) 2014 Parrot SA
 
@@ -2305,19 +2303,19 @@ def generateFeatureControllersJNI (ctx, JNI_C_DIR):
 
 def list_files_ftr_ctrls (ctx, SRC_DIR, INC_DIR):
     ''' Print features controllers generated files '''
-    print INC_DIR + CTRL_FTR_H_NAME
-    print SRC_DIR + CTRL_FTR_PRIV_H_NAME
-    print SRC_DIR + CTRL_FTR_C_NAME
+    print(INC_DIR + CTRL_FTR_H_NAME)
+    print(SRC_DIR + CTRL_FTR_PRIV_H_NAME)
+    print(SRC_DIR + CTRL_FTR_C_NAME)
 
 def list_files_ftr_ctrls_jni (ctx, JNI_JAVA_DIR):
     ''' Print features controllers generated files '''
     # Print java feature class files
     for feature in ctx.features:
-        print JNI_JAVA_DIR + 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature)) +'.java'
+        print(JNI_JAVA_DIR + 'ARFeature'+ ARCapitalize(get_ftr_old_name(feature)) +'.java')
 
 def list_files_ftr_ctrls_jni (ctx, JNI_C_DIR):
     ''' Print features controllers generated files '''
     # Print feature JNI c files
     for feature in ctx.features:
-        print JNI_C_DIR + 'ARCONTROLLER_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature)) + '.c'
-    print JNI_C_DIR + CTRL_FTR_JNI_C_NAME
+        print(JNI_C_DIR + 'ARCONTROLLER_JNI_Feature'+ ARCapitalize(get_ftr_old_name(feature)) + '.c')
+    print(JNI_C_DIR + CTRL_FTR_JNI_C_NAME)

@@ -38,7 +38,7 @@
 #ifndef _ARCONTROLLER_STREAM1_H_
 #define _ARCONTROLLER_STREAM1_H_
 
-#include <json/json.h>
+#include <json-c/json.h>
 #include <libARSAL/ARSAL_Thread.h>
 #include <libARNetwork/ARNETWORK_Manager.h>
 #include <libARController/ARCONTROLLER_Error.h>

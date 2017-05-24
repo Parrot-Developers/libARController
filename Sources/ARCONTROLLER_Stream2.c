@@ -41,7 +41,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <json/json.h>
+#include <json-c/json.h>
 #include <libARSAL/ARSAL_Print.h>
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Thread.h>
@@ -442,6 +442,7 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnReceiveJson (ARCONTROLLER_Stream2_t *s
     // local declarations
     eARDISCOVERY_ERROR error = ARDISCOVERY_OK;
     json_object *valueJsonObj = NULL;
+    json_bool res;
     
     if ((jsonObj == NULL) ||
         (stream2Controller == NULL))
@@ -452,28 +453,28 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnReceiveJson (ARCONTROLLER_Stream2_t *s
     if (error == ARDISCOVERY_OK)
     {
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_STREAM_PORT_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_STREAM_PORT_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_STREAM_PORT_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream2Controller->serverStreamPort = json_object_get_int(valueJsonObj);
         }
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream2Controller->serverControlPort = json_object_get_int(valueJsonObj);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_MAX_PACKET_SIZE_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_MAX_PACKET_SIZE_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_MAX_PACKET_SIZE_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream2Controller->maxPacketSize = json_object_get_int(valueJsonObj);
         }
         
         // get ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY
-        valueJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY);
-        if (valueJsonObj != NULL)
+        res = json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_QOS_MODE_KEY, &valueJsonObj);
+        if (res && valueJsonObj != NULL)
         {
             stream2Controller->qos_level = json_object_get_int(valueJsonObj);
         }
@@ -485,11 +486,13 @@ eARDISCOVERY_ERROR ARCONTROLLER_Stream2_OnReceiveJson (ARCONTROLLER_Stream2_t *s
 uint8_t ARCONTROLLER_Stream2_JsonContainsStream2Param(json_object *jsonObj)
 {
     // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_STREAM_PORT_KEY
-    json_object *serverStreamPortJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_STREAM_PORT_KEY);
+    json_object *serverStreamPortJsonObj = NULL;
+    json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_STREAM_PORT_KEY, &serverStreamPortJsonObj);
 
     // get ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY
-    json_object *serverControlPortJsonObj = json_object_object_get (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY);
-    
+    json_object *serverControlPortJsonObj = NULL;
+    json_object_object_get_ex (jsonObj, ARDISCOVERY_CONNECTION_JSON_ARSTREAM2_SERVER_CONTROL_PORT_KEY, &serverControlPortJsonObj);
+
     return ((serverStreamPortJsonObj != NULL) && (serverControlPortJsonObj != NULL));
 }
 
