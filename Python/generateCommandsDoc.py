@@ -177,6 +177,8 @@ def _write_message_comment(ctx, docfile, msg, comment):
 
 def _write_message_args(docfile, args):
     for arg in args:
+        if arg.name == _LIST_FLAG:
+            continue
         if isinstance(arg.argType, ArEnum):
             docfile.write ('* ' + arg.name + ' (' + 'enum' + '): ')
             for comm in arg.argType.doc.split('\n'):
