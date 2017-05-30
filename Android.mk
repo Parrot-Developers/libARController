@@ -39,7 +39,7 @@ LIBARCTR_DIR := $(PACKAGES_DIR)/libARController/
 
 # LOCAL_GEN_FILES depend on parser, generator, and all xml files
 $(LOCAL_GEN_FILES): $(CTR_ARSDK_XML_ROOT)/arsdkparser.py $(LIBARCTR_DIR)/Python/generateControllersSources.py $(wildcard $(CTR_ARSDK_XML_ROOT)/xml/*.xml)
-	python $(CTR_ARSDK_XML_ROOT)/arsdkgen.py $(LIBARCTR_DIR)/Python/generateControllersSources.py -o $(CTR_GEN_OUT) jni
+	$(CTR_ARSDK_XML_ROOT)/arsdkgen.py $(LIBARCTR_DIR)/Python/generateControllersSources.py -o $(CTR_GEN_OUT) jni
 
 clean-arsdk-jni-$(TARGET_ARCH_ABI):: clean-arsdk-generated
 
