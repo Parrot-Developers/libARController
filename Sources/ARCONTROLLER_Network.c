@@ -897,6 +897,10 @@ eARCONTROLLER_ERROR ARCONTROLLER_Network_SendData (ARCONTROLLER_Network_t *netwo
                 
             case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_HIGH_PRIORITY:
                 bufferID = networkController->networkConfig.controllerToDeviceHightPriority;
+                if (bufferID < 0)
+                {
+                    bufferID = networkController->networkConfig.controllerToDeviceAckId;
+                }
                 break;
                 
             case ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_STREAM:
