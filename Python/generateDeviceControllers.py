@@ -8,7 +8,7 @@
       notice, this list of conditions and the following disclaimer.
     * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the 
+      the documentation and/or other materials provided with the
       distribution.
     * Neither the name of Parrot nor the names
       of its contributors may be used to endorse or promote products
@@ -22,7 +22,7 @@
     COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
     INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
     BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
     AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
@@ -57,9 +57,9 @@ CTRL_DEVICE_JAVA_NAME = 'ARDeviceController.java'
 CTRL_DEVICE_JNI_C_NAME = 'ARCONTROLLER_JNI_Device.c'
 
 def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
-    
+
     deviceControllers = parseDeviceControllersXml (DEVICE_CONTROLLER_FILE, ctx)
-    
+
     #check deviceController list
     if not deviceControllers:
         exit (1)
@@ -71,7 +71,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     #########################################
 
     includeDefine = '_' + MODULE_DEVICE + '_H_'
-    
+
     className = ARTypeName (MODULE_ARCONTROLLER, 'device', '')
     classPrivateName = ARTypeName (MODULE_ARCONTROLLER, 'device', 'private')
 
@@ -111,7 +111,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
     hfile.write ('#include <libARController/ARCONTROLLER_Stream.h>\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * Enum characterizing the states of the device controller\n')
     hfile.write (' */\n')
@@ -122,14 +122,14 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write ('    ARCONTROLLER_DEVICE_STATE_RUNNING, /**< device controller is running */\n')
     hfile.write ('    ARCONTROLLER_DEVICE_STATE_PAUSED, /**< device controller is paused */\n')
     hfile.write ('    ARCONTROLLER_DEVICE_STATE_STOPPING, /**< device controller is stopping */\n')
-    hfile.write ('    \n')
+    hfile.write ('\n')
     hfile.write ('    ARCONTROLLER_DEVICE_STATE_MAX /**< Max of the enumeration */\n')
     hfile.write ('}eARCONTROLLER_DEVICE_STATE;\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Callback used when the state of the device Controller is changed.\n')
-    hfile.write (' * @param[in] newState The new state of the Device Contoller\n')
+    hfile.write (' * @param[in] newState The new state of the Device Controller\n')
     hfile.write (' * @param[in] error Error causing this new state.\n')
     hfile.write (' * @param[in] customData Custom Data set by the register\n')
     hfile.write (' */\n')
@@ -138,7 +138,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
 
     hfile.write ('/**\n')
     hfile.write (' * @brief Callback used when the extension state of the device Controller is changed.\n')
-    hfile.write (' * @param[in] newState The new state of the extension of the Device Contoller\n')
+    hfile.write (' * @param[in] newState The new state of the extension of the Device Controller\n')
     hfile.write (' * @param[in] product the type of the extension.\n')
     hfile.write (' * @param[in] name the name of the extension.\n')
     hfile.write (' * @param[in] error Error causing this new state.\n')
@@ -146,7 +146,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('typedef void (*'+ARTypeName (MODULE_ARCONTROLLER, 'device', 'ExtensionStateChangedCallback')+') (eARCONTROLLER_DEVICE_STATE newState, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error, void *customData);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Private part of the Device controller.\n')
     hfile.write (' */\n')
@@ -163,7 +163,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write ('    '+classPrivateName+' *privatePart; /**< private part of the deviceController */\n')
     hfile.write ('}'+className+';\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Create a new Device Controller\n')
     hfile.write (' * @warning This function allocate memory\n')
@@ -175,7 +175,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write (''+className+' *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'New')+' (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Delete the Device Controller\n')
     hfile.write (' * @warning This function free memory\n')
@@ -184,7 +184,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Delete')+' ('+className+' **deviceController);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Start the Device Controller.\n')
     hfile.write (' * @post ARCONTROLLER_Device_Stop() must be called to stop the Device Controller.\n')
@@ -194,7 +194,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Start')+' ('+className+' *deviceController);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Stop the Device Controller.\n')
     hfile.write (' * @param deviceController The device controller to Stop.\n')
@@ -203,7 +203,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Stop')+' ('+className+' *deviceController);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Set callback to receive the video stream.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -247,7 +247,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Remove callback of command received information.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -257,7 +257,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Add callback of Device Controller state changed information.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -277,7 +277,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddExtensionStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'ExtensionStateChangedCallback')+' extensionStateChangedCallback, void *customData);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Remove callback of Device Controller state changed information.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -287,7 +287,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' stateChangedCallback, void *customData);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Send audio stream frame through the network.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -299,7 +299,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SendStreamFrame')+' ('+className+' *deviceController, uint8_t *data, int dataSize);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Get Element of a command received.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -309,7 +309,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandElements')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Get the Device Controller state.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -342,7 +342,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('eARDISCOVERY_PRODUCT ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetExtensionProduct')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Check if the device controller has outupt video stream.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -350,7 +350,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'hasOutputVideoStream')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Check if the device controller has output audio stream.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -358,7 +358,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'hasOutputAudioStream')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
-    
+
     hfile.write ('/**\n')
     hfile.write (' * @brief Check if the device controller has input audio stream.\n')
     hfile.write (' * @param deviceController The device controller.\n')
@@ -366,12 +366,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hfile.write (' */\n')
     hfile.write ('int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'hasInputAudioStream')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error);\n')
     hfile.write ('\n')
-    
+
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Starts the video streaming (if available).\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @return ARCONTROLLER_OK if no error occured.\n')
+    hfile.write (' */\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartVideoStream')+' ('+className+' *deviceController);\n')
+    hfile.write ('\n')
+
+    hfile.write ('/**\n')
+    hfile.write (' * @brief Stops the video streaming (if available).\n')
+    hfile.write (' * @param deviceController The device controller.\n')
+    hfile.write (' * @return ARCONTROLLER_OK if no error occured.\n')
+    hfile.write (' */\n')
+    hfile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopVideoStream')+' ('+className+' *deviceController);\n')
+    hfile.write ('\n')
+
     hfile.write ('#endif /* '+includeDefine+' */\n')
     hfile.write ('\n')
     hfile.write ('// END GENERATED CODE\n')
     hfile.close ()
-    
+
     #################################################
     # Write Device controller private header file   #
     #################################################
@@ -406,14 +422,17 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('#include <libARController/ARCONTROLLER_DICTIONARY_Key.h>\n')
     hPrivFile.write ('#include <libARCommands/ARCommands.h>\n')
     hPrivFile.write ('#include <libARController/ARCONTROLLER_Feature.h>\n')
+    hPrivFile.write ('#include <librtsp.h>\n')
+    hPrivFile.write ('#include <libsdp.h>\n')
+    hPrivFile.write ('#include <futils/list.h>\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('#define '+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+' 1024\n')
     hPrivFile.write ('\n')
-    
+
     #TODO add commentary
     hPrivFile.write ('/**\n')
-    hPrivFile.write (' * @brief \n')
+    hPrivFile.write (' * @brief\n')
     hPrivFile.write (' */\n')
     hPrivFile.write ('typedef struct '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+';\n')
 
@@ -422,7 +441,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('{\n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback; /**< callback used when the state is changed. */\n')
     hPrivFile.write ('    void *customData;  /**< custom data given as parameter to the callback. */\n')
-    hPrivFile.write ('    \n')
+    hPrivFile.write ('\n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *next;\n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *prev;\n')
     hPrivFile.write ('};\n')
@@ -435,12 +454,12 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('{\n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'ExtensionStateChangedCallback')+' callback; /**< callback used when the extension state is changed. */\n')
     hPrivFile.write ('    void *customData;  /**< custom data given as parameter to the callback. */\n')
-    hPrivFile.write ('    \n')
+    hPrivFile.write ('\n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *next;\n')
     hPrivFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *prev;\n')
     hPrivFile.write ('};\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Device controller allow to drive a device.\n')
     hPrivFile.write (' */\n')
@@ -464,6 +483,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('    ARCONTROLLER_Stream_DidReceiveFrameCallback_t videoReceiveCallback;\n')
     hPrivFile.write ('    ARCONTROLLER_Stream_TimeoutFrameCallback_t videoTimeoutCallback;\n')
     hPrivFile.write ('    void *videoReceiveCustomData;\n')
+    hPrivFile.write ('    struct rtsp_client *rtspClient;\n')
     hPrivFile.write ('    //audio part\n')
     hPrivFile.write ('    int hasAudio; /**< 0 if the device has not Audio stream ; otherwide 1 */\n')
     hPrivFile.write ('    ARCONTROLLER_Stream_DecoderConfigCallback_t audioDecoderConfigCallback;\n')
@@ -474,9 +494,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write ('    eARCONTROLLER_DEVICE_STATE extensionState; /**< extension state of the deviceController*/\n')
     hPrivFile.write ('    char *extensionName;\n')
     hPrivFile.write ('    eARDISCOVERY_PRODUCT extensionProduct;\n')
+    hPrivFile.write ('    // pomp loop\n')
+    hPrivFile.write ('    struct pomp_loop *loop;\n')
+    hPrivFile.write ('    int pomp_stop;\n')
+    hPrivFile.write ('    ARSAL_Thread_t pompLoopThread;\n')
     hPrivFile.write ('};\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Start the Network.\n')
     hPrivFile.write (' * @post ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' must be call to stop the device Controller before destroy it.\n')
@@ -487,7 +511,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartNetwork')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Stop the Network.\n')
     hPrivFile.write (' * @param deviceController The device controller to stop its network.\n')
@@ -496,7 +520,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Function called on start of the device.\n')
     hPrivFile.write (' * @param deviceController The device controller on start.\n')
@@ -505,7 +529,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnStart')+' ('+className+' *deviceController, int isExtensionDevice);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Set the network controller of the device controller to its features.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -514,7 +538,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController, void* specificFeature);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Register callback for each command received.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -523,7 +547,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController, void* specificFeature);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Unregister callback for each command received.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -532,7 +556,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'UnregisterCallbacks')+' ('+className+' *deviceController, void* specificFeature);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Start the looper thread sending pcmd commands.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -541,7 +565,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Stop the looper thread sending pcmd commands.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -550,7 +574,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Run of the looper thread.\n')
     hPrivFile.write (' * @param data The device controller.\n')
@@ -560,7 +584,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ControllerLooperThread')+' (void *data);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Set the Initial Date for the device.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -568,7 +592,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetInitialDate')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Get the Initial Settings of the device.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -577,7 +601,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialSettings')+' ('+className+' *deviceController, int onExtensionDevice);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Get the Initial States of the device.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -586,22 +610,22 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialStates')+' ('+className+' *deviceController, int onExtensionDevice);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Callback used when the settings or states of the device are changed.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
     hPrivFile.write (' * @return executing error.\n')
     hPrivFile.write (' */\n')
-    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData); // TODO int -> ARCommands Big \n')
+    hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData); // TODO int -> ARCommands Big\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Function called when all initials states of the device are received.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
     hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Function called when all initials settings of the device are received.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -615,7 +639,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnSkyControllerConnectionChangedReceived')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Callback used to add a json part during the device connection.\n')
     hPrivFile.write (' * @param jsonObj The json in which to add.\n')
@@ -623,7 +647,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARDISCOVERY_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SendJsonCallback')+' (json_object *jsonObj, void *customData);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Function called when the ARDrone3 video stream state has changed.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -631,7 +655,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDrone3VideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Function called when the Jumping sumo video stream state has changed.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -663,14 +687,14 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write  ('eARDISCOVERY_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ReceiveJsonCallback')+' (json_object *jsonObj, void *customData);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Callback used when the Network Controller is Disconnected.\n')
     hPrivFile.write (' * @param customData The device controller on diconnection.\n')
     hPrivFile.write (' */\n')
     hPrivFile.write  ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnDisconnectCallback')+' (void *customData);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Start thread run .\n')
     hPrivFile.write (' * @param data The device controller on diconnection.\n')
@@ -678,7 +702,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartRun')+' (void *data);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Stop thread run .\n')
     hPrivFile.write (' * @param data The device controller on diconnection.\n')
@@ -702,7 +726,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ExtensionStopRun')+' (void *data);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Add a callback in a list.\n')
     hPrivFile.write (' * @param callbackList The list of callbacks.\n')
@@ -712,7 +736,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Remove a callback from a list.\n')
     hPrivFile.write (' * @param callbackList The list of callbacks.\n')
@@ -722,14 +746,14 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write (' /**\n')
     hPrivFile.write ('  * @brief Delete all callback of a list.\n')
     hPrivFile.write ('  * @param callbackList The list of callbacks.\n')
     hPrivFile.write ('  */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DeleteCallbackList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Notify all callback of a list.\n')
     hPrivFile.write (' * @param callbackList The list of callbacks.\n')
@@ -748,7 +772,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddExtensionCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'ExtensionStateChangedCallback')+' callback, void *customData);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Remove an extension callback from a list.\n')
     hPrivFile.write (' * @param callbackList The list of extension callbacks.\n')
@@ -776,7 +800,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllExtensionCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('/**\n')
     hPrivFile.write (' * @brief Set the Device Controller state and notify all listeners.\n')
     hPrivFile.write (' * @param deviceController The device controller.\n')
@@ -802,19 +826,19 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     hPrivFile.write (' */\n')
     hPrivFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DeleteExtension')+' ('+className+' *deviceController);\n')
     hPrivFile.write ('\n')
-    
+
     hPrivFile.write ('#endif /* '+includeDefine+' */\n')
     hPrivFile.write ('\n')
     hPrivFile.write ('// END GENERATED CODE\n')
     hPrivFile.close ()
-    
+
     #################################################
     # Write Device controller c file                #
     #################################################
-    
+
     classTag = 'ARCONTROLLER_Device'
     className = 'ARCONTROLLER_Device_t'
-    
+
     cFileName = CTRL_DEVICE_C_NAME
     filepath = SRC_DIR + cFileName
     cFile = open (filepath, 'w')
@@ -845,7 +869,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('#include <time.h>\n')
     cFile.write ('#include <json-c/json.h>\n')
     cFile.write ('\n')
-    
+
     cFile.write ('#include <libARSAL/ARSAL_Mutex.h>\n')
     cFile.write ('#include <libARSAL/ARSAL_Sem.h>\n')
     cFile.write ('#include <libARSAL/ARSAL_Time.h>\n')
@@ -859,11 +883,14 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('#include <ARCONTROLLER_NAckCbs.h>\n')
     cFile.write ('\n')
     cFile.write ('#include "ARCONTROLLER_Device.h"\n')
+    cFile.write ('#include "ARCONTROLLER_Stream.h"\n')
+    cFile.write ('#include "ARCONTROLLER_Stream2.h"\n')
+    cFile.write ('#include "ARCONTROLLER_Network.h"\n')
     cFile.write ('\n')
-    
+
     cFile.write ('#define '+MODULE_DEVICE+'_TAG "'+classTag+'"\n')
     cFile.write ('\n')
-    
+
     cFile.write ('/*****************************************\n')
     cFile.write (' *\n')
     cFile.write (' *             local header:\n')
@@ -873,37 +900,45 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
 
     cFile.write ('static int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ElementCompare')+'('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *a, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *b);\n')
     cFile.write ('\n')
-    
+
     cFile.write ('static int ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ExtensionElementCompare')+'('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *a, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *b);\n')
     cFile.write ('\n')
-    
-    
+
+
     cFile.write ('/*****************************************\n')
     cFile.write (' *\n')
     cFile.write (' *             implementation:\n')
     cFile.write (' *\n')
     cFile.write (' ****************************************/\n')
     cFile.write ('\n')
-    
+
+    cFile.write ('static void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'PompLoopThread')+' (void *arg)\n')
+    cFile.write ('{\n')
+    cFile.write ('    '+className+' *deviceController = arg;\n')
+    cFile.write ('    while (!deviceController->privatePart->pomp_stop)\n')
+    cFile.write ('        pomp_loop_wait_and_process(deviceController->privatePart->loop, -1);\n')
+    cFile.write ('    return NULL;\n')
+    cFile.write ('}\n')
+
     cFile.write (''+className+' *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'New')+' (ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Create a new Device Controller --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    //local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
     cFile.write ('    eARDISCOVERY_ERROR dicoveryError = ARDISCOVERY_OK;\n')
     cFile.write ('    '+className+' *deviceController =  NULL;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (discoveryDevice == NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Allocate the Device Controller\n')
     cFile.write ('    deviceController = malloc (sizeof('+className+'));\n')
     cFile.write ('    if (deviceController != NULL)\n')
@@ -917,8 +952,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_ALLOC;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Allocate the private part of the Device Controller\n')
@@ -950,9 +985,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            deviceController->privatePart->extensionStateChangedCallbacks = NULL;\n')
     cFile.write ('            deviceController->privatePart->extensionName = NULL;\n')
     cFile.write ('            deviceController->privatePart->extensionProduct = ARDISCOVERY_PRODUCT_MAX;\n')
-    cFile.write ('            \n')
-    
-    cFile.write ('            // Create the mutex/condition \n')
+    cFile.write ('\n')
+    cFile.write ('            deviceController->privatePart->rtspClient = NULL;\n')
+    cFile.write ('            deviceController->privatePart->loop = NULL;\n')
+    cFile.write ('            deviceController->privatePart->pomp_stop = 0;\n')
+    cFile.write ('            deviceController->privatePart->pompLoopThread = NULL;\n')
+    cFile.write ('\n')
+    cFile.write ('            // Create the mutex/condition\n')
     cFile.write ('            if ((ARSAL_Mutex_Init (&(deviceController->privatePart->mutex)) != 0) ||\n')
     cFile.write ('               (ARSAL_Sem_Init (&(deviceController->privatePart->initSem), 0, 0) != 0))\n')
     cFile.write ('            {\n')
@@ -963,23 +1002,23 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        {\n')
     cFile.write ('            localError = ARCONTROLLER_ERROR_ALLOC;\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Copy the device\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        deviceController->privatePart->discoveryDevice = ARDISCOVERY_Device_NewByCopy (discoveryDevice, &dicoveryError);\n')
     cFile.write ('        if (dicoveryError != ARDISCOVERY_OK)\n')
     cFile.write ('        {\n')
     cFile.write ('            localError = ARCONTROLLER_ERROR_INIT_DEVICE_COPY;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Get networkConfiguration of the device\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
@@ -990,19 +1029,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Check if the device has video\n')
-    cFile.write ('        if (deviceController->privatePart->networkConfiguration.deviceToControllerARStreamData != -1)\n')
-    cFile.write ('        {\n')
-    cFile.write ('            deviceController->privatePart->hasVideo = 1;\n')
-    cFile.write ('        }\n')
-    cFile.write ('        //NO else ; device has not video\n')
+    cFile.write ('        deviceController->privatePart->hasVideo = deviceController->privatePart->networkConfiguration.hasVideo;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
@@ -1014,7 +1049,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        //NO else ; device has not audio\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
@@ -1028,42 +1063,53 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
             cFile.write ('                {\n')
             cFile.write ('                    deviceController->'+ARUncapitalize(ftr_new_to_old_name(featureName))+' = ' + ARFunctionName (MODULE_FEATURE, ftr_new_to_old_name(featureName), 'New')+' (deviceController->privatePart->networkController, &localError);\n')
             cFile.write ('                }\n')
-            cFile.write ('                \n')
+            cFile.write ('\n')
         cFile.write ('                break;\n')
-        cFile.write ('            \n')
-        
+        cFile.write ('\n')
+
     cFile.write ('            default:\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "device : %d not known", discoveryDevice->productID);\n')
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-
+    cFile.write ('\n')
+    cFile.write ('    if (localError == ARCONTROLLER_OK) {\n')
+    cFile.write ('        deviceController->privatePart->loop = pomp_loop_new();\n')
+    cFile.write ('        if (!deviceController->privatePart->loop)\n')
+    cFile.write ('            localError = ARCONTROLLER_ERROR_ALLOC;\n')
+    cFile.write ('    }\n')
+    cFile.write ('\n')
+    cFile.write ('    if (localError == ARCONTROLLER_OK) {\n')
+    cFile.write ('        ARSAL_Thread_Create(&deviceController->privatePart->pompLoopThread,\n')
+    cFile.write ('                            ARCONTROLLER_Device_PompLoopThread,\n')
+    cFile.write ('                            deviceController);\n')
+    cFile.write ('    }\n')
+    cFile.write ('\n')
     cFile.write ('    // delete the Device Controller if an error occurred\n')
     cFile.write ('    if (localError != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Delete')+' (&deviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: skipped no error \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('    // No else: skipped no error\n')
+    cFile.write ('\n')
+
     cFile.write ('    // Return the error\n')
     cFile.write ('    if (error != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('    // No else: error is not returned\n')
+    cFile.write ('\n')
+
     cFile.write ('    return deviceController;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Delete')+' ('+className+' **deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Delete the Device Controller --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if (deviceController != NULL)\n')
     cFile.write ('    {\n')
@@ -1071,30 +1117,36 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        {\n')
     cFile.write ('            if ((*deviceController)->privatePart != NULL)\n')
     cFile.write ('            {\n')
+    cFile.write ('                //Stop & join pomp_loop_thread\n')
+    cFile.write ('                (*deviceController)->privatePart->pomp_stop = 1;\n')
+    cFile.write ('                pomp_loop_wakeup((*deviceController)->privatePart->loop);\n')
+    cFile.write ('                ARSAL_Thread_Join((*deviceController)->privatePart->pompLoopThread, NULL);\n')
+    cFile.write ('                pomp_loop_destroy((*deviceController)->privatePart->loop);\n')
+    cFile.write ('\n')
     cFile.write ('                // delete all extension related vars\n')
     cFile.write ('                ARCONTROLLER_Device_DeleteExtension(*deviceController);\n')
-    cFile.write ('                \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('                ARSAL_Mutex_Destroy (&((*deviceController)->privatePart->mutex));\n')
-    cFile.write ('                \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('                ARSAL_Sem_Destroy (&((*deviceController)->privatePart->initSem));\n')
-    cFile.write ('                \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('                if ((*deviceController)->privatePart->commandCallbacks != NULL)\n')
     cFile.write ('                {\n')
     cFile.write ('                    // -- Delete all callback in array --\n')
     cFile.write ('                    ARCONTROLLER_Dictionary_DeleteCallbackList(&((*deviceController)->privatePart->commandCallbacks));\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
 
     cFile.write ('                if ((*deviceController)->privatePart->stateChangedCallbacks != NULL)\n')
     cFile.write ('                {\n')
     cFile.write ('                    // -- Delete all callback in array --\n')
     cFile.write ('                    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DeleteCallbackList')+'(&((*deviceController)->privatePart->stateChangedCallbacks));\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('                // Delete features:\n')
     cFile.write ('                switch ((*deviceController)->privatePart->discoveryDevice->productID)\n')
     cFile.write ('                {\n')
@@ -1102,25 +1154,26 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('                    case '+discoveryProduct (deviceController.product)+':\n')
         for featureName in deviceController.features:
             cFile.write ('                        ' + ARFunctionName (MODULE_FEATURE, ftr_new_to_old_name(featureName), 'Delete')+' (&((*deviceController)->'+ARUncapitalize(ftr_new_to_old_name(featureName))+'));\n')
-            cFile.write ('                        \n')
+            cFile.write ('\n')
         cFile.write ('                        break;\n')
-        cFile.write ('                    \n')
-    
+        cFile.write ('\n')
+
     cFile.write ('                    default:\n')
     cFile.write ('                        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "device : %d not known", (*deviceController)->privatePart->discoveryDevice->productID);\n')
     cFile.write ('                        break;\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
-    
+    cFile.write ('\n')
+
+    cFile.write ('                ARDISCOVERY_Device_DestroyNetworkConfiguration ((*deviceController)->privatePart->discoveryDevice, &((*deviceController)->privatePart->networkConfiguration));\n')
     cFile.write ('                ARDISCOVERY_Device_Delete (&((*deviceController)->privatePart->discoveryDevice));\n')
-    cFile.write ('                \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('                // free the private part of the Device Controller\n')
     cFile.write ('                free ((*deviceController)->privatePart);\n')
     cFile.write ('                (*deviceController)->privatePart = NULL;\n')
     cFile.write ('            }\n')
-    cFile.write ('            \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('            // free the Device Controller\n')
     cFile.write ('            free (*deviceController);\n')
     cFile.write ('            (*deviceController) = NULL;\n')
@@ -1139,7 +1192,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            // -- Delete all callback in array --\n')
     cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DeleteExtensionCallbackList')+'(&(deviceController->privatePart->extensionStateChangedCallbacks));\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // Delete extension feature\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        switch (deviceController->privatePart->extensionProduct)\n')
@@ -1170,7 +1223,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
     cFile.write ('        ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (deviceController->privatePart->extensionName != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            free(deviceController->privatePart->extensionName);\n')
@@ -1179,24 +1232,24 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
-    
-    
+
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' ('+className+' *deviceController, void* specificFeature)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Register the Callbacks --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (deviceController == NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        return ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     for feature in ctx.features:
         cFile.write ('    if ((deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+')))\n')
         cFile.write ('    {\n')
@@ -1205,77 +1258,77 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
             cFile.write ('        {\n')
             cFile.write ('            error = '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'addCallback')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
             cFile.write ('        }\n')
-            cFile.write ('        \n')
+            cFile.write ('\n')
         cFile.write ('    }\n')
-        cFile.write ('    \n')
-        
+        cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'UnregisterCallbacks')+' ('+className+' *deviceController, void *specificFeature)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Unregister the Callbacks --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    eARCONTROLLER_ERROR removingError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (deviceController == NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        return ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    
+
     for feature in ctx.features:
         cFile.write ('        if ((deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+')))\n')
         cFile.write ('        {\n')
-        
+
         for evt in feature.evts:
             cFile.write ('            removingError = '+ARFunctionName(MODULE_FEATURE, get_ftr_old_name(feature), 'removeCallback')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', '+defineNotification(feature, evt)+', ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+', deviceController);\n')
             cFile.write ('            if (error != ARCONTROLLER_OK)\n')
             cFile.write ('            {\n')
             cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring removing of the callback for '+defineNotification(feature, evt)+'; error :%s", ARCONTROLLER_Error_ToString (removingError));\n')
             cFile.write ('            }\n')
-            cFile.write ('            \n')
+            cFile.write ('\n')
         cFile.write ('        }\n')
-        cFile.write ('        \n')
+        cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-            
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Start')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Start the Device Controller --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    ARSAL_Thread_t startingThread = NULL;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK) \n')
+    cFile.write ('\n')
+
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
 
     cFile.write ('        if (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_STOPPED)\n')
     cFile.write ('        {\n')
     cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STARTING, ARCONTROLLER_OK);\n')
-    
+
     cFile.write ('            if (ARSAL_Thread_Create (&startingThread, ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartRun')+', deviceController) != 0)\n')
     cFile.write ('            {\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Creation of Starting thread failed.");\n')
@@ -1286,40 +1339,46 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                ARSAL_Thread_Destroy (&startingThread);\n')
     cFile.write ('                startingThread = NULL;\n')
     cFile.write ('            }\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Stop')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Stop the Device Controller --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    ARSAL_Thread_t stoppingThread = NULL;\n')
-    cFile.write ('    \n')
-        
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (deviceController == NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
-    
-    cFile.write ('    if (error == ARCONTROLLER_OK) \n')
+    cFile.write ('\n')
+
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
+    cFile.write ('    {\n')
+    cFile.write ('        // Stop video streaming before stopping device controller\n')
+    cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopVideoStream')+' (deviceController);\n')
+    cFile.write ('    }\n')
+
+
+    cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
 
     cFile.write ('        if (deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_RUNNING)\n')
     cFile.write ('        {\n')
     cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, ARCONTROLLER_OK);\n')
-    
+
     cFile.write ('            if (ARSAL_Thread_Create (&stoppingThread, ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopRun')+', deviceController) != 0)\n')
     cFile.write ('            {\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Creation of Stopping thread failed.");\n')
@@ -1330,36 +1389,36 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                ARSAL_Thread_Destroy (&stoppingThread);\n')
     cFile.write ('                stoppingThread = NULL;\n')
     cFile.write ('            }\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('        }\n')
     cFile.write ('        else if ((deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_STARTING) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('        {\n')
     cFile.write ('            // Cancel the connection\n')
     cFile.write ('            ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, ARCONTROLLER_OK);\n')
-    
+
     cFile.write ('            ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('            deviceController->privatePart->startCancelled = 1;\n')
     cFile.write ('            ARSAL_Sem_Post (&(deviceController->privatePart->initSem));\n')
     cFile.write ('            ARSAL_Sem_Post (&(deviceController->privatePart->initSem));\n')
     cFile.write ('            ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
-    
+
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetVideoStreamCallbacks')+' ('+className+' *deviceController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set video stream callbacks --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1367,15 +1426,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        if (deviceController->privatePart->hasVideo)\n')
@@ -1390,16 +1449,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            error = ARCONTROLLER_ERROR_NO_VIDEO;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -1446,15 +1505,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetAudioStreamCallbacks')+' ('+className+' *deviceController, ARCONTROLLER_Stream_DecoderConfigCallback_t decoderConfigCallback, ARCONTROLLER_Stream_DidReceiveFrameCallback_t receiveFrameCallback, ARCONTROLLER_Stream_TimeoutFrameCallback_t timeoutFrameCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set audio stream callbacks --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1462,15 +1521,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        if (deviceController->privatePart->hasAudio)\n')
@@ -1485,28 +1544,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            error = ARCONTROLLER_ERROR_NO_AUDIO;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add Command received callback --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1514,40 +1573,40 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Dictionary_AddCallbackInList (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCommandReceivedCallback')+' ('+className+' *deviceController, ARCONTROLLER_DICTIONARY_CALLBACK_t commandReceivedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove Command received callback --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1555,45 +1614,45 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-        
+
     cFile.write ('        error = ARCONTROLLER_Dictionary_RemoveCallbackFromList (&(deviceController->privatePart->commandCallbacks), commandReceivedCallback, customData);\n')
-    
+
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('ARCONTROLLER_DICTIONARY_ELEMENT_t *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetCommandElements')+' ('+className+' *deviceController, '+defineNotificationDef()+' commandKey, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get Command Elements --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
     cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *elements = NULL;\n')
     cFile.write ('    '+defineNotificationDef()+' featureKey = ' + ARFunctionName (MODULE_DICTIONARY, 'Key', 'GetFeatureFromCommandKey')+' (commandKey);\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1601,15 +1660,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch (featureKey)\n')
@@ -1617,45 +1676,45 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     for feature in ctx.features:
         cFile.write ('            case '+defineNotification(feature)+':\n')
         cFile.write ('                elements = ' + ARFunctionName (MODULE_ARCONTROLLER, get_ftr_old_name(feature), 'GetCommandElements')+' (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+', commandKey, &localError);\n')
-        cFile.write ('                \n')
+        cFile.write ('\n')
         cFile.write ('                break;\n')
-        cFile.write ('            \n')
-    
+        cFile.write ('\n')
+
     cFile.write ('            default :\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error commandKey :%d not known", commandKey);\n')
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Return the error\n')
     cFile.write ('    if (error != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('    // No else: error is not returned\n')
+    cFile.write ('\n')
+
     cFile.write ('    return elements;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' stateChangedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add State Changed callback --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1663,28 +1722,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = '+ ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInList')+' (&(deviceController->privatePart->stateChangedCallbacks), stateChangedCallback, customData);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -1692,11 +1751,11 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddExtensionStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'ExtensionStateChangedCallback')+' extensionStateChangedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add Extension State Changed callback --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1704,41 +1763,41 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = '+ ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddExtensionCallbackInList')+' (&(deviceController->privatePart->extensionStateChangedCallbacks), extensionStateChangedCallback, customData);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveStateChangedCallback')+' ('+className+' *deviceController, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' stateChangedCallback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove State Changed Callback --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1746,41 +1805,41 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromList')+' (&(deviceController->privatePart->stateChangedCallbacks), stateChangedCallback, customData);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SendStreamFrame')+' ('+className+' *deviceController, uint8_t *data, int dataSize)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Send Stream Frame --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    int locked = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL) ||\n')
@@ -1789,28 +1848,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 1;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Network_SendAudioFrame (deviceController->privatePart->networkController, data, dataSize);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (locked)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('        locked = 0;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -1818,12 +1877,12 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('eARCONTROLLER_DEVICE_STATE ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetState')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get State --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_DEVICE_STATE state = ARCONTROLLER_DEVICE_STATE_MAX;\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1831,28 +1890,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        state = deviceController->privatePart->state;\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Return the error\n')
     cFile.write ('    if (error != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('    // No else: error is not returned\n')
+    cFile.write ('\n')
+
     cFile.write ('    return state;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -1860,12 +1919,12 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('eARCONTROLLER_DEVICE_STATE ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetExtensionState')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get Extension State --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_DEVICE_STATE extensionState = ARCONTROLLER_DEVICE_STATE_MAX;\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1873,28 +1932,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        extensionState = deviceController->privatePart->extensionState;\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Return the error\n')
     cFile.write ('    if (error != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('    // No else: error is not returned\n')
+    cFile.write ('\n')
+
     cFile.write ('    return extensionState;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -1902,11 +1961,11 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetExtensionName')+' ('+className+' *deviceController, char *buffer, int bufferSize, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get Extension Name --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL) ||\n')
@@ -1915,13 +1974,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        if (deviceController->privatePart->extensionName != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            int desiredChars = snprintf(buffer, bufferSize, "%s", deviceController->privatePart->extensionName);\n')
@@ -1934,30 +1993,30 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        {\n')
     cFile.write ('            localError = ARCONTROLLER_ERROR_STATE;\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
 
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Return the error\n')
     cFile.write ('    if (error != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
+    cFile.write ('    // No else: error is not returned\n')
     cFile.write ('}\n')
     cFile.write ('\n')
 
     cFile.write ('eARDISCOVERY_PRODUCT ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetExtensionProduct')+' ('+className+' *deviceController, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get Extension Product --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    eARDISCOVERY_PRODUCT extensionProduct = ARDISCOVERY_PRODUCT_MAX;\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -1965,28 +2024,28 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets localError to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Mutex_Lock(&(deviceController->privatePart->mutex));\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        extensionProduct = deviceController->privatePart->extensionProduct;\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Return the error\n')
     cFile.write ('    if (error != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
-    cFile.write ('    \n')
-    
+    cFile.write ('    // No else: error is not returned\n')
+    cFile.write ('\n')
+
     cFile.write ('    return extensionProduct;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -2024,7 +2083,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        *error = localError;\n')
     cFile.write ('    }\n')
-    cFile.write ('    // No else: error is not returned \n')
+    cFile.write ('    // No else: error is not returned\n')
     cFile.write ('\n')
 
     cFile.write ('    return hasVideoStreamOutput;\n')
@@ -2094,55 +2153,184 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    return hasAudioStreamInput;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartVideoStream')+' ('+className+' *deviceController)\n')
+    cFile.write ('{\n')
+    cFile.write ('    eARCONTROLLER_ERROR err;\n')
+    cFile.write ('\n')
+    cFile.write ('    if (!deviceController || !deviceController->privatePart)\n')
+    cFile.write ('        return ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('\n')
+    cFile.write ('    switch (deviceController->privatePart->networkConfiguration.streamType) {\n')
+    cFile.write ('    case ARDISCOVERY_STREAM_STARTSTOP_ARCOMMANDS:\n')
+    cFile.write ('    {\n')
+    cFile.write ('        uint8_t cmdBuffer[512];\n')
+    cFile.write ('        int32_t cmdSize = 0;\n')
+    cFile.write ('        if (deviceController->privatePart->networkConfiguration.startCommand(cmdBuffer, 512, &cmdSize) != ARCOMMANDS_GENERATOR_OK)\n')
+    cFile.write ('            return ARCONTROLLER_ERROR_COMMAND_GENERATING;\n')
+    cFile.write ('        err = ARCONTROLLER_Network_SendData(deviceController->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, NULL);\n')
+    cFile.write ('        if (err != ARCONTROLLER_OK)\n')
+    cFile.write ('            return err;\n')
+    cFile.write ('        break;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    case ARDISCOVERY_STREAM_STARTSTOP_RTSP:\n')
+    cFile.write ('    {\n')
+    cFile.write ('        int ret;\n')
+    cFile.write ('        char *sdp_str;\n')
+    cFile.write ('        char *media_url = NULL;\n')
+    cFile.write ('        struct sdp_session *session = NULL;\n')
+    cFile.write ('        struct sdp_media *media;\n')
+    cFile.write ('        if (deviceController->privatePart->rtspClient) {\n')
+    cFile.write ('            // Stream already started, ignore command\n')
+    cFile.write ('            return ARCONTROLLER_OK;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        deviceController->privatePart->rtspClient = rtsp_client_new(NULL, deviceController->privatePart->loop);\n')
+    cFile.write ('        if (!deviceController->privatePart->rtspClient) {\n')
+    cFile.write ('            return ARCONTROLLER_ERROR_INIT_STREAM;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        pomp_loop_wakeup(deviceController->privatePart->loop);\n')
+    cFile.write ('        ret = rtsp_client_connect(deviceController->privatePart->rtspClient, deviceController->privatePart->networkConfiguration.rtspAddress);\n')
+    cFile.write ('        if (ret != 0) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        ret = rtsp_client_options(deviceController->privatePart->rtspClient, 2000);\n')
+    cFile.write ('        if (ret != 0) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        ret = rtsp_client_describe(deviceController->privatePart->rtspClient, &sdp_str, 2000);\n')
+    cFile.write ('        if (ret != 0 || !sdp_str) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        session = sdp_description_read(sdp_str);\n')
+    cFile.write ('        if (!session) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        list_walk_entry_forward(&session->medias, media, node) {\n')
+    cFile.write ('            if(media->type != SDP_MEDIA_TYPE_VIDEO ||\n')
+    cFile.write ('               !media->control_url)\n')
+    cFile.write ('                continue;\n')
+    cFile.write ('            media_url = media->control_url;\n')
+    cFile.write ('            break;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        if (!media_url) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        ret = rtsp_client_setup(deviceController->privatePart->rtspClient, media_url,\n')
+    cFile.write ('                                deviceController->privatePart->networkController->videoController->stream2Controller->clientStreamPort,\n')
+    cFile.write ('                                deviceController->privatePart->networkController->videoController->stream2Controller->clientControlPort,\n')
+    cFile.write ('                                &deviceController->privatePart->networkController->videoController->stream2Controller->serverStreamPort,\n')
+    cFile.write ('                                &deviceController->privatePart->networkController->videoController->stream2Controller->serverControlPort,\n')
+    cFile.write ('                                2000);\n')
+    cFile.write ('        if (ret != 0) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        ret = rtsp_client_play(deviceController->privatePart->rtspClient, 2000);\n')
+    cFile.write ('        if (ret != 0) {\n')
+    cFile.write ('            goto startStreamFail;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        sdp_session_destroy(session);\n')
+    cFile.write ('        ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);\n')
+    cFile.write ('        break;\n')
+    cFile.write ('startStreamFail:\n')
+    cFile.write ('        sdp_session_destroy(session);\n')
+    cFile.write ('        rtsp_client_disconnect(deviceController->privatePart->rtspClient, 2000);\n')
+    cFile.write ('        rtsp_client_destroy(deviceController->privatePart->rtspClient);\n')
+    cFile.write ('        deviceController->privatePart->rtspClient = NULL;\n')
+    cFile.write ('        return ARCONTROLLER_ERROR_INIT_STREAM;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    default:\n')
+    cFile.write ('        return ARCONTROLLER_ERROR_NO_VIDEO;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    return ARCONTROLLER_OK;\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+
+    cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopVideoStream')+' ('+className+' *deviceController)\n')
+    cFile.write ('{\n')
+    cFile.write ('    eARCONTROLLER_ERROR err;\n')
+    cFile.write ('\n')
+    cFile.write ('    if (!deviceController || !deviceController->privatePart)\n')
+    cFile.write ('        return ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
+    cFile.write ('\n')
+    cFile.write ('    switch (deviceController->privatePart->networkConfiguration.streamType) {\n')
+    cFile.write ('    case ARDISCOVERY_STREAM_STARTSTOP_ARCOMMANDS:\n')
+    cFile.write ('    {\n')
+    cFile.write ('        uint8_t cmdBuffer[512];\n')
+    cFile.write ('        int32_t cmdSize = 0;\n')
+    cFile.write ('        if (deviceController->privatePart->networkConfiguration.stopCommand(cmdBuffer, 512, &cmdSize) != ARCOMMANDS_GENERATOR_OK)\n')
+    cFile.write ('            return ARCONTROLLER_ERROR_COMMAND_GENERATING;\n')
+    cFile.write ('        err = ARCONTROLLER_Network_SendData(deviceController->privatePart->networkController, cmdBuffer, cmdSize, ARCONTROLLER_NETWORK_SENDING_DATA_TYPE_ACK, ARNETWORK_MANAGER_CALLBACK_RETURN_DATA_POP, NULL);\n')
+    cFile.write ('        if (err != ARCONTROLLER_OK)\n')
+    cFile.write ('            return err;\n')
+    cFile.write ('        break;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    case ARDISCOVERY_STREAM_STARTSTOP_RTSP:\n')
+    cFile.write ('    {\n')
+    cFile.write ('        if (!deviceController->privatePart->rtspClient) {\n')
+    cFile.write ('            // Stream not started, ignore command\n')
+    cFile.write ('            return ARCONTROLLER_OK;\n')
+    cFile.write ('        }\n')
+    cFile.write ('        ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);\n')
+    cFile.write ('        rtsp_client_teardown(deviceController->privatePart->rtspClient, 2000);\n')
+    cFile.write ('        rtsp_client_destroy(deviceController->privatePart->rtspClient);\n')
+    cFile.write ('        deviceController->privatePart->rtspClient = NULL;\n')
+    cFile.write ('        break;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    default:\n')
+    cFile.write ('        return ARCONTROLLER_ERROR_NO_VIDEO;\n')
+    cFile.write ('    }\n')
+    cFile.write ('    return ARCONTROLLER_OK;\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+
     cFile.write ('\n')
     cFile.write ('/********************\n')
     cFile.write ('* Private Functions *\n')
     cFile.write ('*********************/\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartRun')+' (void *data)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Thread Run of Start --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = ('+className+' *) data;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        return NULL;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
-    cFile.write ('    {\n')    
+    cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartNetwork')+' (deviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+' (deviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RegisterCallbacks')+' (deviceController, NULL);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnStart')+' (deviceController, 0);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, ARCONTROLLER_OK);\n')
@@ -2150,37 +2338,37 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    else\n')
     cFile.write ('    {\n')
     cFile.write ('        // Failed or canceled : Stop the DeviceController.\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (deviceController->privatePart->startCancelled)\n')
     cFile.write ('        {\n')
-    cFile.write ('            // DeviceController start canceled \n')
+    cFile.write ('            // DeviceController start canceled\n')
     cFile.write ('            error = ARCONTROLLER_ERROR_CANCELED;\n')
     cFile.write ('        }\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_INFO, '+MODULE_DEVICE+'_TAG, "Start failed or canceled.");\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, error);\n')
     cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopRun')+' (deviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Print error\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Start fail error :%s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')
-    
+
     cFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopRun')+' (void *data)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Thread Run of Stop --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = ('+className+' *) data;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (deviceController == NULL) {\n')
@@ -2194,25 +2382,25 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "UnregisterCallback failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+' (deviceController);\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "StopControllerLooperThread failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' (deviceController);\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "StopNetwork failed with error :%s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED, ARCONTROLLER_OK);\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -2220,11 +2408,11 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('void *ARCONTROLLER_Device_ExtensionStopRun (void *data)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Thread Run of Stop --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Local declarations\n')
     cFile.write ('    ARCONTROLLER_Device_t *deviceController = (ARCONTROLLER_Device_t *) data;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
@@ -2233,7 +2421,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        return NULL;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    switch (deviceController->privatePart->extensionProduct)\n')
     cFile.write ('    {\n')
@@ -2284,20 +2472,20 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('        deviceController->privatePart->extensionProduct = ARDISCOVERY_PRODUCT_MAX;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_STOPPED, ARCONTROLLER_OK);\n')
     cFile.write ('    }\n')
     cFile.write ('    //else TODO: see what to do in case of error here\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Print error\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Stop fail error :%s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -2305,31 +2493,31 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartNetwork')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Start the Network --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Create the Network Controller\n')
     cFile.write ('        deviceController->privatePart->networkController = ARCONTROLLER_Network_New (deviceController->privatePart->discoveryDevice, ARCONTROLLER_Device_OnDisconnectCallback, ARCONTROLLER_Device_SendJsonCallback, ARCONTROLLER_Device_ReceiveJsonCallback, deviceController, &error);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' (deviceController, NULL);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
@@ -2342,10 +2530,10 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring registering ARCommands to the feature '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (error));\n')
         cFile.write ('            }\n')
         cFile.write ('        }\n')
-        cFile.write ('        \n')
+        cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-        
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // If device has video\n')
@@ -2355,7 +2543,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (deviceController->privatePart->hasVideo))\n')
     cFile.write ('    {\n')
@@ -2363,7 +2551,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // If device has audio\n')
@@ -2373,27 +2561,27 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopNetwork')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Stop the Network --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     for feature in ctx.features:
@@ -2405,38 +2593,38 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring unregistering ARCommands to the feature '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (error));\n')
         cFile.write ('            }\n')
         cFile.write ('        }\n')
-        cFile.write ('        \n')
+        cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Delete network:\n')
-    cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, "Network", 'Delete') + ' (&(deviceController->privatePart->networkController)); //TODO read error !!!!!!!! \n')
-    cFile.write ('        \n')
+    cFile.write ('        ' + ARFunctionName (MODULE_ARCONTROLLER, "Network", 'Delete') + ' (&(deviceController->privatePart->networkController)); //TODO read error !!!!!!!!\n')
+    cFile.write ('\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetNetworkControllerToFeatures')+' ('+className+' *deviceController, void* specificFeature)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set the Network Controoler to the Features --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     for feature in ctx.features:
         cFile.write ('    if ((error == ARCONTROLLER_OK) && (deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+' != NULL) && ((specificFeature == NULL) || (specificFeature == deviceController->'+ARUncapitalize(get_ftr_old_name(feature))+')))\n')
         cFile.write ('    {\n')
@@ -2445,30 +2633,30 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
         cFile.write ('        {\n')
         cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, '+MODULE_DEVICE+'_TAG, "Error occured durring setting the network Controller to the feature of the callback for '+defineNotification(feature)+'; error :%s", ARCONTROLLER_Error_ToString (error));\n')
         cFile.write ('        }\n')
-        cFile.write ('        \n')
+        cFile.write ('\n')
         cFile.write ('    }\n')
-        cFile.write ('    \n')
-    cFile.write ('    \n')
-    
+        cFile.write ('\n')
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StartControllerLooperThread')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Create the Sending Looper Thread --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        if (ARSAL_Thread_Create (&(deviceController->privatePart->controllerLooperThread), ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ControllerLooperThread')+', deviceController) != 0)\n')
@@ -2478,27 +2666,27 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'StopControllerLooperThread')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Create the Sending Looper Thread --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        if (deviceController->privatePart->controllerLooperThread != NULL)\n')
@@ -2509,65 +2697,65 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnStart')+' ('+className+' *deviceController, int isExtensionDevice)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Device On Start --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetInitialDate')+' (deviceController);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialSettings')+' (deviceController, isExtensionDevice);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (!deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialStates')+' (deviceController, isExtensionDevice);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Manage cancel\n')
     cFile.write ('    if ((error == ARCONTROLLER_OK) && (deviceController->privatePart->startCancelled))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_CANCELED;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error or not canceled\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetInitialDate')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set Initial Date --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    time_t currentTime = (time_t)-1;\n')
     cFile.write ('    struct tm ts;\n')
@@ -2575,16 +2763,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    int dataSize = 0;\n')
     cFile.write ('    char strTime[20];\n')
     cFile.write ('    int strTimeSize = 0;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        currentTime = time(NULL);\n')
@@ -2594,8 +2782,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ts = *localtime(&currentTime);\n')
@@ -2606,15 +2794,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = deviceController->common->sendCommonCurrentDate (deviceController->common, data);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ts = *localtime(&currentTime);\n')
@@ -2625,34 +2813,34 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = deviceController->common->sendCommonCurrentTime (deviceController->common, strTime);\n')
     cFile.write ('    }\n')
     cFile.write ('    // No else: skipped by an error\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'GetInitialSettings')+' ('+className+' *deviceController, int onExtensionDevice)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get initial all Settings --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (deviceController == NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        if (!onExtensionDevice && deviceController->skyController != NULL)\n')
@@ -2664,32 +2852,32 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            error = deviceController->common->sendSettingsAllSettings (deviceController->common);\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-            
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'getInitialStates')+' ('+className+' *deviceController, int onExtensionDevice)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Get initial all States --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if (deviceController == NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
@@ -2702,27 +2890,27 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            error = deviceController->common->sendCommonAllStates (deviceController->common);\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Sem_Wait (&(deviceController->privatePart->initSem));\n') # TODO manage error !!!!!!!!!!!!!!!!!!!
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-            
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DictionaryChangedCallback')+' ('+defineNotificationDef()+' commandKey, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Callback of changing of a dictionary --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    '+className+' *deviceController = ('+className+' *) customData;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
@@ -2730,16 +2918,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
-    cFile.write ('    \n')
+    cFile.write ('\n')
+
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Notify All Callback\n')
     cFile.write ('        ARCONTROLLER_DICTIONARY_NotifyAllCallbackInList (&(deviceController->privatePart->commandCallbacks), commandKey, elementDictionary);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch (commandKey)\n')
@@ -2748,98 +2936,98 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_COMMONSTATE_ALLSTATESCHANGED:\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' (deviceController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_COMMON_SETTINGSSTATE_ALLSETTINGSCHANGED:\n')
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_SETTINGSSTATE_ALLSETTINGSCHANGED:\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllSettingsEnd')+' (deviceController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
 
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED:\n')
     cFile.write ('                ARSAL_PRINT (ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Connexion changed received");\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnSkyControllerConnectionChangedReceived')+' (deviceController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDrone3VideoEnableChanged')+' (deviceController, elementDictionary);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJumpingSumoVideoEnableChanged')+' (deviceController, elementDictionary);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
 
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED:\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnPowerUpVideoEnableChanged')+' (deviceController, elementDictionary);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
 
     cFile.write ('            case ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING:\n')
     cFile.write ('                ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAudioStreamStateChanged')+' (deviceController, elementDictionary);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
 
     cFile.write ('            default :\n')
     cFile.write ('                //Do Nothing\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllStatesEnd')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
-    
+
     cFile.write ('    // -- End of receiving of initial all States --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Sem_Post (&(deviceController->privatePart->initSem));\n') # TODO manage error
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAllSettingsEnd')+' ('+className+' *deviceController)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- End of receiving of initial all Settings --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_Sem_Post (&(deviceController->privatePart->initSem));\n') # TODO manage error
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('}\n')
     cFile.write ('\n')
 
@@ -2850,13 +3038,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
     cFile.write ('\n')
     cFile.write ('    eARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS connectionStatus = ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_MAX;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        element = ARCONTROLLER_Device_GetCommandElements(deviceController, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED, &error);\n')
@@ -2870,14 +3058,14 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            connectionStatus = arg->value.U8;\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "ConnectionStatus : %i", connectionStatus);\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // if not all args are valid, generate an error\n')
     cFile.write ('        if (connectionStatus == ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_MAX)\n')
     cFile.write ('        {\n')
     cFile.write ('            error = ARCONTROLLER_ERROR;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch (connectionStatus)\n')
@@ -2887,7 +3075,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                ARSAL_Thread_t startingThread = NULL;\n')
     cFile.write ('                char *productName = NULL;\n')
     cFile.write ('                eARDISCOVERY_PRODUCT product = ARDISCOVERY_PRODUCT_MAX;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('                // read product and name\n')
     cFile.write ('                if (error == ARCONTROLLER_OK)\n')
     cFile.write ('                {\n')
@@ -2896,13 +3084,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                    {\n')
     cFile.write ('                        productName = arg->value.String;\n')
     cFile.write ('                    }\n')
-    cFile.write ('                    \n')
+    cFile.write ('\n')
     cFile.write ('                    HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_DEVICEPRODUCTID, arg);\n')
     cFile.write ('                    if (arg != NULL)\n')
     cFile.write ('                    {\n')
     cFile.write ('                        product = ARDISCOVERY_getProductFromProductID(arg->value.U16);\n')
     cFile.write ('                    }\n')
-    cFile.write ('                    \n')
+    cFile.write ('\n')
     cFile.write ('                    // if not all args are valid, generate an error\n')
     cFile.write ('                    if ((productName == NULL) ||\n')
     cFile.write ('                        (product == ARDISCOVERY_PRODUCT_MAX))\n')
@@ -2910,7 +3098,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                        error = ARCONTROLLER_ERROR;\n')
     cFile.write ('                    }\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('                // product should be one of the product that can be an extension\n')
     cFile.write ('                if (error == ARCONTROLLER_OK)\n')
     cFile.write ('                {\n')
@@ -2928,7 +3116,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                        error = ARCONTROLLER_ERROR_EXTENSION_PRODUCT_NOT_VALID;\n')
     cFile.write ('                    }\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('                if (error == ARCONTROLLER_OK)\n')
     cFile.write ('                {\n')
     cFile.write ('                    deviceController->privatePart->extensionProduct = product;\n')
@@ -2937,7 +3125,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                        error = ARCONTROLLER_ERROR_ALLOC;\n')
     cFile.write ('                    }\n')
     cFile.write ('                }\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('                if (error == ARCONTROLLER_OK)\n')
     cFile.write ('                {\n')
     cFile.write ('                    ARCONTROLLER_Device_SetExtensionState(deviceController, ARCONTROLLER_DEVICE_STATE_STARTING, error);\n')
@@ -2951,24 +3139,24 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                        // Destroy the pointer because we don\'t care about it. The thread will run anyway\n')
     cFile.write ('                        ARSAL_Thread_Destroy (&startingThread);\n')
     cFile.write ('                        startingThread = NULL;\n')
-    cFile.write ('                        \n')
+    cFile.write ('\n')
     cFile.write ('                        // TODO: what to do ???\n')
     cFile.write ('                    }\n')
     cFile.write ('                }\n')
     cFile.write ('            }\n')
     cFile.write ('            break;\n')
     cFile.write ('            case ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_DISCONNECTING:\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('                ARCONTROLLER_Device_SetExtensionState(deviceController, ARCONTROLLER_DEVICE_STATE_STOPPING, error);\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_SKYCONTROLLER_DEVICESTATE_CONNEXIONCHANGED_STATUS_NOTCONNECTED:\n')
     cFile.write ('            {\n')
     cFile.write ('                if (deviceController->privatePart->extensionProduct != ARDISCOVERY_PRODUCT_MAX)\n')
     cFile.write ('                {\n')
     cFile.write ('                    ARSAL_Thread_t stoppingThread = NULL;\n')
-    cFile.write ('                    \n')
+    cFile.write ('\n')
     cFile.write ('                    if (ARSAL_Thread_Create (&stoppingThread, ARCONTROLLER_Device_ExtensionStopRun, deviceController) != 0)\n')
     cFile.write ('                    {\n')
     cFile.write ('                        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Creation of Stopping thread failed.");\n')
@@ -2979,19 +3167,19 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('                        // Destroy the pointer because we don\'t care about it. The thread will run anyway\n')
     cFile.write ('                        ARSAL_Thread_Destroy (&stoppingThread);\n')
     cFile.write ('                        stoppingThread = NULL;\n')
-    cFile.write ('                        \n')
+    cFile.write ('\n')
     cFile.write ('                        // TODO: what to do ???\n')
     cFile.write ('                    }\n')
-    cFile.write ('                    \n')
+    cFile.write ('\n')
     cFile.write ('                }\n')
     cFile.write ('            }\n')
     cFile.write ('            break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('            default:\n')
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ARController_Device_OnSkyControllerConnectionChangedReceived : %s", ARCONTROLLER_Error_ToString (error));\n')
@@ -3050,22 +3238,22 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('    ARSAL_Mutex_Unlock(&(deviceController->privatePart->mutex));\n')
 
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Device_OnStart (deviceController, 1);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "Error ExtensionStartRun : %s", ARCONTROLLER_Error_ToString (error));\n')
     cFile.write ('    }\n')
     cFile.write ('    ARCONTROLLER_Device_SetExtensionState (deviceController, ARCONTROLLER_DEVICE_STATE_RUNNING, error);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnARDrone3VideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- ARDrone3 video enable changed --\n')
@@ -3075,7 +3263,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
     cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;\n')
     cFile.write ('    eARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL)||\n')
@@ -3084,24 +3272,24 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the command received in the device controller\n')
     cFile.write ('        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (element == NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            error = ARCONTROLLER_ERROR_NO_ELEMENT;\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the value\n')
     cFile.write ('        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (arg != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            videoState = arg->value.I32;\n')
@@ -3112,7 +3300,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch (videoState)\n')
@@ -3120,15 +3308,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:\n')
     cFile.write ('                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:\n')
     cFile.write ('                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:\n')
     cFile.write ('                //Do nothing\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            default:\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);\n')
     cFile.write ('                break;\n')
@@ -3136,7 +3324,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnJumpingSumoVideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Jumping Sumo video enable changed --\n')
@@ -3146,7 +3334,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
     cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;\n')
     cFile.write ('    eARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL)||\n')
@@ -3155,24 +3343,24 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the command received in the device controller\n')
     cFile.write ('        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (element == NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            error = ARCONTROLLER_ERROR_NO_ELEMENT;\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the value\n')
     cFile.write ('        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (arg != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            videoState = arg->value.I32;\n')
@@ -3183,7 +3371,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch (videoState)\n')
@@ -3191,15 +3379,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:\n')
     cFile.write ('                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:\n')
     cFile.write ('                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_JUMPINGSUMO_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:\n')
     cFile.write ('                //Do nothing\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            default:\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);\n')
     cFile.write ('                break;\n')
@@ -3207,7 +3395,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnPowerUpVideoEnableChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- PowerUp video enable changed --\n')
@@ -3217,7 +3405,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
     cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;\n')
     cFile.write ('    eARCOMMANDS_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED videoState = ARCOMMANDS_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_MAX;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL)||\n')
@@ -3226,24 +3414,24 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the command received in the device controller\n')
     cFile.write ('        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (element == NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            error = ARCONTROLLER_ERROR_NO_ELEMENT;\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the value\n')
     cFile.write ('        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (arg != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            videoState = arg->value.I32;\n')
@@ -3254,7 +3442,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch (videoState)\n')
@@ -3262,15 +3450,15 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            case ARCOMMANDS_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ENABLED:\n')
     cFile.write ('                ARCONTROLLER_Network_StartVideoStream(deviceController->privatePart->networkController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_DISABLED:\n')
     cFile.write ('                ARCONTROLLER_Network_StopVideoStream(deviceController->privatePart->networkController);\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCOMMANDS_POWERUP_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED_ERROR:\n')
     cFile.write ('                //Do nothing\n')
     cFile.write ('                break;\n')
-    cFile.write ('                \n')
+    cFile.write ('\n')
     cFile.write ('            default:\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "videoState unknown :%d ", videoState);\n')
     cFile.write ('                break;\n')
@@ -3278,7 +3466,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnAudioStreamStateChanged')+' (ARCONTROLLER_Device_t *deviceController, ARCONTROLLER_DICTIONARY_ELEMENT_t *elementDictionary)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Audio stream state changed --\n')
@@ -3288,7 +3476,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;\n')
     cFile.write ('    ARCONTROLLER_DICTIONARY_ELEMENT_t *element = NULL;\n')
     cFile.write ('    uint8_t state = 0;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL)||\n')
@@ -3297,24 +3485,24 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the command received in the device controller\n')
     cFile.write ('        HASH_FIND_STR (elementDictionary, ARCONTROLLER_DICTIONARY_SINGLE_KEY, element);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (element == NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            error = ARCONTROLLER_ERROR_NO_ELEMENT;\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "element is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the value\n')
     cFile.write ('        HASH_FIND_STR (element->arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING_RUNNING, arg);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (arg != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            state = arg->value.U8;\n')
@@ -3325,7 +3513,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_ERROR, ARCONTROLLER_DEVICE_TAG, "argument is NULL");\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        ARCONTROLLER_Network_StopAudioStream(deviceController->privatePart->networkController);\n')
@@ -3341,16 +3529,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('eARDISCOVERY_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SendJsonCallback')+' (json_object *jsonObj, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Connection callback to receive the Json --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = customData;\n')
     cFile.write ('    eARDISCOVERY_ERROR error = ARDISCOVERY_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    json_object *valueJsonObj = NULL;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((jsonObj == NULL) ||\n')
     cFile.write ('        (deviceController == NULL) ||\n')
@@ -3358,93 +3546,93 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        error = ARDISCOVERY_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARDISCOVERY_OK)\n')
     cFile.write ('    {\n')
-    
+
     cFile.write ('        // add ARDISCOVERY_CONNECTION_JSON_CONTROLLER_NAME_KEY\n')
     cFile.write ('        valueJsonObj = json_object_new_string ("DEFAULT_SDK_CONTROLLER"); //TODO get from the device controller\n')
     cFile.write ('        json_object_object_add (jsonObj, ARDISCOVERY_CONNECTION_JSON_CONTROLLER_NAME_KEY, valueJsonObj);\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('        // add ARDISCOVERY_CONNECTION_JSON_CONTROLLER_TYPE_KEY\n')
     cFile.write ('        valueJsonObj = json_object_new_string ("DEFAULT_SDK_TYPE"); //TODO get from the device controller\n')
     cFile.write ('        json_object_object_add (jsonObj, ARDISCOVERY_CONNECTION_JSON_CONTROLLER_TYPE_KEY, valueJsonObj);\n')
-    cFile.write ('        \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARDISCOVERY_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ReceiveJsonCallback')+' (json_object *jsonObj, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('     // -- Connection callback to receive the Json --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = customData;\n')
     cFile.write ('    eARDISCOVERY_ERROR error = ARDISCOVERY_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if ((jsonObj == NULL) ||\n')
     cFile.write ('        (deviceController == NULL) ||\n')
     cFile.write ('        (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARDISCOVERY_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARDISCOVERY_OK)\n')
     cFile.write ('    {\n')
     #TODO see what to do or remove function !!!!!!!!!!!!!!!!!!!!!!
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write  ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'OnDisconnectCallback')+' (void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('     // -- Disconnection callback --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+className+' *deviceController = ('+className+' *) customData;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error =' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'Stop')+' (deviceController);\n')
     cFile.write ('    }\n')
-    
+
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void *' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ControllerLooperThread')+' (void *data)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Sending Looper Thread --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+className+' *deviceController = data;\n')
     cFile.write ('    u_int8_t cmdBuffer['+ARMacroName (MODULE_ARCONTROLLER, 'Device', 'DEFAULT_LOOPER_CMD_BUFFER_SIZE')+'];\n')
     cFile.write ('    int controllerLoopIntervalUs = 0;\n')
     cFile.write ('    int mustBeSent = 0;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    // Check parameters\n')
     cFile.write ('    if ((deviceController == NULL) || (deviceController->privatePart == NULL))\n')
@@ -3452,8 +3640,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
     cFile.write ('    // No Else: the checking parameters sets error to ARNETWORK_ERROR_BAD_PARAMETER and stop the processing\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        controllerLoopIntervalUs = MSEC_TO_USEC (deviceController->privatePart->networkConfiguration.controllerLoopIntervalMs);\n')
@@ -3462,8 +3650,8 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('            error = ARCONTROLLER_ERROR;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        while ((deviceController->privatePart->state == ARCONTROLLER_DEVICE_STATE_RUNNING) ||\n')
@@ -3501,20 +3689,20 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        }\n')
     cFile.write ('    }\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    return NULL;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add callback in array --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *newElement = NULL;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Add the callback\n')
     cFile.write ('    newElement = malloc (sizeof('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+'));\n')
     cFile.write ('    if (newElement != NULL)\n')
@@ -3528,7 +3716,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_ALLOC;\n')
     cFile.write ('    }\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -3536,12 +3724,12 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'AddExtensionCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'ExtensionStateChangedCallback')+' callback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Add extension callback in array --\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // Local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *newElement = NULL;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Add the callback\n')
     cFile.write ('    newElement = malloc (sizeof('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+'));\n')
     cFile.write ('    if (newElement != NULL)\n')
@@ -3555,27 +3743,27 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('        error = ARCONTROLLER_ERROR_ALLOC;\n')
     cFile.write ('    }\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'RemoveCallbackFromList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'StateChangedCallback')+' callback, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Remove callback from array --\n')
     cFile.write ('\n')
-        
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *elementFind = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' likeElement;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Element to find\n')
     cFile.write ('    likeElement.callback = callback;\n')
     cFile.write ('    likeElement.customData = customData;\n')
     cFile.write ('\n')
-        
+
     cFile.write ('    DL_SEARCH ((*callbackList), elementFind, &likeElement, ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ElementCompare')+');\n')
     cFile.write ('    if (elementFind != NULL)\n')
     cFile.write ('    {\n')
@@ -3585,7 +3773,7 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -3594,18 +3782,18 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('{\n')
     cFile.write ('    // -- Remove callback from array --\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *elementFind = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' likeElement;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Element to find\n')
     cFile.write ('    likeElement.callback = callback;\n')
     cFile.write ('    likeElement.customData = customData;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    DL_SEARCH ((*callbackList), elementFind, &likeElement, ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'ExtensionElementCompare')+');\n')
     cFile.write ('    if (elementFind != NULL)\n')
     cFile.write ('    {\n')
@@ -3615,21 +3803,21 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_ERROR_COMMAND_CALLBACK_NOT_REGISTERED;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return error;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DeleteCallbackList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Delete all callback in array --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *element = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *elementTmp = NULL;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Delete each element, use the safe iterator\n')
     cFile.write ('    DL_FOREACH_SAFE ((*callbackList), element, elementTmp)\n')
     cFile.write ('    {\n')
@@ -3641,13 +3829,13 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'DeleteExtensionCallbackList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Delete all callback in array --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    // Local declarations\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *element = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *elementTmp = NULL;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // Delete each element, use the safe iterator\n')
     cFile.write ('    DL_FOREACH_SAFE ((*callbackList), element, elementTmp)\n')
     cFile.write ('    {\n')
@@ -3655,16 +3843,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, eARCONTROLLER_DEVICE_STATE state, eARCONTROLLER_ERROR error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Notify all listeners --\n')
-    cFile.write ('    \n')
-        
+    cFile.write ('\n')
+
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *callbackElement = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'STATE_CHANGED_CALLBACK_ELEMENT')+' *callbackElementTmp = NULL;\n')
     cFile.write ('\n')
-       
+
     cFile.write ('    // for each callback\n')
     cFile.write ('    DL_FOREACH_SAFE ((*callbackList), callbackElement, callbackElementTmp)\n')
     cFile.write ('    {\n')
@@ -3675,16 +3863,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllExtensionCallbackInList')+' ('+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' **callbackList, eARCONTROLLER_DEVICE_STATE state, eARDISCOVERY_PRODUCT product, const char *name, eARCONTROLLER_ERROR error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Notify all listeners --\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *callbackElement = NULL;\n')
     cFile.write ('    '+ARTypeName (MODULE_ARCONTROLLER, 'device', 'EXTENSION_STATE_CHANGED_CALLBACK_ELEMENT')+' *callbackElementTmp = NULL;\n')
     cFile.write ('\n')
-    
+
     cFile.write ('    // for each callback\n')
     cFile.write ('    DL_FOREACH_SAFE ((*callbackList), callbackElement, callbackElementTmp)\n')
     cFile.write ('    {\n')
@@ -3695,35 +3883,35 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetState')+' ('+className+' *deviceController, eARCONTROLLER_DEVICE_STATE state,  eARCONTROLLER_ERROR error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set the Device Controller State and notify all listeners.\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    deviceController->privatePart->state = state;\n')
     cFile.write ('    ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllCallbackInList')+' (&(deviceController->privatePart->stateChangedCallbacks), deviceController->privatePart->state, error);\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('void ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'SetExtensionState')+' ('+className+' *deviceController, eARCONTROLLER_DEVICE_STATE state,  eARCONTROLLER_ERROR error)\n')
     cFile.write ('{\n')
     cFile.write ('    // -- Set the Device Controller Extension State and notify all listeners.\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('    ARSAL_Mutex_Lock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    deviceController->privatePart->extensionState = state;\n')
     cFile.write ('    ARSAL_Mutex_Unlock (&(deviceController->privatePart->mutex));\n')
     cFile.write ('    ' + ARFunctionName (MODULE_ARCONTROLLER, 'device', 'NotifyAllExtensionCallbackInList')+' (&(deviceController->privatePart->extensionStateChangedCallbacks), deviceController->privatePart->extensionState, deviceController->privatePart->extensionProduct, deviceController->privatePart->extensionName, error);\n')
-    cFile.write ('    \n')
-    
+    cFile.write ('\n')
+
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('/*****************************************\n')
     cFile.write (' *\n')
     cFile.write (' *             local implementation:\n')
@@ -3742,16 +3930,16 @@ def generateDeviceControllers (ctx, SRC_DIR, INC_DIR):
     cFile.write ('    return !((a->callback == b->callback) && (a->customData == b->customData));\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
-    
+
+
     cFile.close ()
 
 def generateControllersJava (ctx, JNI_JAVA_DIR):
-    
+
     #########################################
     # Write Device controller header file   #
     #########################################
-    
+
     className = 'ARDeviceController'
     classPrivateName = ARTypeName (MODULE_ARCONTROLLER, 'device', 'private')
 
@@ -3775,7 +3963,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('* @brief '+bref+'\n')
     jfile.write ('*/\n')
     jfile.write ('\n')
-    
+
     jfile.write ('package com.parrot.arsdk.arcontroller;\n')
     jfile.write ('\n')
     jfile.write ('import com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_ENUM;\n')
@@ -3791,19 +3979,19 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('public class ARDeviceController\n')
     jfile.write ('{\n')
     jfile.write ('    private static String TAG = "ARDeviceController";\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    private static native void nativeStaticInit ();\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    private native long nativeNew(long jdevice) throws ARControllerException;\n')
     jfile.write ('    private native void nativeDelete(long jARDeviceController);\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    private native int nativeStart (long jDeviceController);\n')
     jfile.write ('    private native int nativeStop (long jDeviceController);\n')
-    jfile.write ('    \n')
-    
+    jfile.write ('\n')
+
     for feature in ctx.features:
         jfile.write ('    private native long '+nativeGetFeature(feature)+' (long jDeviceController);\n')
-        
+
     jfile.write ('    private native int nativeGetState (long jDeviceController) throws ARControllerException;\n')
     jfile.write ('    private native int nativeGetExtensionState (long jDeviceController);\n')
     jfile.write ('    private native String nativeGetExtensionName (long jDeviceController);\n')
@@ -3812,23 +4000,25 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('    private native int nativeSendStreamFrame (long jDeviceController, long data, int dataSize);\n')
     jfile.write ('    private native int nativeHasOutputVideoStream (long deviceController) throws ARControllerException;\n')
     jfile.write ('    private native int nativeHasOutputAudioStream (long deviceController) throws ARControllerException;\n')
-    jfile.write ('    private native int nativeHasInputAudioStream (long deviceControlle) throws ARControllerException;\n')
+    jfile.write ('    private native int nativeHasInputAudioStream (long deviceController) throws ARControllerException;\n')
+    jfile.write ('    private native int nativeStartVideoStream (long deviceController);\n')
+    jfile.write ('    private native int nativeStopVideoStream (long deviceController);\n')
 
 
     jfile.write ('\n')
     jfile.write ('    private long jniDeviceController;\n')
     jfile.write ('    private boolean initOk;\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    private List<ARDeviceControllerListener> listeners;\n')
     jfile.write ('    private List<ARDeviceControllerStreamListener> streamlisteners;\n')
     jfile.write ('    private List<ARDeviceControllerStreamListener> audioStreamlisteners;\n')
 
-    
+
     for feature in ctx.features:
         jfile.write ('    '+javaFeatureClassName(feature)+' '+javaFeatureName(feature)+';\n')
-    
-    
-    jfile.write ('    \n')
+
+
+    jfile.write ('\n')
     jfile.write ('    static\n')
     jfile.write ('    {\n')
     jfile.write ('        nativeStaticInit();\n')
@@ -3841,7 +4031,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('    {\n')
     jfile.write ('        initOk = false;\n')
     jfile.write ('        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        if (device != null)\n')
     jfile.write ('        {\n')
     jfile.write ('            jniDeviceController = nativeNew(device.getNativeDevice());\n')
@@ -3850,14 +4040,14 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('        {\n')
     jfile.write ('            error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        if (jniDeviceController != 0)\n')
     jfile.write ('        {\n')
     jfile.write ('            listeners = new ArrayList<ARDeviceControllerListener>();\n')
     jfile.write ('            streamlisteners = new ArrayList<ARDeviceControllerStreamListener>();\n')
     jfile.write ('            audioStreamlisteners = new ArrayList<ARDeviceControllerStreamListener>();\n')
     jfile.write ('            initOk = true;\n')
-    jfile.write ('            \n')
+    jfile.write ('\n')
 
     jfile.write ('            reloadFeatures();\n')
     jfile.write ('        }\n')
@@ -3881,14 +4071,14 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                nativeDelete(jniDeviceController);\n')
     jfile.write ('                jniDeviceController = 0;\n')
     jfile.write ('                initOk = false;\n')
-    jfile.write ('                \n')
+    jfile.write ('\n')
     for feature in ctx.features:
         jfile.write ('                if ('+javaFeatureName(feature)+' != null)\n')
         jfile.write ('                {\n')
         jfile.write ('                    '+javaFeatureName(feature)+'.dispose();\n')
         jfile.write ('                    '+javaFeatureName(feature)+' = null;\n')
         jfile.write ('                }\n')
-        jfile.write ('                \n')
+        jfile.write ('\n')
     jfile.write ('            }\n')
     jfile.write ('            else\n')
     jfile.write ('            {\n')
@@ -3911,7 +4101,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('            super.finalize ();\n')
     jfile.write ('        }\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    public ARCONTROLLER_ERROR_ENUM start ()\n')
     jfile.write ('    {\n')
     jfile.write ('        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;\n')
@@ -3927,10 +4117,10 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR_JNI_INIT;\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return error;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    public ARCONTROLLER_ERROR_ENUM stop ()\n')
     jfile.write ('    {\n')
     jfile.write ('        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;\n')
@@ -3946,22 +4136,22 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR_JNI_INIT;\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return error;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
-    
+    jfile.write ('\n')
+
     for feature in ctx.features:
         jfile.write ('    public '+javaFeatureClassName(feature)+' getFeature'+ ARCapitalize(get_ftr_old_name(feature))+' ()\n')
         jfile.write ('    {\n')
         jfile.write ('        return '+javaFeatureName(feature)+';\n')
         jfile.write ('    }\n')
-        jfile.write ('    \n')
-    
+        jfile.write ('\n')
+
     jfile.write ('    public ARControllerDictionary getCommandElements (ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey) throws ARControllerException\n')
     jfile.write ('    {\n')
     jfile.write ('        ARControllerDictionary elementDictionary = null;\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        synchronized (this)\n')
     jfile.write ('        {\n')
     jfile.write ('            if(initOk == true)\n')
@@ -3969,20 +4159,20 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                if(commandKey != null)\n')
     jfile.write ('                {\n')
     jfile.write ('                    long nativeElementDictionary = nativeGetCommandElements(jniDeviceController, commandKey.getValue());\n')
-    jfile.write ('                    \n')
+    jfile.write ('\n')
     jfile.write ('                    elementDictionary = new ARControllerDictionary(nativeElementDictionary);\n')
     jfile.write ('                }\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return elementDictionary;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
-    
+    jfile.write ('\n')
+
     jfile.write ('    public ARCONTROLLER_ERROR_ENUM sendStreamingFrame (ARNativeData data)\n')
     jfile.write ('    {\n')
     jfile.write ('        ARCONTROLLER_ERROR_ENUM error = ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK;\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        synchronized (this)\n')
     jfile.write ('        {\n')
     jfile.write ('            if(initOk == true)\n')
@@ -3991,11 +4181,11 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                error = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeError);\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return error;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
-    
+    jfile.write ('\n')
+
     jfile.write ('    public ARCONTROLLER_DEVICE_STATE_ENUM getState () throws ARControllerException\n')
     jfile.write ('    {\n')
     jfile.write ('        ARCONTROLLER_DEVICE_STATE_ENUM state = ARCONTROLLER_DEVICE_STATE_ENUM.ARCONTROLLER_DEVICE_STATE_MAX;\n')
@@ -4011,10 +4201,10 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                throw new ARControllerException(ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR_JNI_INIT);\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return state;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    public ARCONTROLLER_DEVICE_STATE_ENUM getExtensionState ()\n')
     jfile.write ('    {\n')
@@ -4027,10 +4217,10 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                extensionState = ARCONTROLLER_DEVICE_STATE_ENUM.getFromValue(nativeExtensionState);\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return extensionState;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    public boolean hasOutputVideoStream () throws ARControllerException\n')
     jfile.write ('    {\n')
@@ -4050,7 +4240,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('\n')
     jfile.write ('        return res;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    public boolean hasOutputAudioStream () throws ARControllerException\n')
     jfile.write ('    {\n')
@@ -4070,7 +4260,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('\n')
     jfile.write ('        return res;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    public boolean hasInputAudioStream () throws ARControllerException\n')
     jfile.write ('    {\n')
@@ -4090,7 +4280,35 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('\n')
     jfile.write ('        return res;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
+
+    jfile.write ('    public ARCONTROLLER_ERROR_ENUM startVideoStream ()\n')
+    jfile.write ('    {\n')
+    jfile.write ('        ARCONTROLLER_ERROR_ENUM res;\n')
+    jfile.write ('        synchronized (this)\n')
+    jfile.write ('        {\n')
+    jfile.write ('            if (!initOk)\n')
+    jfile.write ('                return ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR_JNI_INIT;\n')
+    jfile.write ('            int nativeRes = nativeStartVideoStream(jniDeviceController);\n')
+    jfile.write ('            res = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeRes);\n')
+    jfile.write ('        }\n')
+    jfile.write ('        return res;\n')
+    jfile.write ('    }\n')
+    jfile.write ('\n')
+
+    jfile.write ('    public ARCONTROLLER_ERROR_ENUM stopVideoStream () throws ARControllerException\n')
+    jfile.write ('    {\n')
+    jfile.write ('        ARCONTROLLER_ERROR_ENUM res;\n')
+    jfile.write ('        synchronized (this)\n')
+    jfile.write ('        {\n')
+    jfile.write ('            if (!initOk)\n')
+    jfile.write ('                return ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR_JNI_INIT;\n')
+    jfile.write ('            int nativeRes = nativeStopVideoStream(jniDeviceController);\n')
+    jfile.write ('            res = ARCONTROLLER_ERROR_ENUM.getFromValue(nativeRes);\n')
+    jfile.write ('        }\n')
+    jfile.write ('        return res;\n')
+    jfile.write ('    }\n')
+    jfile.write ('\n')
 
     jfile.write ('    public String getExtensionName ()\n')
     jfile.write ('    {\n')
@@ -4102,10 +4320,10 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                extensionName = nativeGetExtensionName(jniDeviceController);\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return extensionName;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    public ARDISCOVERY_PRODUCT_ENUM getExtensionProduct ()\n')
     jfile.write ('    {\n')
     jfile.write ('        ARDISCOVERY_PRODUCT_ENUM extensionProduct = ARDISCOVERY_PRODUCT_ENUM.ARDISCOVERY_PRODUCT_MAX;\n')
@@ -4117,11 +4335,11 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('                extensionProduct = ARDISCOVERY_PRODUCT_ENUM.getFromValue(nativeExtensionProduct);\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return extensionProduct;\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
-                 
+    jfile.write ('\n')
+
     jfile.write ('    public synchronized void addListener (ARDeviceControllerListener listener)\n')
     jfile.write ('    {\n')
     jfile.write ('       if (! listeners.contains(listener))\n')
@@ -4129,12 +4347,12 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('           listeners.add (listener);\n')
     jfile.write ('       }\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    public synchronized void removeListener (ARDeviceControllerListener listener)\n')
     jfile.write ('    {\n')
     jfile.write ('        listeners.remove (listener);\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    public synchronized void addStreamListener (ARDeviceControllerStreamListener listener)\n')
     jfile.write ('    {\n')
     jfile.write ('       if (! streamlisteners.contains(listener))\n')
@@ -4163,7 +4381,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('\n')
     jfile.write ('    private void reloadFeatures()\n')
     jfile.write ('    {\n')
-    
+
     for feature in ctx.features:
         jfile.write ('        long '+nativeFeatureName(feature)+' = '+nativeGetFeature(feature)+' (jniDeviceController);\n')
         jfile.write ('        if (('+javaFeatureName(feature)+' == null) && ('+nativeFeatureName(feature)+' != 0))\n')
@@ -4174,10 +4392,10 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
         jfile.write ('        {\n')
         jfile.write ('            '+javaFeatureName(feature)+' = null;\n')
         jfile.write ('        }\n')
-        jfile.write ('        \n')
+        jfile.write ('\n')
 
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    private void onStateChanged (int newState, int error)\n')
     jfile.write ('    {\n')
@@ -4186,7 +4404,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('            l.onStateChanged (this, ARCONTROLLER_DEVICE_STATE_ENUM.getFromValue(newState), ARCONTROLLER_ERROR_ENUM.getFromValue(error));\n')
     jfile.write ('        }\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    private void onExtensionStateChanged (int newState, int product, String name, int error)\n')
     jfile.write ('    {\n')
@@ -4197,57 +4415,57 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('            l.onExtensionStateChanged (this, ARCONTROLLER_DEVICE_STATE_ENUM.getFromValue(newState), ARDISCOVERY_PRODUCT_ENUM.getFromValue(product), name, ARCONTROLLER_ERROR_ENUM.getFromValue(error));\n')
     jfile.write ('        }\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
 
     jfile.write ('    private void onCommandReceived (int nativeCommandKey, long elementDictionary)\n')
     jfile.write ('    {\n')
     jfile.write ('        ARCONTROLLER_DICTIONARY_KEY_ENUM commandKey = ARCONTROLLER_DICTIONARY_KEY_ENUM.getFromValue(nativeCommandKey);\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        ARControllerDictionary dictionary = new ARControllerDictionary(elementDictionary);\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        for (ARDeviceControllerListener l : listeners)\n')
     jfile.write ('        {\n')
     jfile.write ('            l.onCommandReceived (this, ARCONTROLLER_DICTIONARY_KEY_ENUM.getFromValue(nativeCommandKey), dictionary);\n')
     jfile.write ('        }\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    private int decoderConfigCallback (ARControllerCodec codec)\n')
     jfile.write ('    {\n')
     jfile.write ('        boolean failed = false;\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        for (ARDeviceControllerStreamListener l : streamlisteners)\n')
     jfile.write ('        {\n')
     jfile.write ('            ARCONTROLLER_ERROR_ENUM error = l.configureDecoder(this, codec);\n')
-    jfile.write ('            \n')
+    jfile.write ('\n')
     jfile.write ('            if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)\n')
     jfile.write ('            {\n')
     jfile.write ('                failed = true;\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        codec.dispose();\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return (failed) ? ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR.getValue() : ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK.getValue();\n')
     jfile.write ('    }\n')
-    jfile.write ('    \n')
+    jfile.write ('\n')
     jfile.write ('    private int didReceiveFrameCallback (long data, int dataCapacity, int dataSize, int nativeIsIFrame, int missed, long timestamp, long metadata, int metadataSize)\n')
     jfile.write ('    {\n')
     jfile.write ('        boolean failed = false;\n')
     jfile.write ('        boolean isIFrame = (nativeIsIFrame != 0);\n')
     jfile.write ('        ARFrame frame = new ARFrame (data, dataCapacity, dataSize, isIFrame, missed, timestamp, metadata, metadataSize);\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        for (ARDeviceControllerStreamListener l : streamlisteners)\n')
     jfile.write ('        {\n')
     jfile.write ('            ARCONTROLLER_ERROR_ENUM error = l.onFrameReceived (this, frame);\n')
-    jfile.write ('            \n')
+    jfile.write ('\n')
     jfile.write ('            if (error != ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK)\n')
     jfile.write ('            {\n')
     jfile.write ('                failed = true;\n')
     jfile.write ('            }\n')
     jfile.write ('        }\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        frame.dispose();\n')
-    jfile.write ('        \n')
+    jfile.write ('\n')
     jfile.write ('        return (failed) ? ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_ERROR.getValue() : ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK.getValue();\n')
     jfile.write ('    }\n')
     jfile.write ('\n')
@@ -4309,7 +4527,7 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
     jfile.write ('}\n')
     jfile.write ('\n')
     jfile.close ()
-    
+
 def generateControllersJNI (ctx, JNI_C_DIR):
     #################################################
     # Write Device controller JNI c file           #
@@ -4338,7 +4556,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('* @brief ARDeviceController JNI device c file.\n')
     cFile.write ('*/\n')
     cFile.write ('\n')
-    
+
     cFile.write ('/*****************************************\n')
     cFile.write (' *\n')
     cFile.write (' *             include file :\n')
@@ -4365,7 +4583,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('#define ARCONTROLLER_JNIDEVICE_TAG "JNIControllerDevice"\n')
     cFile.write ('\n')
     cFile.write ('/**\n')
-    cFile.write (' * @brief \n')
+    cFile.write (' * @brief\n')
     cFile.write (' */\n')
     cFile.write ('typedef struct\n')
     cFile.write ('{\n')
@@ -4445,13 +4663,13 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('\n')
     cFile.write ('JNIEXPORT void JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStaticInit (JNIEnv *env, jclass class)\n')
-    cFile.write ('{    \n')
+    cFile.write ('{\n')
     cFile.write ('    // local declarations\n')
     cFile.write ('    jclass jARDeviceControllerCls = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // get ARDeviceController\n')
     cFile.write ('    jARDeviceControllerCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARDeviceController");\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onStateChanged", "(II)V");\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onExtensionStateChanged", "(IILjava/lang/String;I)V");\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_DECODER_CONFIG_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "decoderConfigCallback", "(Lcom/parrot/arsdk/arcontroller/ARControllerCodec;)I");\n')
@@ -4461,21 +4679,21 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVE_AUDIO_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "didReceiveAudioFrameCallback", "(JIIIIJJI)I");\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_AUDIO_FRAME_CALLBACK = (*env)->GetMethodID (env, jARDeviceControllerCls, "timeoutAudioFrameCallback", "()V");\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED = (*env)->GetMethodID (env, jARDeviceControllerCls, "onCommandReceived", "(IJ)V");\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // cleanup\n')
     cFile.write ('    (*env)->DeleteLocalRef (env, jARDeviceControllerCls);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    //Get jARControllerCodecH264Cls\n')
     cFile.write ('    jARControllerCodecH264Cls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerCodec$H264");\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_H264 = (*env)->GetMethodID(env, jARControllerCodecH264Cls, "<init>", "(JIJI)V");\n')
     cFile.write ('    jARControllerCodecH264Cls = (*env)->NewGlobalRef (env, jARControllerCodecH264Cls);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    //Get jARControllerCodecMJPEGCls\n')
     cFile.write ('    jARControllerCodecMJPEGCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerCodec$Mjpeg");\n')
     cFile.write ('    ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_MJPEG = (*env)->GetMethodID(env, jARControllerCodecMJPEGCls, "<init>", "()V");\n')
     cFile.write ('    jARControllerCodecMJPEGCls = (*env)->NewGlobalRef (env, jARControllerCodecMJPEGCls);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
 
     cFile.write ('    //Get jARControllerCodecPCM16LECls\n')
     cFile.write ('    jARControllerCodecPCM16LECls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerCodec$PCM16LE");\n')
@@ -4506,12 +4724,12 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('\n')
     cFile.write ('    // allocate the JNI Device Controller\n')
     cFile.write ('    jniDeviceController = ARCONTROLLER_JNI_Device_NewJNIDeviceController (env, thizz, device, &error);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Device_AddStateChangedCallback (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_StateChanged, jniDeviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Device_AddExtensionStateChangedCallback (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_ExtensionStateChanged, jniDeviceController);\n')
@@ -4521,7 +4739,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Device_AddCommandReceivedCallback (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_CommandReceived, jniDeviceController);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        error = ARCONTROLLER_Device_SetVideoStreamCallbacks (jniDeviceController->nativeDeviceController, ARCONTROLLER_JNI_Device_DecoderConfigCallback, ARCONTROLLER_JNI_Device_DidReceiveFrameCallback, ARCONTROLLER_JNI_Device_TimeoutFrameCallback , jniDeviceController);\n')
@@ -4546,7 +4764,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    {\n')
     cFile.write ('        // Delete the JNI device controller\n')
     cFile.write ('        ARCONTROLLER_JNI_Device_DeleteJNIDeviceController (env, &jniDeviceController);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // throw the exception\n')
     cFile.write ('        exceptionCls = (*env)->FindClass(env, "com/parrot/arsdk/arcontroller/ARControllerException");\n')
     cFile.write ('        exceptionMethodInit = (*env)->GetMethodID(env, exceptionCls, "<init>", "(I)V");\n')
@@ -4579,7 +4797,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('{\n')
     cFile.write ('    // local declarations\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return ARCONTROLLER_Device_Start (jniDeviceController->nativeDeviceController);\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -4592,7 +4810,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    return ARCONTROLLER_Device_Stop (jniDeviceController->nativeDeviceController);\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     for feature in ctx.features:
         cFile.write ('JNIEXPORT jlong JNICALL\n')
         cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_'+nativeGetFeature(feature)+' (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
@@ -4603,7 +4821,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
         cFile.write ('    return (long) jniDeviceController->nativeDeviceController->'+ARUncapitalize(get_ftr_old_name(feature))+';\n')
         cFile.write ('}\n')
         cFile.write ('\n')
-        
+
     cFile.write ('JNIEXPORT jlong JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetCommandElements (JNIEnv *env, jobject thizz, jlong jDeviceController, jint commandKey)\n')
     cFile.write ('{\n')
@@ -4630,7 +4848,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    return (long) elements;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('JNIEXPORT jint JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeGetState (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
     cFile.write ('{\n')
@@ -4665,13 +4883,13 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    eARCONTROLLER_DEVICE_STATE extensionState = ARCONTROLLER_DEVICE_STATE_MAX;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jclass exceptionCls = NULL;\n')
     cFile.write ('    jmethodID exceptionMethodInit = NULL;\n')
     cFile.write ('    jthrowable exception = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    extensionState = ARCONTROLLER_Device_GetExtensionState (jniDeviceController->nativeDeviceController, &error);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // throw the exception\n')
@@ -4680,7 +4898,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('        exception = (*env)->NewObject(env, exceptionCls, exceptionMethodInit, error);\n')
     cFile.write ('        (*env)->Throw(env, exception);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return extensionState;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -4692,14 +4910,14 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    jstring extensionNameStr = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jclass exceptionCls = NULL;\n')
     cFile.write ('    jmethodID exceptionMethodInit = NULL;\n')
     cFile.write ('    jthrowable exception = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    char extensionNameBuffer[128];\n')
     cFile.write ('    ARCONTROLLER_Device_GetExtensionName (jniDeviceController->nativeDeviceController, extensionNameBuffer, 128, &error);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // throw the exception\n')
@@ -4712,7 +4930,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    {\n')
     cFile.write ('        extensionNameStr = (*env)->NewStringUTF(env, extensionNameBuffer);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return extensionNameStr;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -4724,13 +4942,13 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
     cFile.write ('    eARDISCOVERY_PRODUCT extensionProduct = ARDISCOVERY_PRODUCT_MAX;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jclass exceptionCls = NULL;\n')
     cFile.write ('    jmethodID exceptionMethodInit = NULL;\n')
     cFile.write ('    jthrowable exception = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    extensionProduct = ARCONTROLLER_Device_GetExtensionProduct (jniDeviceController->nativeDeviceController, &error);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (error != ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // throw the exception\n')
@@ -4739,11 +4957,11 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('        exception = (*env)->NewObject(env, exceptionCls, exceptionMethodInit, error);\n')
     cFile.write ('        (*env)->Throw(env, exception);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return extensionProduct;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('JNIEXPORT jint JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeSendStreamFrame (JNIEnv *env, jobject thizz, jlong jDeviceController, jlong data, jint dataSize)\n')
     cFile.write ('{\n')
@@ -4754,7 +4972,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    return ARCONTROLLER_Device_SendStreamFrame (jniDeviceController->nativeDeviceController, (uint8_t *) (intptr_t) data, dataSize);\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('JNIEXPORT jint JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeHasOutputVideoStream (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
     cFile.write ('{\n')
@@ -4781,7 +4999,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    return hasOutputVideoStream;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('JNIEXPORT jint JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeHasOutputAudioStream (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
     cFile.write ('{\n')
@@ -4808,7 +5026,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    return hasOutputAudioStream;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('JNIEXPORT jint JNICALL\n')
     cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeHasInputAudioStream (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
     cFile.write ('{\n')
@@ -4835,7 +5053,23 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    return hasInputAudioStream;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
+    cFile.write ('JNIEXPORT jint JNICALL\n')
+    cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStartVideoStream (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
+    cFile.write ('{\n')
+    cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
+    cFile.write ('    return ARCONTROLLER_Device_StartVideoStream (jniDeviceController->nativeDeviceController);\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+
+    cFile.write ('JNIEXPORT jint JNICALL\n')
+    cFile.write ('Java_com_parrot_arsdk_arcontroller_ARDeviceController_nativeStopVideoStream (JNIEnv *env, jobject thizz, jlong jDeviceController)\n')
+    cFile.write ('{\n')
+    cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) jDeviceController;\n')
+    cFile.write ('    return ARCONTROLLER_Device_StopVideoStream (jniDeviceController->nativeDeviceController);\n')
+    cFile.write ('}\n')
+    cFile.write ('\n')
+
     cFile.write ('/*****************************************\n')
     cFile.write (' *\n')
     cFile.write (' *             private implementation:\n')
@@ -4845,12 +5079,12 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('ARCONTROLLER_JNIDeviceController_t *ARCONTROLLER_JNI_Device_NewJNIDeviceController (JNIEnv *env, jobject thizz, ARDISCOVERY_Device_t *discoveryDevice, eARCONTROLLER_ERROR *error)\n')
     cFile.write ('{\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = malloc (sizeof (ARCONTROLLER_JNIDeviceController_t));\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (jniDeviceController != NULL)\n')
     cFile.write ('    {\n')
     cFile.write ('        // Create a new native deviceController\n')
     cFile.write ('        jniDeviceController->nativeDeviceController = ARCONTROLLER_Device_New (discoveryDevice, error);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // create a global reference of the java object\n')
     cFile.write ('        jniDeviceController->jDeviceController = (*env)->NewGlobalRef (env, thizz);\n')
     cFile.write ('    }\n')
@@ -4858,7 +5092,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    {\n')
     cFile.write ('        *error = ARCONTROLLER_ERROR_ALLOC;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return jniDeviceController;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -4870,11 +5104,11 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('        {\n')
     cFile.write ('            // Delete native deviceController\n')
     cFile.write ('            ARCONTROLLER_Device_Delete (&((*jniDeviceController)->nativeDeviceController));\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('            // Delete global references\n')
     cFile.write ('            (*env)->DeleteGlobalRef (env, (*jniDeviceController)->jDeviceController);\n')
     cFile.write ('            (*jniDeviceController)->jDeviceController = NULL;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('            free (*jniDeviceController);\n')
     cFile.write ('            (*jniDeviceController) = NULL;\n')
     cFile.write ('        }\n')
@@ -4889,15 +5123,15 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    JNIEnv* env = NULL;\n')
     cFile.write ('    jint getEnvResult = JNI_OK;\n')
     cFile.write ('    jint attachResult = 1;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    if ((jniDeviceController == NULL) ||\n')
     cFile.write ('        (jniDeviceController->jDeviceController == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the environment\n')
@@ -4915,13 +5149,13 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('            localError = ARCONTROLLER_ERROR_JNI_ENV;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // java onStateChanged callback\n')
     cFile.write ('        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_ON_STATE_CHANGED, newState, error);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // if the thread has been attached then detach the thread from the virtual machine\n')
     cFile.write ('    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))\n')
     cFile.write ('    {\n')
@@ -4939,40 +5173,40 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    jint getEnvResult = JNI_OK;\n')
     cFile.write ('    jint attachResult = 1;\n')
     cFile.write ('    jstring extensionNameStr = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if ((jniDeviceController == NULL) ||\n')
     cFile.write ('        (jniDeviceController->jDeviceController == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the environment\n')
     cFile.write ('        getEnvResult = (*ARCONTROLLER_JNIDEVICE_VM)->GetEnv(ARCONTROLLER_JNIDEVICE_VM, (void **) &env, JNI_VERSION_1_6);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // if no environment then attach the thread to the virtual machine\n')
     cFile.write ('        if (getEnvResult == JNI_EDETACHED)\n')
     cFile.write ('        {\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_JNIDEVICE_TAG, "attach the thread to the virtual machine ...");\n')
     cFile.write ('            attachResult = (*ARCONTROLLER_JNIDEVICE_VM)->AttachCurrentThread(ARCONTROLLER_JNIDEVICE_VM, &env, NULL);\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (env == NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            localError = ARCONTROLLER_ERROR_JNI_ENV;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        extensionNameStr = (*env)->NewStringUTF(env, name);\n')
     cFile.write ('        // java onStateChanged callback\n')
     cFile.write ('        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_ON_EXTENSION_STATE_CHANGED, newState, product, extensionNameStr, error);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // if the thread has been attached then detach the thread from the virtual machine\n')
     cFile.write ('    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))\n')
     cFile.write ('    {\n')
@@ -4989,16 +5223,16 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    JNIEnv* env = NULL;\n')
     cFile.write ('    jint getEnvResult = JNI_OK;\n')
     cFile.write ('    jint attachResult = 1;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;\n')
     cFile.write ('    eARCONTROLLER_ERROR error = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if ((jniDeviceController == NULL) ||\n')
     cFile.write ('        (jniDeviceController->jDeviceController == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the environment\n')
@@ -5016,13 +5250,13 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('            localError = ARCONTROLLER_ERROR_JNI_ENV;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // java onCommandReceived callback\n')
     cFile.write ('        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_ON_COMMAND_RECEIVED, commandKey, (long) elementDictionary);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // if the thread has been attached then detach the thread from the virtual machine\n')
     cFile.write ('    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))\n')
     cFile.write ('    {\n')
@@ -5030,45 +5264,45 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DecoderConfigCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData)\n')
     cFile.write ('{\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
     cFile.write ('    JNIEnv* env = NULL;\n')
     cFile.write ('    jint getEnvResult = JNI_OK;\n')
     cFile.write ('    jint attachResult = 1;\n')
     cFile.write ('    jobject jCodec = NULL;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if ((jniDeviceController == NULL) ||\n')
     cFile.write ('        (jniDeviceController->jDeviceController == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the environment\n')
     cFile.write ('        getEnvResult = (*ARCONTROLLER_JNIDEVICE_VM)->GetEnv(ARCONTROLLER_JNIDEVICE_VM, (void **) &env, JNI_VERSION_1_6);\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // if no environment then attach the thread to the virtual machine\n')
     cFile.write ('        if (getEnvResult == JNI_EDETACHED)\n')
     cFile.write ('        {\n')
     cFile.write ('            ARSAL_PRINT(ARSAL_PRINT_DEBUG, ARCONTROLLER_JNIDEVICE_TAG, "attach the thread to the virtual machine ...");\n')
     cFile.write ('            attachResult = (*ARCONTROLLER_JNIDEVICE_VM)->AttachCurrentThread(ARCONTROLLER_JNIDEVICE_VM, &env, NULL);\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (env == NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            localError = ARCONTROLLER_ERROR_JNI_ENV;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        switch(codec.type)\n')
@@ -5076,53 +5310,53 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('            case ARCONTROLLER_STREAM_CODEC_TYPE_H264:\n')
     cFile.write ('                jCodec = ARCONTROLLER_JNI_Device_NewH264Codec(env, codec);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('            case ARCONTROLLER_STREAM_CODEC_TYPE_MJPEG:\n')
     cFile.write ('                jCodec = ARCONTROLLER_JNI_Device_NewMJPEGCodec(env, codec);\n')
     cFile.write ('                break;\n')
-    cFile.write ('            \n')
+    cFile.write ('\n')
     cFile.write ('            default:\n')
     cFile.write ('                ARSAL_PRINT(ARSAL_PRINT_WARNING, ARCONTROLLER_JNIDEVICE_TAG, "Unknown codec: %d", codec.type);\n')
     cFile.write ('                break;\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // java decoderConfigCallback callback\n')
     cFile.write ('        callbackError = (*env)->CallIntMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_DECODER_CONFIG_CALLBACK, jCodec);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // if the thread has been attached then detach the thread from the virtual machine\n')
     cFile.write ('    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        (*ARCONTROLLER_JNIDEVICE_VM)->DetachCurrentThread(ARCONTROLLER_JNIDEVICE_VM);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return callbackError;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('jobject ARCONTROLLER_JNI_Device_NewH264Codec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec)\n')
     cFile.write ('{\n')
     cFile.write ('    // local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
     cFile.write ('    jlong spsBuffer = (intptr_t) codec.parameters.h264parameters.spsBuffer;\n')
     cFile.write ('    jint spsSize =  codec.parameters.h264parameters.spsSize;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jlong ppsBuffer = (intptr_t) codec.parameters.h264parameters.ppsBuffer;\n')
     cFile.write ('    jint ppsSize =  codec.parameters.h264parameters.ppsSize;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jobject jCodecH264 = (*env)->NewObject(env, jARControllerCodecH264Cls, ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_H264, spsBuffer, spsSize, ppsBuffer, ppsSize);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return jCodecH264;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('jobject ARCONTROLLER_JNI_Device_NewMJPEGCodec (JNIEnv *env, ARCONTROLLER_Stream_Codec_t codec)\n')
     cFile.write ('{\n')
     cFile.write ('    // local declarations\n')
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jobject jCodecMJPEG = (*env)->NewObject(env, jARControllerCodecMJPEGCls, ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_MJPEG);\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return jCodecMJPEG;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -5133,7 +5367,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    eARCONTROLLER_ERROR localError = ARCONTROLLER_OK;\n')
     cFile.write ('    jint sampleRate = codec.parameters.pcm16leParameters.sampleRate;\n')
     cFile.write ('    jint channel = codec.parameters.pcm16leParameters.channel;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('\n')
     cFile.write ('    jobject jCodecPCM16LE = (*env)->NewObject(env, jARControllerCodecPCM16LECls, ARCONTROLLER_JNIDEVICE_METHOD_NEW_CODEC_PCM16LE, sampleRate, channel);\n')
     cFile.write ('\n')
@@ -5148,7 +5382,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    JNIEnv* env = NULL;\n')
     cFile.write ('    jint getEnvResult = JNI_OK;\n')
     cFile.write ('    jint attachResult = 1;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    jlong data = 0;\n')
     cFile.write ('    jint dataCapacity = 0;\n')
     cFile.write ('    jint dataSize = 0;\n')
@@ -5157,17 +5391,17 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    jlong timestamp = 0;\n')
     cFile.write ('    jlong metadata = 0;\n')
     cFile.write ('    jint metadataSize = 0;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    eARCONTROLLER_ERROR callbackError = ARCONTROLLER_OK;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    if ((jniDeviceController == NULL) ||\n')
     cFile.write ('        (jniDeviceController->jDeviceController == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the environment\n')
@@ -5185,10 +5419,10 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('            localError = ARCONTROLLER_ERROR_JNI_ENV;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        if (frame != NULL)\n')
     cFile.write ('        {\n')
     cFile.write ('            data = (long)frame->data;\n')
@@ -5200,17 +5434,17 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('            metadata = (jlong)(intptr_t)frame->metadata;\n')
     cFile.write ('            metadataSize = frame->metadataSize;\n')
     cFile.write ('        }\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('        // java did receive frame callback\n')
     cFile.write ('        callbackError = (*env)->CallIntMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_DID_RECEIVE_FRAME_CALLBACK, data, dataCapacity, dataSize, isIFrame, missed, timestamp, metadata, metadataSize);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // if the thread has been attached then detach the thread from the virtual machine\n')
     cFile.write ('    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        (*ARCONTROLLER_JNIDEVICE_VM)->DetachCurrentThread(ARCONTROLLER_JNIDEVICE_VM);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    return callbackError;\n')
     cFile.write ('}\n')
     cFile.write ('\n')
@@ -5221,15 +5455,15 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    JNIEnv* env = NULL;\n')
     cFile.write ('    jint getEnvResult = JNI_OK;\n')
     cFile.write ('    jint attachResult = 1;\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    ARCONTROLLER_JNIDeviceController_t *jniDeviceController = (ARCONTROLLER_JNIDeviceController_t*) (intptr_t) customData;\n')
-    cFile.write ('        \n')
+    cFile.write ('\n')
     cFile.write ('    if ((jniDeviceController == NULL) ||\n')
     cFile.write ('        (jniDeviceController->jDeviceController == NULL))\n')
     cFile.write ('    {\n')
     cFile.write ('        localError = ARCONTROLLER_ERROR_BAD_PARAMETER;\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // get the environment\n')
@@ -5247,13 +5481,13 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('            localError = ARCONTROLLER_ERROR_JNI_ENV;\n')
     cFile.write ('        }\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    if (localError == ARCONTROLLER_OK)\n')
     cFile.write ('    {\n')
     cFile.write ('        // java onStateChanged callback\n')
     cFile.write ('        (*env)->CallVoidMethod(env, jniDeviceController->jDeviceController, ARCONTROLLER_JNIDEVICE_METHOD_TIMEOUT_FRAME_CALLBACK);\n')
     cFile.write ('    }\n')
-    cFile.write ('    \n')
+    cFile.write ('\n')
     cFile.write ('    // if the thread has been attached then detach the thread from the virtual machine\n')
     cFile.write ('    if ((getEnvResult == JNI_EDETACHED) && (env != NULL))\n')
     cFile.write ('    {\n')
@@ -5261,7 +5495,7 @@ def generateControllersJNI (ctx, JNI_C_DIR):
     cFile.write ('    }\n')
     cFile.write ('}\n')
     cFile.write ('\n')
-    
+
     cFile.write ('eARCONTROLLER_ERROR ARCONTROLLER_JNI_Device_DecoderAudioConfigCallback (ARCONTROLLER_Stream_Codec_t codec, void *customData)\n')
     cFile.write ('{\n')
     cFile.write ('\n')
