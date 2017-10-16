@@ -39,9 +39,10 @@ DEVICE_TO_STRING = {
     '090f':   'SkyController 2',
     '0910':   'Swing',
     '0913':   'SkyController 1 v2.x',
+    '0915':   'SkyController 2P',
 }
 DEVICES_GLOBAL = [ 'drones', 'rc', 'none' ]
-DEVICES_RC     = [ '0903', '090f', '0913' ]
+DEVICES_RC     = [ '0903', '090f', '0913', '0915' ]
 DEVICES_DRONE  = [ x for x in DEVICE_TO_STRING if x not in (DEVICES_GLOBAL+DEVICES_RC) ]
 # List of devices for which the doc should not be generated
 DEVICES_IGNORED = [ '0913' ]
