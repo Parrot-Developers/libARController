@@ -85,6 +85,7 @@
         Delos3 project
         <feature name="common"/>
         <feature name="minidrone"/>
+        <feature name="mapper_mini"/>
     </ARController_Device>
 
     <ARController_Device name="Hydrofoil" product="MINIDRONE_EVO_HYDROFOIL">
@@ -136,6 +137,8 @@
         <feature name="generic"/>
         <feature name="follow_me"/>
         <feature name="controller_info"/>
+        <feature name="animation"/>
+        <feature name="thermal_cam"/>
     </ARController_Device>
 
     <ARController_Device name="Chimera" product="CHIMERA" flags="can_be_extension">
