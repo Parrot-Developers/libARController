@@ -8,7 +8,7 @@
       notice, this list of conditions and the following disclaimer.
     * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the 
+      the documentation and/or other materials provided with the
       distribution.
     * Neither the name of Parrot nor the names
       of its contributors may be used to endorse or promote products
@@ -22,7 +22,7 @@
     COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
     INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
     BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
     AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
     OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
@@ -41,6 +41,8 @@
 #include <libARSAL/ARSAL_Socket.h>
 #include <libARSAL/ARSAL_Mutex.h>
 #include <libARCommands/ARCOMMANDS_Decoder.h>
+
+#include "ARCONTROLLER_StreamSender.h"
 
 #define ARCONTROLLER_NETWORK_TAG "ARCONTROLLER_Network"
 #define ARCONTROLLER_NETWORK_READING_TIMEOUT_MS 1000
@@ -63,11 +65,11 @@ struct ARCONTROLLER_Network_t
     ARCONTROLLER_NETWORK_THREAD_DATA_t *readerThreadsData; /**< Data for all reader threads*/
     ARSAL_Mutex_t mutex; /**< Mutex for multithreading */
     eARCONTROLLER_NETWORK_STATE state; /**< State of the networkController*/
-    
+
     //video part
     int hasVideo; /**< 0 if the device has not Video stream ; otherwise 1 */
     ARCONTROLLER_Stream_t *videoController; /**< Manage input video stream  */
-    
+
     //audio part
     int hasAudio; /**< 0 if the device has not Audio stream ; otherwise 1 */
     ARCONTROLLER_Stream_t *audioController; /**< Manage input audio stream  */

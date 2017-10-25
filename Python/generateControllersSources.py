@@ -111,8 +111,8 @@ def generate_ctrls(ctx, paths, extra):
         generateDeviceControllers (ctx, paths.SRC_DIR, paths.INC_DIR)
         # generate DictionaryKeyEnum
         generateDictionaryKeyEnum (ctx, paths.SRC_DIR, paths.INC_DIR)
-        os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR+ ' --disable-java')
-        #os.system('python '+PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR)
+        os.system(PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR+ ' --disable-java')
+        #os.system(PREBUILD_ACTION+' --lib libARController --root '+LIBARCONTROLLER_DIR+' --outdir '+paths.MY_GEN_DIR)
     elif extra == JAVA:
         # generate Feature Controllers
         generateFeatureControllersJava (ctx, paths.JNI_JAVA_DIR);

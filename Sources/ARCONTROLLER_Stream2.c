@@ -207,6 +207,7 @@ ARCONTROLLER_Stream2_t *ARCONTROLLER_Stream2_New (ARDISCOVERY_Device_t *discover
             
             stream2Controller->errorCount = 0;
             stream2Controller->replaceStartCodesWithNaluSize = 0;
+            stream2Controller->ardiscoveryProductType = discoveryDevice->productID;
             
             stream2Controller->callbackData = NULL;
             stream2Controller->decoderConfigCallback = NULL;
@@ -538,6 +539,7 @@ static eARCONTROLLER_ERROR ARCONTROLLER_Stream2_StartStream (ARCONTROLLER_Stream
         config.replaceStartCodesWithNaluSize = stream2Controller->replaceStartCodesWithNaluSize;
         config.generateSkippedPSlices = 1;
         config.generateFirstGrayIFrame = 1;
+        config.ardiscoveryProductType = stream2Controller->ardiscoveryProductType;
         config.canonicalName = "DEFAULT_SDK_CONTROLLER";
 
         if (stream2Controller->mux) {

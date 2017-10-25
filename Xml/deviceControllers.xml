@@ -85,6 +85,7 @@
         Delos3 project
         <feature name="common"/>
         <feature name="minidrone"/>
+        <feature name="mapper_mini"/>
     </ARController_Device>
 
     <ARController_Device name="Hydrofoil" product="MINIDRONE_EVO_HYDROFOIL">
@@ -115,6 +116,14 @@
         <feature name="drone_manager"/>
     </ARController_Device>
 
+    <ARController_Device name="SkyController2P" product="SKYCONTROLLER_2P" flags="can_have_extension">
+        Sky Controller 2P project
+        <feature name="common"/>
+        <feature name="skyctrl"/>
+        <feature name="mapper"/>
+        <feature name="drone_manager"/>
+    </ARController_Device>
+
     <ARController_Device name="PowerUP" product="POWER_UP">
         Power Up project
         <feature name="common"/>
@@ -123,6 +132,17 @@
 
     <ARController_Device name="Bebop2" product="BEBOP_2" flags="can_be_extension">
         Bebop 2 project
+        <feature name="common"/>
+        <feature name="ardrone3"/>
+        <feature name="generic"/>
+        <feature name="follow_me"/>
+        <feature name="controller_info"/>
+        <feature name="animation"/>
+        <feature name="thermal_cam"/>
+    </ARController_Device>
+
+    <ARController_Device name="Chimera" product="CHIMERA" flags="can_be_extension">
+        Chimera project
         <feature name="common"/>
         <feature name="ardrone3"/>
         <feature name="generic"/>

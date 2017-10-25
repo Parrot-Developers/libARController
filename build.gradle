@@ -43,7 +43,7 @@ task('generateController', type: Exec) {
     inputs.files srcFiles
     outputs.dir destDir
     workingDir "."
-    def cmdline = ['python', ext.parser.absolutePath, ext.genrator.absolutePath, "-o", ext.destDir.absolutePath, "java"]
+    def cmdline = [ext.parser.absolutePath, ext.genrator.absolutePath, "-o", ext.destDir.absolutePath, "java"]
     commandLine cmdline
 }
 

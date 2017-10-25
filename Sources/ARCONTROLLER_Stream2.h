@@ -83,6 +83,7 @@ struct ARCONTROLLER_Stream2_t
     int serverControlPort; /**< Server control port */
     int maxPacketSize; /**< Maximum network packet size in bytes */
     int qos_level;
+    int ardiscoveryProductType;
     
     int errorCount;
     int replaceStartCodesWithNaluSize; /**< if 1, replace the NAL units start code with the NALU size */

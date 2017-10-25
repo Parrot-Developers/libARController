@@ -18,6 +18,10 @@ LOCAL_LIBRARIES := \
 	libARNetworkAL \
 	libARNetwork \
 	uthash \
+	librtsp \
+	libsdp \
+	libfutils \
+	libpomp \
 	json
 
 LOCAL_CONDITIONAL_LIBRARIES := \
