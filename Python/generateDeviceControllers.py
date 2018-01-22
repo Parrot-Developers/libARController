@@ -4384,9 +4384,12 @@ def generateControllersJava (ctx, JNI_JAVA_DIR):
 
     for feature in ctx.features:
         jfile.write ('        long '+nativeFeatureName(feature)+' = '+nativeGetFeature(feature)+' (jniDeviceController);\n')
-        jfile.write ('        if (('+javaFeatureName(feature)+' == null) && ('+nativeFeatureName(feature)+' != 0))\n')
+        jfile.write ('        if ('+nativeFeatureName(feature)+' != 0)\n')
         jfile.write ('        {\n')
-        jfile.write ('            '+javaFeatureName(feature)+' = new '+javaFeatureClassName(feature)+'('+nativeFeatureName(feature)+');\n')
+        jfile.write ('            if ('+javaFeatureName(feature)+' == null)\n')
+        jfile.write ('            {\n')
+        jfile.write ('                '+javaFeatureName(feature)+' = new '+javaFeatureClassName(feature)+'('+nativeFeatureName(feature)+');\n')
+        jfile.write ('            }\n')
         jfile.write ('        }\n')
         jfile.write ('        else\n')
         jfile.write ('        {\n')
