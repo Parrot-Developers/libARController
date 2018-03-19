@@ -148,6 +148,7 @@
         <feature name="generic"/>
         <feature name="follow_me"/>
         <feature name="controller_info"/>
+        <feature name="sequoia_cam"/>
     </ARController_Device>
 
     <ARController_Device name="Disco" product="EVINRUDE" flags="can_be_extension">
@@ -155,6 +156,7 @@
         <feature name="common"/>
         <feature name="ardrone3"/>
         <feature name="rc"/>
+        <feature name="sequoia_cam"/>
     </ARController_Device>
 
 </deviceControllers>
